@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -12,6 +12,7 @@
 
   environment.systemPackages = with pkgs; [
     foot
+    git
     gnome-text-editor
     gnome.gnome-calculator
     gnome.gnome-calendar
@@ -26,7 +27,8 @@
     mpv
   ];
 
-  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
+  hardware.pulseaudio.enable = false;
 
   i18n.defaultLocale = "en_GB.UTF-8";
   networking.hostName = "framework";
@@ -35,10 +37,37 @@
     "nix-command"
     "flakes"
   ];
+  nixpkgs.config.allowUnfree = true;
 
   services.fprintd.enable = true;
+
+  # Workaround for gdm
+  # See: https://github.com/NixOS/nixpkgs/issues/171136
+  # See: https://github.com/NixOS/nixpkgs/pull/171140
+  security.pam.services.login.fprintAuth = false;
+  security.pam.services.gdm-fingerprint =
+    lib.mkIf (config.services.fprintd.enable) {
+      text = ''
+        auth       required                    pam_shells.so
+        auth       requisite                   pam_nologin.so
+        auth       requisite                   pam_faillock.so      preauth
+        auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
+        auth       optional                    pam_permit.so
+        auth       required                    pam_env.so
+        auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
+        auth       optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+        account    include                     login
+        password   required                    pam_deny.so
+        session    include                     login
+        session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
+      '';
+    };
+
+
   services.fstrim.enable = true;
   services.fwupd.enable = true;
+
+  # https://github.com/NixOS/nixpkgs/blob/59e6ccce3ef1dff677840fa5bb71b79ea686ee12/nixos/modules/services/x11/desktop-managers/gnome.nix
   services.gnome.core-developer-tools.enable = false;
   services.gnome.core-os-services.enable = true;
   services.gnome.core-shell.enable = true;
@@ -49,7 +78,6 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.enable = true;
   services.xserver.excludePackages = [ pkgs.xterm ];
-  services.pipewire.enable = true;
 
   # services.gnome.core-shell
   services.gnome.gnome-browser-connector.enable = false;
@@ -77,6 +105,11 @@
 
   services.power-profiles-daemon.enable = false;
   services.tlp.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
 
   programs.firefox.enable = true;
 

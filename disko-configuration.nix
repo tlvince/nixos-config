@@ -33,7 +33,7 @@
                   subvolumes = {
                     "/root" = {
                       mountpoint = "/";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd" "noatime" "nodiscard" ];
                     };
                     # FIXME: Nested subvolumes unsupported
                     # https://github.com/nix-community/disko/issues/409
@@ -43,11 +43,11 @@
                     #};
                     "/home" = {
                       mountpoint = "/home";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd" "noatime" "nodiscard" ];
                     };
                     "/nix" = {
                       mountpoint = "/nix";
-                      mountOptions = [ "compress=zstd" "noatime" ];
+                      mountOptions = [ "compress=zstd" "noatime" "nodiscard" ];
                     };
                   };
                 };
