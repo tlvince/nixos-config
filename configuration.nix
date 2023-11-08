@@ -28,7 +28,9 @@
   ];
 
   fonts = {
+    enableDefaultPackages = false;
     packages = [
+      pkgs.noto-fonts-color-emoji
       apple-fonts.packages."${pkgs.system}".ny
       apple-fonts.packages."${pkgs.system}".sf-mono
       apple-fonts.packages."${pkgs.system}".sf-pro
