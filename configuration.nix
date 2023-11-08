@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, apple-fonts, ... }:
 
 {
   imports = [
@@ -26,6 +26,23 @@
     libva-utils
     mpv
   ];
+
+  fonts = {
+    packages = [
+      apple-fonts.packages."${pkgs.system}".ny
+      apple-fonts.packages."${pkgs.system}".sf-mono
+      apple-fonts.packages."${pkgs.system}".sf-pro
+    ];
+
+    fontconfig = {
+      defaultFonts = {
+	serif = [ "New York"];
+	sansSerif = [ "SF Pro Text" ];
+	monospace = [ "SF Mono" ];
+	emoji = [ "Noto Color Emoji" ];
+      };
+    };
+  };
 
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
