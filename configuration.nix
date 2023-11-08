@@ -35,6 +35,19 @@
     ];
 
     fontconfig = {
+      antialias = true;
+
+      hinting = {
+        enable = false;
+        autohint = false;
+        style = "none";
+      };
+
+      subpixel = {
+        lcdfilter = "none";
+        rgba = "none";
+      };
+
       defaultFonts = {
 	serif = [ "New York"];
 	sansSerif = [ "SF Pro Text" ];
