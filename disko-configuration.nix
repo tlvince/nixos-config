@@ -27,13 +27,14 @@
                 settings = {
                   allowDiscards = true;
                 };
+                # Triggering BTRFS error, but boots
+                # See: https://discourse.nixos.org/t/nixos-full-disk-encryption-error/35101
                 content = {
                   type = "btrfs";
-                  extraArgs = [ "-f" ];
                   subvolumes = {
                     "/root" = {
                       mountpoint = "/";
-                      mountOptions = [ "compress=zstd" "noatime" "nodiscard" ];
+                      mountOptions = [ "compress=zstd" "noatime" ];
                     };
                     # FIXME: Nested subvolumes unsupported
                     # https://github.com/nix-community/disko/issues/409
@@ -43,11 +44,11 @@
                     #};
                     "/home" = {
                       mountpoint = "/home";
-                      mountOptions = [ "compress=zstd" "noatime" "nodiscard" ];
+                      mountOptions = [ "compress=zstd" "noatime" ];
                     };
                     "/nix" = {
                       mountpoint = "/nix";
-                      mountOptions = [ "compress=zstd" "noatime" "nodiscard" ];
+                      mountOptions = [ "compress=zstd" "noatime" ];
                     };
                   };
                 };
