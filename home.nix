@@ -42,4 +42,6 @@
       experimental-features = [ "scale-monitor-framebuffer" ];
     };
   };
+
+  programs.zsh.enable = true;
 }

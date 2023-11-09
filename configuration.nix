@@ -26,6 +26,7 @@
     libva-utils
     mpv
     yt-dlp
+    zsh
   ];
 
   fonts = {
@@ -145,12 +146,14 @@
   };
 
   programs.firefox.enable = true;
+  programs.zsh.enable = true;
 
   system.stateVersion = "23.05";
 
   time.timeZone = "Europe/London";
 
   users.users.tlv = {
+    shell = pkgs.zsh;
     isNormalUser = true;
     extraGroups = [ "wheel" ];
   };
