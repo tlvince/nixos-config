@@ -33,7 +33,6 @@
     enableDefaultPackages = false;
     packages = [
       pkgs.noto-fonts-color-emoji
-      apple-fonts.packages."${pkgs.system}".ny
       apple-fonts.packages."${pkgs.system}".sf-mono
       apple-fonts.packages."${pkgs.system}".sf-pro
     ];
@@ -53,7 +52,7 @@
       };
 
       defaultFonts = {
-	serif = [ "New York"];
+	serif = [ "DejaVu Serif"];
 	sansSerif = [ "SF Pro Text" ];
 	monospace = [ "SF Mono" ];
 	emoji = [ "Noto Color Emoji" ];

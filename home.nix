@@ -41,6 +41,10 @@
     "org/gnome/mutter" = {
       experimental-features = [ "scale-monitor-framebuffer" ];
     };
+    "org/gnome/desktop/interface" = {
+      font-hinting = "none";
+      font-antialiasing = "greyscale";
+    };
   };
 
   home.sessionVariables = {
