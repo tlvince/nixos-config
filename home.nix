@@ -43,5 +43,10 @@
     };
   };
 
+  home.sessionVariables = {
+    XCURSOR_THEME = "Adwaita";
+    XCURSOR_SIZE = 16;
+  };
+
   programs.zsh.enable = true;
 }
