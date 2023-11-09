@@ -25,6 +25,7 @@
     powertop
     libva-utils
     mpv
+    yt-dlp
   ];
 
   fonts = {

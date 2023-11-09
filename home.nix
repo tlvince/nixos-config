@@ -15,13 +15,21 @@
     settings = {
       main = {
         font = "monospace:size=14";
-        initial-window-mode = "fullscreen";
+        #initial-window-mode = "fullscreen";
       };
       cursor = {
         style = "beam";
         blink = "yes";
         beam-thickness = 1;
       };
+    };
+  };
+
+  programs.mpv = {
+    enable = true;
+    config = {
+      hwdec = "auto";
+      ytdl-format = "(bestvideo[vcodec^=av01][height<=?2160]/bestvideo[height<=?2160])+bestaudio/best";
     };
   };
 
