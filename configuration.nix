@@ -79,6 +79,7 @@
 
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
+  hardware.sensor.iio.enable = false;
 
   i18n.defaultLocale = "en_GB.UTF-8";
   networking.hostName = "framework";
@@ -115,7 +116,6 @@
       '';
     };
 
-  services.fprintd.enable = true;
   services.fstrim.enable = true;
   services.fwupd.enable = true;
 
@@ -157,6 +157,7 @@
 
   services.power-profiles-daemon.enable = false;
   services.tlp.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
