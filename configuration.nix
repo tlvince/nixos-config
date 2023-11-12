@@ -12,6 +12,7 @@
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = with pkgs; [
+    brightnessctl
     foot
     git
     gnome-text-editor
@@ -21,11 +22,12 @@
     gnome.gnome-contacts
     gnome.nautilus
     htop
-    neovim
-    tree
-    powertop
     libva-utils
     mpv
+    neovim
+    powerstat
+    powertop
+    tree
     yt-dlp
     zsh
   ];
@@ -76,6 +78,9 @@
       '';
     };
   };
+
+  # Early KMS unnecessarily slows boot
+  hardware.amdgpu.loadInInitrd = false;
 
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
