@@ -10,6 +10,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
 
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = with pkgs; [
     foot
     git
@@ -52,10 +53,10 @@
       };
 
       defaultFonts = {
-	serif = [ "DejaVu Serif"];
-	sansSerif = [ "SF Pro Text" ];
-	monospace = [ "SF Mono" ];
-	emoji = [ "Noto Color Emoji" ];
+        serif = [ "DejaVu Serif"];
+        sansSerif = [ "SF Pro Text" ];
+        monospace = [ "SF Mono" ];
+        emoji = [ "Noto Color Emoji" ];
       };
 
       localConf = ''
@@ -86,9 +87,11 @@
     "nix-command"
     "flakes"
   ];
+
   nixpkgs.config.allowUnfree = true;
 
-  services.fprintd.enable = true;
+  programs.firefox.enable = true;
+  programs.zsh.enable = true;
 
   # Workaround for gdm
   # See: https://github.com/NixOS/nixpkgs/issues/171136
@@ -112,7 +115,7 @@
       '';
     };
 
-
+  services.fprintd.enable = true;
   services.fstrim.enable = true;
   services.fwupd.enable = true;
 
@@ -159,9 +162,6 @@
     alsa.enable = true;
     pulse.enable = true;
   };
-
-  programs.firefox.enable = true;
-  programs.zsh.enable = true;
 
   system.stateVersion = "23.05";
 
