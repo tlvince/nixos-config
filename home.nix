@@ -25,32 +25,63 @@
   programs.firefox = {
     enable = true;
     profiles.default = {
-      search.engines = {
-	"NixOS Packages" = {
-	  urls = [{
-	    template = "https://search.nixos.org/packages";
-	    params = [
-	      { name = "channel"; value = "unstable"; }
-	      { name = "query"; value = "{searchTerms}"; }
-	    ];
-	  }];
+      search = {
+        default = "Brave";
+        engines = {
+          "Arch Wiki" = {
+            urls = [{
+              template = "https://wiki.archlinux.org/index.php";
+              params = [
+                { name = "search"; value = "{searchTerms}"; }
+              ];
+            }];
+            definedAliases = [ "aw" ];
+          };
 
-	  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-	  definedAliases = [ "np" ];
-	};
+          Brave = {
+            urls = [{
+              template = "https://search.brave.com/search";
+              params = [
+                { name = "q"; value = "{searchTerms}"; }
+              ];
+            }];
+            definedAliases = [ "b" ];
+          };
 
-	"NixOS Options" = {
-	  urls = [{
-	    template = "https://search.nixos.org/options";
-	    params = [
-	      { name = "channel"; value = "unstable"; }
-	      { name = "query"; value = "{searchTerms}"; }
-	    ];
-	  }];
+          "NixOS Options" = {
+            urls = [{
+              template = "https://search.nixos.org/options";
+              params = [
+                { name = "channel"; value = "unstable"; }
+                { name = "query"; value = "{searchTerms}"; }
+              ];
+            }];
+            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [ "no" ];
+          };
 
-	  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-	  definedAliases = [ "no" ];
-	};
+          "NixOS Packages" = {
+            urls = [{
+              template = "https://search.nixos.org/packages";
+              params = [
+                { name = "channel"; value = "unstable"; }
+                { name = "query"; value = "{searchTerms}"; }
+              ];
+            }];
+            icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            definedAliases = [ "np" ];
+          };
+
+          Wikipedia = {
+            urls = [{
+              template = "https://en.m.wikipedia.org/w/index.php";
+              params = [
+                { name = "search"; value = "{searchTerms}"; }
+              ];
+            }];
+            definedAliases = [ "w" ];
+          };
+        };
       };
 
       settings = {
