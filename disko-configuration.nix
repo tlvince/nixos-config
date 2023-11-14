@@ -27,8 +27,6 @@
                 settings = {
                   allowDiscards = true;
                 };
-                # Triggering BTRFS error, but boots
-                # See: https://discourse.nixos.org/t/nixos-full-disk-encryption-error/35101
                 content = {
                   type = "btrfs";
                   subvolumes = {
