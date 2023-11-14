@@ -1,18 +1,26 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "tlv";
-  home.homeDirectory = "/home/tlv";
-
-  programs.git = {
-    enable = true;
-    userName = "Tom Vincent";
-    userEmail = "git@tlvince.com";
-    signing = {
-      key = "AB184CDBE6AEACDE";
-      signByDefault = true;
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      font-hinting = "none";
+      font-antialiasing = "greyscale";
+    };
+    "org/gnome/mutter" = {
+      experimental-features = [ "scale-monitor-framebuffer" ];
     };
   };
+
+  home = {
+    homeDirectory = "/home/tlv";
+    sessionVariables = {
+      XCURSOR_THEME = "Adwaita";
+      XCURSOR_SIZE = 16;
+      ZSHZ_CMD = "j";
+    };
+    stateVersion = "23.05";
+    username = "tlv";
+  }
 
   programs.foot = {
     enable = true;
@@ -29,32 +37,14 @@
     };
   };
 
-  programs.mpv = {
+  programs.git = {
     enable = true;
-    config = {
-      hwdec = "auto";
-      ytdl-format = "(bestvideo[vcodec^=av01][height<=?2160]/bestvideo[height<=?2160])+bestaudio/best";
+    userName = "Tom Vincent";
+    userEmail = "git@tlvince.com";
+    signing = {
+      key = "AB184CDBE6AEACDE";
+      signByDefault = true;
     };
-  };
-
-  home.stateVersion = "23.05";
-
-  programs.home-manager.enable = true;
-
-  dconf.settings = {
-    "org/gnome/mutter" = {
-      experimental-features = [ "scale-monitor-framebuffer" ];
-    };
-    "org/gnome/desktop/interface" = {
-      font-hinting = "none";
-      font-antialiasing = "greyscale";
-    };
-  };
-
-  home.sessionVariables = {
-    XCURSOR_THEME = "Adwaita";
-    XCURSOR_SIZE = 16;
-    ZSHZ_CMD = "j";
   };
 
   programs.gpg = {
@@ -76,6 +66,16 @@
     maxCacheTtl = 57600; # 16 hours
     maxCacheTtlSsh = 57600; # 16 hours
     pinentryFlavor = "gnome3";
+  };
+
+  programs.home-manager.enable = true;
+
+  programs.mpv = {
+    enable = true;
+    config = {
+      hwdec = "auto";
+      ytdl-format = "(bestvideo[vcodec^=av01][height<=?2160]/bestvideo[height<=?2160])+bestaudio/best";
+    };
   };
 
   programs.zsh = {
