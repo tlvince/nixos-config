@@ -20,7 +20,47 @@
     };
     stateVersion = "23.05";
     username = "tlv";
-  }
+  };
+
+  programs.firefox = {
+    enable = true;
+    profiles.default = {
+      search.engines = {
+	"NixOS Packages" = {
+	  urls = [{
+	    template = "https://search.nixos.org/packages";
+	    params = [
+	      { name = "channel"; value = "unstable"; }
+	      { name = "query"; value = "{searchTerms}"; }
+	    ];
+	  }];
+
+	  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+	  definedAliases = [ "np" ];
+	};
+
+	"NixOS Options" = {
+	  urls = [{
+	    template = "https://search.nixos.org/options";
+	    params = [
+	      { name = "channel"; value = "unstable"; }
+	      { name = "query"; value = "{searchTerms}"; }
+	    ];
+	  }];
+
+	  icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+	  definedAliases = [ "no" ];
+	};
+      };
+
+      settings = {
+	"dom.security.https_only_mode" = true;
+	"extensions.pocket.enabled" = false;
+	"media.ffmpeg.vaapi.enabled" = true;
+	"ui.key.menuAccessKeyFocuses" = false;
+      };
+    };
+  };
 
   programs.foot = {
     enable = true;
