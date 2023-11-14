@@ -24,10 +24,13 @@
     gnome.gnome-clocks
     gnome.gnome-contacts
     gnome.nautilus
+    gnupg
     htop
     libva-utils
     mpv
     neovim
+    pass-wayland
+    pinentry-gnome
     powerstat
     powertop
     pure-prompt

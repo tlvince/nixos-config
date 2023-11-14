@@ -8,6 +8,10 @@
     enable = true;
     userName = "Tom Vincent";
     userEmail = "git@tlvince.com";
+    signing = {
+      key = "AB184CDBE6AEACDE";
+      signByDefault = true;
+    };
   };
 
   programs.foot = {
@@ -51,6 +55,27 @@
     XCURSOR_THEME = "Adwaita";
     XCURSOR_SIZE = 16;
     ZSHZ_CMD = "j";
+  };
+
+  programs.gpg = {
+    enable = true;
+    settings = {
+      default-key = "E6AEACDE";
+      default-recipient-self = true;
+      keyserver = "hkp://keys.gnupg.net";
+      keyserver-options = "auto-key-retrieve";
+      use-agent = true;
+    };
+  };
+
+  services.gpg-agent = {
+    enable = true;
+    enableScDaemon = false;
+    defaultCacheTtl = 28800; # 8 hours
+    defaultCacheTtlSsh = 28800; # 8 hours
+    maxCacheTtl = 57600; # 16 hours
+    maxCacheTtlSsh = 57600; # 16 hours
+    pinentryFlavor = "gnome3";
   };
 
   programs.zsh = {
