@@ -17,6 +17,7 @@
   environment.systemPackages = with pkgs; [
     brightnessctl
     foot
+    gh
     git
     gnome-text-editor
     gnome.gnome-calculator
