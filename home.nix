@@ -50,7 +50,19 @@
   home.sessionVariables = {
     XCURSOR_THEME = "Adwaita";
     XCURSOR_SIZE = 16;
+    ZSHZ_CMD = "j";
   };
 
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    enableAutosuggestions = true;
+    enableCompletion = true;
+    syntaxHighlighting.enable = true;
+    initExtra = ''
+    autoload -U promptinit; promptinit
+    prompt pure
+
+    source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
+    '';
+  };
 }

@@ -10,6 +10,9 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
 
+  environment.pathsToLink = [
+    "/share/zsh"
+  ];
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = with pkgs; [
     brightnessctl
@@ -27,9 +30,11 @@
     neovim
     powerstat
     powertop
+    pure-prompt
     tree
     yt-dlp
     zsh
+    zsh-z
   ];
 
   fonts = {
