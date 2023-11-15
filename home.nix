@@ -17,9 +17,25 @@
   home = {
     homeDirectory = "/home/tlv";
     sessionVariables = {
-      XCURSOR_THEME = "Adwaita";
-      XCURSOR_SIZE = 16;
+      NIXOS_OZONE_WL = 1;
       ZSHZ_CMD = "j";
+
+      # https://telemetry.timseverien.com/opt-out/
+      # https://consoledonottrack.com/
+      ASTRO_TELEMETRY_DISABLED = 1;
+      AZURE_CORE_COLLECT_TELEMETRY = 0;
+      DISABLE_ZAPIER_ANALYTICS = 1;
+      DOTNET_CLI_TELEMETRY_OPTOUT = 1;
+      GATSBY_TELEMETRY_DISABLED = 1;
+      HOMEBREW_NO_ANALYTICS = 1;
+      NEXT_TELEMETRY_DISABLED = 1;
+      SAM_CLI_TELEMETRY = 0;
+      TELEMETRY_DISABLED = 1;
+
+      # Workaround a GNOME bug for foot, see:
+      # https://codeberg.org/dnkl/foot/issues/1426
+      XCURSOR_SIZE = 16;
+      XCURSOR_THEME = "Adwaita";
     };
     stateVersion = "23.05";
     username = "tlv";
