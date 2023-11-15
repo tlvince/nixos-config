@@ -14,8 +14,8 @@
   environment.pathsToLink = [
     "/share/zsh"
   ];
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
   environment.systemPackages = with pkgs; [
+    awscli2
     brightnessctl
     foot
     gh
@@ -26,11 +26,13 @@
     gnome.gnome-clocks
     gnome.gnome-contacts
     gnome.nautilus
+    gnumake
     gnupg
     htop
     libva-utils
     mpv
     neovim
+    nodejs-18_x
     pass-wayland
     pinentry-gnome
     powerstat
