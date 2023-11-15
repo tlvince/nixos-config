@@ -17,7 +17,11 @@
   home = {
     homeDirectory = "/home/tlv";
     sessionVariables = {
+      # Default to Wayland for Chrome/Electron
+      # https://nixos.org/manual/nixos/unstable/release-notes#sec-release-23.11
       NIXOS_OZONE_WL = 1;
+
+      # https://github.com/agkozak/zsh-z/tree/afaf2965b41fdc6ca66066e09382726aa0b6aa04#settings
       ZSHZ_CMD = "j";
 
       # https://telemetry.timseverien.com/opt-out/
@@ -36,6 +40,9 @@
       # https://codeberg.org/dnkl/foot/issues/1426
       XCURSOR_SIZE = 16;
       XCURSOR_THEME = "Adwaita";
+
+      # https://github.com/sindresorhus/pure/tree/87e6f5dd4c793f6d980532205aaefe196780606f#options
+      PURE_GIT_PULL = 0;
     };
     stateVersion = "23.05";
     username = "tlv";
