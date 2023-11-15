@@ -6,6 +6,7 @@
     ./disko-configuration.nix
   ];
 
+  boot.blacklistedKernelModules = [ "hid_sensor_hub" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;

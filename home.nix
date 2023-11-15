@@ -2,6 +2,9 @@
 
 {
   dconf.settings = {
+    "org/gnome/desktop/input-sources" = {
+      xkb-options = [ "caps:escape" ];
+    };
     "org/gnome/desktop/interface" = {
       font-hinting = "none";
       font-antialiasing = "greyscale";
