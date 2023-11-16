@@ -211,6 +211,14 @@
     };
   };
 
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    vimdiffAlias = true;
+  };
+
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
