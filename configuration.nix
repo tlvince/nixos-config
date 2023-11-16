@@ -19,6 +19,7 @@
     brightnessctl
     diff-so-fancy
     foot
+    gcc
     gh
     git
     gnome-text-editor
@@ -39,6 +40,7 @@
     powerstat
     powertop
     pure-prompt
+    python3
     tree
     wl-clipboard
     yt-dlp
