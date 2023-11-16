@@ -17,6 +17,7 @@
   environment.systemPackages = with pkgs; [
     awscli2
     brightnessctl
+    diff-so-fancy
     foot
     gh
     git

@@ -52,10 +52,10 @@
     enable = true;
     profiles.default = {
       settings = {
-	"dom.security.https_only_mode" = true;
-	"extensions.pocket.enabled" = false;
-	"media.ffmpeg.vaapi.enabled" = true;
-	"ui.key.menuAccessKeyFocuses" = false;
+        "dom.security.https_only_mode" = true;
+        "extensions.pocket.enabled" = false;
+        "media.ffmpeg.vaapi.enabled" = true;
+        "ui.key.menuAccessKeyFocuses" = false;
       };
     };
   };
@@ -80,12 +80,104 @@
 
   programs.git = {
     enable = true;
-    userName = "Tom Vincent";
-    userEmail = "git@tlvince.com";
+    aliases = {
+      br = "branch";
+      brrm = "!git branch | grep -v '^*' | grep -v 'master' | xargs -n 1 git branch -D";
+      c = "commit";
+      cfa = "commit --all --amend --no-edit";
+      ci = "commit --all";
+      cia = "commit --all --message";
+      cl = "clone --recursive";
+      co = "checkout";
+      cob = "checkout -b";
+      com = "checkout master";
+      cp = "cherry-pick";
+      cpc = "cherry-pick --continue";
+      d = "diff";
+      dfs = "diff --stat";
+      g = "grep --ignore-case";
+      l = "log -p --follow";
+      lh = "log --follow --pretty=format:'%H'";
+      lhr = "log --reverse --pretty=format:'%H'";
+      lm = "log --follow --pretty=format:'%s'";
+      lo = "log --graph --decorate --pretty=oneline --abbrev-commit";
+      lpp = "log --graph --all --pretty=format:'%h by %an (%cr):%d %s' --abbrev-commit --decorate --date-order";
+      ls = "ls-files";
+      mt = "mergetool";
+      pa = "push --all all";
+      pd = "pull --rebase --tags origin master";
+      pdd = "pull --rebase --tags origin develop";
+      pud = "push --tags --set-upstream develop";
+      put = "push --tags --set-upstream tlvince";
+      puu = "push --tags --set-upstream origin";
+      rbc = "rebase --continue";
+      s = "status --short --ignore-submodules=dirty";
+      subpd = "submodule foreach --recursive git pull origin master";
+      subpu = "submodule foreach --recursive git push origin master";
+      # Overrides
+      ctags = "!.git/hooks/ctags";
+      # Show verbose output about tags, branches or remotes";
+      branches = "branch -a";
+      remotes = "remote -v";
+      tags = "tag -l";
+    };
+    attributes = [
+      "* text=auto"
+    ];
+    diff-so-fancy.enable = true;
+    extraConfig = {
+      apply = {
+        whitespace = "fix";
+      };
+      branch = {
+        autosetuprebase = "always";
+      };
+      color = {
+        ui = "auto";
+      };
+      "color \"grep\"" = {
+        match = "green";
+      };
+      commit = {
+        verbose = true;
+      };
+      core = {
+        whitespace = "space-before-tab,trailing-space";
+        untrackedCache = true;
+      };
+      diff = {
+        compactionHeuristic = true;
+        tool = "nvim -d";
+      };
+      difftool = {
+        prompt = false;
+      };
+      github = {
+        user = "tlvince";
+      };
+      merge = {
+        tool = "fugitive";
+      };
+      mergetool = {
+        keepBackup = false;
+        prompt = false;
+      };
+      "mergetool \"fugitive\"" = {
+        cmd = "nvim -c Gdiff $MERGED";
+      };
+      push = {
+        default = "simple";
+      };
+      web = {
+        browser = "open";
+      };
+    };
     signing = {
       key = "AB184CDBE6AEACDE";
       signByDefault = true;
     };
+    userEmail = "git@tlvince.com";
+    userName = "Tom Vincent";
   };
 
   programs.gpg = {
