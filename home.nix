@@ -78,6 +78,21 @@
     };
   };
 
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+    # https://github.com/junegunn/fzf/blob/7320b7df62039c879c4f609bca946ea09b438a98/shell/key-bindings.zsh#L76
+    changeDirWidgetCommand = "(git ls-tree -d -r --name-only HEAD || fd --type directory || command find -L . -mindepth 1 \\( -path '*/.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune -o -type d -print 2> /dev/null | cut -b3-) 2>/dev/null";
+    # https://github.com/junegunn/fzf/blob/7320b7df62039c879c4f609bca946ea09b438a98/src/constants.go#L61
+    defaultCommand = "(git ls-files --cached --exclude-standard --others || fd --type file || command find -L . -mindepth 1 \\( -path '*/.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune -o -type f -print -o -type l -print 2>/dev/null | cut -b3-) 2>/dev/null";
+    defaultOptions = [
+      "--cycle"
+      "--no-mouse"
+    ];
+    # https://github.com/junegunn/fzf/blob/7320b7df62039c879c4f609bca946ea09b438a98/shell/key-bindings.zsh#L44C5-L47C47
+    fileWidgetCommand = "(git ls-files --cached --exclude-standard --others || fd --type file || command find -L . -mindepth 1 \\( -path '*/.*' -o -fstype 'sysfs' -o -fstype 'devfs' -o -fstype 'devtmpfs' -o -fstype 'proc' \\) -prune -o -type f -print -o -type l -print 2>/dev/null | cut -b3-) 2>/dev/null";
+  };
+
   programs.git = {
     enable = true;
     aliases = {

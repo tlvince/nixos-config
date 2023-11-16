@@ -18,7 +18,9 @@
     awscli2
     brightnessctl
     diff-so-fancy
+    fd
     foot
+    fzf
     gcc
     gh
     git
