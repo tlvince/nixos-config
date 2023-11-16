@@ -298,4 +298,15 @@
     source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
     '';
   };
+
+  # Stream audio to an AirPlay receiver
+  # https://wiki.archlinux.org/index.php?title=PipeWire&oldid=792188#Streaming_audio_to_an_AirPlay_receiver
+  xdg.configFile."pipewire/pipewire.conf.d/raop-discover.conf".text = ''
+    context.modules = [
+      {
+        name = libpipewire-module-raop-discover
+        args = {}
+      }
+    ]
+  '';
 }
