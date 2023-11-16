@@ -40,6 +40,7 @@
     powertop
     pure-prompt
     tree
+    wl-clipboard
     yt-dlp
     zsh
     zsh-z

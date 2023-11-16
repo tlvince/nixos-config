@@ -169,7 +169,7 @@
         default = "simple";
       };
       web = {
-        browser = "open";
+        browser = "gio open";
       };
     };
     signing = {
@@ -221,9 +221,64 @@
 
   programs.zsh = {
     enable = true;
+
+    shellAliases = {
+      # Overrides
+      ag = "ag --pager less --smart-case";
+      df = "df -h";
+      diff = "diff --color=auto --unified";
+      du = "du -hc";
+      grep = "grep --color=auto";
+      htop = "htop -u $USER";
+      ls = "ls --color=auto --human-readable --no-group";
+      mysql = "mysql --pager=\"less -nSFX\"";
+      vi = "nvim";
+      visudo = "sudo EDITOR=nvim visudo";
+
+      # Shortcuts
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      acp = "rsync -a --partial-dir=\".rsync-partial\" --progress";
+      adbss = "adb shell screencap -p > /tmp/android-screenshot-\$(date +%s).png";
+      ll = "l | less";
+      mk = "mkdir -p";
+      mpva = "mpv --no-video";
+      mpvn = "mpv --no-ytdl";
+      myip = "curl --silent https://ifconfig.me";
+      pc = "pass -c";
+      pct = "passCopyTail";
+      pg = "passGenerate";
+      po = "popd";
+      pu = "pushd";
+      radio6 = "get_iplayer --type liveradio --stream 80102 | $PLAYER -";
+      rd = "rmdir";
+      serve = "python3 -m http.server";
+      sudu = "sudo -iu";
+      th = "dict -d moby-thesaurus";
+      webcam = "mpv --demuxer-lavf-format=video4linux2 --demuxer-lavf-o=video_size=1920x1080,input_format=mjpeg av://v4l2:/dev/video0";
+
+      # Compression
+      "7z9" = "7z a -mx9 -mmt -ms";
+      "7zp" = "7z9 -mhe";
+      "7zt" = "7z a -m0=PPMd -ms";
+
+      # Single character
+      b = "bookmark";
+      c = "wl-copy";
+      d = "dict -d wn";
+      g = "git";
+      # j reserved for zsh-z
+      l = "ls -lA";
+      o = "gio open";
+      p = "wl-paste";
+      s = "spell";
+      v = "nvim";
+    };
+
     enableAutosuggestions = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
+
     initExtra = ''
     autoload -U promptinit; promptinit
     prompt pure
