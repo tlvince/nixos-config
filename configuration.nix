@@ -7,6 +7,9 @@
   ];
 
   boot.blacklistedKernelModules = [ "hid_sensor_hub" ];
+  boot.extraModprobeConfig = ''
+    options cfg80211 ieee80211_regdom="GB"
+  '';
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
@@ -30,6 +33,7 @@
     gnome.gnome-clocks
     gnome.gnome-contacts
     gnome.nautilus
+    gnomeExtensions.night-theme-switcher
     gnumake
     gnupg
     htop
@@ -54,7 +58,6 @@
     enableDefaultPackages = false;
     packages = [
       pkgs.noto-fonts-color-emoji
-      apple-fonts.packages."${pkgs.system}".sf-mono
       apple-fonts.packages."${pkgs.system}".sf-pro
     ];
 
@@ -75,7 +78,7 @@
       defaultFonts = {
         serif = [ "DejaVu Serif"];
         sansSerif = [ "SF Pro Text" ];
-        monospace = [ "SF Mono" ];
+        monospace = [ "DejaVu Sans Mono" ];
         emoji = [ "Noto Color Emoji" ];
       };
 
@@ -101,8 +104,10 @@
   hardware.amdgpu.loadInInitrd = false;
 
   hardware.enableAllFirmware = true;
+  hardware.framework.amd-7040.preventWakeOnAC = true;
   hardware.pulseaudio.enable = false;
   hardware.sensor.iio.enable = false;
+  hardware.wirelessRegulatoryDatabase = true;
 
   i18n.defaultLocale = "en_GB.UTF-8";
   networking.hostName = "framework";
@@ -179,6 +184,7 @@
   services.gnome.sushi.enable = true;
 
   services.power-profiles-daemon.enable = false;
+  services.resolved.enable = true;
   services.tlp.enable = true;
   services.tlp.settings = {
     # active by default in kernel >=6.5
@@ -198,12 +204,6 @@
     alsa.enable = true;
     pulse.enable = true;
   };
-
-  services.udev.extraRules = ''
-  # Prevent wake when plugging in AC during suspend. Trade-off: keyboard wake disabled. See:
-  # https://community.frame.work/t/tracking-framework-amd-ryzen-7040-series-lid-wakeup-behavior-feedback/39128/45
-  ACTION=="add", SUBSYSTEM=="serio", DRIVERS=="atkbd", ATTR{power/wakeup}="disabled"
-  '';
 
   system.stateVersion = "23.05";
 

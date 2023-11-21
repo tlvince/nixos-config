@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   dconf.settings = {
@@ -12,11 +12,19 @@
     "org/gnome/mutter" = {
       experimental-features = [ "scale-monitor-framebuffer" ];
     };
+    "org/gnome/shell" = {
+      enabled-extensions = [ "nightthemeswitcher@romainvigier.fr" ];
+    };
   };
 
   home = {
     homeDirectory = "/home/tlv";
     sessionVariables = {
+      # Zsh's "< file" built-in pager
+      READNULLCMD = "$PAGER";
+      LESS = "--chop-long-lines --ignore-case --LONG-PROMPT --no-init --RAW-CONTROL-CHARS --quit-if-one-screen --quit-on-intr";
+      SYSTEMD_LESS = "$LESS";
+
       # Default to Wayland for Chrome/Electron
       # https://nixos.org/manual/nixos/unstable/release-notes#sec-release-23.11
       NIXOS_OZONE_WL = 1;
@@ -94,7 +102,7 @@
     enable = true;
     aliases = {
       br = "branch";
-      brrm = "!git branch | grep -v '^*' | grep -v 'master' | xargs -n 1 git branch -D";
+      brrm = "!git branch | grep -vE '^\\*|main|master' | xargs -n 1 git branch -D";
       c = "commit";
       cfa = "commit --all --amend --no-edit";
       ci = "commit --all";
@@ -117,11 +125,8 @@
       ls = "ls-files";
       mt = "mergetool";
       pa = "push --all all";
-      pd = "pull --rebase --tags origin master";
-      pdd = "pull --rebase --tags origin develop";
-      pud = "push --tags --set-upstream develop";
-      put = "push --tags --set-upstream tlvince";
-      puu = "push --tags --set-upstream origin";
+      pd = "pull --rebase --tags";
+      pu = "push --tags";
       rbc = "rebase --continue";
       s = "status --short --ignore-submodules=dirty";
       subpd = "submodule foreach --recursive git pull origin master";
@@ -231,8 +236,175 @@
     vimdiffAlias = true;
   };
 
+  programs.readline = {
+    enable = true;
+
+    bindings = {
+      "\e[3;3~" = "kill-word";
+    };
+
+    extraConfig = ''
+      # History with up/down keys
+      $if mode=vi
+        set keymap vi-command
+        "\e[A": history-search-backward
+        "\e[B": history-search-forward
+        set keymap vi-insert
+        "\e[A": history-search-backward
+        "\e[B": history-search-forward
+        "\C-l": clear-screen
+      $else
+        "\e[A": history-search-backward
+        "\e[B": history-search-forward
+      $endif
+    '';
+
+    # https://github.com/tlvince/shell-config/blob/9498a951e5ed612f106b4ae53c579fe2c9ce2a8c/.inputrc
+    variables = {
+      # Make Tab autocomplete regardless of filename case
+      completion-ignore-case = true;
+      # If there are more than 200 possible completions for a word, ask to show them all
+      completion-query-items = 200;
+      editing-mode = "vi";
+      # Immediately add a trailing slash when autocompleting symlinks to directories
+      mark-symlinked-directories = true;
+      # Do not autocomplete hidden files unless the pattern explicitly begins with a dot
+      match-hidden-files = false;
+      # Show all autocomplete results at once
+      page-completions = false;
+      # List all matches in case multiple possible completions are possible
+      show-all-if-ambiguous = true;
+      # Be more intelligent when autocompleting
+      skip-completed-text = true;
+      # Show extra file information when completing, like `ls -F` does
+      visible-stats = true;
+
+      # # Allow UTF-8 input and output
+      convert-meta = false;
+      input-meta = true;
+      output-meta = true;
+    };
+  };
+
   programs.zsh = {
     enable = true;
+    enableAutosuggestions = true;
+    enableCompletion = true;
+
+    history.ignoreAllDups = true;
+
+    initExtra = ''
+    # Prompt
+    autoload -U promptinit; promptinit
+    prompt pure
+
+    # Autojump
+    source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
+
+    # Escape URLs when pasting
+    autoload -Uz bracketed-paste-magic url-quote-magic
+    zle -N bracketed-paste bracketed-paste-magic
+    zle -N self-insert url-quote-magic
+
+    # History search matching the current line up to the current cursor position
+    autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+    zle -N up-line-or-beginning-search
+    zle -N down-line-or-beginning-search
+    bindkey "$terminfo[kcuu1]" up-line-or-beginning-search
+    bindkey "$terminfo[kcud1]" down-line-or-beginning-search
+
+    # Fix pasting with autosuggest
+    # https://github.com/zsh-users/zsh-autosuggestions/issues/238#issuecomment-389324292
+    pasteinit() {
+      OLD_SELF_INSERT=''${''${(s.:.)widgets[self-insert]}[2,3]}
+      zle -N self-insert url-quote-magic
+    }
+    pastefinish() {
+      zle -N self-insert $OLD_SELF_INSERT
+    }
+    zstyle :bracketed-paste-magic paste-init pasteinit
+    zstyle :bracketed-paste-magic paste-finish pastefinish
+
+    # Write history immediately, rather than on shell exit
+    setopt INC_APPEND_HISTORY
+
+    # Spell check
+    setopt CORRECT
+
+    # Glob
+    setopt EXTENDED_GLOB
+    setopt GLOB_COMPLETE
+    setopt COMPLETE_IN_WORD
+    setopt NUMERIC_GLOB_SORT
+
+    # Sanity checks
+    setopt NO_CLOBBER
+    setopt RM_STAR_WAIT
+
+    # Array expansion
+    setopt RC_EXPAND_PARAM
+
+    # <Ctrl + e>: Invoke a visual editor on the command line
+    autoload -Uz edit-command-line
+    zle -N edit-command-line
+    bindkey "^e" edit-command-line
+
+    # <Alt + .>: Insert the last argument of the previous command
+    bindkey "^[." insert-last-word
+
+    # Shift-Tab
+    bindkey "^[[Z" reverse-menu-complete
+
+    # Tab Completion options <http://stackoverflow.com/a/171564>
+    zstyle ':completion::complete:*' use-cache on
+    zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zcompcache"
+
+    # case insensitive completion
+    zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+
+    zstyle ':completion:*' verbose yes
+    zstyle ':completion:*:descriptions' format '%B%d%b'
+    zstyle ':completion:*:messages' format '%d'
+    zstyle ':completion:*:warnings' format 'No matches for: %d'
+    zstyle ':completion:*' group-name \'\'
+    zstyle ':completion:*' completer _expand _complete _approximate _ignored
+
+    # generate descriptions with magic.
+    zstyle ':completion:*' auto-description 'specify: %d'
+
+    # Don't prompt for a huge list, page it!
+    zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+
+    # Don't prompt for a huge list, menu it!
+    zstyle ':completion:*:default' menu 'select=0'
+
+    # Have the newer files last so I see them first
+    zstyle ':completion:*' file-sort modification reverse
+
+    # color code completion!!!!  Wohoo!
+    zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
+
+    # Separate man page sections.  Neat.
+    zstyle ':completion:*:manuals' separate-sections true
+
+    # complete with a menu for xwindow ids
+    zstyle ':completion:*:windows' menu on=0
+    zstyle ':completion:*:expand:*' tag-order all-expansions
+
+    # more errors allowed for large words and fewer for small words
+    zstyle ':completion:*:approximate:*' max-errors 'reply=(  $((  ($#PREFIX+$#SUFFIX)/3  ))  )'
+
+    # Errors format
+    zstyle ':completion:*:corrections' format '%B%d (errors %e)%b'
+
+    # Don't complete stuff already on the line
+    zstyle ':completion::*:(rm|vi):*' ignore-line true
+
+    # Don't complete directory we are already in (../here)
+    zstyle ':completion:*' ignore-parents parent pwd
+
+    zstyle ':completion::approximate*:*' prefix-needed false
+    '' + builtins.readFile ./functions.zsh;
 
     shellAliases = {
       # Overrides
@@ -262,7 +434,6 @@
       pg = "passGenerate";
       po = "popd";
       pu = "pushd";
-      radio6 = "get_iplayer --type liveradio --stream 80102 | $PLAYER -";
       rd = "rmdir";
       serve = "python3 -m http.server";
       sudu = "sudo -iu";
@@ -287,16 +458,7 @@
       v = "nvim";
     };
 
-    enableAutosuggestions = true;
-    enableCompletion = true;
     syntaxHighlighting.enable = true;
-
-    initExtra = ''
-    autoload -U promptinit; promptinit
-    prompt pure
-
-    source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
-    '';
   };
 
   # Stream audio to an AirPlay receiver
