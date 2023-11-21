@@ -72,7 +72,7 @@
     enable = true;
     settings = {
       main = {
-        font = "monospace:size=14";
+        font = "monospace:size=12.5";
         #initial-window-mode = "fullscreen";
       };
       cursor = {
