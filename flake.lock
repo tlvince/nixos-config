@@ -41,6 +41,26 @@
         "type": "github"
       }
     },
+    "ectool": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1700653687,
+        "narHash": "sha256-B6v9CjYfEVdaiyRCMXzQzfF/bT9KuicnS4yCDB9f6sI=",
+        "owner": "tlvince",
+        "repo": "ectool.nix",
+        "rev": "fe769ee497514f5848f410f7d07732eaa7a5b844",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "repo": "ectool.nix",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -132,6 +152,7 @@
       "inputs": {
         "apple-fonts": "apple-fonts",
         "disko": "disko",
+        "ectool": "ectool",
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs"

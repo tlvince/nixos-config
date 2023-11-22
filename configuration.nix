@@ -1,4 +1,4 @@
-{ config, pkgs, lib, apple-fonts, ... }:
+{ config, pkgs, lib, apple-fonts, ectool, ... }:
 
 {
   imports = [
@@ -21,6 +21,7 @@
     awscli2
     brightnessctl
     diff-so-fancy
+    ectool.packages."${pkgs.system}".ectool
     fd
     foot
     fzf
