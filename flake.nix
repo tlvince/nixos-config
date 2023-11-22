@@ -28,6 +28,13 @@
             home-manager.users.tlv = import ./home.nix;
           }
           nixos-hardware.nixosModules.framework-13-7040-amd
+          {
+            nixpkgs.overlays = [
+              (self: super: {
+                bluez = super.callPackage ./overlays/bluez/bluez.nix {} ;
+              })
+            ];
+          }
         ];
       };
     };

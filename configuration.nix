@@ -104,6 +104,16 @@
   # Early KMS unnecessarily slows boot
   hardware.amdgpu.loadInInitrd = false;
 
+  hardware.bluetooth.package = pkgs.bluez;
+  # https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/LE-Audio-+-LC3-support?version_id=a352c544c9551bca40d92929fcfda17583fea494#how-to-enable
+  hardware.bluetooth.settings = {
+    General = {
+      ControllerMode = "le";
+      Experimental = true;
+      KernelExperimental = "6fbaf188-05e0-496a-9885-d6ddfdb4e03e";
+    };
+  };
+
   hardware.enableAllFirmware = true;
   hardware.framework.amd-7040.preventWakeOnAC = true;
   hardware.pulseaudio.enable = false;
@@ -207,7 +217,6 @@
   };
 
   system.stateVersion = "23.05";
-
   time.timeZone = "Europe/London";
 
   users.users.tlv = {
