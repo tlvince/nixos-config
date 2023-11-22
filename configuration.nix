@@ -104,7 +104,7 @@
   # Early KMS unnecessarily slows boot
   hardware.amdgpu.loadInInitrd = false;
 
-  hardware.bluetooth.package = pkgs.bluez;
+  hardware.bluetooth.package = pkgs.callPackage ./overlays/bluez.nix {};
   # https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/LE-Audio-+-LC3-support?version_id=a352c544c9551bca40d92929fcfda17583fea494#how-to-enable
   hardware.bluetooth.settings = {
     General = {
@@ -215,6 +215,10 @@
     alsa.enable = true;
     pulse.enable = true;
   };
+  systemd.services.bluetooth.serviceConfig.ExecStart = [
+    ""
+    "${pkgs.callPackage ./overlays/bluez.nix {}}/libexec/bluetooth/bluetoothd -f /etc/bluetooth/main.conf -d '*'"
+  ];
 
   system.stateVersion = "23.05";
   time.timeZone = "Europe/London";
