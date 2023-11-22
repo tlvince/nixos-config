@@ -214,7 +214,9 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    package = pkgs.callPackage ./overlays/pipewire.nix {};
   };
+
   systemd.services.bluetooth.serviceConfig.ExecStart = [
     ""
     "${pkgs.callPackage ./overlays/bluez.nix {}}/libexec/bluetooth/bluetoothd -f /etc/bluetooth/main.conf -d '*'"
