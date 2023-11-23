@@ -472,4 +472,10 @@
       }
     ]
   '';
+
+  xdg.configFile."systemd/user/org.gnome.Shell@wayland.service.d/override.conf".text = ''
+    [Service]
+    ExecStart=
+    ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
+  '';
 }
