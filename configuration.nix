@@ -55,6 +55,10 @@
     zsh-z
   ];
 
+  environment.variables = {
+    EDITOR = "nvim";
+  };
+
   fonts = {
     enableDefaultPackages = false;
     packages = [
