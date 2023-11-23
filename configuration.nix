@@ -18,7 +18,7 @@
     "/share/zsh"
   ];
   environment.systemPackages = with pkgs; [
-    awscli2
+    #awscli2
     brightnessctl
     diff-so-fancy
     ectool.packages."${pkgs.system}".ectool
