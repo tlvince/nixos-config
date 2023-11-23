@@ -85,6 +85,7 @@ in stdenv.mkDerivation rec {
     "--enable-btpclient"
     "--enable-hid2hci"
     "--enable-logger"
+    "--enable-asan"
 
     # To provide ciptool, sdptool, and rfcomm (unmaintained)
     # superseded by new D-Bus APIs
