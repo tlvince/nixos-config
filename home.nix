@@ -11,6 +11,7 @@
       ];
     };
     "org/gnome/desktop/interface" = {
+      enable-animations = false;
       font-hinting = "none";
       font-antialiasing = "greyscale";
     };
