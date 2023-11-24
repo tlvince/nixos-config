@@ -34,11 +34,13 @@
     gnome.gnome-clocks
     gnome.gnome-contacts
     gnome.nautilus
+    gnomeExtensions.light-style
     gnomeExtensions.night-theme-switcher
     gnumake
     gnupg
     htop
     libva-utils
+    loupe
     mpv
     neovim
     nodejs-18_x

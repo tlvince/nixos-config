@@ -3,17 +3,24 @@
 {
   dconf.settings = {
     "org/gnome/desktop/input-sources" = {
-      xkb-options = [ "caps:escape" ];
+      xkb-options = [
+        "caps:escape"
+      ];
     };
     "org/gnome/desktop/interface" = {
       font-hinting = "none";
       font-antialiasing = "greyscale";
     };
     "org/gnome/mutter" = {
-      experimental-features = [ "scale-monitor-framebuffer" ];
+      experimental-features = [
+        "scale-monitor-framebuffer"
+      ];
     };
     "org/gnome/shell" = {
-      enabled-extensions = [ "nightthemeswitcher@romainvigier.fr" ];
+      enabled-extensions = [
+        "light-style@gnome-shell-extensions.gcampax.github.com"
+        "nightthemeswitcher@romainvigier.fr"
+      ];
     };
   };
 
