@@ -1,19 +1,30 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   dconf.settings = {
     "org/gnome/desktop/input-sources" = {
-      xkb-options = [ "caps:escape" ];
+      sources = [
+        (lib.hm.gvariant.mkTuple["xkb"  "us+altgr-intl"])
+      ];
+      xkb-options = [
+        "caps:escape"
+      ];
     };
     "org/gnome/desktop/interface" = {
+      enable-animations = false;
       font-hinting = "none";
       font-antialiasing = "greyscale";
     };
     "org/gnome/mutter" = {
-      experimental-features = [ "scale-monitor-framebuffer" ];
+      experimental-features = [
+        "scale-monitor-framebuffer"
+      ];
     };
     "org/gnome/shell" = {
-      enabled-extensions = [ "nightthemeswitcher@romainvigier.fr" ];
+      enabled-extensions = [
+        "light-style@gnome-shell-extensions.gcampax.github.com"
+        "nightthemeswitcher@romainvigier.fr"
+      ];
     };
   };
 
@@ -471,5 +482,11 @@
         args = {}
       }
     ]
+  '';
+
+  xdg.configFile."systemd/user/org.gnome.Shell@wayland.service.d/override.conf".text = ''
+    [Service]
+    ExecStart=
+    ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
   '';
 }

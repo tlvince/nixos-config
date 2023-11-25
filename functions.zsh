@@ -29,7 +29,7 @@ passGenerate() {
 }
  
 passCopyTail() {
-  pass "$1" | tail -n1 | xclip -selection clipboard
+  pass "$1" | tail -n1 | wl-copy
 }
  
 aws-env() {
