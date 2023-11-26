@@ -13,6 +13,7 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
 
   environment.pathsToLink = [
     "/share/zsh"
@@ -39,6 +40,7 @@
     gnumake
     gnupg
     htop
+    libreoffice
     libva-utils
     loupe
     mpv
@@ -119,6 +121,12 @@
   i18n.defaultLocale = "en_GB.UTF-8";
   networking.hostName = "framework";
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+    randomizedDelaySec = "1 hour";
+  };
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
