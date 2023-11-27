@@ -507,6 +507,8 @@
     xwayland = false;
   };
 
+  xdg.enable = true;
+
   # Stream audio to an AirPlay receiver
   # https://wiki.archlinux.org/index.php?title=PipeWire&oldid=792188#Streaming_audio_to_an_AirPlay_receiver
   xdg.configFile."pipewire/pipewire.conf.d/raop-discover.conf".text = ''

@@ -19,10 +19,11 @@
     "/share/zsh"
   ];
   environment.systemPackages = with pkgs; [
-    #awscli2
+    awscli2
     brightnessctl
     diff-so-fancy
     ectool.packages."${pkgs.system}".ectool
+    efm-langserver
     fd
     foot
     fzf
@@ -40,6 +41,7 @@
     gnumake
     gnupg
     htop
+    jq
     libreoffice
     libva-utils
     loupe
@@ -48,6 +50,7 @@
     nodejs-18_x
     pass-wayland
     pinentry-gnome
+    prettierd
     powerstat
     powertop
     pure-prompt
