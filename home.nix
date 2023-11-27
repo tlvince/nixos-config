@@ -11,9 +11,15 @@
       ];
     };
     "org/gnome/desktop/interface" = {
+      document-font-name = "Sans 11";
+      font-name = "Sans 11";
       enable-animations = false;
       font-hinting = "none";
-      font-antialiasing = "greyscale";
+      font-antialiasing = "grayscale";
+      monospace-font-name = "Monospace 10";
+    };
+    "org/gnome/desktop/wm/preferences" = {
+      titlebar-font = "Sans Bold 11";
     };
     "org/gnome/mutter" = {
       experimental-features = [
