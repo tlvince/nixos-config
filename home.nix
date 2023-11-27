@@ -474,6 +474,33 @@
     syntaxHighlighting.enable = true;
   };
 
+  wayland.windowManager.sway = {
+    enable = true;
+
+    config.input = {
+      "type:keyboard" = {
+        xkb_options = "caps:swapescape";
+      };
+      "type:pointer" = {
+        natural_scroll = "enabled";
+      };
+      "type:touchpad" = {
+        tap = "enabled";
+        natural_scroll = "enabled";
+      };
+    };
+
+    config.modifier = "Mod4";
+
+    config.output = {
+      "ePD-1" = {
+        scale = "1.5";
+      };
+    };
+
+    xwayland = false;
+  };
+
   # Stream audio to an AirPlay receiver
   # https://wiki.archlinux.org/index.php?title=PipeWire&oldid=792188#Streaming_audio_to_an_AirPlay_receiver
   xdg.configFile."pipewire/pipewire.conf.d/raop-discover.conf".text = ''
