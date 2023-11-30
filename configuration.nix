@@ -11,6 +11,9 @@
     options cfg80211 ieee80211_regdom="GB"
   '';
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    "amdgpu.abmlevel=3"
+  ];
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
