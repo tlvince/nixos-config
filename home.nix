@@ -28,6 +28,7 @@
     };
     "org/gnome/shell" = {
       enabled-extensions = [
+        "appindicatorsupport@rgcjonas.gmail.com"
         "light-style@gnome-shell-extensions.gcampax.github.com"
         "nightthemeswitcher@romainvigier.fr"
       ];

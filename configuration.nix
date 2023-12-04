@@ -36,6 +36,7 @@
     gnome.gnome-clocks
     gnome.gnome-contacts
     gnome.nautilus
+    gnomeExtensions.appindicator
     gnomeExtensions.light-style
     gnomeExtensions.night-theme-switcher
     gnumake
