@@ -55,6 +55,7 @@
     powertop
     pure-prompt
     python3
+    signal-desktop
     tree
     wl-clipboard
     yt-dlp

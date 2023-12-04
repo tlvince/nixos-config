@@ -525,4 +525,20 @@
     ExecStart=
     ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
   '';
+
+  xdg.desktopEntries = {
+    # Re-enable Wayland support
+    # Reverts: https://github.com/NixOS/nixpkgs/pull/222163
+    # See: https://github.com/NixOS/nixpkgs/issues/222043
+    signal-desktop = {
+      name = "Signal";
+      exec = "${pkgs.signal-desktop}/bin/signal-desktop --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --use-tray-icon --no-sandbox %U";
+      terminal = false;
+      type = "Application";
+      icon = "signal-desktop";
+      comment = "Private messaging from your desktop";
+      mimeType = [ "x-scheme-handler/sgnl" "x-scheme-handler/signalcaptcha" ];
+      categories = [ "Network" "InstantMessaging" "Chat" ];
+    };
+  };
 }
