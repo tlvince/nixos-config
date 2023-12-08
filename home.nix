@@ -91,7 +91,7 @@
     settings = {
       main = {
         font = "monospace:size=12.5";
-        #initial-window-mode = "fullscreen";
+        initial-window-mode = "fullscreen";
       };
       cursor = {
         style = "beam";
