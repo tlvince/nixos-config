@@ -58,6 +58,7 @@
     pure-prompt
     python3
     signal-desktop
+    tmux
     tree
     wl-clipboard
     yt-dlp

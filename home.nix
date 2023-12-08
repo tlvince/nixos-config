@@ -304,6 +304,57 @@
     };
   };
 
+  programs.tmux = {
+    enable = true;
+    aggressiveResize = true;
+    baseIndex = 1;
+    clock24 = true;
+    customPaneNavigationAndResize = true;
+    escapeTime = 0;
+    extraConfig = ''
+      # Toggle the last window with prefix
+      bind-key C-a last-window
+
+      # Open new windows/splits in an interactive shell, not login shell (by default)
+      set-option -g default-command "$SHELL"
+
+      # Intuitive window-splitting keys
+      bind '"' split-window -c "#{pane_current_path}"
+      bind - split-window -vc "#{pane_current_path}"
+      bind % split-window -hc "#{pane_current_path}"
+      bind '\' split-window -hc "#{pane_current_path}"
+      bind c new-window -c "#{pane_current_path}"
+
+      # Set window name based on command
+      set-window-option -g automatic-rename on
+
+      # Reload config
+      bind r source-file "$XDG_CONFIG_HOME/tmux/tmux.conf"\; display-message "Config reloaded..."
+
+      # Copy/paste to/from the system clipboard
+      unbind [
+      bind Escape copy-mode
+      bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy && wl-paste -n | wl-copy -p"
+      bind-key p run "wl-paste -n | tmux load-buffer - ; tmux paste-buffer"
+
+      # Disable noisy right-hand status bar
+      set-option -g status-right ""
+
+      # Toggle the status bar
+      bind-key b set-option -g status
+
+      # Zoom split
+      bind-key | resize-pane -Z
+    '';
+    historyLimit = 10000;
+    keyMode = "vi";
+    mouse = true;
+    prefix = "C-a";
+    secureSocket = true;
+    sensibleOnTop = false;
+    terminal = "screen-256color";
+  };
+
   programs.zsh = {
     enable = true;
 
