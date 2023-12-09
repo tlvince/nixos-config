@@ -91,6 +91,7 @@
     settings = {
       main = {
         font = "monospace:size=12.5";
+        include = "${pkgs.foot.themes}/share/foot/themes/onedark";
         initial-window-mode = "fullscreen";
       };
       cursor = {
