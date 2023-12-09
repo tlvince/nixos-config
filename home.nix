@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, tmux-colours-onedark, ... }:
 
 {
   dconf.settings = {
@@ -345,6 +345,10 @@
 
       # Zoom split
       bind-key | resize-pane -Z
+
+      # Colours
+      set-option -ga terminal-overrides ",tmux-256color:Tc,xterm-256color:Tc"
+      ${pkgs.lib.fileContents "${tmux-colours-onedark}/tmux-colours-onedark.conf"}
     '';
     historyLimit = 10000;
     keyMode = "vi";

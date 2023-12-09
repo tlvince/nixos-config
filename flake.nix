@@ -12,9 +12,11 @@
     home-manager.url = "github:nix-community/home-manager";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    tmux-colours-onedark.flake = false;
+    tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };
 
-  outputs = { self, nixpkgs, disko, ectool, home-manager, nixos-hardware, ... }@inputs: {
+  outputs = { self, nixpkgs, disko, ectool, home-manager, nixos-hardware, tmux-colours-onedark, ... }@inputs: {
     nixosConfigurations = {
       framework = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -24,6 +26,7 @@
           disko.nixosModules.disko
           home-manager.nixosModules.home-manager
           {
+            home-manager.extraSpecialArgs = inputs;
             home-manager.useGlobalPkgs = true;
             home-manager.users.tlv = import ./home.nix;
           }

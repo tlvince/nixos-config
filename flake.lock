@@ -155,7 +155,24 @@
         "ectool": "ectool",
         "home-manager": "home-manager",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "tmux-colours-onedark": "tmux-colours-onedark"
+      }
+    },
+    "tmux-colours-onedark": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1563251675,
+        "narHash": "sha256-UQMy7ylT0oCcXyP1lGa7RFRtJpvf2kJOxOmcxDMntx8=",
+        "owner": "tlvince",
+        "repo": "tmux-colours-onedark",
+        "rev": "ff2cfa31051227c829fc84975385ad8042cf369b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "repo": "tmux-colours-onedark",
+        "type": "github"
       }
     }
   },
