@@ -5,5 +5,14 @@
     ":rebaseStalePrs",
     ":semanticCommits",
     "helpers:pinGitHubActionDigests"
-  ]
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "extends": [
+      "schedule:daily"
+    ]
+  },
+  "nix": {
+    "enabled": true
+  }
 }
