@@ -18,7 +18,7 @@ jobs:
       - name: Run flake check
         run: |
           nix flake check --no-build | tee "${RUNNER_TEMP}/flake-check-output"
-          if [[ -z "${RUNNER_TEMP}/flake-check-output" ]]; then
+          if [[ ! -s "${RUNNER_TEMP}/flake-check-output" ]]; then
             echo "No issues found by 'nix flake check'." > "$RUNNER_TEMP/flake-check-output"
           fi
           echo "## Flake check" >> $GITHUB_STEP_SUMMARY
@@ -33,14 +33,20 @@ jobs:
           out_path=$($build_cmd --print-out-paths)
           echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.framework\x1b[0m"
           echo -n "\`${out_path}\`" >> $GITHUB_STEP_SUMMARY
-      - name: nix store diff-closures
+      - name: Diff closures
         if: github.event_name == 'pull_request'
         run: |
           host_drv="nixosConfigurations.framework.config.system.build.toplevel"
           prev_flake="github:${GITHUB_REPOSITORY}"
           final_flake="."
-          nix store diff-closures "${prev_flake}#${host_drv}" "${final_flake}#${host_drv}" --quiet
+
+          # Colour output for job log
+          nix store diff-closures "${prev_flake}#${host_drv}" "${final_flake}#${host_drv}"
+
           echo "## Closures difference" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          nix store diff-closures "github:${GITHUB_REPOSITORY}#${host_drv}" ".#${host_drv}" | sed -e 's/\x1b\[[0-9;]*m//g' >> $GITHUB_STEP_SUMMARY
+
+          # Strip colours for step summary
+          nix store diff-closures "${prev_flake}#${host_drv}" "${final_flake}#${host_drv}" | sed -e 's/\x1b\[[0-9;]*m//g' >> $GITHUB_STEP_SUMMARY
+
           echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
