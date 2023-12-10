@@ -25,15 +25,13 @@ jobs:
         run: |
           CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
           nix flake check --no-build | tee "$CHECK_OUTPUT"
-          [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > $CHECK_OUTPUT
-          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" >> $GITHUB_STEP_SUMMARY
+          [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
+          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" >> "$GITHUB_STEP_SUMMARY"
       - name: Build
         run: |
-          NIX_BUILD="nix build .#nixosConfigurations.${HOST}.config.system.build.toplevel"
-          $NIX_BUILD
-          OUT_PATH=$($NIX_BUILD --print-out-paths)
+          OUT_PATH="$(nix build .#nixosConfigurations.${HOST}.config.system.build.toplevel --print-out-paths)"
           echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${HOST}\x1b[0m"
-          echo -e "## Build ${HOST}\n\`$OUT_PATH\`" >> $GITHUB_STEP_SUMMARY
+          echo -e "## Build ${HOST}\n\`$OUT_PATH\`" >> "$GITHUB_STEP_SUMMARY"
       - name: Diff closures
         if: github.event_name == 'pull_request'
         run: |
@@ -41,7 +39,6 @@ jobs:
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-
           nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" | tee "$DIFF_OUTPUT"
-          sed -e 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" > "${DIFF_OUTPUT}_stripped"
-          echo -e "## Closures difference\n\`\`\`\n$(<${DIFF_OUTPUT}_stripped)\n\`\`\`" >> $GITHUB_STEP_SUMMARY
+          [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
+          echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" >> "$GITHUB_STEP_SUMMARY"
