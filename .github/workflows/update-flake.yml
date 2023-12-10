@@ -24,3 +24,4 @@ jobs:
           pr-labels: |
             automated
             dependencies
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
