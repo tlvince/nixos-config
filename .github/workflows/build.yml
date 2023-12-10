@@ -14,7 +14,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@cd46bde16ab981b0a7b2dce0574509104543276e # v9
       - name: Set up cache
-        uses: DeterminateSystems/magic-nix-cache-action@v2
+        uses: DeterminateSystems/magic-nix-cache-action@8a218f9e264e9c3803c9a1ee1c30d8e4ab55be63 # v2
       - name: Run flake check
         run: |
           nix flake check --no-build | tee "${RUNNER_TEMP}/flake-check-output"
