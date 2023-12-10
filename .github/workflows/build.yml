@@ -5,8 +5,14 @@ on:
   pull_request:
   workflow_dispatch:
 
+defaults:
+  run:
+    shell: bash -euo pipefail {0}
+
 jobs:
   build:
+    env:
+      HOST: framework
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -17,36 +23,25 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@8a218f9e264e9c3803c9a1ee1c30d8e4ab55be63 # v2
       - name: Run flake check
         run: |
-          nix flake check --no-build | tee "${RUNNER_TEMP}/flake-check-output"
-          if [[ ! -s "${RUNNER_TEMP}/flake-check-output" ]]; then
-            echo "No issues found by 'nix flake check'." > "$RUNNER_TEMP/flake-check-output"
-          fi
-          echo "## Flake check" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-          cat "$RUNNER_TEMP/flake-check-output" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
+          nix flake check --no-build | tee "$CHECK_OUTPUT"
+          [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > $CHECK_OUTPUT
+          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" >> $GITHUB_STEP_SUMMARY
       - name: Build
         run: |
-          echo "## Build framework" >> $GITHUB_STEP_SUMMARY
-          build_cmd="nix build .#nixosConfigurations.framework.config.system.build.toplevel"
-          $build_cmd
-          out_path=$($build_cmd --print-out-paths)
-          echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.framework\x1b[0m"
-          echo -n "\`${out_path}\`" >> $GITHUB_STEP_SUMMARY
+          NIX_BUILD="nix build .#nixosConfigurations.${HOST}.config.system.build.toplevel"
+          $NIX_BUILD
+          OUT_PATH=$($NIX_BUILD --print-out-paths)
+          echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${HOST}\x1b[0m"
+          echo -e "## Build ${HOST}\n\`$OUT_PATH\`" >> $GITHUB_STEP_SUMMARY
       - name: Diff closures
         if: github.event_name == 'pull_request'
         run: |
-          host_drv="nixosConfigurations.framework.config.system.build.toplevel"
-          prev_flake="github:${GITHUB_REPOSITORY}"
-          final_flake="."
+          HOST_DRV="nixosConfigurations.${HOST}.config.system.build.toplevel"
+          PREV_FLAKE="github:${GITHUB_REPOSITORY}"
+          NEXT_FLAKE="."
+          DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
 
-          # Colour output for job log
-          nix store diff-closures "${prev_flake}#${host_drv}" "${final_flake}#${host_drv}"
-
-          echo "## Closures difference" >> $GITHUB_STEP_SUMMARY
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-
-          # Strip colours for step summary
-          nix store diff-closures "${prev_flake}#${host_drv}" "${final_flake}#${host_drv}" | sed -e 's/\x1b\[[0-9;]*m//g' >> $GITHUB_STEP_SUMMARY
-
-          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" | tee "$DIFF_OUTPUT"
+          sed -e 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" > "${DIFF_OUTPUT}_stripped"
+          echo -e "## Closures difference\n\`\`\`\n$(<${DIFF_OUTPUT}_stripped)\n\`\`\`" >> $GITHUB_STEP_SUMMARY
