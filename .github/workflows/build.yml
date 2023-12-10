@@ -1,0 +1,46 @@
+# Based on:
+# https://github.com/cuties-social/cuties-social-nixfiles/blob/14593a3014c32ce121529009d8d6564e45dd7e99/.github/workflows/build.yml
+name: Build
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@cd46bde16ab981b0a7b2dce0574509104543276e # v9
+      - name: Set up cache
+        uses: DeterminateSystems/magic-nix-cache-action@v2
+      - name: Run flake check
+        run: |
+          nix flake check --no-build | tee "${RUNNER_TEMP}/flake-check-output"
+          if [[ -z "${RUNNER_TEMP}/flake-check-output" ]]; then
+            echo "No issues found by 'nix flake check'." > "$RUNNER_TEMP/flake-check-output"
+          fi
+          echo "## Flake check" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          cat "$RUNNER_TEMP/flake-check-output" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+      - name: Build
+        run: |
+          echo "## Build framework" >> $GITHUB_STEP_SUMMARY
+          build_cmd="nix build .#nixosConfigurations.framework.config.system.build.toplevel"
+          $build_cmd
+          out_path=$($build_cmd --print-out-paths)
+          echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.framework\x1b[0m"
+          echo -n "\`${out_path}\`" >> $GITHUB_STEP_SUMMARY
+      - name: nix store diff-closures
+        if: github.event_name == 'pull_request'
+        run: |
+          host_drv="nixosConfigurations.framework.config.system.build.toplevel"
+          prev_flake="github:${GITHUB_REPOSITORY}"
+          final_flake="."
+          nix store diff-closures "${prev_flake}#${host_drv}" "${final_flake}#${host_drv}" --quiet
+          echo "## Closures difference" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          nix store diff-closures "github:${GITHUB_REPOSITORY}#${host_drv}" ".#${host_drv}" | sed -e 's/\x1b\[[0-9;]*m//g' >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
