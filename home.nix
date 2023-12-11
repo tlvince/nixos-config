@@ -37,6 +37,9 @@
 
   home = {
     homeDirectory = "/home/tlv";
+    file = {
+      ".digrc".text = "+noall +noanswer";
+    };
     sessionVariables = {
       # Zsh's "< file" built-in pager
       READNULLCMD = "$PAGER";
