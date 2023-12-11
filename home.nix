@@ -1,4 +1,4 @@
-{ lib, pkgs, tmux-colours-onedark, ... }:
+{ config, lib, pkgs, tmux-colours-onedark, ... }:
 
 {
   dconf.settings = {
@@ -568,38 +568,53 @@
     xwayland = false;
   };
 
-  xdg.enable = true;
+  xdg = {
+    enable = true;
 
-  # Stream audio to an AirPlay receiver
-  # https://wiki.archlinux.org/index.php?title=PipeWire&oldid=792188#Streaming_audio_to_an_AirPlay_receiver
-  xdg.configFile."pipewire/pipewire.conf.d/raop-discover.conf".text = ''
-    context.modules = [
-      {
-        name = libpipewire-module-raop-discover
-        args = {}
-      }
-    ]
-  '';
+    # Stream audio to an AirPlay receiver
+    # https://wiki.archlinux.org/index.php?title=PipeWire&oldid=792188#Streaming_audio_to_an_AirPlay_receiver
+    configFile."pipewire/pipewire.conf.d/raop-discover.conf".text = ''
+      context.modules = [
+        {
+          name = libpipewire-module-raop-discover
+          args = {}
+        }
+      ]
+    '';
 
-  xdg.configFile."systemd/user/org.gnome.Shell@wayland.service.d/override.conf".text = ''
-    [Service]
-    ExecStart=
-    ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
-  '';
+    configFile."systemd/user/org.gnome.Shell@wayland.service.d/override.conf".text = ''
+      [Service]
+      ExecStart=
+      ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
+    '';
 
-  xdg.desktopEntries = {
-    # Re-enable Wayland support
-    # Reverts: https://github.com/NixOS/nixpkgs/pull/222163
-    # See: https://github.com/NixOS/nixpkgs/issues/222043
-    signal-desktop = {
-      name = "Signal";
-      exec = "${pkgs.signal-desktop}/bin/signal-desktop --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --use-tray-icon --no-sandbox %U";
-      terminal = false;
-      type = "Application";
-      icon = "signal-desktop";
-      comment = "Private messaging from your desktop";
-      mimeType = [ "x-scheme-handler/sgnl" "x-scheme-handler/signalcaptcha" ];
-      categories = [ "Network" "InstantMessaging" "Chat" ];
+    desktopEntries = {
+      # Re-enable Wayland support
+      # Reverts: https://github.com/NixOS/nixpkgs/pull/222163
+      # See: https://github.com/NixOS/nixpkgs/issues/222043
+      signal-desktop = {
+        name = "Signal";
+        exec = "${pkgs.signal-desktop}/bin/signal-desktop --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations --use-tray-icon --no-sandbox %U";
+        terminal = false;
+        type = "Application";
+        icon = "signal-desktop";
+        comment = "Private messaging from your desktop";
+        mimeType = [ "x-scheme-handler/sgnl" "x-scheme-handler/signalcaptcha" ];
+        categories = [ "Network" "InstantMessaging" "Chat" ];
+      };
+    };
+
+    userDirs = {
+      enable = true;
+
+      desktop = "${config.home.homeDirectory}/desktop";
+      documents = "${config.home.homeDirectory}/documents";
+      download = "${config.home.homeDirectory}/downloads";
+      music = "${config.home.homeDirectory}/music";
+      pictures = "${config.home.homeDirectory}/pictures";
+      publicShare = "${config.home.homeDirectory}/public";
+      templates = "${config.home.homeDirectory}/templates";
+      videos = "${config.home.homeDirectory}/videos";
     };
   };
 }
