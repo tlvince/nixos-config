@@ -19,6 +19,8 @@
     "/share/zsh"
   ];
   environment.systemPackages = with pkgs; [
+    aspell
+    aspellDicts.en
     awscli2
     brightnessctl
     chromium
