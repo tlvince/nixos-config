@@ -7,7 +7,7 @@ mkc() {
  
 # Spellchecker using aspell.
 spell() {
-  echo "$@" | aspell -a | egrep -v "^@|^$"
+  echo "$@" | aspell -a | grep -Ev "^@|^$"
 }
  
 # Navigate $1 directories up.
@@ -44,4 +44,8 @@ aws-env() {
  
 cht() {
   curl --silent https://cht.sh/$1 | less
+}
+
+curl-headers() {
+  curl --dump-header - --output /dev/null --silent --show-error "$@" | "$PAGER"
 }

@@ -499,6 +499,7 @@
       "..." = "cd ../..";
       acp = "rsync -a --partial-dir=\".rsync-partial\" --progress";
       adbss = "adb shell screencap -p > /tmp/android-screenshot-\$(date +%s).png";
+      curl-time = "curl --output /dev/null --silent --write-out 'DNS: %{time_namelookup}s\nEstablish Connection: %{time_connect}s\nTTFB: %{time_starttransfer}s\nTotal: %{time_total}s\n'";
       ll = "l | less";
       mk = "mkdir -p";
       mpva = "mpv --no-video";
@@ -510,7 +511,7 @@
       po = "popd";
       pu = "pushd";
       rd = "rmdir";
-      serve = "python3 -m http.server";
+      serve = "python3 -m http.server --bind 127.0.0.1";
       sudu = "sudo -iu";
       ts = "date --utc +'%Y-%m-%dT%H:%M:%S.%3NZ'";
       th = "dict -d moby-thesaurus";
