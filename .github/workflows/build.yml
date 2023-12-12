@@ -13,7 +13,11 @@ jobs:
   build:
     env:
       HOST: framework
+      PR_JOB_SUMMARY: pr-job-summary
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
@@ -26,12 +30,12 @@ jobs:
           CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
           nix flake check --no-build | tee "$CHECK_OUTPUT"
           [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
-          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" >> "$GITHUB_STEP_SUMMARY"
+          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
           OUT_PATH="$(nix build .#nixosConfigurations.${HOST}.config.system.build.toplevel --print-out-paths)"
           echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${HOST}\x1b[0m"
-          echo -e "## Build ${HOST}\n\`$OUT_PATH\`" >> "$GITHUB_STEP_SUMMARY"
+          echo -e "## Build ${HOST}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
         if: github.event_name == 'pull_request'
         run: |
@@ -41,4 +45,14 @@ jobs:
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
           nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
-          echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" >> "$GITHUB_STEP_SUMMARY"
+          echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      - name: Add job summary to PR
+        uses: actions/github-script@d7906e4ad0b1822421a7e6a35d5ca353c962f410 # v6.3.3
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const { readFile } = require('node:fs/promises')
+            const comment = require('.github/scripts/comment')
+            const header = '# ${{ env.HOST }}'
+            const body = await readFile('${{ runner.temp }}/${{ env.PR_JOB_SUMMARY }}', { encoding: 'utf8' })
+            await comment({ github, context, header, body })
