@@ -10,7 +10,8 @@ Flake updates are [scheduled daily](https://github.com/tlvince/nixos-config/blob
 
 These require manual intervention:
 
-- .aws
-- .gnupg
-- .password-store
-- .ssh
+- /home/tlv/.aws
+- /home/tlv/.gnupg
+- /home/tlv/.password-store
+- /home/tlv/.ssh
+- /var/lib/btrbk/.ssh
