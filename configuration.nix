@@ -23,6 +23,7 @@
     aspellDicts.en
     awscli2
     brightnessctl
+    btrbk
     chromium
     diff-so-fancy
     ectool.packages."${pkgs.system}".ectool
@@ -167,6 +168,43 @@
         session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
       '';
     };
+
+  services.btrbk.instances = {
+    btrbk = {
+      onCalendar = null;
+      settings = {
+        backend_remote = "btrfs-progs-sudo";
+        lockfile = "/var/lock/btrbk.lock";
+        snapshot_create = "onchange";
+        snapshot_dir = ".snapshots";
+        ssh_identity = "/var/lib/btrbk/.ssh/id_ed25519";
+        ssh_user = "btrbk";
+        timestamp_format = "long";
+
+        archive_preserve = "30d *m";
+        archive_preserve_min = "latest";
+        snapshot_preserve = "24h 7d 0w 0m 0y";
+        snapshot_preserve_min = "latest";
+        target_preserve = "0h 14d 6w 4m 1y";
+        target_preserve_min = "latest";
+
+        volume = {
+          "/mnt/btrfs-root" = {
+            target = {
+              "ssh://bpim5:6683/mnt/catmull/snapshots/${config.networking.hostName}" = {
+                subvolume = {
+                  "/" = {
+                    snapshot_name = "root";
+                  };
+                  "/home" = {};
+                };
+              };
+            };
+          };
+        };
+      };
+    };
+  };
 
   services.fstrim.enable = true;
   services.fwupd.enable = true;

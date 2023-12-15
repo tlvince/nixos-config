@@ -29,17 +29,17 @@
                 };
                 content = {
                   type = "btrfs";
+                  mountpoint = "/mnt/btrfs-root";
+                  mountOptions = [ "compress=zstd" "noatime" ];
                   subvolumes = {
                     "/root" = {
                       mountpoint = "/";
                       mountOptions = [ "compress=zstd" "noatime" ];
                     };
-                    # FIXME: Nested subvolumes unsupported
-                    # https://github.com/nix-community/disko/issues/409
-                    #"/var/log" = {
-                    #  mountpoint = "/var/log";
-                    #  mountOptions = [ "compress=zstd" "noatime" ];
-                    #};
+                    "/log" = {
+                      mountpoint = "/var/log";
+                      mountOptions = [ "compress=zstd" "noatime" ];
+                    };
                     "/home" = {
                       mountpoint = "/home";
                       mountOptions = [ "compress=zstd" "noatime" ];
