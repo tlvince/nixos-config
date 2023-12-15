@@ -43,7 +43,7 @@ aws-env() {
 }
  
 cht() {
-  curl --silent https://cht.sh/$1 | less
+  curl --silent "https://cht.sh/$1" | "$PAGER"
 }
 
 curl-headers() {
