@@ -171,12 +171,14 @@
 
   services.btrbk.instances = {
     btrbk = {
+      # Timer disabled in favour of hourly & daily timers
+      # TODO: upstream more configurables
       onCalendar = null;
       settings = {
         backend_remote = "btrfs-progs-sudo";
         lockfile = "/var/lock/btrbk.lock";
         snapshot_create = "onchange";
-        snapshot_dir = ".snapshots";
+        snapshot_dir = "snapshots";
         ssh_identity = "/var/lib/btrbk/.ssh/id_ed25519";
         ssh_user = "btrbk";
         timestamp_format = "long";
@@ -203,6 +205,59 @@
           };
         };
       };
+    };
+  };
+
+  systemd.services.btrbk-local = {
+    description = "Take local Btrfs snapshots";
+    unitConfig.Documentation = "man:btrbk(1)";
+    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
+    after = [ "time-sync.target" ];
+    serviceConfig = {
+      User = "btrbk";
+      Group = "btrbk";
+      Type = "oneshot";
+      ExecStart = "${pkgs.btrbk}/bin/btrbk snapshot";
+      Nice = config.services.btrbk.niceness;
+      IOSchedulingClass = config.services.btrbk.ioSchedulingClass;
+      StateDirectory = "btrbk";
+    };
+  };
+
+  systemd.services.btrbk-remote = {
+    description = "Takes local Btrfs snapshots and back up to given targets";
+    unitConfig.Documentation = "man:btrbk(1)";
+    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
+    wants = [ "network-online.target" ];
+    after = [ "btrbk-local.service" "network-online.target" "time-sync.target" ];
+    serviceConfig = {
+      User = "btrbk";
+      Group = "btrbk";
+      Type = "oneshot";
+      ExecStart = "${pkgs.btrbk}/bin/btrbk run";
+      Nice = config.services.btrbk.niceness;
+      IOSchedulingClass = config.services.btrbk.ioSchedulingClass;
+      StateDirectory = "btrbk";
+    };
+  };
+
+  systemd.timers.btrbk-local = {
+    description = "Timer to take Btrfs snapshots and maintain retention policies.";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "hourly";
+      AccuracySec = "10min";
+      Persistent = true;
+    };
+  };
+
+  systemd.timers.btrbk-remote = {
+    description = "Timer to take Btrfs snapshots and maintain retention policies.";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "daily";
+      AccuracySec = "10min";
+      Persistent = true;
     };
   };
 
