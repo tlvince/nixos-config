@@ -176,7 +176,7 @@
       onCalendar = null;
       settings = {
         backend_remote = "btrfs-progs-sudo";
-        lockfile = "/run/lock/btrbk.lock";
+        lockfile = "/var/lib/btrbk/btrbk.lock";
         snapshot_create = "onchange";
         snapshot_dir = "snapshots";
         ssh_identity = "/var/lib/btrbk/.ssh/id_ed25519";
@@ -221,7 +221,6 @@
       Nice = config.services.btrbk.niceness;
       IOSchedulingClass = config.services.btrbk.ioSchedulingClass;
       StateDirectory = "btrbk";
-      ReadWritePaths = config.services.btrbk.instances.btrbk.settings.lockfile;
     };
   };
 
@@ -239,7 +238,6 @@
       Nice = config.services.btrbk.niceness;
       IOSchedulingClass = config.services.btrbk.ioSchedulingClass;
       StateDirectory = "btrbk";
-      ReadWritePaths = config.services.btrbk.instances.btrbk.settings.lockfile;
     };
   };
 
@@ -247,9 +245,11 @@
     description = "Timer to take Btrfs snapshots and maintain retention policies.";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "hourly";
       AccuracySec = "10min";
+      OnBootSec = "5min";
+      OnCalendar = "hourly";
       Persistent = true;
+      RandomizedDelaySec = "5min";
     };
   };
 
@@ -257,9 +257,11 @@
     description = "Timer to take Btrfs snapshots and maintain retention policies.";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "daily";
       AccuracySec = "10min";
+      OnBootSec = "5min";
+      OnCalendar = "daily";
       Persistent = true;
+      RandomizedDelaySec = "5min";
     };
   };
 
