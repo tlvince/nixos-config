@@ -1,12 +1,17 @@
-{ config, pkgs, lib, apple-fonts, ectool, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  apple-fonts,
+  ectool,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./disko-configuration.nix
   ];
 
-  boot.blacklistedKernelModules = [ "hid_sensor_hub" ];
+  boot.blacklistedKernelModules = ["hid_sensor_hub"];
   boot.extraModprobeConfig = ''
     options cfg80211 ieee80211_regdom="GB"
   '';
@@ -95,26 +100,26 @@
       };
 
       defaultFonts = {
-        serif = [ "DejaVu Serif"];
-        sansSerif = [ "SF Pro Text" ];
-        monospace = [ "DejaVu Sans Mono" ];
-        emoji = [ "Noto Color Emoji" ];
+        serif = ["DejaVu Serif"];
+        sansSerif = ["SF Pro Text"];
+        monospace = ["DejaVu Sans Mono"];
+        emoji = ["Noto Color Emoji"];
       };
 
       localConf = ''
-      <?xml version="1.0"?>
-      <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-      <fontconfig>
-        <selectfont>
-          <rejectfont>
-            <pattern>
-              <patelt name="family">
-                <string>Cantarell</string>
-              </patelt>
-            </pattern>
-          </rejectfont>
-        </selectfont>
-      </fontconfig>
+        <?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+        <fontconfig>
+          <selectfont>
+            <rejectfont>
+              <pattern>
+                <patelt name="family">
+                  <string>Cantarell</string>
+                </patelt>
+              </pattern>
+            </rejectfont>
+          </selectfont>
+        </fontconfig>
       '';
     };
   };
@@ -151,23 +156,22 @@
   # See: https://github.com/NixOS/nixpkgs/issues/171136
   # See: https://github.com/NixOS/nixpkgs/pull/171140
   security.pam.services.login.fprintAuth = false;
-  security.pam.services.gdm-fingerprint =
-    lib.mkIf (config.services.fprintd.enable) {
-      text = ''
-        auth       required                    pam_shells.so
-        auth       requisite                   pam_nologin.so
-        auth       requisite                   pam_faillock.so      preauth
-        auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
-        auth       optional                    pam_permit.so
-        auth       required                    pam_env.so
-        auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
-        auth       optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
-        account    include                     login
-        password   required                    pam_deny.so
-        session    include                     login
-        session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
-      '';
-    };
+  security.pam.services.gdm-fingerprint = lib.mkIf (config.services.fprintd.enable) {
+    text = ''
+      auth       required                    pam_shells.so
+      auth       requisite                   pam_nologin.so
+      auth       requisite                   pam_faillock.so      preauth
+      auth       required                    ${pkgs.fprintd}/lib/security/pam_fprintd.so
+      auth       optional                    pam_permit.so
+      auth       required                    pam_env.so
+      auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
+      auth       optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+      account    include                     login
+      password   required                    pam_deny.so
+      session    include                     login
+      session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
+    '';
+  };
 
   services.btrbk.instances = {
     btrbk = {
@@ -211,8 +215,8 @@
   systemd.services.btrbk-local = {
     description = "Take local Btrfs snapshots";
     unitConfig.Documentation = "man:btrbk(1)";
-    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
-    after = [ "time-sync.target" ];
+    path = ["/run/wrappers"] ++ config.services.btrbk.extraPackages;
+    after = ["time-sync.target"];
     serviceConfig = {
       User = "btrbk";
       Group = "btrbk";
@@ -227,9 +231,9 @@
   systemd.services.btrbk-remote = {
     description = "Takes local Btrfs snapshots and back up to given targets";
     unitConfig.Documentation = "man:btrbk(1)";
-    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
-    wants = [ "network-online.target" ];
-    after = [ "btrbk-local.service" "network-online.target" "time-sync.target" ];
+    path = ["/run/wrappers"] ++ config.services.btrbk.extraPackages;
+    wants = ["network-online.target"];
+    after = ["btrbk-local.service" "network-online.target" "time-sync.target"];
     serviceConfig = {
       User = "btrbk";
       Group = "btrbk";
@@ -243,7 +247,7 @@
 
   systemd.timers.btrbk-local = {
     description = "Timer to take Btrfs snapshots and maintain retention policies.";
-    wantedBy = [ "timers.target" ];
+    wantedBy = ["timers.target"];
     timerConfig = {
       AccuracySec = "10min";
       OnBootSec = "5min";
@@ -255,7 +259,7 @@
 
   systemd.timers.btrbk-remote = {
     description = "Timer to take Btrfs snapshots and maintain retention policies.";
-    wantedBy = [ "timers.target" ];
+    wantedBy = ["timers.target"];
     timerConfig = {
       AccuracySec = "10min";
       OnBootSec = "5min";
@@ -278,7 +282,7 @@
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.enable = true;
-  services.xserver.excludePackages = [ pkgs.xterm ];
+  services.xserver.excludePackages = [pkgs.xterm];
 
   # services.gnome.core-shell
   services.gnome.gnome-browser-connector.enable = false;
@@ -333,6 +337,6 @@
   users.users.tlv = {
     shell = pkgs.zsh;
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
   };
 }

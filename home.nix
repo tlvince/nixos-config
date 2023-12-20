@@ -1,10 +1,14 @@
-{ config, lib, pkgs, tmux-colours-onedark, ... }:
-
 {
+  config,
+  lib,
+  pkgs,
+  tmux-colours-onedark,
+  ...
+}: {
   dconf.settings = {
     "org/gnome/desktop/input-sources" = {
       sources = [
-        (lib.hm.gvariant.mkTuple["xkb"  "us+altgr-intl"])
+        (lib.hm.gvariant.mkTuple ["xkb" "us+altgr-intl"])
       ];
       xkb-options = [
         "caps:escape"
@@ -371,118 +375,120 @@
     enableCompletion = true;
     history.ignoreAllDups = true;
 
-    initExtra = ''
-    # Prompt
-    autoload -U promptinit; promptinit
-    prompt pure
+    initExtra =
+      ''
+        # Prompt
+        autoload -U promptinit; promptinit
+        prompt pure
 
-    # Autojump
-    source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
+        # Autojump
+        source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
 
-    # Escape URLs when pasting
-    autoload -Uz bracketed-paste-magic url-quote-magic
-    zle -N bracketed-paste bracketed-paste-magic
-    zle -N self-insert url-quote-magic
+        # Escape URLs when pasting
+        autoload -Uz bracketed-paste-magic url-quote-magic
+        zle -N bracketed-paste bracketed-paste-magic
+        zle -N self-insert url-quote-magic
 
-    # History search matching the current line up to the current cursor position
-    autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
-    zle -N up-line-or-beginning-search
-    zle -N down-line-or-beginning-search
-    bindkey "$terminfo[kcuu1]" up-line-or-beginning-search
-    bindkey "$terminfo[kcud1]" down-line-or-beginning-search
+        # History search matching the current line up to the current cursor position
+        autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
+        zle -N up-line-or-beginning-search
+        zle -N down-line-or-beginning-search
+        bindkey "$terminfo[kcuu1]" up-line-or-beginning-search
+        bindkey "$terminfo[kcud1]" down-line-or-beginning-search
 
-    # Fix pasting with autosuggest
-    # https://github.com/zsh-users/zsh-autosuggestions/issues/238#issuecomment-389324292
-    pasteinit() {
-      OLD_SELF_INSERT=''${''${(s.:.)widgets[self-insert]}[2,3]}
-      zle -N self-insert url-quote-magic
-    }
-    pastefinish() {
-      zle -N self-insert $OLD_SELF_INSERT
-    }
-    zstyle :bracketed-paste-magic paste-init pasteinit
-    zstyle :bracketed-paste-magic paste-finish pastefinish
+        # Fix pasting with autosuggest
+        # https://github.com/zsh-users/zsh-autosuggestions/issues/238#issuecomment-389324292
+        pasteinit() {
+          OLD_SELF_INSERT=''${''${(s.:.)widgets[self-insert]}[2,3]}
+          zle -N self-insert url-quote-magic
+        }
+        pastefinish() {
+          zle -N self-insert $OLD_SELF_INSERT
+        }
+        zstyle :bracketed-paste-magic paste-init pasteinit
+        zstyle :bracketed-paste-magic paste-finish pastefinish
 
-    # Write history immediately, rather than on shell exit
-    setopt INC_APPEND_HISTORY
+        # Write history immediately, rather than on shell exit
+        setopt INC_APPEND_HISTORY
 
-    # Spell check
-    setopt CORRECT
+        # Spell check
+        setopt CORRECT
 
-    # Glob
-    setopt EXTENDED_GLOB
-    setopt GLOB_COMPLETE
-    setopt COMPLETE_IN_WORD
-    setopt NUMERIC_GLOB_SORT
+        # Glob
+        setopt EXTENDED_GLOB
+        setopt GLOB_COMPLETE
+        setopt COMPLETE_IN_WORD
+        setopt NUMERIC_GLOB_SORT
 
-    # Sanity checks
-    setopt NO_CLOBBER
-    setopt RM_STAR_WAIT
+        # Sanity checks
+        setopt NO_CLOBBER
+        setopt RM_STAR_WAIT
 
-    # Array expansion
-    setopt RC_EXPAND_PARAM
+        # Array expansion
+        setopt RC_EXPAND_PARAM
 
-    # <Ctrl + e>: Invoke a visual editor on the command line
-    autoload -Uz edit-command-line
-    zle -N edit-command-line
-    bindkey "^e" edit-command-line
+        # <Ctrl + e>: Invoke a visual editor on the command line
+        autoload -Uz edit-command-line
+        zle -N edit-command-line
+        bindkey "^e" edit-command-line
 
-    # <Alt + .>: Insert the last argument of the previous command
-    bindkey "^[." insert-last-word
+        # <Alt + .>: Insert the last argument of the previous command
+        bindkey "^[." insert-last-word
 
-    # Shift-Tab
-    bindkey "^[[Z" reverse-menu-complete
+        # Shift-Tab
+        bindkey "^[[Z" reverse-menu-complete
 
-    # Tab Completion options <http://stackoverflow.com/a/171564>
-    zstyle ':completion::complete:*' use-cache on
-    zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zcompcache"
+        # Tab Completion options <http://stackoverflow.com/a/171564>
+        zstyle ':completion::complete:*' use-cache on
+        zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zcompcache"
 
-    # case insensitive completion
-    zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+        # case insensitive completion
+        zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 
-    zstyle ':completion:*' verbose yes
-    zstyle ':completion:*:descriptions' format '%B%d%b'
-    zstyle ':completion:*:messages' format '%d'
-    zstyle ':completion:*:warnings' format 'No matches for: %d'
-    zstyle ':completion:*' group-name \'\'
-    zstyle ':completion:*' completer _expand _complete _approximate _ignored
+        zstyle ':completion:*' verbose yes
+        zstyle ':completion:*:descriptions' format '%B%d%b'
+        zstyle ':completion:*:messages' format '%d'
+        zstyle ':completion:*:warnings' format 'No matches for: %d'
+        zstyle ':completion:*' group-name \'\'
+        zstyle ':completion:*' completer _expand _complete _approximate _ignored
 
-    # generate descriptions with magic.
-    zstyle ':completion:*' auto-description 'specify: %d'
+        # generate descriptions with magic.
+        zstyle ':completion:*' auto-description 'specify: %d'
 
-    # Don't prompt for a huge list, page it!
-    zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+        # Don't prompt for a huge list, page it!
+        zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 
-    # Don't prompt for a huge list, menu it!
-    zstyle ':completion:*:default' menu 'select=0'
+        # Don't prompt for a huge list, menu it!
+        zstyle ':completion:*:default' menu 'select=0'
 
-    # Have the newer files last so I see them first
-    zstyle ':completion:*' file-sort modification reverse
+        # Have the newer files last so I see them first
+        zstyle ':completion:*' file-sort modification reverse
 
-    # color code completion!!!!  Wohoo!
-    zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
+        # color code completion!!!!  Wohoo!
+        zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
 
-    # Separate man page sections.  Neat.
-    zstyle ':completion:*:manuals' separate-sections true
+        # Separate man page sections.  Neat.
+        zstyle ':completion:*:manuals' separate-sections true
 
-    # complete with a menu for xwindow ids
-    zstyle ':completion:*:windows' menu on=0
-    zstyle ':completion:*:expand:*' tag-order all-expansions
+        # complete with a menu for xwindow ids
+        zstyle ':completion:*:windows' menu on=0
+        zstyle ':completion:*:expand:*' tag-order all-expansions
 
-    # more errors allowed for large words and fewer for small words
-    zstyle ':completion:*:approximate:*' max-errors 'reply=(  $((  ($#PREFIX+$#SUFFIX)/3  ))  )'
+        # more errors allowed for large words and fewer for small words
+        zstyle ':completion:*:approximate:*' max-errors 'reply=(  $((  ($#PREFIX+$#SUFFIX)/3  ))  )'
 
-    # Errors format
-    zstyle ':completion:*:corrections' format '%B%d (errors %e)%b'
+        # Errors format
+        zstyle ':completion:*:corrections' format '%B%d (errors %e)%b'
 
-    # Don't complete stuff already on the line
-    zstyle ':completion::*:(rm|vi):*' ignore-line true
+        # Don't complete stuff already on the line
+        zstyle ':completion::*:(rm|vi):*' ignore-line true
 
-    # Don't complete directory we are already in (../here)
-    zstyle ':completion:*' ignore-parents parent pwd
+        # Don't complete directory we are already in (../here)
+        zstyle ':completion:*' ignore-parents parent pwd
 
-    zstyle ':completion::approximate*:*' prefix-needed false
-    '' + builtins.readFile ./functions.zsh;
+        zstyle ':completion::approximate*:*' prefix-needed false
+      ''
+      + builtins.readFile ./functions.zsh;
 
     shellAliases = {
       # Overrides
