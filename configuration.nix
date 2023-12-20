@@ -52,7 +52,7 @@
     loupe
     mpv
     neovim
-    nodejs-18_x
+    nodejs_20
     pass-wayland
     pinentry-gnome
     prettierd
