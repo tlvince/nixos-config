@@ -1,10 +1,10 @@
 module.exports = async ({ github, context, header, body, issueNumber }) => {
-  const comment = [header, body].join("\n");
+  const issue_number = issueNumber || context.issue.number;
 
   const { data: comments } = await github.rest.issues.listComments({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    issue_number: issueNumber || context.issue.number,
+    issue_number,
   });
 
   const botComment = comments.find(
@@ -13,14 +13,13 @@ module.exports = async ({ github, context, header, body, issueNumber }) => {
       comment.user.id === 41898282 && comment.body.startsWith(header),
   );
 
+  const comment = [header, body].join("\n");
   const commentFn = botComment ? "updateComment" : "createComment";
 
   await github.rest.issues[commentFn]({
     owner: context.repo.owner,
     repo: context.repo.repo,
     body: comment,
-    ...(botComment
-      ? { comment_id: botComment.id }
-      : { issue_number: context.payload.number }),
+    ...(botComment ? { comment_id: botComment.id } : { issue_number }),
   });
 };
