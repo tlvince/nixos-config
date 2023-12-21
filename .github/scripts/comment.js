@@ -4,7 +4,7 @@ module.exports = async ({ github, context, header, body }) => {
   const { data: comments } = await github.rest.issues.listComments({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    issue_number: context.payload.number,
+    issue_number: context.issue.number,
   });
 
   const botComment = comments.find(
