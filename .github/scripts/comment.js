@@ -1,10 +1,10 @@
-module.exports = async ({ github, context, header, body }) => {
+module.exports = async ({ github, context, header, body, issueNumber }) => {
   const comment = [header, body].join("\n");
 
   const { data: comments } = await github.rest.issues.listComments({
     owner: context.repo.owner,
     repo: context.repo.repo,
-    issue_number: context.issue.number,
+    issue_number: issueNumber || context.issue.number,
   });
 
   const botComment = comments.find(

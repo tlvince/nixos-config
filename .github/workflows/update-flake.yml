@@ -36,9 +36,15 @@ jobs:
 
             const urls = await compare({ github, context, core })
             if (!urls?.length) {
-              return;
+              return
             }
 
             const header = "# Compare URLs"
             const body = urls.map((url) => `- ${url}`).join("\n")
-            await comment({ github, context, header, body })
+
+            const issueNumber = parseInt(process.env.PULL_REQUEST_NUMBER, 10)
+            if (Number.isNaN(issueNumber)) {
+              return
+            }
+
+            await comment({ github, context, header, body, issueNumber })
