@@ -1,6 +1,6 @@
 const generateCompareLinks = (flakeUpdateOutput) => {
   const regex =
-    /'github:(?<repo>[^/]+\/[^/]+)\/(?<oldCommit>[0-9a-f]+)'.*→ 'github:\1\/(?<newCommit>[0-9a-f]+)'/g;
+    /'github:(?<repo>[^/]+\/[^/]+)\/(?<oldCommit>[0-9a-f]+)'\s*\((\d{4}-\d{2}-\d{2})\)\s*→\s*'github:\1\/(?<newCommit>[0-9a-f]+)'/g;
 
   let match;
   const links = [];
