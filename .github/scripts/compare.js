@@ -15,20 +15,13 @@ const generateCompareLinks = (flakeUpdateOutput) => {
 };
 
 module.exports = async ({ github, context, core }) => {
-  const commits = await github.rest.repos.listCommits({
-    owner: context.repo.owner,
-    repo: context.repo.repo,
-    per_page: 1,
-    page: 1,
-  });
-
-  const commit = commits?.data?.[0]?.commit?.message;
-  if (!commit) {
+  const { GIT_COMMIT_MESSAGE } = process.env;
+  if (!GIT_COMMIT_MESSAGE) {
     core.warning("unable to determine latest commit message");
     return;
   }
 
-  const compareLinks = generateCompareLinks(commit);
+  const compareLinks = generateCompareLinks(GIT_COMMIT_MESSAGE);
   if (!compareLinks.length) {
     core.warning("no compare links found");
     return;
