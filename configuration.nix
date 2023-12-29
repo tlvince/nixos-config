@@ -148,6 +148,43 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.overlays = [
+    (
+      final: prev: {
+        power-profiles-daemon = prev.power-profiles-daemon.overrideAttrs (
+          old: {
+            version = "0.13-1";
+
+            patches =
+              (old.patches or [])
+              ++ [
+                (prev.fetchpatch {
+                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/127.patch";
+                  sha256 = "sha256-jnq5yJvWQHOlZ78SE/4/HqiQfF25YHQH/T4wwDVRHR0=";
+                })
+                (prev.fetchpatch {
+                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/128.patch";
+                  sha256 = "sha256-YD9wn9IQlCp02r4lmwRnx9Eur2VVP1JfC/Bm8hlzF3Q=";
+                })
+                (prev.fetchpatch {
+                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/129.patch";
+                  sha256 = "sha256-9T+I3BAUW3u4LldF85ctE0/PLu9u+KBN4maoL653WJU=";
+                })
+              ];
+
+            # explicitly fetching the source to make sure we're patching over 0.13 (this isn't strictly needed):
+            src = prev.fetchFromGitLab {
+              domain = "gitlab.freedesktop.org";
+              owner = "upower";
+              repo = "power-profiles-daemon";
+              rev = "0.13";
+              sha256 = "sha256-ErHy+shxZQ/aCryGhovmJ6KmAMt9OZeQGDbHIkC0vUE=";
+            };
+          }
+        );
+      }
+    )
+  ];
 
   programs.firefox.enable = true;
   programs.zsh.enable = true;
@@ -308,21 +345,7 @@
   programs.seahorse.enable = true;
   services.gnome.sushi.enable = true;
 
-  services.power-profiles-daemon.enable = false;
   services.resolved.enable = true;
-  services.tlp.enable = true;
-  services.tlp.settings = {
-    # active by default in kernel >=6.5
-    CPU_DRIVER_OPMODE_ON_AC = "active";
-    CPU_DRIVER_OPMODE_ON_BAT = "active";
-    CPU_ENERGY_PERF_POLICY_ON_AC = "balance_performance";
-    CPU_ENERGY_PERF_POLICY_ON_BAT = "balance_power";
-    # powersave required for EPP to work
-    CPU_SCALING_GOVERNOR_ON_AC = "powersave";
-    CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-    PLATFORM_PROFILE_ON_AC = "balanced";
-    PLATFORM_PROFILE_ON_BAT = "low-power";
-  };
 
   services.pipewire = {
     enable = true;
