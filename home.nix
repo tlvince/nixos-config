@@ -21,6 +21,10 @@
       font-hinting = "none";
       font-antialiasing = "grayscale";
       monospace-font-name = "Monospace 10";
+      show-battery-percentage = true;
+    };
+    "org/gnome/desktop/session" = {
+      idle-delay = 120;
     };
     "org/gnome/desktop/wm/preferences" = {
       titlebar-font = "Sans Bold 11";
@@ -29,6 +33,14 @@
       experimental-features = [
         "scale-monitor-framebuffer"
       ];
+    };
+    "org/gnome/settings-daemon/plugins/power" = {
+      idle-dim = true;
+      power-button-action = "suspend";
+      power-saver-profile-on-low-battery = true;
+      sleep-inactive-ac-type = "nothing";
+      sleep-inactive-battery-timeout = 900;
+      sleep-inactive-battery-type = "suspend";
     };
     "org/gnome/shell" = {
       enabled-extensions = [
