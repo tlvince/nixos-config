@@ -14,6 +14,7 @@
   boot.blacklistedKernelModules = ["hid_sensor_hub"];
   boot.extraModprobeConfig = ''
     options cfg80211 ieee80211_regdom="GB"
+    options snd_hda_intel power_save=1
   '';
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -352,6 +353,11 @@
     alsa.enable = true;
     pulse.enable = true;
   };
+
+  services.udev.extraRules = ''
+    SUBSYSTEM=="pci", ATTR{power/control}="auto"
+    ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
+  '';
 
   system.stateVersion = "23.05";
 
