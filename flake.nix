@@ -31,7 +31,7 @@
         system = "x86_64-linux";
       };
     in
-      pkgs.mkShell {
+      pkgs.mkShellNoCC {
         packages = with pkgs; [
           alejandra
         ];
