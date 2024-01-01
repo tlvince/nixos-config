@@ -526,7 +526,7 @@
       mpva = "mpv --no-video";
       mpvn = "mpv --no-ytdl";
       myip = "curl --silent https://ifconfig.me";
-      nd = "nix develop";
+      nd = "nix develop --command $SHELL";
       pc = "pass -c";
       pct = "passCopyTail";
       pg = "passGenerate";

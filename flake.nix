@@ -35,10 +35,6 @@
         packages = with pkgs; [
           alejandra
         ];
-
-        shellHook = ''
-          exec $SHELL
-        '';
       };
     nixosConfigurations = {
       framework = nixpkgs.lib.nixosSystem {
