@@ -1,0 +1,25 @@
+diff --git a/spa/plugins/bluez5/bap-codec-lc3.c b/spa/plugins/bluez5/bap-codec-lc3.c
+index 382cd3891..765959d2f 100644
+--- a/spa/plugins/bluez5/bap-codec-lc3.c
++++ b/spa/plugins/bluez5/bap-codec-lc3.c
+@@ -288,7 +288,7 @@
+                data += ltv->len + 1;
+        }
+ 
+-       if (select_channels(channels, pac->locations, &conf->channels, max_frames) < 0) {
++       if (select_channels(channels, pac->locations, &conf->channels, 2) < 0) {
+                spa_log_debug(log, "invalid channel configuration: 0x%02x %u",
+                                channels, max_frames);
+                return false;
+@@ -297,10 +297,6 @@
+        /* Default: 1 per channel (BAP v1.0.1 Sec 4.3.1) */
+        if (max_frames < 0)
+                max_frames = get_num_channels(conf->channels);
+-       if (max_frames < get_num_channels(conf->channels)) {
+-               spa_log_debug(log, "invalid max frames per SDU: %u", max_frames);
+-               return false;
+-       }
+ 
+        if (framelen_min < LC3_MIN_FRAME_BYTES || framelen_max > LC3_MAX_FRAME_BYTES) {
+                spa_log_debug(log, "invalid framelen: %u %u", framelen_min, framelen_max);
+

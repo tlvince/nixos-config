@@ -363,6 +363,7 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    package = pkgs.callPackage ./packages/pipewire/pipewire.nix {};
   };
 
   services.udev.extraRules = ''
