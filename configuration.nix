@@ -172,16 +172,16 @@
               ++ [
                 (prev.fetchpatch {
                   url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/127.patch";
-                  sha256 = "sha256-eVETulY9oQGvSEtvUAvcek9ezkCjuK/WzSZ9vrAQ6oc=";
+                  sha256 = "sha256-vfiAWlft9zEksk5kHjeAxkzomtL50o3fuhkQLqrz/CQ=";
                 })
-                (prev.fetchpatch {
-                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/128.patch";
-                  sha256 = "sha256-69yca9gbVB1RglpcD0WMB1pHzf/SjlDdu4aB4wsDBQI=";
-                })
-                (prev.fetchpatch {
-                  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/129.patch";
-                  sha256 = "sha256-US/rmSK3M77XWZIfRqjDKZl8ksq/RhH1ilBPOrOqA5w=";
-                })
+                #(prev.fetchpatch {
+                #  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/128.patch";
+                #  sha256 = "sha256-69yca9gbVB1RglpcD0WMB1pHzf/SjlDdu4aB4wsDBQI=";
+                #})
+                #(prev.fetchpatch {
+                #  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/129.patch";
+                #  sha256 = "sha256-US/rmSK3M77XWZIfRqjDKZl8ksq/RhH1ilBPOrOqA5w=";
+                #})
               ];
 
             # explicitly fetching the source to make sure we're patching over 0.13 (this isn't strictly needed):
