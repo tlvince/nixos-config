@@ -364,6 +364,8 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    # https://github.com/bluez/bluez/issues/713#issuecomment-1881686741
+    package = pkgs.callPackage ./packages/pipewire/pipewire.nix {};
   };
 
   services.udev.extraRules = ''
