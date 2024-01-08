@@ -34,6 +34,7 @@
     diff-so-fancy
     ectool.packages."${pkgs.system}".ectool
     efm-langserver
+    exiftool
     fd
     foot
     fzf
