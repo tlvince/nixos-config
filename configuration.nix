@@ -172,7 +172,7 @@
               ++ [
                 (prev.fetchpatch {
                   url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/127.patch";
-                  sha256 = "sha256-vfiAWlft9zEksk5kHjeAxkzomtL50o3fuhkQLqrz/CQ=";
+                  sha256 = "sha256-k5c2Gy2r/my3Uc9rBVdnQqr5Fe/QBPcvLLuF8mI8zmA=";
                 })
                 #(prev.fetchpatch {
                 #  url = "https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/128.patch";
