@@ -82,7 +82,7 @@ assert ldacbtSupport -> bluezSupport; let
 
   self = stdenv.mkDerivation rec {
     pname = "pipewire";
-    version = "1.0.0";
+    version = "1.0.0-git.70ffbaed745c23b8415f17745d76623faa4190f1";
 
     outputs = [
       "out"
@@ -95,9 +95,9 @@ assert ldacbtSupport -> bluezSupport; let
 
     src = fetchFromGitLab {
       domain = "gitlab.freedesktop.org";
-      owner = "pvir";
+      owner = "pipewire";
       repo = "pipewire";
-      rev = "6510420dd12546021c5d4924fd1a85a91ca5bf90";
+      rev = "70ffbaed745c23b8415f17745d76623faa4190f1";
       sha256 = "sha256-aAxzijBgVHTnXaH6K7NcctPdqsPmOV9+j+aIQw2nmpw=";
     };
 

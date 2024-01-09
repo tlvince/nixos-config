@@ -21,13 +21,13 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "bluez";
-  version = "5.71-git";
+  version = "5.71-git.c85546cba715afee020e61bd0a44499e618d0371";
 
   src = fetchFromGitHub {
     owner = "bluez";
     repo = "bluez";
-    rev = "7ad5669402c9acff8e4cc808edc12a41df36654e";
-    sha256 = "sha256-bgaDBIHmxpx/0ElOBhhFVAGzHfhXCWq0VRU4zhs7u/s=";
+    rev = "c85546cba715afee020e61bd0a44499e618d0371";
+    sha256 = "sha256-XWWnTuQbJyUsmsCXl5zsf2yYF7wW0c58dKMHx6HOnl4=";
   };
 
   buildInputs = [
