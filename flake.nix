@@ -10,6 +10,8 @@
     ectool.url = "github:tlvince/ectool.nix";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
+    lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
+    lanzaboote.url = "github:nix-community/lanzaboote";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     tmux-colours-onedark.flake = false;
@@ -22,6 +24,7 @@
     disko,
     ectool,
     home-manager,
+    lanzaboote,
     nixos-hardware,
     tmux-colours-onedark,
     ...
@@ -49,6 +52,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.users.tlv = import ./home.nix;
           }
+          lanzaboote.nixosModules.lanzaboote
           nixos-hardware.nixosModules.framework-13-7040-amd
         ];
       };
