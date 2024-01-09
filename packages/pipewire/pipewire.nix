@@ -98,7 +98,7 @@ assert ldacbtSupport -> bluezSupport; let
       owner = "pipewire";
       repo = "pipewire";
       rev = "70ffbaed745c23b8415f17745d76623faa4190f1";
-      sha256 = "sha256-aAxzijBgVHTnXaH6K7NcctPdqsPmOV9+j+aIQw2nmpw=";
+      sha256 = "sha256-pDWjZp0xY8oqMbYmA64M2m0MhR985meDSeJC0NgZXwA=";
     };
 
     patches = [
