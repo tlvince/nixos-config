@@ -170,6 +170,21 @@
   nixpkgs.overlays = [
     (
       final: prev: {
+        linux-firmware = prev.linux-firmware.overrideAttrs (
+          old: {
+            version = "4f3022dc1f90e29705d892996b89a9cec3e183c4";
+            src = pkgs.fetchgit {
+              url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
+              rev = "4f3022dc1f90e29705d892996b89a9cec3e183c4";
+              sha256 = "sha256-bNcYMbNk/tF7tRAfQgIqZuZ7p9MgrlJrwYIVCtDy0Kc=";
+            };
+            outputHash = "sha256-PqrToQoIlJYWaPqfiatDXNUbKL3aHJmZ+pq1XU83G2o=";
+          }
+        );
+      }
+    )
+    (
+      final: prev: {
         power-profiles-daemon = prev.power-profiles-daemon.overrideAttrs (
           old: {
             version = "0.13-1";
