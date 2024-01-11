@@ -93,6 +93,14 @@
     username = "tlv";
   };
 
+  # Workaround for "unable to download 'https://git.sr.ht/~rycee"
+  # https://github.com/nix-community/home-manager/issues/4879
+  manual = {
+    html.enable = false;
+    manpages.enable = false;
+    json.enable = false;
+  };
+
   programs.firefox = {
     enable = true;
     profiles.default = {
