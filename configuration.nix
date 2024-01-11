@@ -147,7 +147,6 @@
   };
 
   hardware.enableAllFirmware = true;
-  hardware.framework.amd-7040.preventWakeOnAC = true;
   hardware.pulseaudio.enable = false;
   hardware.sensor.iio.enable = false;
   hardware.wirelessRegulatoryDatabase = true;
