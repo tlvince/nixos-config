@@ -4,6 +4,7 @@
   lib,
   apple-fonts,
   ectool,
+  power-profiles-daemon,
   ...
 }: {
   imports = [
@@ -182,22 +183,6 @@
         );
       }
     )
-    (
-      final: prev: {
-        power-profiles-daemon = prev.power-profiles-daemon.overrideAttrs (
-          old: {
-            version = "0.13-git";
-            src = prev.fetchFromGitLab {
-              domain = "gitlab.freedesktop.org";
-              owner = "upower";
-              repo = "power-profiles-daemon";
-              rev = "53fb59a2b90f837375bec633ee59c00140f4d18d";
-              sha256 = "sha256-ErHy+shxZQ/aCryGhovmJ6KmAMt9OZeQGDbHIkC0vUE=";
-            };
-          }
-        );
-      }
-    )
   ];
 
   programs.firefox.enable = true;
@@ -360,6 +345,11 @@
   services.gnome.sushi.enable = true;
 
   services.resolved.enable = true;
+
+  services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
+    src = power-profiles-daemon;
+    version = power-profiles-daemon.rev;
+  };
 
   services.pipewire = {
     enable = true;
