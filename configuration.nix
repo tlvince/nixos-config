@@ -172,13 +172,12 @@
       final: prev: {
         linux-firmware = prev.linux-firmware.overrideAttrs (
           old: {
-            version = "4f3022dc1f90e29705d892996b89a9cec3e183c4";
-            src = pkgs.fetchgit {
-              url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
-              rev = "4f3022dc1f90e29705d892996b89a9cec3e183c4";
-              sha256 = "sha256-bNcYMbNk/tF7tRAfQgIqZuZ7p9MgrlJrwYIVCtDy0Kc=";
+            version = "20240115";
+            src = pkgs.fetchurl {
+              url = "mirror://kernel/linux/kernel/firmware/linux-firmware-20240115.tar.xz";
+              hash = "sha256-q3yv8Ju7nmjiuKfD6G0ytl9kRMqk74sKq8qVA9osZ40=";
             };
-            outputHash = "sha256-PqrToQoIlJYWaPqfiatDXNUbKL3aHJmZ+pq1XU83G2o=";
+            outputHash = "sha256-iOQGK1vE05Wcx17hbFJVEW8PcmkHGPcCmO5xZaVQRog=";
           }
         );
       }
