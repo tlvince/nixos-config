@@ -33,7 +33,7 @@
   nixosTests,
   withValgrind ? lib.meta.availableOn stdenv.hostPlatform valgrind,
   valgrind,
-  libcameraSupport ? true,
+  libcameraSupport ? false,
   libcamera,
   libdrm,
   gstreamerSupport ? true,
@@ -82,7 +82,8 @@ assert ldacbtSupport -> bluezSupport; let
 
   self = stdenv.mkDerivation rec {
     pname = "pipewire";
-    version = "1.0.0-git.70ffbaed745c23b8415f17745d76623faa4190f1";
+    # prefer 16khz input for LE Audio
+    version = "1.0.1-git.2";
 
     outputs = [
       "out"
@@ -95,10 +96,10 @@ assert ldacbtSupport -> bluezSupport; let
 
     src = fetchFromGitLab {
       domain = "gitlab.freedesktop.org";
-      owner = "pipewire";
+      owner = "pvir";
       repo = "pipewire";
-      rev = "70ffbaed745c23b8415f17745d76623faa4190f1";
-      sha256 = "sha256-pDWjZp0xY8oqMbYmA64M2m0MhR985meDSeJC0NgZXwA=";
+      rev = "c3f1fcca4b1b4b223669cc1ba18bfb62f416ea54";
+      sha256 = "sha256-NTMdRZ/diFoXNMi0WXvJIY5n6s0BJyakAkWHEY2qhBk=";
     };
 
     patches = [
@@ -136,6 +137,7 @@ assert ldacbtSupport -> bluezSupport; let
         vulkan-headers
         vulkan-loader
         tinycompress
+        libdrm
       ]
       ++ (
         if enableSystemd
@@ -148,7 +150,7 @@ assert ldacbtSupport -> bluezSupport; let
         else [webrtc-audio-processing]
       )
       ++ lib.optionals gstreamerSupport [gst_all_1.gst-plugins-base gst_all_1.gstreamer]
-      ++ lib.optionals libcameraSupport [libcamera libdrm]
+      ++ lib.optional libcameraSupport libcamera
       ++ lib.optional ffmpegSupport ffmpeg
       ++ lib.optionals bluezSupport [bluez libfreeaptx liblc3 sbc fdk_aac libopus]
       ++ lib.optional ldacbtSupport ldacbt
@@ -201,6 +203,7 @@ assert ldacbtSupport -> bluezSupport; let
       "-Drlimits-install=false" # installs to /etc, we won't use this anyway
       "-Dcompress-offload=enabled"
       "-Dman=enabled"
+      "-Dsnap=disabled"
     ];
 
     # Fontconfig error: Cannot load default config file
