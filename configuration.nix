@@ -167,22 +167,6 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [
-    (
-      final: prev: {
-        linux-firmware = prev.linux-firmware.overrideAttrs (
-          old: {
-            version = "20240115";
-            src = pkgs.fetchurl {
-              url = "mirror://kernel/linux/kernel/firmware/linux-firmware-20240115.tar.xz";
-              hash = "sha256-q3yv8Ju7nmjiuKfD6G0ytl9kRMqk74sKq8qVA9osZ40=";
-            };
-            outputHash = "sha256-iOQGK1vE05Wcx17hbFJVEW8PcmkHGPcCmO5xZaVQRog=";
-          }
-        );
-      }
-    )
-  ];
 
   programs.firefox.enable = true;
   programs.zsh.enable = true;
