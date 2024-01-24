@@ -21,11 +21,13 @@
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "bluez";
-  version = "5.72";
+  version = "d994c9d45dad68bc060add77642fdc37834cd7c1";
 
-  src = fetchurl {
-    url = "mirror://kernel/linux/bluetooth/bluez-${finalAttrs.version}.tar.xz";
-    hash = "sha256-SZ1/o0WplsG7ZQ9cZ0nh2SkRH6bs4L4OmGh/7mEkU24=";
+  src = fetchFromGitHub {
+    owner = "bluez";
+    repo = "bluez";
+    rev = "d994c9d45dad68bc060add77642fdc37834cd7c1";
+    hash = "sha256-8smD06TlJau1R2enamZl/jDn8G4u0D8EZ2+UK0DRnhA=";
   };
 
   buildInputs = [

@@ -33,7 +33,7 @@
   nixosTests,
   withValgrind ? lib.meta.availableOn stdenv.hostPlatform valgrind,
   valgrind,
-  libcameraSupport ? true,
+  libcameraSupport ? false,
   libcamera,
   libdrm,
   gstreamerSupport ? true,
@@ -82,7 +82,7 @@ assert ldacbtSupport -> bluezSupport; let
 
   self = stdenv.mkDerivation rec {
     pname = "pipewire";
-    version = "1.0.0-git.70ffbaed745c23b8415f17745d76623faa4190f1";
+    version = "1.0.0-git.831ab5db85e6d3f5edacb6d9776e3eb9a2dec4db";
 
     outputs = [
       "out"
@@ -97,8 +97,8 @@ assert ldacbtSupport -> bluezSupport; let
       domain = "gitlab.freedesktop.org";
       owner = "pipewire";
       repo = "pipewire";
-      rev = "70ffbaed745c23b8415f17745d76623faa4190f1";
-      sha256 = "sha256-pDWjZp0xY8oqMbYmA64M2m0MhR985meDSeJC0NgZXwA=";
+      rev = "831ab5db85e6d3f5edacb6d9776e3eb9a2dec4db";
+      sha256 = "sha256-U6HS2svKot0vI6snIuE42I5SCVXOCrq6kREefhcUJzg=";
     };
 
     patches = [
@@ -125,6 +125,7 @@ assert ldacbtSupport -> bluezSupport; let
         alsa-lib
         dbus
         glib
+        libdrm
         libjack2
         libusb1
         libselinux
@@ -148,7 +149,7 @@ assert ldacbtSupport -> bluezSupport; let
         else [webrtc-audio-processing]
       )
       ++ lib.optionals gstreamerSupport [gst_all_1.gst-plugins-base gst_all_1.gstreamer]
-      ++ lib.optionals libcameraSupport [libcamera libdrm]
+      ++ lib.optional libcameraSupport libcamera
       ++ lib.optional ffmpegSupport ffmpeg
       ++ lib.optionals bluezSupport [bluez libfreeaptx liblc3 sbc fdk_aac libopus]
       ++ lib.optional ldacbtSupport ldacbt
@@ -201,6 +202,7 @@ assert ldacbtSupport -> bluezSupport; let
       "-Drlimits-install=false" # installs to /etc, we won't use this anyway
       "-Dcompress-offload=enabled"
       "-Dman=enabled"
+      "-Dsnap=disabled"
     ];
 
     # Fontconfig error: Cannot load default config file
