@@ -85,6 +85,7 @@
 
   environment.variables = {
     EDITOR = "nvim";
+    QT_QPA_PLATFORM = "wayland";
   };
 
   fonts = {
