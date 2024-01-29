@@ -137,17 +137,6 @@
   # Early KMS unnecessarily slows boot
   hardware.amdgpu.loadInInitrd = false;
 
-  # TODO: remove after https://github.com/NixOS/nixpkgs/pull/277321
-  hardware.bluetooth.package = pkgs.callPackage ./packages/bluez.nix {};
-  # https://gitlab.freedesktop.org/pipewire/pipewire/-/wikis/LE-Audio-+-LC3-support?version_id=a352c544c9551bca40d92929fcfda17583fea494#how-to-enable
-  hardware.bluetooth.settings = {
-    General = {
-      ControllerMode = "le";
-      Experimental = true;
-      KernelExperimental = "6fbaf188-05e0-496a-9885-d6ddfdb4e03e";
-    };
-  };
-
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
   hardware.sensor.iio.enable = false;
@@ -340,11 +329,6 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
-    # https://github.com/bluez/bluez/issues/713#issuecomment-1881686741
-    package = pkgs.callPackage ./packages/pipewire/pipewire.nix {};
-    wireplumber.package = pkgs.wireplumber.override {
-      pipewire = pkgs.callPackage ./packages/pipewire/pipewire.nix {};
-    };
   };
 
   services.udev.extraRules = ''
