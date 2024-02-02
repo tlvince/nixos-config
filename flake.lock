@@ -184,11 +184,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1706746258,
-        "narHash": "sha256-9iNK1cP/dxCFh1NYVLJHijoJxlT3bXxTQToMDNZtjzU=",
+        "lastModified": 1706798041,
+        "narHash": "sha256-BbvuF4CsVRBGRP8P+R+JUilojk0M60D7hzqE0bEvJBQ=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "2db6a2a42930ffff0ffd690dec3f2c0b6f4fe66d",
+        "rev": "4d53427bce7bf3d17e699252fd84dc7468afc46e",
         "type": "github"
       },
       "original": {
@@ -225,11 +225,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1706767243,
-        "narHash": "sha256-0Am7wcB4Tt4t6IZLRWv9fivfgyKmVoMczigoetKeuiQ=",
+        "lastModified": 1706834982,
+        "narHash": "sha256-3CfxA7gZ+DVv/N9Pvw61bV5Oe/mWfxYPyVQGqp9TMJA=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "42d7e506777436d5e98ca02bd4a5f2da451cf485",
+        "rev": "83e571bb291161682b9c3ccd48318f115143a550",
         "type": "github"
       },
       "original": {
@@ -292,11 +292,11 @@
       "flake": false,
       "locked": {
         "host": "gitlab.freedesktop.org",
-        "lastModified": 1705301399,
-        "narHash": "sha256-Kjljrf/xhwbLtNkKDQWKMVlflQDurk7727ZwgU2p/Vc=",
+        "lastModified": 1706268017,
+        "narHash": "sha256-0V0zH743F6032dxRh1f6PhEypuLCrUgvCpAOMZJ0htw=",
         "owner": "upower",
         "repo": "power-profiles-daemon",
-        "rev": "53fb59a2b90f837375bec633ee59c00140f4d18d",
+        "rev": "19275d52fa89c18fff51f289d3e552959710e50a",
         "type": "gitlab"
       },
       "original": {
