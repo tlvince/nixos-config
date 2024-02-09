@@ -6,6 +6,14 @@
   ...
 }: {
   dconf.settings = {
+    "org/gnome/desktop/background" = {
+      color-shading-type = "solid";
+      picture-options = "zoom";
+      picture-uri = "file://${config.xdg.dataHome}/backgrounds/ZorinMountainFog1.jpg";
+      picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/ZorinMountainFog2.jpg";
+      primary-color = "#3465a4";
+      secondary-color = "#000000";
+    };
     "org/gnome/desktop/input-sources" = {
       sources = [
         (lib.hm.gvariant.mkTuple ["xkb" "us+altgr-intl"])
@@ -55,6 +63,14 @@
     homeDirectory = "/home/tlv";
     file = {
       ".digrc".text = "+noall +noanswer";
+      "${config.xdg.dataHome}/backgrounds/ZorinMountainFog1.jpg".source = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/main/Dynamic_Wallpapers/ZorinMountainFog/ZorinMountainFog1.jpg";
+        hash = "sha256-bYoC+0UHUD/JomBkxRnNsKE4R41jj+RDY2cpYf3dWdA=";
+      };
+      "${config.xdg.dataHome}/backgrounds/ZorinMountainFog2.jpg".source = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/main/Dynamic_Wallpapers/ZorinMountainFog/ZorinMountainFog2.jpg";
+        hash = "sha256-6T5YoBKV5zkwFJ5Wf0D3hGHRKsS9cFWxgVxpjInZ0m8=";
+      };
     };
     sessionVariables = {
       # Zsh's "< file" built-in pager
