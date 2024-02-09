@@ -26,6 +26,7 @@
       document-font-name = "Sans 11";
       font-name = "Sans 11";
       enable-animations = false;
+      enable-hot-corners = false;
       font-hinting = "none";
       font-antialiasing = "grayscale";
       monospace-font-name = "Monospace 10";
@@ -55,6 +56,13 @@
         "appindicatorsupport@rgcjonas.gmail.com"
         "light-style@gnome-shell-extensions.gcampax.github.com"
         "nightthemeswitcher@romainvigier.fr"
+      ];
+      favorite-apps = [
+        "firefox.desktop"
+        "org.codeberg.dnkl.foot.desktop"
+        "org.gnome.Nautilus.desktop"
+        "org.gnome.Geary.desktop"
+        "org.gnome.Calendar.desktop"
       ];
     };
   };
