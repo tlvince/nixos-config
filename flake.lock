@@ -225,11 +225,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1707211557,
-        "narHash": "sha256-LTKTzZ6fM5j8XWXf51IMBzDaOaJg9kYWLUZxoIhzRN8=",
+        "lastModified": 1707842204,
+        "narHash": "sha256-M+HAq1qWQBi/gywaMZwX0odU+Qb/XeqVeANGKRBDOwU=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "6e5cc385fc8cf5ca6495d70243074ccdea9f64c7",
+        "rev": "f1b2f71c86a5b1941d20608db0b1e88a07d31303",
         "type": "github"
       },
       "original": {
@@ -292,11 +292,11 @@
       "flake": false,
       "locked": {
         "host": "gitlab.freedesktop.org",
-        "lastModified": 1707154394,
-        "narHash": "sha256-UC93VIlTGtQeMhTRhCrVKq7VgPBvQmfvsd7ZF4KPVDc=",
+        "lastModified": 1707887869,
+        "narHash": "sha256-Y5WVOXNxPzTAIDV0zKWaTrPCLIB4nMn43Q5c2vzRYpo=",
         "owner": "upower",
         "repo": "power-profiles-daemon",
-        "rev": "b26d928ddd2309375519c647f19920e4d96df8f6",
+        "rev": "40f3361473433b8c779d42e5a9f643bd733813f9",
         "type": "gitlab"
       },
       "original": {
