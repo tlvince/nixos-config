@@ -14,8 +14,6 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    power-profiles-daemon.flake = false;
-    power-profiles-daemon.url = "gitlab:upower/power-profiles-daemon?host=gitlab.freedesktop.org";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };
@@ -28,7 +26,6 @@
     home-manager,
     lanzaboote,
     nixos-hardware,
-    power-profiles-daemon,
     tmux-colours-onedark,
     ...
   } @ inputs: {

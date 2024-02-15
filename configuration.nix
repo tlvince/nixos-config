@@ -4,7 +4,6 @@
   lib,
   apple-fonts,
   ectool,
-  power-profiles-daemon,
   ...
 }: {
   imports = [
@@ -321,8 +320,14 @@
   services.resolved.enable = true;
 
   services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
-    src = power-profiles-daemon;
-    version = power-profiles-daemon.rev;
+    src = pkgs.fetchFromGitLab {
+      domain = "gitlab.freedesktop.org";
+      owner = "upower";
+      repo = "power-profiles-daemon";
+      rev = "40f3361473433b8c779d42e5a9f643bd733813f9";
+      sha256 = "sha256-Y5WVOXNxPzTAIDV0zKWaTrPCLIB4nMn43Q5c2vzRYpo=";
+    };
+    version = "40f3361473433b8c779d42e5a9f643bd733813f9";
   };
 
   services.pipewire = {
