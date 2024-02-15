@@ -166,8 +166,8 @@
               domain = "gitlab.freedesktop.org";
               owner = "upower";
               repo = "power-profiles-daemon";
-              rev = "53fb59a2b90f837375bec633ee59c00140f4d18d";
-              sha256 = "sha256-ErHy+shxZQ/aCryGhovmJ6KmAMt9OZeQGDbHIkC0vUE=";
+              rev = "40f3361473433b8c779d42e5a9f643bd733813f9";
+              sha256 = "sha256-Y5WVOXNxPzTAIDV0zKWaTrPCLIB4nMn43Q5c2vzRYpo=";
             };
           }
         );
