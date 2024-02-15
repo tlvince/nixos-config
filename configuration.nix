@@ -156,24 +156,6 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
-  nixpkgs.overlays = [
-    (
-      final: prev: {
-        power-profiles-daemon = prev.power-profiles-daemon.overrideAttrs (
-          old: {
-            version = "0.13-git";
-            src = prev.fetchFromGitLab {
-              domain = "gitlab.freedesktop.org";
-              owner = "upower";
-              repo = "power-profiles-daemon";
-              rev = "40f3361473433b8c779d42e5a9f643bd733813f9";
-              sha256 = "sha256-Y5WVOXNxPzTAIDV0zKWaTrPCLIB4nMn43Q5c2vzRYpo=";
-            };
-          }
-        );
-      }
-    )
-  ];
 
   programs.firefox.enable = true;
   programs.zsh.enable = true;
@@ -336,6 +318,17 @@
   services.gnome.sushi.enable = true;
 
   services.resolved.enable = true;
+
+  services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
+    src = pkgs.fetchFromGitLab {
+      domain = "gitlab.freedesktop.org";
+      owner = "upower";
+      repo = "power-profiles-daemon";
+      rev = "40f3361473433b8c779d42e5a9f643bd733813f9";
+      sha256 = "sha256-Y5WVOXNxPzTAIDV0zKWaTrPCLIB4nMn43Q5c2vzRYpo=";
+    };
+    version = "40f3361473433b8c779d42e5a9f643bd733813f9";
+  };
 
   services.pipewire = {
     enable = true;
