@@ -286,7 +286,7 @@
   services.gnome.core-shell.enable = true;
   services.gnome.core-utilities.enable = false;
   services.gnome.games.enable = false;
-  services.hardware.bolt.enable = false;
+  services.hardware.bolt.enable = true;
   services.printing.enable = false;
   services.xserver.desktopManager.gnome.enable = true;
   services.xserver.displayManager.gdm.enable = true;
