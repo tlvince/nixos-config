@@ -59,6 +59,7 @@
     gnupg
     htop
     jq
+    kdiskmark
     libreoffice
     libva-utils
     loupe
