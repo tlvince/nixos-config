@@ -321,14 +321,29 @@
   services.resolved.enable = true;
 
   services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
+    version = "0c301fe93f7237c04e28ff98a68337373c3b8766";
     src = pkgs.fetchFromGitLab {
       domain = "gitlab.freedesktop.org";
       owner = "upower";
       repo = "power-profiles-daemon";
-      rev = "40f3361473433b8c779d42e5a9f643bd733813f9";
-      sha256 = "sha256-Y5WVOXNxPzTAIDV0zKWaTrPCLIB4nMn43Q5c2vzRYpo=";
+      rev = "0c301fe93f7237c04e28ff98a68337373c3b8766";
+      sha256 = "sha256-L2e8EIt8V4tS8/hURHxqKMODmyxSbJ1JIpWm90aHEic=";
     };
-    version = "40f3361473433b8c779d42e5a9f643bd733813f9";
+    mesonFlags =
+      pkgs.power-profiles-daemon.mesonFlags
+      ++ [
+        "-Dpylint=disabled"
+        "-Dbashcomp=disabled"
+        "-Dzshcomp=${placeholder "out"}/share/zsh/site-functions"
+        # TODO: pending https://nixpk.gs/pr-tracker.html?pr=289120
+        "-Dmanpage=disabled"
+      ];
+    postPatch = ''
+      patchShebangs --build \
+        src/powerprofilesctl \
+        tests/integration-test.py \
+        tests/unittest_inspector.py
+    '';
   };
 
   services.pipewire = {
