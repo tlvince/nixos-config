@@ -321,7 +321,7 @@
   services.resolved.enable = true;
 
   services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
-    version = "0c301fe93f7237c04e28ff98a68337373c3b8766";
+    version = "0c301fe93f7237c04e28ff98a68337373c3b8766-2";
     src = pkgs.fetchFromGitLab {
       domain = "gitlab.freedesktop.org";
       owner = "upower";
@@ -329,14 +329,17 @@
       rev = "0c301fe93f7237c04e28ff98a68337373c3b8766";
       sha256 = "sha256-L2e8EIt8V4tS8/hURHxqKMODmyxSbJ1JIpWm90aHEic=";
     };
+    nativeBuildInputs =
+      pkgs.power-profiles-daemon.nativeBuildInputs
+      ++ [
+        pkgs.argparse-manpage
+      ];
     mesonFlags =
       pkgs.power-profiles-daemon.mesonFlags
       ++ [
         "-Dpylint=disabled"
         "-Dbashcomp=disabled"
         "-Dzshcomp=${placeholder "out"}/share/zsh/site-functions"
-        # TODO: pending https://nixpk.gs/pr-tracker.html?pr=289120
-        "-Dmanpage=disabled"
       ];
     postPatch = ''
       patchShebangs --build \
