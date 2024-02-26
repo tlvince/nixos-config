@@ -20,7 +20,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Free up disk space
-        uses: easimon/maximize-build-space@v10
+        uses: easimon/maximize-build-space@fc881a613ad2a34aca9c9624518214ebc21dfc0c # v10
         with:
           overprovision-lvm: true
           remove-android: true
