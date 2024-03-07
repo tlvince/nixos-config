@@ -33,6 +33,7 @@
     aspell
     aspellDicts.en
     awscli2
+    bemenu
     brightnessctl
     btrbk
     chromium
@@ -75,6 +76,7 @@
     python3
     sbctl
     signal-desktop
+    sway
     tmux
     tree
     wl-clipboard

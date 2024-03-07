@@ -595,27 +595,30 @@
   wayland.windowManager.sway = {
     enable = true;
 
-    config.input = {
-      "type:keyboard" = {
-        xkb_options = "caps:swapescape";
+    config = {
+      input = {
+        "type:keyboard" = {
+          xkb_options = "caps:escape";
+        };
+        "type:pointer" = {
+          natural_scroll = "enabled";
+        };
+        "type:touchpad" = {
+          tap = "enabled";
+          natural_scroll = "enabled";
+        };
       };
-      "type:pointer" = {
-        natural_scroll = "enabled";
+      menu = "${pkgs.bemenu}/bin/bemenu-run";
+      modifier = "Mod4";
+      output = {
+        "eDP-1" = {
+          scale = "1.5";
+        };
       };
-      "type:touchpad" = {
-        tap = "enabled";
-        natural_scroll = "enabled";
-      };
+      terminal = "${pkgs.foot}/bin/foot --config $XDG_CONFIG_HOME/foot/foot-windowed.ini";
     };
 
-    config.modifier = "Mod4";
-
-    config.output = {
-      "ePD-1" = {
-        scale = "1.5";
-      };
-    };
-
+    package = null;
     xwayland = false;
   };
 
