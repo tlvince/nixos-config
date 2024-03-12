@@ -4,6 +4,7 @@
   lib,
   apple-fonts,
   ectool,
+  power-profiles-daemon,
   ...
 }: {
   imports = [
@@ -322,17 +323,9 @@
 
   services.resolved.enable = true;
 
-  # ❯ cat /sys/devices/system/cpu/cpufreq/policy0/energy_performance_preference
-  # https://gitlab.freedesktop.org/upower/power-profiles-daemon/-/merge_requests/169
   services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
-    version = "f8bea7c205afc4b3101edc31b8e9b35780b0ceb6";
-    src = pkgs.fetchFromGitLab {
-      domain = "gitlab.freedesktop.org";
-      owner = "upower";
-      repo = "power-profiles-daemon";
-      rev = "f8bea7c205afc4b3101edc31b8e9b35780b0ceb6";
-      sha256 = "sha256-+TAZNZOChG4FASdGpBL3mQsFZgUhLrmWFpbxHjTyWgE=";
-    };
+    src = power-profiles-daemon;
+    version = power-profiles-daemon.rev;
     mesonFlags =
       pkgs.power-profiles-daemon.mesonFlags
       ++ [
