@@ -69,7 +69,7 @@
     neovim
     nodejs_20
     pass-wayland
-    pinentry-gnome
+    pinentry-gnome3
     prettierd
     powerstat
     powertop
