@@ -131,7 +131,7 @@
       settings = {
         "dom.security.https_only_mode" = true;
         "extensions.pocket.enabled" = false;
-        "media.ffmpeg.vaapi.enabled" = true;
+        "media.ffmpeg.vaapi.enabled" = false;
         "ui.key.menuAccessKeyFocuses" = false;
       };
     };
@@ -293,7 +293,7 @@
   programs.mpv = {
     enable = true;
     config = {
-      hwdec = "auto";
+      hwdec = "no";
       ytdl-format = "(bestvideo[vcodec^=av01][height<=?2160]/bestvideo[height<=?2160])+bestaudio/best";
     };
   };
