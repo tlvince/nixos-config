@@ -14,7 +14,6 @@
 
   boot.blacklistedKernelModules = ["hid_sensor_hub"];
   boot.extraModprobeConfig = ''
-    options cfg80211 ieee80211_regdom="GB"
     options snd_hda_intel power_save=1
   '';
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -137,13 +136,9 @@
     };
   };
 
-  # Early KMS unnecessarily slows boot
-  hardware.amdgpu.loadInInitrd = false;
-
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
   hardware.sensor.iio.enable = false;
-  hardware.wirelessRegulatoryDatabase = true;
 
   i18n.defaultLocale = "en_GB.UTF-8";
   networking.hostName = "framework";
@@ -281,6 +276,7 @@
     };
   };
 
+  services.fprintd.enable = true;
   services.fstrim.enable = true;
   services.fwupd.enable = true;
 

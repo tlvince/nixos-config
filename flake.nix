@@ -12,7 +12,6 @@
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     power-profiles-daemon.flake = false;
     power-profiles-daemon.url = "gitlab:upower/power-profiles-daemon?host=gitlab.freedesktop.org";
@@ -27,7 +26,6 @@
     ectool,
     home-manager,
     lanzaboote,
-    nixos-hardware,
     power-profiles-daemon,
     tmux-colours-onedark,
     ...
@@ -56,7 +54,6 @@
             home-manager.users.tlv = import ./home.nix;
           }
           lanzaboote.nixosModules.lanzaboote
-          nixos-hardware.nixosModules.framework-13-7040-amd
         ];
       };
     };
