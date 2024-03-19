@@ -17,6 +17,10 @@
     options snd_hda_intel power_save=1
   '';
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [
+    # https://gitlab.freedesktop.org/drm/amd/-/issues/3187
+    "amdgpu.sg_display=0"
+  ];
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
