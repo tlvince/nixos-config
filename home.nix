@@ -290,6 +290,18 @@
 
   programs.home-manager.enable = true;
 
+  programs.htop = {
+    enable = true;
+    settings = {
+      hide_userland_threads = 1;
+      highlight_base_name = 1;
+      screen_tabs = 1;
+      shadow_other_users = 1;
+      show_cpu_frequency = 1;
+      show_program_path = 0;
+    };
+  };
+
   programs.mpv = {
     enable = true;
     config = {
