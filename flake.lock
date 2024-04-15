@@ -273,24 +273,6 @@
         "type": "github"
       }
     },
-    "power-profiles-daemon": {
-      "flake": false,
-      "locked": {
-        "host": "gitlab.freedesktop.org",
-        "lastModified": 1712433911,
-        "narHash": "sha256-wburRtVtg/3dUSpqXLaOsaaBIkm2Z8Xlr7PVx98KwkQ=",
-        "owner": "upower",
-        "repo": "power-profiles-daemon",
-        "rev": "2e00350f922261329c5203706dbb5dc4426972a6",
-        "type": "gitlab"
-      },
-      "original": {
-        "host": "gitlab.freedesktop.org",
-        "owner": "upower",
-        "repo": "power-profiles-daemon",
-        "type": "gitlab"
-      }
-    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -330,7 +312,6 @@
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
-        "power-profiles-daemon": "power-profiles-daemon",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
     },
