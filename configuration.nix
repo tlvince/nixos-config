@@ -4,7 +4,6 @@
   lib,
   apple-fonts,
   ectool,
-  power-profiles-daemon,
   ...
 }: {
   imports = [
@@ -343,18 +342,7 @@
   services.gnome.sushi.enable = true;
 
   services.resolved.enable = true;
-
-  services.power-profiles-daemon.package = pkgs.power-profiles-daemon.overrideAttrs {
-    src = power-profiles-daemon;
-    version = power-profiles-daemon.rev;
-    mesonFlags =
-      pkgs.power-profiles-daemon.mesonFlags
-      ++ [
-        "-Dbashcomp=disabled"
-        "-Dmanpage=disabled"
-        "-Dpylint=disabled"
-      ];
-  };
+  services.power-profiles-daemon.enable = true;
 
   services.pipewire = {
     enable = true;

@@ -13,8 +13,6 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    power-profiles-daemon.flake = false;
-    power-profiles-daemon.url = "gitlab:upower/power-profiles-daemon?host=gitlab.freedesktop.org";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };
@@ -26,7 +24,6 @@
     ectool,
     home-manager,
     lanzaboote,
-    power-profiles-daemon,
     tmux-colours-onedark,
     ...
   } @ inputs: {
