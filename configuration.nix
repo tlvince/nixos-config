@@ -20,6 +20,10 @@
     # https://gitlab.freedesktop.org/drm/amd/-/issues/3187
     "amdgpu.sg_display=0"
   ];
+  boot.kernel.sysctl = {
+    # enable REISUB etc.: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
+    "kernel.sysrq" = 1;
+  };
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.loader.systemd-boot.enable = lib.mkForce false;

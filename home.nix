@@ -52,6 +52,7 @@
       sleep-inactive-battery-type = "suspend";
     };
     "org/gnome/shell" = {
+      disable-user-extensions = true;
       enabled-extensions = [
         "appindicatorsupport@rgcjonas.gmail.com"
         "light-style@gnome-shell-extensions.gcampax.github.com"
