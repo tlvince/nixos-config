@@ -17,8 +17,8 @@
   '';
   boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernel.sysctl = {
-    # enable REISUB etc.: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
-    "kernel.sysrq" = 1;
+    # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
+    "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
   };
   boot.loader.efi.canTouchEfiVariables = true;
 
