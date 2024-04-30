@@ -16,6 +16,7 @@
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
     '';
+    initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
