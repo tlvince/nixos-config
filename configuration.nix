@@ -11,22 +11,25 @@
     ./disko-configuration.nix
   ];
 
-  boot.blacklistedKernelModules = ["hid_sensor_hub"];
-  boot.extraModprobeConfig = ''
-    options snd_hda_intel power_save=1
-  '';
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernel.sysctl = {
-    # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
-    "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
-  };
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  boot.loader.systemd-boot.enable = lib.mkForce false;
-  boot.lanzaboote = {
-    enable = true;
-    configurationLimit = 5;
-    pkiBundle = "/etc/secureboot";
+  boot = {
+    blacklistedKernelModules = ["hid_sensor_hub"];
+    extraModprobeConfig = ''
+      options snd_hda_intel power_save=1
+    '';
+    kernelPackages = pkgs.linuxPackages_latest;
+    kernel.sysctl = {
+      # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
+      "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
+    };
+    lanzaboote = {
+      enable = true;
+      configurationLimit = 5;
+      pkiBundle = "/etc/secureboot";
+    };
+    loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = lib.mkForce false;
+    };
   };
 
   environment.pathsToLink = [
