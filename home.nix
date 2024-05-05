@@ -27,7 +27,7 @@
       font-name = "Sans 11";
       enable-animations = false;
       enable-hot-corners = false;
-      font-hinting = "none";
+      font-hinting = "slight";
       font-antialiasing = "grayscale";
       monospace-font-name = "Monospace 10";
       show-battery-percentage = true;
@@ -52,7 +52,7 @@
       sleep-inactive-battery-type = "suspend";
     };
     "org/gnome/shell" = {
-      disable-user-extensions = true;
+      disable-user-extensions = false;
       enabled-extensions = [
         "appindicatorsupport@rgcjonas.gmail.com"
         "light-style@gnome-shell-extensions.gcampax.github.com"

@@ -75,6 +75,7 @@
     neovim
     nodejs_20
     pass-wayland
+    papers
     pinentry-gnome3
     prettierd
     powerstat
@@ -108,9 +109,9 @@
       antialias = true;
 
       hinting = {
-        enable = false;
+        enable = true;
         autohint = false;
-        style = "none";
+        style = "slight";
       };
 
       subpixel = {
@@ -308,7 +309,7 @@
   services.fstrim.enable = true;
   services.fwupd.enable = true;
 
-  # https://github.com/NixOS/nixpkgs/blob/59e6ccce3ef1dff677840fa5bb71b79ea686ee12/nixos/modules/services/x11/desktop-managers/gnome.nix
+  # https://github.com/NixOS/nixpkgs/blob/9acffcc32acba3f2bd523d007e5e0239deb8e612/nixos/modules/services/x11/desktop-managers/gnome.nix
   services.gnome.core-developer-tools.enable = false;
   services.gnome.core-os-services.enable = true;
   services.gnome.core-shell.enable = true;
@@ -330,15 +331,15 @@
 
   environment.gnome.excludePackages = with pkgs; [
     # services.gnome.core-shell
-    #gnome.nixos-background-info
     gnome.gnome-backgrounds
+    gnome.gnome-shell-extensions
     gnome-tour
     gnome-user-docs
     orca
   ];
 
   # services.gnome.core-utilities
-  programs.evince.enable = true;
+  programs.evince.enable = false;
   programs.file-roller.enable = true;
   programs.geary.enable = true;
   programs.gnome-disks.enable = true;
