@@ -144,14 +144,6 @@
     };
   };
 
-  hardware.bluetooth.settings = {
-    General = {
-      ControllerMode = "le";
-      Experimental = true;
-      KernelExperimental = "6fbaf188-05e0-496a-9885-d6ddfdb4e03e";
-    };
-  };
-
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
   hardware.sensor.iio.enable = false;
