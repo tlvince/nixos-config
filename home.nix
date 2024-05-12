@@ -656,24 +656,6 @@
       ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
     '';
 
-    desktopEntries = {
-      signal-desktop = {
-        name = "Signal";
-        exec = "${pkgs.signal-desktop}/bin/signal-desktop --no-sandbox %U";
-        terminal = false;
-        type = "Application";
-        icon = "signal-desktop";
-        comment = "Private messaging from your desktop";
-        mimeType = ["x-scheme-handler/sgnl" "x-scheme-handler/signalcaptcha"];
-        categories = ["Network" "InstantMessaging" "Chat"];
-        settings = {
-          # Fixes dash icon
-          # See: https://github.com/NixOS/nixpkgs/pull/310587
-          StartupWMClass = "signal";
-        };
-      };
-    };
-
     userDirs = {
       enable = true;
 
