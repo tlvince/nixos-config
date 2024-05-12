@@ -41,6 +41,7 @@
     aspellDicts.en
     awscli2
     bemenu
+    brave
     brightnessctl
     btrbk
     chromium
