@@ -46,6 +46,7 @@
     btrbk
     chromium
     diff-so-fancy
+    dig
     ectool.packages."${pkgs.system}".ectool
     efm-langserver
     exiftool

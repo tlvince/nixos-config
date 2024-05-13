@@ -71,7 +71,7 @@
   home = {
     homeDirectory = "/home/tlv";
     file = {
-      ".digrc".text = "+noall +noanswer";
+      ".digrc".text = "+noall +answer";
       "${config.xdg.dataHome}/backgrounds/ZorinMountainFog1.jpg".source = pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/main/Dynamic_Wallpapers/ZorinMountainFog/ZorinMountainFog1.jpg";
         hash = "sha256-bYoC+0UHUD/JomBkxRnNsKE4R41jj+RDY2cpYf3dWdA=";
