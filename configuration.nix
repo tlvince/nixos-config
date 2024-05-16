@@ -353,11 +353,6 @@
   services.udev.extraRules = ''
     SUBSYSTEM=="pci", ATTR{power/control}="auto"
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
-    # Prevent wake when plugging in AC during suspend. Trade-off: keyboard wake disabled.
-    # Linux 6.8.x quirk only targets BIOS 03.03, see:
-    # https://github.com/torvalds/linux/commit/a55bdad5dfd1efd4ed9ffe518897a21ca8e4e193
-    # Pending: https://lore.kernel.org/platform-driver-x86/20240410141046.433-1-mario.limonciello@amd.com/
-    ACTION=="add", SUBSYSTEM=="serio", DRIVERS=="atkbd", ATTR{power/wakeup}="disabled"
   '';
 
   system.stateVersion = "23.05";
