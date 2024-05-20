@@ -1,0 +1,82 @@
+From: Mario Limonciello <mario.limonciello@amd.com>
+Date: Sun, 19 May 2024 07:41:09 -0500
+Subject: [PATCH] pinctrl: amd: Set up affinity for GPIO lines when enabling interrupt
+
+When a touchpad's attention interrupt is triggered on a different
+CPU than the GPIO controller interrupt multiple CPUs wake up the system
+and can cause higher power consumption than necessary for operating
+the touchpad.
+
+Waking up the additional CPUs is especially unnecessary as the
+irq_ack() callback for pinctrl-amd doesn't do anything.
+
+To solve this save the affinity of the GPIO controller interrupt when
+it's set up and assign that affinity to the GPIO line IRQ.
+
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Hans de Goede <hdegoede@redhat.com>
+Reported-by: Kieran Levin <ktl@frame.work>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218169
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/pinctrl/pinctrl-amd.c | 18 ++++++++++++++++++
+ drivers/pinctrl/pinctrl-amd.h |  1 +
+ 2 files changed, 19 insertions(+)
+
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 7f66ec73199a..0f126caa8dfc 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -561,6 +561,21 @@ static int amd_gpio_irq_set_type(struct irq_data *d, unsigned int type)
+ 	return ret;
+ }
+ 
++static int amd_gpio_set_affinity(struct irq_data *data, const struct cpumask *dest,
++				 bool force)
++{
++	struct gpio_chip *gc = irq_data_get_irq_chip_data(data);
++	struct amd_gpio *gpio_dev = gpiochip_get_data(gc);
++
++	/*
++	 * The affinity is explicitly set to the GPIO controller as amd_irq_ack()
++	 * doesn't do anything and pinning to a different CPU is a needless wakeup.
++	 */
++	irq_data_update_effective_affinity(data, gpio_dev->base_affinity);
++
++	return 0;
++}
++
+ static void amd_irq_ack(struct irq_data *d)
+ {
+ 	/*
+@@ -580,6 +595,7 @@ static const struct irq_chip amd_gpio_irqchip = {
+ 	.irq_set_wake = amd_gpio_irq_set_wake,
+ 	.irq_eoi      = amd_gpio_irq_eoi,
+ 	.irq_set_type = amd_gpio_irq_set_type,
++	.irq_set_affinity = amd_gpio_set_affinity,
+ 	/*
+ 	 * We need to set IRQCHIP_ENABLE_WAKEUP_ON_SUSPEND so that a wake event
+ 	 * also generates an IRQ. We need the IRQ so the irq_handler can clear
+@@ -1163,6 +1179,8 @@ static int amd_gpio_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto out2;
+ 
++	gpio_dev->base_affinity = irq_get_affinity_mask(gpio_dev->irq);
++
+ 	platform_set_drvdata(pdev, gpio_dev);
+ 	acpi_register_wakeup_handler(gpio_dev->irq, amd_gpio_check_wake, gpio_dev);
+ 
+diff --git a/drivers/pinctrl/pinctrl-amd.h b/drivers/pinctrl/pinctrl-amd.h
+index cf59089f2776..1a97c7570374 100644
+--- a/drivers/pinctrl/pinctrl-amd.h
++++ b/drivers/pinctrl/pinctrl-amd.h
+@@ -106,6 +106,7 @@ struct amd_gpio {
+ 	struct platform_device  *pdev;
+ 	u32			*saved_regs;
+ 	int			irq;
++	const struct cpumask	*base_affinity;
+ };
+ 
+ /*  KERNCZ configuration*/
+-- 
+2.43.0
