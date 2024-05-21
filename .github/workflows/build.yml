@@ -35,7 +35,7 @@ jobs:
       - name: Set up GitHub Actions cache
         uses: DeterminateSystems/magic-nix-cache-action@87e8236f46702ab0ce5a058b605a173ec88d618e # v6
       - name: Set up public cache
-        uses: cachix/cachix-action@18cf96c7c98e048e10a83abd92116114cd8504be # v14
+        uses: cachix/cachix-action@ad2ddac53f961de1989924296a1f236fcfbaa4fc # v15
         with:
           name: tlvince-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
