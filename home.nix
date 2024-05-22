@@ -62,7 +62,7 @@
         "firefox.desktop"
         "org.codeberg.dnkl.foot.desktop"
         "org.gnome.Nautilus.desktop"
-        "org.gnome.Geary.desktop"
+        "org.gnome.Evolution.desktop"
         "org.gnome.Calendar.desktop"
       ];
     };
@@ -616,7 +616,7 @@
   };
 
   wayland.windowManager.sway = {
-    enable = true;
+    enable = false;
 
     config = {
       input = {

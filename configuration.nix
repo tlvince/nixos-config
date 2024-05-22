@@ -40,7 +40,6 @@
     aspell
     aspellDicts.en
     awscli2
-    bemenu
     brave
     brightnessctl
     btrbk
@@ -49,6 +48,7 @@
     dig
     ectool.packages."${pkgs.system}".ectool
     efm-langserver
+    evolution
     exiftool
     fd
     foot
@@ -68,14 +68,15 @@
     gnumake
     gnupg
     htop
+    jpegoptim
     jq
-    kdiskmark
     libreoffice
     libva-utils
     loupe
     mpv
     neovim
     nodejs_20
+    optipng
     pass-wayland
     papers
     pinentry-gnome3
@@ -86,7 +87,6 @@
     python3
     sbctl
     signal-desktop
-    sway
     tmux
     tree
     wl-clipboard
@@ -336,7 +336,7 @@
   # services.gnome.core-utilities
   programs.evince.enable = false;
   programs.file-roller.enable = true;
-  programs.geary.enable = true;
+  programs.geary.enable = false;
   programs.gnome-disks.enable = true;
   programs.seahorse.enable = true;
   services.gnome.sushi.enable = true;
