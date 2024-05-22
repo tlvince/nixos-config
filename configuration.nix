@@ -18,6 +18,15 @@
     '';
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "cros-charge-control";
+        patch = pkgs.fetchurl {
+          url = "https://lore.kernel.org/lkml/20240519-cros_ec-charge-control-v1-0-baf305dc79b8@weissschuh.net/t.mbox.gz";
+          hash = "sha256-iyYJbRc8zqGr57pvePUSXsvryAOutj5LcoILo7VQcnQ=";
+        };
+      }
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
