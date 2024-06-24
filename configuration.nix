@@ -81,6 +81,7 @@
     papers
     pinentry-gnome3
     prettierd
+    podman-compose
     powerstat
     powertop
     pure-prompt
@@ -363,5 +364,14 @@
     shell = pkgs.zsh;
     isNormalUser = true;
     extraGroups = ["wheel"];
+  };
+
+  virtualisation.containers.enable = true;
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
   };
 }
