@@ -57,11 +57,11 @@
     gh
     git
     gnome-text-editor
-    gnome.gnome-calculator
-    gnome.gnome-calendar
+    gnome-calculator
+    gnome-calendar
     gnome.gnome-clocks
     gnome.gnome-contacts
-    gnome.nautilus
+    nautilus
     gnomeExtensions.appindicator
     gnomeExtensions.light-style
     gnomeExtensions.night-theme-switcher
@@ -196,11 +196,11 @@
       auth       optional                    pam_permit.so
       auth       required                    pam_env.so
       auth       [success=ok default=1]      ${pkgs.gnome.gdm}/lib/security/pam_gdm.so
-      auth       optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so
+      auth       optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so
       account    include                     login
       password   required                    pam_deny.so
       session    include                     login
-      session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
+      session    optional                    ${pkgs.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
     '';
   };
 
