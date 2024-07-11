@@ -141,7 +141,7 @@
       settings = {
         "dom.security.https_only_mode" = true;
         "extensions.pocket.enabled" = false;
-        "media.ffmpeg.vaapi.enabled" = false;
+        "media.ffmpeg.vaapi.enabled" = true;
         "ui.key.menuAccessKeyFocuses" = false;
       };
     };
