@@ -13,6 +13,21 @@
 
   boot = {
     blacklistedKernelModules = ["hid_sensor_hub"];
+    extraModulePackages = [
+      (pkgs.callPackage ./packages/amdgpu-kernel-module.nix {
+        kernel = config.boot.kernelPackages.kernel;
+        patches = [
+          (pkgs.fetchpatch {
+            url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=13b322789fae1d6a1fad2c09887fbd9c25ecddc4";
+            sha256 = "sha256-Vgs/WJ/LsuH8xGhmID1WUH0N2JTzMaCUWtOz5EdQA4Q=";
+          })
+          (pkgs.fetchpatch {
+            url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=c6b76db6ce46eab7d186b68b5ed4bea4d3800161";
+            sha256 = "sha256-Qpwd7H8LXNU8AD7pda8z7ziOt4vPIfglj6L5AvJqQ7w=";
+          })
+        ];
+      })
+    ];
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
     '';
