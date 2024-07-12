@@ -5,7 +5,11 @@
   apple-fonts,
   ectool,
   ...
-}: {
+}: let
+  amdgpu-kernel-module = pkgs.callPackage ./packages/amdgpu.nix {
+    kernel = config.boot.kernelPackages.kernel;
+  };
+in {
   imports = [
     ./hardware-configuration.nix
     ./disko-configuration.nix
@@ -17,26 +21,18 @@
       options snd_hda_intel power_save=1
     '';
     extraModulePackages = [
-      (pkgs.callPackage ./packages/amdgpu.nix
-        {
-          kernel = config.boot.kernelPackages.kernel;
-          patches = [
-            {
-              name = "drm/amdgpu/vcn: identify unified queue in sw init";
-              patch = pkgs.fetchpatch {
-                url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=13b322789fae1d6a1fad2c09887fbd9c25ecddc4";
-                sha256 = "sha256-Vgs/WJ/LsuH8xGhmID1WUH0N2JTzMaCUWtOz5EdQA4Q=";
-              };
-            }
-            {
-              name = "drm/amdgpu/vcn: not pause dpg for unified queue";
-              patch = pkgs.fetchpatch {
-                url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=c6b76db6ce46eab7d186b68b5ed4bea4d3800161";
-                sha256 = "sha256-Qpwd7H8LXNU8AD7pda8z7ziOt4vPIfglj6L5AvJqQ7w=";
-              };
-            }
-          ];
-        })
+      (amdgpu-kernel-module.overrideAttrs (_: {
+        patches = [
+          (pkgs.fetchpatch {
+            url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=13b322789fae1d6a1fad2c09887fbd9c25ecddc4";
+            sha256 = "sha256-Vgs/WJ/LsuH8xGhmID1WUH0N2JTzMaCUWtOz5EdQA4Q=";
+          })
+          (pkgs.fetchpatch {
+            url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=c6b76db6ce46eab7d186b68b5ed4bea4d3800161";
+            sha256 = "sha256-Qpwd7H8LXNU8AD7pda8z7ziOt4vPIfglj6L5AvJqQ7w=";
+          })
+        ];
+      }))
     ];
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
