@@ -95,17 +95,41 @@
       ZSHZ_CMD = "j";
 
       # https://telemetry.timseverien.com/opt-out/
-      # https://consoledonottrack.com/
-      ASTRO_TELEMETRY_DISABLED = 1;
-      AZURE_CORE_COLLECT_TELEMETRY = 0;
-      DISABLE_ZAPIER_ANALYTICS = 1;
-      DOTNET_CLI_TELEMETRY_OPTOUT = 1;
-      EXPO_NO_TELEMETRY = 1;
-      GATSBY_TELEMETRY_DISABLED = 1;
+      # https://github.com/jeremy-code/dotfiles/blob/22979c1132b33c39fe59a07a2d865b0121cc2c6b/oh-my-zsh/telemetry.zsh
+      ALGOLIA_CLI_TELEMETRY = 0; # Algolia
+      AMPLIFY_DISABLE_TELEMETRY = 1; # AWS Amplify
+      APOLLO_TELEMETRY_DISABLED = 1; # Apollo Router/Rover
+      ARDUINO_METRICS_ENABLED = "false"; # Arduino
+      ASTRO_TELEMETRY_DISABLED = 1; # Astro
+      AZURE_CORE_COLLECT_TELEMETRY = 0; # Azure
+      CALCOM_TELEMTRY_DISABLED = 1; # Cal.com
+      CHECKPOINT_DISABLE = 1; # Prisma, Terraform
+      CLOUDSDK_CORE_DISABLE_USAGE_REPORTING = "true"; # Google Cloud SDK
+      DATAHUB_TELEMETRY_ENABLED = "false"; # DataHub
+      DA_TEST_DISABLE_TELEMETRY = 1; # JavaScript Debugger (VSCode)
+      DDB_LOCAL_TELEMETRY = 0; # DynamoDB
+      DISABLE_ZAPIER_ANALYTICS = 1; # Zapier
+      DOTNET_CLI_TELEMETRY_OPTOUT = 1; # .NET
+      DOTNET_INTERACTIVE_CLI_TELEMETRY_OPTOUT = 1; # .NET Interactive
+      DO_NOT_TRACK = 1; # https://consoledonottrack.com
+      EXPO_NO_TELEMETRY = 1; # Expo
+      GATSBY_TELEMETRY_DISABLED = 1; # Gatsby
+      GOTELEMETRY = "false"; # Go
+      HASURA_GRAPHQL_ENABLE_TELEMETRY = "false"; # Hasura
       HOMEBREW_NO_ANALYTICS = 1;
-      NEXT_TELEMETRY_DISABLED = 1;
-      SAM_CLI_TELEMETRY = 0;
+      MSSQL_TELEMETRY_ENABLED = "false"; # Azure SQL Edge
+      NEXT_TELEMETRY_DISABLED = 1; # Next.js
+      NG_CLI_ANALYTICS = "false"; # Angular CLI
+      NUXT_TELEMETRY_DISABLED = 1; # Nuxt.js
+      SAM_CLI_TELEMETRY = 0; # AWS SAM
+      SFDX_DISABLE_TELEMETRY = "true"; # Salesforce CLI
+      SLS_TELEMETRY_DISABLED = 1; # Serverless Framework
+      SST_TELEMETRY_DISABLED = 1; # SST
+      STORYBOOK_DISABLE_TELEMETRY = 1; # Storybook
+      STRAPI_TELEMETRY_DISABLED = "true";
+      STRIPE_CLI_TELEMETRY_OPTOUT = 1; # Stripe
       TELEMETRY_DISABLED = 1;
+      YARN_ENABLE_TELEMETRY = 0; # Yarn
 
       # Workaround a GNOME bug for foot, see:
       # https://codeberg.org/dnkl/foot/issues/1426
