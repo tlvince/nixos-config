@@ -168,6 +168,15 @@
   hardware.sensor.iio.enable = false;
 
   i18n.defaultLocale = "en_GB.UTF-8";
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      # Expo
+      8081
+    ];
+  };
+
   networking.hostName = "framework";
 
   nix.gc = {
