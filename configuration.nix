@@ -22,15 +22,15 @@
       {
         name = "drm/amdgpu/vcn: identify unified queue in sw init";
         patch = pkgs.fetchpatch {
-          url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=13b322789fae1d6a1fad2c09887fbd9c25ecddc4";
-          sha256 = "sha256-Vgs/WJ/LsuH8xGhmID1WUH0N2JTzMaCUWtOz5EdQA4Q=";
+          url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=23fddba4039916caa6a96052732044ddcf514886";
+          sha256 = "sha256-SdRJbXGNaS17QPDhfkdrCHV8XsQU1oVRUQL9w0/Xgic=";
         };
       }
       {
         name = "drm/amdgpu/vcn: not pause dpg for unified queue";
         patch = pkgs.fetchpatch {
-          url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=c6b76db6ce46eab7d186b68b5ed4bea4d3800161";
-          sha256 = "sha256-Qpwd7H8LXNU8AD7pda8z7ziOt4vPIfglj6L5AvJqQ7w=";
+          url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=3941fd6be7cf050225db4b699757969f8950e2ce";
+          sha256 = "sha256-EoM2leGLKm5PPQs1ik1yuJMV3V7MEegbSD6hmrDsNF0=";
         };
       }
     ];
