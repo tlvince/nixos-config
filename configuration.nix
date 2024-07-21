@@ -380,10 +380,9 @@
     SUBSYSTEM=="pci", ATTR{power/control}="auto"
     # USB auto suspend
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
-    # Power switching
+    # Power switching, power saver handled by GNOME when low capacity (20%)
+    SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced"
     SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance"
-    SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity_level}=="Normal", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced"
-    SUBSYSTEM=="power_supply", ATTR{status}=="Discharging", ATTR{capacity_level}=="Low", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver"
   '';
 
   system.stateVersion = "23.05";
