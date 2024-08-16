@@ -128,9 +128,9 @@
       antialias = true;
 
       hinting = {
-        enable = true;
+        enable = false;
         autohint = false;
-        style = "slight";
+        style = "none";
       };
 
       subpixel = {

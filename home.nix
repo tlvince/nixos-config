@@ -27,7 +27,7 @@
       font-name = "Sans 11";
       enable-animations = false;
       enable-hot-corners = false;
-      font-hinting = "slight";
+      font-hinting = "none";
       font-antialiasing = "grayscale";
       monospace-font-name = "Monospace 10";
       show-battery-percentage = true;
