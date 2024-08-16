@@ -38,11 +38,6 @@
     "org/gnome/desktop/wm/preferences" = {
       titlebar-font = "Sans Bold 11";
     };
-    "org/gnome/mutter" = {
-      experimental-features = [
-        "scale-monitor-framebuffer"
-      ];
-    };
     "org/gnome/settings-daemon/plugins/power" = {
       idle-dim = true;
       power-button-action = "suspend";
@@ -658,11 +653,6 @@
       };
       menu = "${pkgs.bemenu}/bin/bemenu-run";
       modifier = "Mod4";
-      output = {
-        "eDP-1" = {
-          scale = "1.5";
-        };
-      };
       terminal = "${pkgs.foot}/bin/foot --config $XDG_CONFIG_HOME/foot/foot-windowed.ini";
     };
 
