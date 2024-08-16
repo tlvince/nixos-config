@@ -24,12 +24,12 @@
     };
     "org/gnome/desktop/interface" = {
       document-font-name = "Sans 11";
-      font-name = "Sans 11";
       enable-animations = false;
       enable-hot-corners = false;
-      font-hinting = "none";
       font-antialiasing = "grayscale";
-      monospace-font-name = "Monospace 10";
+      font-hinting = "none";
+      font-name = "Sans 11";
+      monospace-font-name = "Monospace 12.5";
       show-battery-percentage = true;
     };
     "org/gnome/desktop/session" = {
