@@ -685,6 +685,16 @@
       ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
     '';
 
+    # Workaround wireplumber/pipewire/kernel webcam bug causing high power consumption
+    # https://old.reddit.com/r/linux/comments/1em8biv/psa_pipewire_has_been_halving_your_battery_life/
+    configFile."wireplumber/wireplumber.conf.d/10-disable-camera.conf".text = ''
+      wireplumber.profiles = {
+        main = {
+          monitor.libcamera = disabled
+        }
+      }
+    '';
+
     userDirs = {
       enable = true;
 
