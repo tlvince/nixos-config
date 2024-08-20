@@ -102,6 +102,7 @@
     powertop
     pure-prompt
     python3
+    rclone
     sbctl
     signal-desktop
     tmux
