@@ -77,8 +77,8 @@
     gnome-calculator
     gnome-calendar
     gnome-monitor-config
-    gnome.gnome-clocks
-    gnome.gnome-contacts
+    gnome-clocks
+    gnome-contacts
     nautilus
     gnomeExtensions.appindicator
     gnomeExtensions.light-style
@@ -333,8 +333,8 @@
 
   environment.gnome.excludePackages = with pkgs; [
     # services.gnome.core-shell
-    gnome.gnome-backgrounds
-    gnome.gnome-shell-extensions
+    gnome-backgrounds
+    gnome-shell-extensions
     gnome-tour
     gnome-user-docs
     orca
