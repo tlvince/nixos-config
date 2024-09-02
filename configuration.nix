@@ -19,22 +19,6 @@
     '';
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelPatches = [
-      {
-        name = "drm/amdgpu/vcn: identify unified queue in sw init";
-        patch = pkgs.fetchpatch {
-          url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=23fddba4039916caa6a96052732044ddcf514886";
-          sha256 = "sha256-SdRJbXGNaS17QPDhfkdrCHV8XsQU1oVRUQL9w0/Xgic=";
-        };
-      }
-      {
-        name = "drm/amdgpu/vcn: not pause dpg for unified queue";
-        patch = pkgs.fetchpatch {
-          url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/linux.git/patch/?id=3941fd6be7cf050225db4b699757969f8950e2ce";
-          sha256 = "sha256-EoM2leGLKm5PPQs1ik1yuJMV3V7MEegbSD6hmrDsNF0=";
-        };
-      }
-    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
