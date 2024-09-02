@@ -4,11 +4,12 @@ name: Build
 on:
   pull_request:
   workflow_dispatch:
-
 defaults:
   run:
     shell: bash -euo pipefail {0}
-
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 jobs:
   build:
     env:
