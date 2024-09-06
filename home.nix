@@ -151,15 +151,6 @@
     json.enable = false;
   };
 
-  programs.chromium = {
-    enable = true;
-    package = pkgs.brave;
-    commandLineArgs = [
-      "--enable-features=TouchpadOverscrollHistoryNavigation"
-      "--gtk-version=4"
-    ];
-  };
-
   programs.firefox = {
     enable = true;
     profiles.default = {
