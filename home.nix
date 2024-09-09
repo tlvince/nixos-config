@@ -673,7 +673,7 @@
     configFile."systemd/user/org.gnome.Shell@wayland.service.d/override.conf".text = ''
       [Service]
       ExecStart=
-      ExecStart=${pkgs.gnome.gnome-shell}/bin/gnome-shell --no-x11
+      ExecStart=${pkgs.gnome-shell}/bin/gnome-shell --no-x11
     '';
 
     # Workaround wireplumber/pipewire/kernel webcam bug causing high power consumption
