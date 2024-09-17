@@ -55,6 +55,7 @@
       disable-user-extensions = false;
       enabled-extensions = [
         "appindicatorsupport@rgcjonas.gmail.com"
+        "batterythreshold@francku.gitlab.com"
         "light-style@gnome-shell-extensions.gcampax.github.com"
         "nightthemeswitcher@romainvigier.fr"
       ];

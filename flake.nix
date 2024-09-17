@@ -6,8 +6,6 @@
     apple-fonts.url = "github:tlvince/apple-fonts.nix";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
-    ectool.inputs.nixpkgs.follows = "nixpkgs";
-    ectool.url = "github:tlvince/ectool.nix";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
@@ -21,7 +19,6 @@
     self,
     nixpkgs,
     disko,
-    ectool,
     home-manager,
     lanzaboote,
     tmux-colours-onedark,

@@ -3,7 +3,6 @@
   pkgs,
   lib,
   apple-fonts,
-  ectool,
   ...
 }: {
   imports = [
@@ -16,6 +15,7 @@
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
       options cfg80211 ieee80211_regdom="GB"
+      options cros_charge_control probe_with_fwk_charge_control
     '';
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
@@ -46,7 +46,6 @@
     chromium
     diff-so-fancy
     dig
-    ectool.packages."${pkgs.system}".ectool
     efm-langserver
     evolution
     exiftool
