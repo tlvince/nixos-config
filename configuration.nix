@@ -15,7 +15,6 @@
     blacklistedKernelModules = ["hid_sensor_hub"];
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
-      options cfg80211 ieee80211_regdom="GB"
     '';
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
@@ -151,7 +150,6 @@
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
   hardware.sensor.iio.enable = false;
-  hardware.wirelessRegulatoryDatabase = true;
 
   i18n.defaultLocale = "en_GB.UTF-8";
 
