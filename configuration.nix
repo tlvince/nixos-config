@@ -68,6 +68,7 @@
     gnumake
     gnupg
     htop
+    imagemagick
     jpegoptim
     jq
     libreoffice
