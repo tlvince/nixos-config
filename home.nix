@@ -608,7 +608,7 @@
       sudu = "sudo -iu";
       ts = "date --utc +'%Y-%m-%dT%H:%M:%S.%3NZ'";
       th = "dict -d moby-thesaurus";
-      webcam = "mpv --demuxer-lavf-format=video4linux2 --demuxer-lavf-o=video_size=1920x1080,input_format=mjpeg av://v4l2:/dev/video0";
+      webcam = "mpv --demuxer-lavf-format=video4linux2 --demuxer-lavf-o=video_size=1920x1080,input_format=mjpeg av://v4l2:/dev/video0 --profile=low-latency --untimed";
 
       # Compression
       "7z9" = "7z a -mx9 -mmt -ms";
