@@ -138,6 +138,9 @@
 
       # https://github.com/sindresorhus/pure/tree/87e6f5dd4c793f6d980532205aaefe196780606f#options
       PURE_GIT_PULL = 0;
+
+      # https://typicode.github.io/husky/get-started.html#disabling-hooks
+      HUSKY = 0;
     };
     stateVersion = "23.05";
     username = "tlv";
@@ -608,7 +611,7 @@
       sudu = "sudo -iu";
       ts = "date --utc +'%Y-%m-%dT%H:%M:%S.%3NZ'";
       th = "dict -d moby-thesaurus";
-      webcam = "mpv --demuxer-lavf-format=video4linux2 --demuxer-lavf-o=video_size=1920x1080,input_format=mjpeg av://v4l2:/dev/video0 --profile=low-latency --untimed";
+      webcam = "mpv --demuxer-lavf-format=video4linux2 --demuxer-lavf-o=video_size=1920x1080,input_format=mjpeg av://v4l2:/dev/video0 --profile=low-latency --untimed --vf=hflip";
 
       # Compression
       "7z9" = "7z a -mx9 -mmt -ms";
