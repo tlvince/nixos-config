@@ -60,7 +60,7 @@
       ];
       favorite-apps = [
         "firefox.desktop"
-        "org.codeberg.dnkl.foot.desktop"
+        "foot.desktop"
         "org.gnome.Nautilus.desktop"
         "org.gnome.Evolution.desktop"
         "org.gnome.Calendar.desktop"

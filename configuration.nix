@@ -300,7 +300,7 @@
   services.fstrim.enable = true;
   services.fwupd.enable = true;
 
-  # https://github.com/NixOS/nixpkgs/blob/9acffcc32acba3f2bd523d007e5e0239deb8e612/nixos/modules/services/x11/desktop-managers/gnome.nix
+  # https://github.com/NixOS/nixpkgs/blob/d1f920fa88f38a50cab7ba62d77b7e1d5727222d/nixos/modules/services/x11/desktop-managers/gnome.nix
   services.gnome.core-developer-tools.enable = false;
   services.gnome.core-os-services.enable = true;
   services.gnome.core-shell.enable = true;
@@ -322,20 +322,14 @@
 
   environment.gnome.excludePackages = with pkgs; [
     # services.gnome.core-shell
+    evince
+    geary
     gnome-backgrounds
     gnome-shell-extensions
     gnome-tour
     gnome-user-docs
     orca
   ];
-
-  # services.gnome.core-utilities
-  programs.evince.enable = false;
-  programs.file-roller.enable = true;
-  programs.geary.enable = false;
-  programs.gnome-disks.enable = true;
-  programs.seahorse.enable = true;
-  services.gnome.sushi.enable = true;
 
   services.resolved.enable = true;
   services.power-profiles-daemon.enable = true;
