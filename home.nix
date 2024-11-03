@@ -131,11 +131,6 @@
       TELEMETRY_DISABLED = 1;
       YARN_ENABLE_TELEMETRY = 0; # Yarn
 
-      # Workaround a GNOME bug for foot, see:
-      # https://codeberg.org/dnkl/foot/issues/1426
-      XCURSOR_SIZE = 16;
-      XCURSOR_THEME = "Adwaita";
-
       # https://github.com/sindresorhus/pure/tree/87e6f5dd4c793f6d980532205aaefe196780606f#options
       PURE_GIT_PULL = 0;
 
