@@ -9,8 +9,8 @@
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
       picture-options = "zoom";
-      picture-uri = "file://${config.xdg.dataHome}/backgrounds/ZorinMountainFog1.jpg";
-      picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/ZorinMountainFog2.jpg";
+      picture-uri = "file://${config.xdg.dataHome}/backgrounds/ChromeOSWind-1.png";
+      picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/ChromeOSWind-2.png";
       primary-color = "#3465a4";
       secondary-color = "#000000";
     };
@@ -72,13 +72,13 @@
     homeDirectory = "/home/tlv";
     file = {
       ".digrc".text = "+noall +answer";
-      "${config.xdg.dataHome}/backgrounds/ZorinMountainFog1.jpg".source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/main/Dynamic_Wallpapers/ZorinMountainFog/ZorinMountainFog1.jpg";
-        hash = "sha256-bYoC+0UHUD/JomBkxRnNsKE4R41jj+RDY2cpYf3dWdA=";
+      "${config.xdg.dataHome}/backgrounds/ChromeOSWind-1.png".source = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/ChromeOSWind/ChromeOSWind-1.png";
+        hash = "sha256-lT6dvLymLtlJ+xFFyX7k1aV0lTBceZXRJSeCQvJqA3o=";
       };
-      "${config.xdg.dataHome}/backgrounds/ZorinMountainFog2.jpg".source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/main/Dynamic_Wallpapers/ZorinMountainFog/ZorinMountainFog2.jpg";
-        hash = "sha256-6T5YoBKV5zkwFJ5Wf0D3hGHRKsS9cFWxgVxpjInZ0m8=";
+      "${config.xdg.dataHome}/backgrounds/ChromeOSWind-2.png".source = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/ChromeOSWind/ChromeOSWind-2.png";
+        hash = "sha256-jB0T07ro1QtJ6fYcu/IKHZB8ESNbqwpVHtA9nr8alUg=";
       };
     };
     sessionVariables = {
