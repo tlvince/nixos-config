@@ -55,13 +55,12 @@
     gcc
     gh
     git
-    gnome-text-editor
     gnome-calculator
     gnome-calendar
-    gnome-monitor-config
     gnome-clocks
     gnome-contacts
-    nautilus
+    gnome-monitor-config
+    gnome-text-editor
     gnomeExtensions.appindicator
     gnomeExtensions.light-style
     gnomeExtensions.night-theme-switcher
@@ -75,15 +74,16 @@
     libva-utils
     loupe
     mpv
+    nautilus
     neovim
     nodejs_20
     optipng
-    pass-wayland
     papers
+    pass-wayland
     pinentry-gnome3
-    prettierd
     powerstat
     powertop
+    prettierd
     pure-prompt
     python3
     rclone
