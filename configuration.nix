@@ -42,7 +42,6 @@
     awscli2
     brightnessctl
     btrbk
-    chromium
     diff-so-fancy
     dig
     ectool.packages."${pkgs.system}".ectool
@@ -95,6 +94,12 @@
     yt-dlp
     zsh
     zsh-z
+    (chromium.override {
+      commandLineArgs = [
+        # Touchpad gestures for navigation, VA-API, Vulkan (H.265/HEVC)
+        "--enable-features=TouchpadOverscrollHistoryNavigation,VaapiVideoDecoder,VaapiIgnoreDriverChecks,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE"
+      ];
+    })
   ];
 
   environment.variables = {
