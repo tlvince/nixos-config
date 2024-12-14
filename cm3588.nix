@@ -11,7 +11,7 @@
       generic-extlinux-compatible.enable = true;
     };
   };
-  documentation.nixos.enable = false;
+  documentation.enable = false;
   environment.systemPackages = with pkgs; [
     btrbk
     git
@@ -24,22 +24,27 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=root"];
+    options = ["noatime" "compress=zstd" "subvol=/root"];
   };
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=nix"];
+    options = ["noatime" "compress=zstd" "subvol=/nix"];
   };
   fileSystems."/log" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=log"];
+    options = ["noatime" "compress=zstd" "subvol=/log"];
   };
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=home"];
+    options = ["noatime" "compress=zstd" "subvol=/home"];
+  };
+  fileSystems."/mnt/btrfs-root" = {
+    device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
+    fsType = "btrfs";
+    options = ["noatime" "compress=zstd"];
   };
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/14f6f35f-157c-4b47-803a-1d4dcfdd5328";
@@ -50,6 +55,7 @@
   networking = {
     useDHCP = false;
     enableIPv6 = false;
+    firewall.logRefusedConnections = false;
     hostName = "cm3588";
   };
   nix.settings = {
