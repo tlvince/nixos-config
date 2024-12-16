@@ -14,7 +14,7 @@ jobs:
   build:
     env:
       PR_JOB_SUMMARY: pr-job-summary
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
         machine:
