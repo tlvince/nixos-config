@@ -2,8 +2,13 @@
   config,
   lib,
   pkgs,
+  modulesPath,
   ...
 }: {
+  imports = [
+    (modulesPath + "/profiles/headless.nix")
+    (modulesPath + "/profiles/minimal.nix")
+  ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
@@ -11,14 +16,25 @@
       generic-extlinux-compatible.enable = true;
     };
   };
-  documentation.enable = false;
   environment.systemPackages = with pkgs; [
     btrbk
+    coreutils
+    curl
+    diffutils
+    findutils
     git
+    gnugrep
+    gnupatch
+    gnused
+    gnutar
+    gzip
     htop
+    less
     neovim
+    xz
     zsh
     zsh-z
+    zstd
   ];
   environment.variables.EDITOR = "nvim";
   fileSystems."/" = {
