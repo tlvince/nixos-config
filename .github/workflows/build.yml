@@ -2,6 +2,9 @@
 # https://github.com/cuties-social/cuties-social-nixfiles/blob/14593a3014c32ce121529009d8d6564e45dd7e99/.github/workflows/build.yml
 name: Build
 on:
+  push:
+    branches:
+      - master
   pull_request:
   workflow_dispatch:
 defaults:
