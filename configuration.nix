@@ -196,6 +196,7 @@
   nixpkgs.config.allowUnfree = true;
 
   programs.firefox.enable = true;
+  programs.nano.enable = false;
   programs.zsh.enable = true;
 
   services.btrbk.instances = {

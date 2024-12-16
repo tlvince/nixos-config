@@ -97,6 +97,7 @@
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
   };
+  programs.nano.enable = false;
   programs.zsh.enable = true;
   services.openssh = {
     enable = true;
