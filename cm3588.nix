@@ -15,6 +15,7 @@
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
     };
+    tmp.useTmpfs = true;
   };
   environment.systemPackages = with pkgs; [
     btrbk
@@ -41,32 +42,36 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=/root"];
+    options = ["noatime" "commit=600" "compress=zstd" "subvol=/root"];
   };
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=/nix"];
-  };
-  fileSystems."/log" = {
-    device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
-    fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=/log"];
+    options = ["noatime" "commit=600" "compress=zstd" "subvol=/nix"];
   };
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd" "subvol=/home"];
+    options = ["noatime" "commit=600" "compress=zstd" "subvol=/home"];
   };
   fileSystems."/mnt/btrfs-root" = {
     device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
     fsType = "btrfs";
-    options = ["noatime" "compress=zstd"];
+    options = ["noatime" "commit=600" "compress=zstd"];
   };
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/14f6f35f-157c-4b47-803a-1d4dcfdd5328";
     fsType = "ext4";
   };
+  fileSystems."/var/log" = {
+    device = "none";
+    fsType = "tmpfs";
+    options = ["size=300M"];
+  };
+  services.journald.extraConfig = ''
+    SystemMaxUse=300M
+    Storage=volatile
+  '';
   hardware.enableAllFirmware = true;
   i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
@@ -134,4 +139,5 @@
       shell = pkgs.zsh;
     };
   };
+  zramSwap.enable = true;
 }
