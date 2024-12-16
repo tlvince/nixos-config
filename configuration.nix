@@ -361,9 +361,12 @@
 
   time.timeZone = "Europe/London";
 
-  users.users.tlv = {
-    shell = pkgs.zsh;
-    isNormalUser = true;
-    extraGroups = ["wheel"];
+  users = {
+    defaultUserShell = pkgs.zsh;
+    users.tlv = {
+      shell = pkgs.zsh;
+      isNormalUser = true;
+      extraGroups = ["wheel"];
+    };
   };
 }

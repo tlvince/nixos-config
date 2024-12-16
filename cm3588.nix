@@ -124,10 +124,13 @@
     };
   };
   time.timeZone = "Europe/London";
-  users.users.tlv = {
-    extraGroups = ["wheel"];
-    isNormalUser = true;
-    openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKygwTvfwbmEgZXvOYCHX3pY1dNNPGxMn15HCktIemRF"];
-    shell = pkgs.zsh;
+  users = {
+    defaultUserShell = pkgs.zsh;
+    users.tlv = {
+      extraGroups = ["wheel"];
+      isNormalUser = true;
+      openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKygwTvfwbmEgZXvOYCHX3pY1dNNPGxMn15HCktIemRF"];
+      shell = pkgs.zsh;
+    };
   };
 }
