@@ -31,6 +31,7 @@
     htop
     less
     neovim
+    tmux
     xz
     zsh
     zsh-z
