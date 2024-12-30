@@ -7,7 +7,6 @@
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
     ./disko-configuration.nix
   ];
 
@@ -16,7 +15,19 @@
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
     '';
-    initrd.systemd.enable = true;
+    initrd = {
+      availableKernelModules = [
+        "nvme"
+        "sd_mod"
+        "thunderbolt"
+        "usb_storage"
+        "xhci_pci"
+      ];
+      systemd.enable = true;
+    };
+    kernelModules = [
+      "kvm-amd"
+    ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
@@ -153,6 +164,7 @@
     };
   };
 
+  hardware.cpu.amd.updateMicrocode = true;
   hardware.enableAllFirmware = true;
   hardware.pulseaudio.enable = false;
   hardware.sensor.iio.enable = false;
@@ -194,6 +206,7 @@
   };
 
   nixpkgs.config.allowUnfree = true;
+  nixpkgs.hostPlatform = "x86_64-linux";
 
   programs.firefox.enable = true;
   programs.nano.enable = false;
