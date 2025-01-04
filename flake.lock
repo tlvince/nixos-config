@@ -160,11 +160,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1735774425,
-        "narHash": "sha256-C73gLFnEh8ZI0uDijUgCDWCd21T6I6tsaWgIBHcfAXg=",
+        "lastModified": 1735979091,
+        "narHash": "sha256-WpFjt6+8UD81EP386c269ZTqpEmlGJgcPw+OB4b7EBs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "5f6aa268e419d053c3d5025da740e390b12ac936",
+        "rev": "11ab08541e61ac3bbf2ab27229f68622629401df",
         "type": "github"
       },
       "original": {
@@ -198,13 +198,32 @@
         "type": "github"
       }
     },
+    "linux-rockchip-collabora": {
+      "flake": false,
+      "locked": {
+        "host": "gitlab.collabora.com",
+        "lastModified": 1733157162,
+        "narHash": "sha256-BaV7uCNjn4FsnwLuQMFAOLgyPKo02MltGwyGzZJy28c=",
+        "owner": "hardware-enablement%2Frockchip-3588",
+        "repo": "linux",
+        "rev": "e49731cfb5407ac7fd70115de79d50acf5166c87",
+        "type": "gitlab"
+      },
+      "original": {
+        "host": "gitlab.collabora.com",
+        "owner": "hardware-enablement%2Frockchip-3588",
+        "ref": "rk3588-test",
+        "repo": "linux",
+        "type": "gitlab"
+      }
+    },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1735471104,
-        "narHash": "sha256-0q9NGQySwDQc7RhAV2ukfnu7Gxa5/ybJ2ANT8DQrQrs=",
+        "lastModified": 1735834308,
+        "narHash": "sha256-dklw3AXr3OGO4/XT1Tu3Xz9n/we8GctZZ75ZWVqAVhk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "88195a94f390381c6afcdaa933c2f6ff93959cb4",
+        "rev": "6df24922a1400241dae323af55f30e4318a6ca65",
         "type": "github"
       },
       "original": {
@@ -276,6 +295,7 @@
         "ectool": "ectool",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
+        "linux-rockchip-collabora": "linux-rockchip-collabora",
         "nixpkgs": "nixpkgs",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
