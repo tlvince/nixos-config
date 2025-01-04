@@ -13,7 +13,7 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     linux-rockchip-collabora.flake = false;
-    linux-rockchip-collabora.url = "github:K900/linux/rk3588-test";
+    linux-rockchip-collabora.url = "git+https://github.com/K900/linux?ref=rk3588-test&shallow=1";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
