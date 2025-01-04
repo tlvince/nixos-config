@@ -13,13 +13,17 @@
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       grub.enable = false;
-      generic-extlinux-compatible.enable = true;
+      generic-extlinux-compatible = {
+        configurationLimit = 5;
+        enable = true;
+      };
     };
     tmp.useTmpfs = true;
   };
   environment.systemPackages = with pkgs; [
     btrbk
     coreutils
+    cryptsetup
     curl
     diffutils
     findutils
@@ -32,6 +36,7 @@
     htop
     less
     neovim
+    smartmontools
     tmux
     xz
     zsh
