@@ -12,6 +12,8 @@
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
+    linux-rockchip-collabora.flake = false;
+    linux-rockchip-collabora.url = "github:K900/linux/rk3588-test";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
@@ -40,6 +42,7 @@
     nixosConfigurations = {
       cm3588 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
+        specialArgs = inputs;
         modules = [
           ./cm3588.nix
         ];
