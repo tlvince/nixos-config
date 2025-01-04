@@ -64,7 +64,7 @@ jobs:
       #     echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
-          OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel --print-out-paths)"
+          OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel --print-out-paths --verbose)"
           echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${{ matrix.machine.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures

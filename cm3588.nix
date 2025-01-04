@@ -14,9 +14,9 @@
     kernelPackages = pkgs.linuxPackagesFor (
       pkgs.buildLinux {
         extraMeta.branch = "6.13";
-        modDirVersion = "6.13.0-rc5";
+        modDirVersion = "6.13.0-rc1";
         src = linux-rockchip-collabora;
-        version = "6.13.0-rc5";
+        version = "6.13.0-rc1";
       }
     );
     loader = {
