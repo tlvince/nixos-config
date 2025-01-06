@@ -11,6 +11,15 @@
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "crypto: rockchip: add support for rk3588/rk3568";
+        patch = pkgs.fetchpatch {
+          url = "https://raw.githubusercontent.com/armbian/build/eaf8e5ac3740a749cf8fec3b4e1100e10b1e23d2/patch/kernel/archive/rockchip64-6.12/rk35xx-montjoie-crypto-v2-rk35xx.patch";
+          sha256 = "sha256-Vgs/WJ/LsuH8xGhmID1WUH0N2JTzMaCUWtOz5EdQA4Q=";
+        };
+      }
+    ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible.enable = true;
