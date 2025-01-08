@@ -44,7 +44,6 @@ jobs:
           name: tlvince-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - name: Run flake check
-        if: matrix.machine.host != 'framework'
         run: |
           CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
           nix flake check --no-build | tee "$CHECK_OUTPUT"
