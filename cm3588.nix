@@ -51,7 +51,10 @@
     ];
     loader = {
       grub.enable = false;
-      generic-extlinux-compatible.enable = true;
+      generic-extlinux-compatible = {
+        enable = true;
+        configurationLimit = 3;
+      };
     };
     tmp.useTmpfs = true;
   };
