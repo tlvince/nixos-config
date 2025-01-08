@@ -40,7 +40,8 @@ jobs:
           remove-haskell: true
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - if: matrix.machine.platform == 'aarch64-linux'
+      - name: Set up QEMU
+        if: matrix.machine.platform == 'aarch64-linux'
         uses: docker/setup-qemu-action@53851d14592bedcffcf25ea515637cff71ef929a # v3.3.0
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@e50d5f73bfe71c2dd0aa4218de8f4afa59f8f81d # v16
@@ -54,13 +55,23 @@ jobs:
         with:
           name: tlvince-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      # Does not work (in CI) with lanzaboote
-      # - name: Run flake check
-      #   run: |
-      #     CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
-      #     nix flake check --no-build | tee "$CHECK_OUTPUT"
-      #     [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
-      #     echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      - name: Run flake check
+        run: |
+          CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
+          nix flake check --no-build | tee "$CHECK_OUTPUT"
+          [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
+          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      - name: Check for kernel rebuilds
+        # GitHub Actions' 2vCPU (with aarch64 cross-builds) stalls on kernel
+        # builds. Delegate to blacksmith.sh whose generous free tier offers
+        # native arm runners with up to 32vCPU
+        if: matrix.machine.platform == 'aarch64-linux'
+        run: |
+          if nix build .#nixosConfigurations.cm3588.config.system.build.toplevel --dry-run --print-out-paths 2>&1 | \
+            awk '/derivations will be built:/,/paths will be fetched/' | grep -q "linux.*drv$"; then
+            echo "::error title=kernel rebuild::Linux needs rebuilding. Run https://github.com/tlvince-sandbox-org/nixos-config/actions/workflows/build-arm.yml"
+           exit 1
+          fi
       - name: Build
         run: |
           OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel --print-out-paths)"
