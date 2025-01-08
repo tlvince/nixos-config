@@ -61,6 +61,17 @@ jobs:
           nix flake check --no-build | tee "$CHECK_OUTPUT"
           [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      - name: Check for kernel rebuilds
+        # GitHub Actions' 2vCPU (with aarch64 cross-builds) stalls on kernel
+        # builds. Delegate to blacksmith.sh whose generous free tier offers
+        # native arm runners with up to 32vCPU
+        if: matrix.machine.platform == 'aarch64-linux'
+        run: |
+          if nix build .#nixosConfigurations.cm3588.config.system.build.toplevel --dry-run --print-out-paths 2>&1 | \
+            awk '/derivations will be built:/,/paths will be fetched/' | grep -q "linux.*drv$"; then
+            echo "::error title=kernel rebuild::Linux needs rebuilding. Run https://github.com/tlvince-sandbox-org/nixos-config/actions/workflows/build-arm.yml"
+           exit 1
+          fi
       - name: Build
         run: |
           OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel --print-out-paths)"
