@@ -11,12 +11,47 @@
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "crypto: rockchip: add support for rk3588/rk3568";
+        patch = pkgs.fetchpatch {
+          url = "file://${./patches/rk35xx-montjoie-crypto-v2-rk35xx.patch}";
+          sha256 = "sha256-TmadGHg9Z+nO9Pl1t5hIB56GUHbhLe/mNoqrjvXC638=";
+        };
+      }
+      {
+        name = "crypto: rockchip: add support for rk3588/rk3568 makefile";
+        patch = pkgs.fetchpatch {
+          url = "file://${./patches/Makefile.patch}";
+          sha256 = "sha256-yIVuiKgFujRtLpkoBPB6vn8gwNQo6j6HhYp3wQYc5cA=";
+        };
+      }
+      {
+        name = "crypto: rockchip: enable";
+        patch = null;
+        extraConfig = ''
+          CRYPTO_DEV_ROCKCHIP y
+          CRYPTO_DEV_ROCKCHIP2 y
+          CRYPTO_DEV_ROCKCHIP2_DEBUG y
+
+          CRYPTO_MANAGER_DISABLE_TESTS n
+          CRYPTO_MANAGER_EXTRA_TESTS y
+          CRYPTO_USER y
+          CRYPTO_USER_API_HASH y
+          CRYPTO_USER_API_SKCIPHER y
+          CRYPTO_USER_API_RNG y
+          CRYPTO_USER_API_AEAD y
+          CRYPTO_STATS y
+          CRYPTO_CTS y
+          CRYPTO_XCBC y
+          CRYPTO_XTS y
+          CRYPTO_HCTR2 y
+        '';
+      }
+    ];
     loader = {
       grub.enable = false;
-      generic-extlinux-compatible = {
-        configurationLimit = 5;
-        enable = true;
-      };
+      generic-extlinux-compatible.enable = true;
     };
     tmp.useTmpfs = true;
   };
