@@ -9,10 +9,10 @@
     ectool.inputs.nixpkgs.follows = "nixpkgs";
     ectool.url = "github:tlvince/ectool.nix";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=master";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };
