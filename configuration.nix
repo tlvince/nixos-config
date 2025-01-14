@@ -86,7 +86,7 @@
     mpv
     nautilus
     neovim
-    nodejs_20
+    nodejs
     optipng
     papers
     pass-wayland
