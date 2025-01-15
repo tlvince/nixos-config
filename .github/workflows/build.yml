@@ -46,6 +46,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@e50d5f73bfe71c2dd0aa4218de8f4afa59f8f81d # v16
         with:
+          source-tag: v0.32.3
           extra-conf: |
             extra-platforms = aarch64-linux
       - name: Set up GitHub Actions cache
