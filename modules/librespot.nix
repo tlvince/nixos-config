@@ -9,7 +9,9 @@
     documentation = ["https://github.com/librespot-org/librespot/wiki/Options"];
     wantedBy = ["multi-user.target"];
     wants = ["network.target" "sound.target"];
-    script = "${pkgs.librespot}/bin/librespot \"%p@%H\"";
+    script = "${pkgs.librespot.override {
+      withRodio = false;
+    }}/bin/librespot \"%p@%H\"";
     serviceConfig = {
       DynamicUser = "yes";
       Restart = "on-failure";
