@@ -8,6 +8,7 @@
   imports = [
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
+    ./modules/librespot.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
