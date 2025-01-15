@@ -1,8 +1,9 @@
 {
   config,
   lib,
-  pkgs,
+  linux-rockchip-collabora,
   modulesPath,
+  pkgs,
   ...
 }: {
   imports = [
@@ -11,7 +12,14 @@
     ./modules/librespot.nix
   ];
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackagesFor (
+      pkgs.buildLinux {
+        extraMeta.branch = "6.13";
+        modDirVersion = "6.13.0-rc7";
+        src = linux-rockchip-collabora;
+        version = "6.13.0-rc7";
+      }
+    );
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {

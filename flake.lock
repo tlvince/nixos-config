@@ -200,6 +200,24 @@
         "type": "github"
       }
     },
+    "linux-rockchip-collabora": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1736753478,
+        "narHash": "sha256-TTao3D4JPeJlsc3335vCvTjf6n9wQ/zLHoUP8yQGLEA=",
+        "ref": "rk3588-test",
+        "rev": "091df66e1e4876cbf2164bd965e759508b6228ab",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/K900/linux"
+      },
+      "original": {
+        "ref": "rk3588-test",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/K900/linux"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1736523798,
@@ -279,6 +297,7 @@
         "ectool": "ectool",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
+        "linux-rockchip-collabora": "linux-rockchip-collabora",
         "nixpkgs": "nixpkgs",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }

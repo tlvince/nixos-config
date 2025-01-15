@@ -10,6 +10,8 @@
     ectool.url = "github:tlvince/ectool.nix";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=master";
+    linux-rockchip-collabora.flake = false;
+    linux-rockchip-collabora.url = "git+https://github.com/K900/linux?ref=rk3588-test&shallow=1";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
@@ -40,6 +42,7 @@
     nixosConfigurations = {
       cm3588 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
+        specialArgs = inputs;
         modules = [
           ./cm3588.nix
         ];
