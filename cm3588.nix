@@ -11,7 +11,7 @@
     ./modules/librespot.nix
   ];
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_testing;
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {
