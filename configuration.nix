@@ -29,6 +29,13 @@
       "kvm-amd"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      # Workaround intermittent slow screen updates by disabling
+      # Panel State Refresh (PSR), see:
+      # https://gitlab.freedesktop.org/drm/amd/-/issues/3647
+      # (Unfixed as of linux-firmware 20241017)
+      "amdgpu.dcdebugmask=0x10"
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
