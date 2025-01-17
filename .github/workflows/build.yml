@@ -31,7 +31,9 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      - name: Fix environment for ARM64 Linux runners (https://github.com/actions/partner-runner-images/issues/25)
+      # https://github.com/actions/partner-runner-images/issues/25
+      - name: Fix environment for ARM64 Linux runners
+        if: matrix.machine.platform == 'aarch64-linux'
         run: for var in PATH XDG_CONFIG_HOME; do sed -Ee "s/^/${var}=/" -e 's/(runner)admin/\1/g' <<< "${!var}"; done | tee -a "$GITHUB_ENV"
       - name: Free up disk space
         uses: easimon/maximize-build-space@fc881a613ad2a34aca9c9624518214ebc21dfc0c # v10
