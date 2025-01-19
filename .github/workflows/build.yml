@@ -23,9 +23,15 @@ jobs:
           - host: framework
             platform: x86-64-linux
             runner: ubuntu-24.04
+            type: nixosConfigurations
           - host: cm3588
             platform: aarch64-linux
             runner: ubuntu-24.04-arm
+            type: nixosConfigurations
+          - host: nodejs
+            platform: x86-64-linux
+            runner: ubuntu-24.04
+            type: devShells.x86_64-linux
     runs-on: ${{ matrix.machine.runner }}
     permissions:
       contents: read
@@ -66,11 +72,11 @@ jobs:
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
-          OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel --print-out-paths)"
-          echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${{ matrix.machine.host }}\x1b[0m"
+          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths)"
+          echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.machine.type}}.${{ matrix.machine.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && matrix.machine.type == 'nixosConfigurations'
         run: |
           HOST_DRV="nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel"
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
