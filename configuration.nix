@@ -110,6 +110,7 @@
     tree
     wl-clipboard
     yt-dlp
+    zip
     zsh
     zsh-z
     (chromium.override {

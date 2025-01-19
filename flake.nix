@@ -37,6 +37,25 @@
           alejandra
         ];
       };
+    devShells.x86_64-linux.nodejs = let
+      pkgs = import nixpkgs {
+        system = "x86_64-linux";
+        config.allowUnfree = true;
+      };
+    in pkgs.mkShellNoCC {
+      packages = with pkgs; [
+        azure-cli
+        eslint_d
+        nodePackages."@astrojs/language-server"
+        nodePackages.bash-language-server
+        nodePackages.typescript-language-server
+        nodejs_22
+        mongodb-tools
+        mongosh
+        terraform
+        terraform-ls
+      ];
+    };
     nixosConfigurations = {
       cm3588 = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
