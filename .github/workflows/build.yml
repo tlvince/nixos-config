@@ -31,10 +31,6 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-      # https://github.com/actions/partner-runner-images/issues/25
-      - name: Fix environment for ARM64 Linux runners
-        if: matrix.machine.platform == 'aarch64-linux'
-        run: for var in PATH XDG_CONFIG_HOME; do sed -Ee "s/^/${var}=/" -e 's/(runner)admin/\1/g' <<< "${!var}"; done | tee -a "$GITHUB_ENV"
       - name: Free up disk space
         # Increased disk usage on arm
         if: matrix.machine.platform == 'x86-64-linux'
