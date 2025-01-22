@@ -110,6 +110,7 @@
     tree
     wl-clipboard
     yt-dlp
+    zip
     zsh
     zsh-z
     (chromium.override {
@@ -177,14 +178,23 @@
 
   i18n.defaultLocale = "en_GB.UTF-8";
 
+  networking.enableIPv6 = false;
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [
       # Expo
       8081
     ];
+    # https://wiki.nixos.org/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
+    extraCommands = ''
+      iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
+      iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
+    '';
+    extraStopCommands = ''
+      iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
+      iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
+    '';
   };
-
   networking.hostName = "framework";
 
   nix.gc = {

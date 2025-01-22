@@ -17,19 +17,29 @@ jobs:
   build:
     env:
       PR_JOB_SUMMARY: pr-job-summary
-    runs-on: ubuntu-24.04
     strategy:
       matrix:
         machine:
           - host: framework
             platform: x86-64-linux
+            runner: ubuntu-24.04
+            type: nixosConfigurations
           - host: cm3588
             platform: aarch64-linux
+            runner: ubuntu-24.04-arm
+            type: nixosConfigurations
+          - host: nodejs
+            platform: x86-64-linux
+            runner: ubuntu-24.04
+            type: devShells.x86_64-linux
+    runs-on: ${{ matrix.machine.runner }}
     permissions:
       contents: read
       pull-requests: write
     steps:
       - name: Free up disk space
+        # Increased disk usage on arm
+        if: matrix.machine.platform == 'x86-64-linux'
         uses: easimon/maximize-build-space@fc881a613ad2a34aca9c9624518214ebc21dfc0c # v10
         with:
           overprovision-lvm: true
@@ -40,17 +50,12 @@ jobs:
           remove-haskell: true
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Set up QEMU
-        if: matrix.machine.platform == 'aarch64-linux'
-        uses: docker/setup-qemu-action@53851d14592bedcffcf25ea515637cff71ef929a # v3.3.0
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@e50d5f73bfe71c2dd0aa4218de8f4afa59f8f81d # v16
         with:
           source-tag: v0.32.3
-          extra-conf: |
-            extra-platforms = aarch64-linux
       - name: Set up GitHub Actions cache
-        uses: DeterminateSystems/magic-nix-cache-action@87b14cf437d03d37989d87f0fa5ce4f5dc1a330b # v8
+        uses: DeterminateSystems/magic-nix-cache-action@6221693898146dc97e38ad0e013488a16477a4c4 # v9
       - name: Set up public cache
         uses: cachix/cachix-action@ad2ddac53f961de1989924296a1f236fcfbaa4fc # v15
         with:
@@ -67,11 +72,11 @@ jobs:
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
-          OUT_PATH="$(nix build .#nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel --print-out-paths)"
-          echo -e "\x1b[32;1mSuccessfully built .#nixosConfigurations.${{ matrix.machine.host }}\x1b[0m"
+          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths)"
+          echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.machine.type}}.${{ matrix.machine.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && matrix.machine.type == 'nixosConfigurations'
         run: |
           HOST_DRV="nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel"
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
