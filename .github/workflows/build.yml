@@ -55,7 +55,7 @@ jobs:
         with:
           source-tag: v0.32.3
       - name: Set up GitHub Actions cache
-        uses: DeterminateSystems/magic-nix-cache-action@87b14cf437d03d37989d87f0fa5ce4f5dc1a330b # v8
+        uses: DeterminateSystems/magic-nix-cache-action@6221693898146dc97e38ad0e013488a16477a4c4 # v9
       - name: Set up public cache
         uses: cachix/cachix-action@ad2ddac53f961de1989924296a1f236fcfbaa4fc # v15
         with:
