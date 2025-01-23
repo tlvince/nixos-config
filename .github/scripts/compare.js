@@ -1,14 +1,21 @@
-const generateCompareLinks = (flakeUpdateOutput) => {
+const generateCompareLinks = (input) => {
+  // DeepSeek-R1 generated
   const regex =
-    /'(?<repo>[^']+)':\s*'[^']*?(?:rev=|\/)(?<oldCommit>[a-f0-9]+)[^']*'\s*\(.*?\)\s*→\s*'[^']*?(?:rev=|\/)(?<newCommit>[a-f0-9]+)[^']*'/gm;
+    /(?:'github:(?<repo1>[^/]+\/[^/]+)\/(?<oldCommit1>[0-9a-fA-F]{40})[^']*'|'git\+https:\/\/github\.com\/(?<repo2>[^/]+\/[^/]+)\?[^']*rev=(?<oldCommit2>[0-9a-fA-F]{40})[^']*')[\s\S]*?→[\s\S]*?(?:'github:[^/]+\/[^/]+\/(?<newCommit1>[0-9a-fA-F]{40})[^']*'|'git\+https:\/\/github\.com\/[^/]+\/[^/]+\?[^']*rev=(?<newCommit2>[0-9a-fA-F]{40})[^']*')/g;
 
-  let match;
   const links = [];
+  let match;
 
-  while ((match = regex.exec(flakeUpdateOutput)) !== null) {
-    const { repo, oldCommit, newCommit } = match.groups;
-    const compareUrl = `https://github.com/${repo}/compare/${oldCommit}...${newCommit}`;
-    links.push(compareUrl);
+  while ((match = regex.exec(input)) !== null) {
+    const groups = match.groups;
+    const repo = groups.repo1 || groups.repo2;
+    const oldCommit = groups.oldCommit1 || groups.oldCommit2;
+    const newCommit = groups.newCommit1 || groups.newCommit2;
+
+    if (repo && oldCommit && newCommit) {
+      const compareUrl = `https://github.com/${repo}/compare/${oldCommit}...${newCommit}`;
+      links.push(compareUrl);
+    }
   }
 
   return links;
