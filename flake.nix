@@ -58,13 +58,11 @@
     };
     nixosConfigurations = {
       cm3588 = nixpkgs.lib.nixosSystem {
-        system = "aarch64-linux";
         modules = [
           ./cm3588.nix
         ];
       };
       framework = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
         specialArgs = inputs;
         modules = [
           ./configuration.nix
