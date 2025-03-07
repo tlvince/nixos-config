@@ -149,18 +149,6 @@
     json.enable = false;
   };
 
-  programs.firefox = {
-    enable = true;
-    profiles.default = {
-      settings = {
-        "dom.security.https_only_mode" = true;
-        "extensions.pocket.enabled" = false;
-        "media.ffmpeg.vaapi.enabled" = true;
-        "ui.key.menuAccessKeyFocuses" = false;
-      };
-    };
-  };
-
   programs.foot = {
     enable = true;
     settings = {
