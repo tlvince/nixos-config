@@ -225,7 +225,37 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  programs.firefox.enable = true;
+  programs.firefox = {
+    enable = true;
+    policies = {
+      AppAutoUpdate = false;
+      CaptivePortal = false;
+      DisableFeedbackCommands = true;
+      DisableFirefoxAccounts = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableProfileImport = true;
+      DisableSystemAddonUpdate = true;
+      DisableTelemetry = true;
+      DontCheckDefaultBrowser = true;
+      NoDefaultBookmarks = true;
+      OfferToSaveLogins = false;
+      OverrideFirstRunPage = "";
+      OverridePostUpdatePage = "";
+      PasswordManagerEnabled = false;
+      FirefoxHome = {
+        Pocket = false;
+        Snippets = false;
+      };
+      UserMessaging = {
+        ExtensionRecommendations = false;
+        FeatureRecommendations = false;
+        MoreFromMozilla = false;
+        SkipOnboarding = true;
+        WhatsNew = false;
+      };
+    };
+  };
   programs.nano.enable = false;
   programs.zsh.enable = true;
 
