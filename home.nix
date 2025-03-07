@@ -151,6 +151,35 @@
 
   programs.firefox = {
     enable = true;
+    # https://mozilla.github.io/policy-templates
+    policies = {
+      AppAutoUpdate = false;
+      CaptivePortal = false;
+      DisableFeedbackCommands = true;
+      DisableFirefoxAccounts = true;
+      DisableFirefoxStudies = true;
+      DisablePocket = true;
+      DisableProfileImport = true;
+      DisableSystemAddonUpdate = true;
+      DisableTelemetry = true;
+      DontCheckDefaultBrowser = true;
+      NoDefaultBookmarks = true;
+      OfferToSaveLogins = false;
+      OverrideFirstRunPage = "";
+      OverridePostUpdatePage = "";
+      PasswordManagerEnabled = false;
+      FirefoxHome = {
+        Pocket = false;
+        Snippets = false;
+      };
+      UserMessaging = {
+        ExtensionRecommendations = false;
+        FeatureRecommendations = false;
+        MoreFromMozilla = false;
+        SkipOnboarding = true;
+        WhatsNew = false;
+      };
+    };
     profiles.default = {
       settings = {
         "dom.security.https_only_mode" = true;
