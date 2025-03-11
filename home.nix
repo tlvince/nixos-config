@@ -149,6 +149,14 @@
     json.enable = false;
   };
 
+  # TODO: remove when https://github.com/NixOS/nix/issues/8508 is resolved
+  nix.gc = {
+    automatic = true;
+    frequency = "weekly";
+    options = "--delete-older-than 30d";
+    randomizedDelaySec = "1 hour";
+  };
+
   programs.foot = {
     enable = true;
     settings = {
