@@ -49,3 +49,9 @@ cht() {
 curl-headers() {
   curl --dump-header - --output /dev/null --silent --show-error "$@" | "$PAGER"
 }
+
+sync-nixpkgs() {
+  source="${1:-$HOME/dev/nixos-config/flake.lock}"
+  target="${2:-./flake.lock}"
+  jq --slurpfile source "$source" '.nodes.nixpkgs = $source[0].nodes.nixpkgs' "$target" | sponge "$target"
+}

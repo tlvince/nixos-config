@@ -90,6 +90,7 @@
     libreoffice
     libva-utils
     loupe
+    moreutils
     mpv
     nautilus
     neovim
