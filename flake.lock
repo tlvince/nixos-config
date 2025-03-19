@@ -43,11 +43,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741684000,
-        "narHash": "sha256-NQykaWIrn5zilncefIvW4jPQ76YMXVK/dMTzkSVDmdk=",
+        "lastModified": 1740485968,
+        "narHash": "sha256-WK+PZHbfDjLyveXAxpnrfagiFgZWaTJglewBWniTn2Y=",
         "owner": "nix-community",
         "repo": "disko",
-        "rev": "2db1d64fc084b1d15e3871dffc02c62a94ed6ed7",
+        "rev": "19c1140419c4f1cdf88ad4c1cfb6605597628940",
         "type": "github"
       },
       "original": {
@@ -160,10 +160,10 @@
         ]
       },
       "locked": {
-        "lastModified": 1741701235,
-        "narHash": "sha256-gBlb8R9gnjUAT5XabJeel3C2iEUiBHx3+91651y3Sqo=",
+        "lastModified": 1741217763,
+        "narHash": "sha256-g/TrltIjFHIjtzKY5CJpoPANfHQWDD43G5U1a/v5oVg=",
         "ref": "master",
-        "rev": "c630dfa8abcc65984cc1e47fb25d4552c81dd37e",
+        "rev": "486b066025dccd8af7fbe5dd2cc79e46b88c80da",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/nix-community/home-manager"
@@ -187,11 +187,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1741442524,
-        "narHash": "sha256-tVcxLDLLho8dWcO81Xj/3/ANLdVs0bGyCPyKjp70JWk=",
+        "lastModified": 1741259028,
+        "narHash": "sha256-QWgGXe9Ai8+hSwNEAqLjZoAvLwV3ywDzT+XBpfMOzuU=",
         "owner": "nix-community",
         "repo": "lanzaboote",
-        "rev": "d8099586d9a84308ffedac07880e7f07a0180ff4",
+        "rev": "3a3ed972151121c8b159eb40e0be21146270e73b",
         "type": "github"
       },
       "original": {
@@ -202,10 +202,10 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1741513245,
-        "narHash": "sha256-7rTAMNTY1xoBwz0h7ZMtEcd8LELk9R5TzBPoHuhNSCk=",
+        "lastModified": 1741246872,
+        "narHash": "sha256-Q6pMP4a9ed636qilcYX8XUguvKl/0/LGXhHcRI91p0U=",
         "ref": "nixos-unstable",
-        "rev": "e3e32b642a31e6714ec1b712de8c91a3352ce7e1",
+        "rev": "10069ef4cf863633f57238f179a0297de84bd8d3",
         "shallow": true,
         "type": "git",
         "url": "https://github.com/NixOS/nixpkgs"
