@@ -4,6 +4,7 @@
   lib,
   apple-fonts,
   ectool,
+  nixpkgs2411,
   ...
 }: {
   imports = [
@@ -177,6 +178,10 @@
   hardware.cpu.amd.updateMicrocode = true;
   hardware.enableAllFirmware = true;
   hardware.sensor.iio.enable = false;
+
+  # TODO: remove after https://gitlab.freedesktop.org/mesa/mesa/-/issues/12809
+  # Broken as of 25.0.2
+  hardware.graphics.package = (import nixpkgs2411 { system = "x86_64-linux"; }).mesa.drivers;
 
   i18n.defaultLocale = "en_GB.UTF-8";
 

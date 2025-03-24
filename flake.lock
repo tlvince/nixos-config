@@ -229,6 +229,23 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/a5d394176e64ab29c852d03346c1fc9b0b7d33eb.tar.gz"
       }
     },
+    "nixpkgs2411": {
+      "locked": {
+        "lastModified": 1742816840,
+        "narHash": "sha256-AYQg2eTjw2hzqQfvoAsIdXWGr4V/VY8u87WoaiazA2g=",
+        "ref": "release-24.11",
+        "rev": "27cc9ff7ddd91ad569b289094daa32d633c01b2d",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/NixOS/nixpkgs"
+      },
+      "original": {
+        "ref": "release-24.11",
+        "shallow": true,
+        "type": "git",
+        "url": "https://github.com/NixOS/nixpkgs"
+      }
+    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -263,6 +280,7 @@
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
+        "nixpkgs2411": "nixpkgs2411",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
     },
