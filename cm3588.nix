@@ -11,6 +11,12 @@
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    extraModulePackages = [
+      (pkgs.callPackage ./modules/rknpu-driver.nix {
+        kernel = config.boot.kernelPackages.kernel;
+      })
+    ];
+    kernelModules = ["rknpu"];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {
