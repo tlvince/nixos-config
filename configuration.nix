@@ -168,7 +168,7 @@
   };
 
   hardware.cpu.amd.updateMicrocode = true;
-  hardware.enableAllFirmware = true;
+  hardware.enableRedistributableFirmware = true;
   hardware.sensor.iio.enable = false;
 
   i18n.defaultLocale = "en_GB.UTF-8";
