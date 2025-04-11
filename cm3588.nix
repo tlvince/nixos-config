@@ -18,7 +18,55 @@
         configurationLimit = 3;
       };
     };
-    tmp.useTmpfs = true;
+  };
+  disko.devices = {
+    disk = {
+      main = {
+        type = "disk";
+        device = "/dev/disk/by-id/nvme-Western_Digital_SN730_500GB_20461D801737";
+        content = {
+          type = "gpt";
+          partitions = {
+            boot = {
+              size = "512M";
+              type = "8300";
+              content = {
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/boot";
+              };
+            };
+            root = {
+              size = "100%";
+              content = {
+                type = "btrfs";
+                mountpoint = "/mnt/btrfs-root";
+                mountOptions = ["compress=zstd" "noatime"];
+                extraArgs = ["-f"];
+                subvolumes = {
+                  "/root" = {
+                    mountpoint = "/";
+                    mountOptions = ["compress=zstd" "noatime"];
+                  };
+                  "/log" = {
+                    mountpoint = "/var/log";
+                    mountOptions = ["compress=zstd" "noatime"];
+                  };
+                  "/home" = {
+                    mountpoint = "/home";
+                    mountOptions = ["compress=zstd" "noatime"];
+                  };
+                  "/nix" = {
+                    mountpoint = "/nix";
+                    mountOptions = ["compress=zstd" "noatime"];
+                  };
+                };
+              };
+            };
+          };
+        };
+      };
+    };
   };
   environment.systemPackages = with pkgs; [
     btrbk
@@ -37,6 +85,7 @@
     less
     neovim
     smartmontools
+    tree
     tmux
     xz
     zsh
@@ -44,39 +93,6 @@
     zstd
   ];
   environment.variables.EDITOR = "nvim";
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
-    fsType = "btrfs";
-    options = ["noatime" "commit=600" "compress=zstd" "subvol=/root"];
-  };
-  fileSystems."/nix" = {
-    device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
-    fsType = "btrfs";
-    options = ["noatime" "commit=600" "compress=zstd" "subvol=/nix"];
-  };
-  fileSystems."/home" = {
-    device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
-    fsType = "btrfs";
-    options = ["noatime" "commit=600" "compress=zstd" "subvol=/home"];
-  };
-  fileSystems."/mnt/btrfs-root" = {
-    device = "/dev/disk/by-uuid/e7bc49e1-b617-41b7-89df-c1e18c832b16";
-    fsType = "btrfs";
-    options = ["noatime" "commit=600" "compress=zstd"];
-  };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/14f6f35f-157c-4b47-803a-1d4dcfdd5328";
-    fsType = "ext4";
-  };
-  fileSystems."/var/log" = {
-    device = "none";
-    fsType = "tmpfs";
-    options = ["size=300M"];
-  };
-  services.journald.extraConfig = ''
-    SystemMaxUse=300M
-    Storage=volatile
-  '';
   hardware.enableAllFirmware = true;
   i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
@@ -129,7 +145,9 @@
     enable = true;
     networks.wired = {
       name = "en*";
-      DHCP = "yes";
+      address = ["192.168.0.3/24"];
+      gateway = ["192.168.0.1"];
+      dns = ["192.168.0.2" "192.168.0.1" "1.1.1.1" "1.0.0.1"];
     };
   };
   time.timeZone = "Europe/London";

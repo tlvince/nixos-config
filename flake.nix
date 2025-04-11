@@ -60,6 +60,7 @@
       cm3588 = nixpkgs.lib.nixosSystem {
         modules = [
           ./cm3588.nix
+          disko.nixosModules.disko
         ];
       };
       framework = nixpkgs.lib.nixosSystem {
