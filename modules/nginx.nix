@@ -5,7 +5,6 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
-    recommendedZstdSettings = true;
 
     virtualHosts."test.filo.uk" = {
       useACMEHost = "filo.uk";
