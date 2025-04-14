@@ -103,7 +103,10 @@
   networking = {
     useDHCP = false;
     enableIPv6 = false;
-    firewall.logRefusedConnections = false;
+    firewall = {
+      allowedTCPPorts = [443];
+      logRefusedConnections = false;
+    };
     hostName = "cm3588";
   };
   nix.settings = {
