@@ -1,14 +1,18 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
+  pkgs,
+  keys,
   ...
 }: {
   imports = [
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
+
+    ./modules/acme.nix
+    ./modules/nginx.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -157,7 +161,7 @@
     users.tlv = {
       extraGroups = ["wheel"];
       isNormalUser = true;
-      openssh.authorizedKeys.keys = ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKygwTvfwbmEgZXvOYCHX3pY1dNNPGxMn15HCktIemRF"];
+      openssh.authorizedKeys.keys = [keys.tlv];
       shell = pkgs.zsh;
     };
   };
