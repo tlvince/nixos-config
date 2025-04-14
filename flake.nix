@@ -2,6 +2,8 @@
   description = "@tlvince's NixOS config";
 
   inputs = {
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+    agenix.url = "github:ryantm/agenix";
     apple-fonts.inputs.nixpkgs.follows = "nixpkgs";
     apple-fonts.url = "github:tlvince/apple-fonts.nix";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -18,12 +20,13 @@
   };
 
   outputs = {
-    self,
-    nixpkgs,
+    agenix,
     disko,
     ectool,
     home-manager,
     lanzaboote,
+    nixpkgs,
+    self,
     tmux-colours-onedark,
     ...
   } @ inputs: {
@@ -42,24 +45,26 @@
         system = "x86_64-linux";
         config.allowUnfree = true;
       };
-    in pkgs.mkShellNoCC {
-      packages = with pkgs; [
-        azure-cli
-        eslint_d
-        nodePackages."@astrojs/language-server"
-        nodePackages.bash-language-server
-        nodePackages.typescript-language-server
-        nodejs_22
-        mongodb-tools
-        mongosh
-        terraform
-        terraform-ls
-      ];
-    };
+    in
+      pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          azure-cli
+          eslint_d
+          nodePackages."@astrojs/language-server"
+          nodePackages.bash-language-server
+          nodePackages.typescript-language-server
+          nodejs_22
+          mongodb-tools
+          mongosh
+          terraform
+          terraform-ls
+        ];
+      };
     nixosConfigurations = {
       cm3588 = nixpkgs.lib.nixosSystem {
         modules = [
           ./cm3588.nix
+          agenix.nixosModules.default
           disko.nixosModules.disko
         ];
       };
@@ -67,6 +72,7 @@
         specialArgs = inputs;
         modules = [
           ./configuration.nix
+          agenix.nixosModules.default
           disko.nixosModules.disko
           home-manager.nixosModules.home-manager
           {
