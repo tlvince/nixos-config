@@ -6,8 +6,11 @@
   ...
 }: {
   imports = [
+    # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
+
+    ./modules/shairport-sync.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
