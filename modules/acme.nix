@@ -1,4 +1,4 @@
-{
+{config, ...}: {
   age.secrets.dns.file = ../secrets/dns.age;
 
   security.acme = {
@@ -9,7 +9,7 @@
         dnsProvider = "cloudflare";
         dnsResolver = "1.1.1.1:53";
         domain = "filo.uk";
-        environmentFile = "/run/agenix/dns";
+        environmentFile = config.age.secrets.dns.path;
         extraDomainNames = ["*.filo.uk"];
       };
     };
