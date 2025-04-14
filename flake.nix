@@ -29,7 +29,9 @@
     self,
     tmux-colours-onedark,
     ...
-  } @ inputs: {
+  } @ inputs: let
+    keys = import ./keys.nix;
+  in {
     devShells.x86_64-linux.default = let
       pkgs = import nixpkgs {
         system = "x86_64-linux";
@@ -62,6 +64,10 @@
       };
     nixosConfigurations = {
       cm3588 = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit keys;
+        };
+
         modules = [
           ./cm3588.nix
           agenix.nixosModules.default
