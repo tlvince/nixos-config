@@ -146,6 +146,7 @@
       PermitRootLogin = "no";
     };
   };
+  services.fstrim.enable = true;
   system.stateVersion = "25.05";
   system.tools = {
     nixos-build-vms.enable = false;
