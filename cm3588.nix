@@ -13,6 +13,7 @@
 
     ./modules/acme.nix
     ./modules/nginx.nix
+    ./modules/samba.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -173,11 +174,20 @@
   time.timeZone = "Europe/London";
   users = {
     defaultUserShell = pkgs.zsh;
+    groups.nas = {};
     users.tlv = {
-      extraGroups = ["wheel"];
+      extraGroups = [
+        config.users.groups.nas.name
+        "wheel"
+      ];
       isNormalUser = true;
       openssh.authorizedKeys.keys = [keys.tlv];
-      shell = pkgs.zsh;
+    };
+    users.zan = {
+      extraGroups = [
+        config.users.groups.nas.name
+      ];
+      isNormalUser = true;
     };
   };
   zramSwap.enable = true;
