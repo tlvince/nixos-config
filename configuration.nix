@@ -269,6 +269,12 @@
   programs.nano.enable = false;
   programs.zsh.enable = true;
 
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+    fileSystems = ["/"];
+  };
+
   services.btrbk.instances = {
     btrbk = {
       # Timer disabled in favour of hourly & daily timers

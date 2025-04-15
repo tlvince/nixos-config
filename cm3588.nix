@@ -132,6 +132,11 @@
   };
   programs.nano.enable = false;
   programs.zsh.enable = true;
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+    fileSystems = ["/"];
+  };
   services.openssh = {
     enable = true;
     openFirewall = true;
