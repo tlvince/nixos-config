@@ -440,7 +440,6 @@
   users = {
     defaultUserShell = pkgs.zsh;
     users.tlv = {
-      shell = pkgs.zsh;
       isNormalUser = true;
       extraGroups = ["wheel"];
     };
