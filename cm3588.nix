@@ -99,7 +99,6 @@
     zstd
   ];
   environment.variables.EDITOR = "nvim";
-  hardware.enableRedistributableFirmware = true;
 
   hardware.deviceTree.overlays = [
     {
@@ -107,6 +106,9 @@
       dtsFile = ./dts/cm3588-audio-clock.dts;
     }
   ];
+
+  hardware.alsa.enable = true;
+  hardware.enableRedistributableFirmware = true;
 
   i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
