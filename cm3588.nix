@@ -99,6 +99,14 @@
   ];
   environment.variables.EDITOR = "nvim";
   hardware.enableRedistributableFirmware = true;
+
+  hardware.deviceTree.overlays = [
+    {
+      name = "cm3588-audio-clock";
+      dtsFile = ./dts/cm3588-audio-clock.dts;
+    }
+  ];
+
   i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
     useDHCP = false;
