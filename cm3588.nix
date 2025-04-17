@@ -13,6 +13,7 @@
 
     ./modules/acme.nix
     ./modules/nginx.nix
+    ./modules/shairport-sync.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
