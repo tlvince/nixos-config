@@ -428,13 +428,6 @@
 
   system.stateVersion = "23.05";
 
-  systemd.services.wpa_supplicant = {
-    serviceConfig = {
-      # mt7921e CTRL-EVENT-SIGNAL-CHANGE spam with WiFi 6 APs
-      LogLevelMax = "notice";
-    };
-  };
-
   time.timeZone = "Europe/London";
 
   users = {
