@@ -12,6 +12,7 @@
     (modulesPath + "/profiles/minimal.nix")
 
     ./modules/acme.nix
+    ./modules/btrbk.nix
     ./modules/nginx.nix
     ./modules/samba.nix
     ./modules/shairport-sync.nix
