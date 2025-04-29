@@ -36,7 +36,7 @@
     lanzaboote = {
       enable = true;
       configurationLimit = 2;
-      pkiBundle = "/etc/secureboot";
+      pkiBundle = "/var/lib/sbctl";
     };
     loader = {
       efi.canTouchEfiVariables = true;
