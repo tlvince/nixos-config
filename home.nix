@@ -452,7 +452,7 @@
     enableCompletion = true;
     history.ignoreAllDups = true;
 
-    initExtra =
+    initContent =
       ''
         # Prompt
         autoload -U promptinit; promptinit
