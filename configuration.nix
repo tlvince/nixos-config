@@ -173,7 +173,6 @@
 
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  networking.enableIPv6 = false;
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [
