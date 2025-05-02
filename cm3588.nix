@@ -14,6 +14,7 @@
     ./modules/acme.nix
     ./modules/btrbk.nix
     ./modules/nginx.nix
+    ./modules/radicale.nix
     ./modules/samba.nix
     ./modules/shairport-sync.nix
   ];

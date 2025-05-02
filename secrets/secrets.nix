@@ -11,4 +11,8 @@ in
       cm3588
       framework
     ];
+
+    "radicale.age".publicKeys = [
+      cm3588
+    ];
   }
