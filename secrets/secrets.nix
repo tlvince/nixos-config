@@ -3,7 +3,12 @@ let
 in
   with keys; {
     "dns.age".publicKeys = [
-      tlv
       cm3588
+      tlv
+    ];
+
+    "notify.age".publicKeys = [
+      cm3588
+      framework
     ];
   }

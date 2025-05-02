@@ -8,7 +8,10 @@
 }: {
   imports = [
     ./disko-configuration.nix
+    ./modules/smartd.nix
   ];
+
+  age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
 
   boot = {
     blacklistedKernelModules = ["hid_sensor_hub"];
