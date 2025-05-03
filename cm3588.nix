@@ -13,6 +13,7 @@
 
     ./modules/acme.nix
     ./modules/btrbk.nix
+    ./modules/dnsmasq.nix
     ./modules/nginx.nix
     ./modules/radicale.nix
     ./modules/samba.nix
@@ -117,6 +118,13 @@
   networking = {
     useDHCP = false;
     enableIPv6 = false;
+    hosts = {
+      "192.168.0.3" = [
+        "immich-next.filo.uk"
+        "radicale-next.filo.uk"
+        "test.filo.uk"
+      ];
+    };
     firewall = {
       allowedTCPPorts = [443];
       logRefusedConnections = false;
