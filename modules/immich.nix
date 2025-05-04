@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  pkgs-6fc3feb,
+  ...
+}: {
   services.immich = {
     enable = true;
     environment = {
@@ -10,6 +14,7 @@
       enable = false;
       host = config.services.redis.servers.immich.unixSocket;
     };
+    package = pkgs-6fc3feb.immich;
     settings = {
       backup = {
         database = {

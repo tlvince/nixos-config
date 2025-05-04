@@ -3,6 +3,7 @@
   lib,
   modulesPath,
   pkgs,
+  pkgs-6fc3feb,
   keys,
   ...
 }: {
