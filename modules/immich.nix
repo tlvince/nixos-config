@@ -1,6 +1,6 @@
 {
   config,
-  pkgs-6fc3feb,
+  pkgs-f02955e,
   ...
 }: {
   services.immich = {
@@ -14,7 +14,10 @@
       enable = false;
       host = config.services.redis.servers.immich.unixSocket;
     };
-    package = pkgs-6fc3feb.immich;
+    # TODO: aarch64 build broken, pin to immich-1.129.0
+    # https://github.com/NixOS/nixpkgs/issues/404089
+    # https://hydra.nixos.org/build/292940229
+    package = pkgs-f02955e.immich;
     settings = {
       backup = {
         database = {

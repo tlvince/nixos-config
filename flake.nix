@@ -15,7 +15,7 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
-    nixpkgs-6fc3feb.url = "github:NixOS/nixpkgs/6fc3febc692102875cb588cca0b8ede4f6c38e52";
+    nixpkgs-f02955e.url = "github:NixOS/nixpkgs/f02955ed47edddae0d2cd8732fdfdb66c70d6d1f";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };
@@ -27,7 +27,7 @@
     home-manager,
     lanzaboote,
     nixpkgs,
-    nixpkgs-6fc3feb,
+    nixpkgs-f02955e,
     self,
     tmux-colours-onedark,
     ...
@@ -68,7 +68,7 @@
       cm3588 = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit keys;
-          pkgs-6fc3feb = import nixpkgs-6fc3feb {
+          pkgs-f02955e = import nixpkgs-f02955e {
             system = "aarch64-linux";
           };
         };
