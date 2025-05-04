@@ -5,6 +5,7 @@
 }: {
   services.immich = {
     enable = true;
+    database.enable = false;
     environment = {
       IMMICH_LOG_LEVEL = "warn";
       TZ = config.time.timeZone;
@@ -48,6 +49,22 @@
         hashVerificationEnabled = true;
         template = "{{y}}/{{MM}}/{{filename}}";
       };
+    };
+  };
+
+  services.postgresql = {
+    ensureDatabases = ["immich"];
+    ensureUsers = [
+      {
+        name = "immich";
+        ensureDBOwnership = true;
+        ensureClauses.login = true;
+      }
+    ];
+    extensions = ps: with ps; [pgvecto-rs];
+    settings = {
+      shared_preload_libraries = ["vectors.so"];
+      search_path = "\"$user\", public, vectors";
     };
   };
 
