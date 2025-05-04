@@ -10,8 +10,6 @@
       enable = false;
       host = config.services.redis.servers.immich.unixSocket;
     };
-    # Managed ourselves
-    database.enable = false;
     settings = {
       backup = {
         database = {
@@ -42,22 +40,6 @@
         hashVerificationEnabled = true;
         template = "{{y}}/{{MM}}/{{filename}}";
       };
-    };
-  };
-
-  services.postgresql = {
-    ensureDatabases = ["immich"];
-    ensureUsers = [
-      {
-        name = "immich";
-        ensureDBOwnership = true;
-        ensureClauses.login = true;
-      }
-    ];
-    extensions = ps: with ps; [pgvecto-rs];
-    settings = {
-      shared_preload_libraries = ["vectors.so"];
-      search_path = "\"$user\", public, vectors";
     };
   };
 
