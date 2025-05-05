@@ -305,7 +305,7 @@
     defaultCacheTtlSsh = 28800; # 8 hours
     maxCacheTtl = 57600; # 16 hours
     maxCacheTtlSsh = 57600; # 16 hours
-    pinentryPackage = pkgs.pinentry-gnome3;
+    pinentry.package = pkgs.pinentry-gnome3;
   };
 
   programs.home-manager.enable = true;
