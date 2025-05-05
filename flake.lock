@@ -283,19 +283,19 @@
         "url": "https://github.com/NixOS/nixpkgs"
       }
     },
-    "nixpkgs-f02955e": {
+    "nixpkgs-c11863f": {
       "locked": {
-        "lastModified": 1742580299,
-        "narHash": "sha256-oyRRfEBFIQUuJQtM1/LMoOAc+YKxsxIKnhgoo+1mhcc=",
+        "lastModified": 1745234285,
+        "narHash": "sha256-GfpyMzxwkfgRVN0cTGQSkTC0OHhEkv3Jf6Tcjm//qZ0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f02955ed47edddae0d2cd8732fdfdb66c70d6d1f",
+        "rev": "c11863f1e964833214b767f4a369c6e6a7aba141",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f02955ed47edddae0d2cd8732fdfdb66c70d6d1f",
+        "rev": "c11863f1e964833214b767f4a369c6e6a7aba141",
         "type": "github"
       }
     },
@@ -346,7 +346,7 @@
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-f02955e": "nixpkgs-f02955e",
+        "nixpkgs-c11863f": "nixpkgs-c11863f",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
     },
