@@ -3,6 +3,7 @@
   lib,
   modulesPath,
   pkgs,
+  pkgs-c11863f,
   keys,
   ...
 }: {
@@ -14,7 +15,9 @@
     ./modules/acme.nix
     ./modules/btrbk.nix
     ./modules/dnsmasq.nix
+    ./modules/immich.nix
     ./modules/nginx.nix
+    ./modules/postgres.nix
     ./modules/radicale.nix
     ./modules/samba.nix
     ./modules/shairport-sync.nix
