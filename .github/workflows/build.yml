@@ -59,6 +59,11 @@ jobs:
         with:
           name: tlvince-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.GH_APP_KEY }}
       - name: Run flake check
         # All configurations are checked by default, so just run it in one
         # matrix build
@@ -70,7 +75,7 @@ jobs:
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
-          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths)"
+          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths --access-tokens github.com=${{ steps.generate-token.outputs.token }})"
           echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.machine.type}}.${{ matrix.machine.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
@@ -80,7 +85,7 @@ jobs:
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" | tee "$DIFF_OUTPUT"
+          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --access-tokens github.com=${{ steps.generate-token.outpus.token }} --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Add job summary to PR
