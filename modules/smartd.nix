@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  secrets,
   ...
 }: let
   scripts = import ../scripts.nix {
@@ -15,7 +16,7 @@
     DEVICESCAN -a -n standby,q -s S/../../7/05 -m <nomailer> -M exec ${smartdNotify}
   '';
 in {
-  age.secrets.notify.file = ../secrets/notify.age;
+  age.secrets.notify.file = "${secrets}/notify.age";
 
   systemd.services.smartd = {
     description = "S.M.A.R.T. Daemon";

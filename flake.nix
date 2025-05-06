@@ -16,6 +16,8 @@
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     nixpkgs-c11863f.url = "github:NixOS/nixpkgs/c11863f1e964833214b767f4a369c6e6a7aba141";
+    secrets.flake = false;
+    secrets.url = "git+file:///home/tlv/dev/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };
@@ -28,6 +30,7 @@
     lanzaboote,
     nixpkgs,
     nixpkgs-c11863f,
+    secrets,
     self,
     tmux-colours-onedark,
     ...
@@ -71,6 +74,7 @@
           pkgs-c11863f = import nixpkgs-c11863f {
             system = "aarch64-linux";
           };
+          secrets = inputs.secrets.outPath;
         };
 
         modules = [

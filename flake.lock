@@ -347,6 +347,7 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "nixpkgs-c11863f": "nixpkgs-c11863f",
+        "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
     },
@@ -369,6 +370,22 @@
         "owner": "oxalica",
         "repo": "rust-overlay",
         "type": "github"
+      }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1746521967,
+        "narHash": "sha256-0jU4ylE7MOerOmUqnimna0k5EXObJ+IW5+fdM6/kofs=",
+        "ref": "refs/heads/master",
+        "rev": "571baa94dcb6fc7a368f27d135b58f3f193f1b3b",
+        "revCount": 2,
+        "type": "git",
+        "url": "file:///home/tlv/dev/nixos-config-secrets"
+      },
+      "original": {
+        "type": "git",
+        "url": "file:///home/tlv/dev/nixos-config-secrets"
       }
     },
     "systems": {

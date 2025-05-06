@@ -1,5 +1,9 @@
-{config, ...}: {
-  age.secrets.dns.file = ../secrets/dns.age;
+{
+  config,
+  secrets,
+  ...
+}: {
+  age.secrets.dns.file = "${secrets}/dns.age";
 
   security.acme = {
     acceptTerms = true;

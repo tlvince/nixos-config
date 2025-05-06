@@ -1,12 +1,32 @@
-{config, ...}: {
+{
+  config,
+  secrets,
+  ...
+}: {
+  age.secrets.rclone-postgresql.file = "${secrets}/rclone-postgresql.age";
+  age.secrets.restic-postgresql.file = "${secrets}/restic-postgresql.age";
+
   services.postgresql = {
     enable = true;
   };
 
   services.postgresqlBackup = {
     enable = true;
-    compression = "zstd";
-    compressionLevel = 3;
+    compression = "none";
     startAt = "*-*-* 04:00:00";
+  };
+
+  services.restic.backups.postgresql = {
+    initialize = true;
+    passwordFile = config.age.secrets.restic-postgresql.path;
+    paths = [
+      config.services.postgresqlBackup.location
+    ];
+    rcloneConfigFile = config.age.secrets.rclone-postgresql.path;
+    repository = "rclone:cm3588_drive:postgresql";
+    timerConfig = {
+      OnCalendar = "04:30";
+      RandomizedDelaySec = "10m";
+    };
   };
 }
