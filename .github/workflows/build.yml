@@ -64,6 +64,8 @@ jobs:
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.GH_APP_KEY }}
+          owner: tlvince
+          repositories: nixos-config-secrets
       - name: Run flake check
         # All configurations are checked by default, so just run it in one
         # matrix build
