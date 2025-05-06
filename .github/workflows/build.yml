@@ -50,22 +50,22 @@ jobs:
           remove-haskell: true
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@21a544727d0c62386e78b4befe52d19ad12692e3 # v17
-        with:
-          source-tag: v0.32.3
-      - name: Set up public cache
-        uses: cachix/cachix-action@0fc020193b5a1fa3ac4575aa3a7d3aa6a35435ad # v16
-        with:
-          name: tlvince-nixos-config
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - uses: actions/create-github-app-token@v2
-        id: github-token
+        id: generate-github-token
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.GH_APP_KEY }}
           owner: tlvince
           repositories: nixos-config-secrets
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@21a544727d0c62386e78b4befe52d19ad12692e3 # v17
+        with:
+          github-token: ${{ steps.generate-github-token.outputs.token }}
+      - name: Set up public cache
+        uses: cachix/cachix-action@0fc020193b5a1fa3ac4575aa3a7d3aa6a35435ad # v16
+        with:
+          name: tlvince-nixos-config
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
       - name: Run flake check
         # All configurations are checked by default, so just run it in one
         # matrix build
@@ -77,7 +77,7 @@ jobs:
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
-          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths --access-tokens github.com=${{ steps.github-token.outputs.token }})"
+          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths)"
           echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.machine.type}}.${{ matrix.machine.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
@@ -87,7 +87,7 @@ jobs:
           PREV_FLAKE="github:${GITHUB_REPOSITORY}"
           NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --access-tokens github.com=${{ steps.github-token.outputs.token }} --no-write-lock-file | tee "$DIFF_OUTPUT"
+          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Add job summary to PR
