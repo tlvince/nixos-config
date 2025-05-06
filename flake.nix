@@ -17,7 +17,7 @@
     nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
     nixpkgs-c11863f.url = "github:NixOS/nixpkgs/c11863f1e964833214b767f4a369c6e6a7aba141";
     secrets.flake = false;
-    secrets.url = "git+file:///home/tlv/dev/nixos-config-secrets";
+    secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };

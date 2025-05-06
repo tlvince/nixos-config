@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+      - uses: actions/create-github-app-token@v2
+        id: app-token
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.GH_APP_KEY }}
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@21a544727d0c62386e78b4befe52d19ad12692e3 # v17
       - name: Update flake.lock
@@ -19,6 +24,7 @@ jobs:
         id: update-flake-lock
         with:
           commit-msg: "chore(flake.lock): update"
+          nix-options: "--access-tokens github.com=${{ steps.generate-token.outputs.token }}"
           pr-body: |
             ```
             {{ env.GIT_COMMIT_MESSAGE }}
