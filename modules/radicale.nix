@@ -1,11 +1,11 @@
 {
   config,
   pkgs,
-  secrets,
+  secretsPath,
   ...
 }: {
   age.secrets.radicale = {
-    file = "${secrets}/radicale.age";
+    file = "${secretsPath}/radicale.age";
     mode = "770";
     owner = "nginx";
     group = "nginx";

@@ -1,10 +1,10 @@
 {
   config,
-  secrets,
+  secretsPath,
   ...
 }: {
-  age.secrets.rclone-postgresql.file = "${secrets}/rclone-postgresql.age";
-  age.secrets.restic-postgresql.file = "${secrets}/restic-postgresql.age";
+  age.secrets.rclone-postgresql.file = "${secretsPath}/rclone-postgresql.age";
+  age.secrets.restic-postgresql.file = "${secretsPath}/restic-postgresql.age";
 
   services.postgresql = {
     enable = true;

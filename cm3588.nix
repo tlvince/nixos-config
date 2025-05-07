@@ -129,7 +129,13 @@
       ];
     };
     firewall = {
-      allowedTCPPorts = [443];
+      allowedTCPPorts = [
+        53
+        443
+      ];
+      allowedUDPPorts = [
+        53
+      ];
       logRefusedConnections = false;
     };
     hostName = "cm3588";
@@ -192,7 +198,6 @@
       name = "en*";
       address = ["192.168.0.3/24"];
       gateway = ["192.168.0.1"];
-      dns = ["192.168.0.2" "192.168.0.1" "1.1.1.1" "1.0.0.1"];
     };
   };
   time.timeZone = "Europe/London";

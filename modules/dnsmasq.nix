@@ -1,12 +1,19 @@
-{config, ...}: {
+{
+  config,
+  secrets,
+  ...
+}: {
   services.dnsmasq = {
     enable = true;
+    resolveLocalQueries = false;
     settings = {
+      bind-interfaces = true;
       bogus-priv = true;
       cache-size = 10000;
       domain-needed = true;
       filter-AAAA = true;
       interface = "enP4p65s0";
+      listen-address = ["192.168.0.3"];
       local-ttl = 2;
       localise-queries = true;
 
@@ -19,8 +26,7 @@
       no-resolv = true;
       server = [
         # Upstreams
-        "1.1.1.1"
-        "1.0.0.1"
+        "127.0.0.53"
         # Forwards
         "/photos.filo.uk/#"
         # Local only
@@ -43,50 +49,18 @@
       # This fixes a security hole. see CERT Vulnerability VU#598349
       dhcp-name-match = "set:wpad-ignore,wpad";
       dhcp-ignore-names = "tag:wpad-ignore";
-
-      # Adblock
-      address = [
-        "/aws.adobess.com/#"
-        "/beacon-v2.helpscout.net/#"
-        "/blueistheneworanges.com/#"
-        "/graph.facebook.com/#"
-        "/ingest.sentry.io/#"
-        "/metrics.icloud.com/#"
-        "/privatestats.whatsapp.net/#"
-        "/t.premii.com/#"
-        "/telemetry.algolia.com/#"
-        "/track.miro.com/#"
-        "/uk-tracking.nextdoor.com/#"
-        "/usage.influxdata.com/#"
-
-        # Barclays
-        "/aimatch.com/#"
-        "/aimatch.net/#"
-
-        # Revolut
-        "/appsflyer.com/#"
-        "/appsflyersdk.com/#"
-
-        # Smart Plug
-        "/tplinkcloud.com/#"
-        "/tplinkra.com/#"
-
-        # Brave
-        "/ads-serve.brave.com/#"
-        "/ads-static.brave.com/#"
-        "/laptop-updates.brave.com/#"
-        "/mainnet-infura.brave.com/#"
-        "/p3a.brave.com/#"
-        "/rewards.brave.com/#"
-        "/variations.brave.com/#"
-
-        # HP Printer
-        "/hpeprint.com/#"
-        "/www1.hp.com/#"
-        "/www2.hp.com/#"
-      ];
     };
   };
 
-  services.resolved.enable = false;
+  networking.nameservers = [
+    "2a07:a8c0::#${secrets.nextdns}.dns.nextdns.io"
+    "2a07:a8c1::#${secrets.nextdns}.dns.nextdns.io"
+    "45.90.28.0#${secrets.nextdns}.dns.nextdns.io"
+    "45.90.30.0#${secrets.nextdns}.dns.nextdns.io"
+  ];
+
+  services.resolved = {
+    enable = true;
+    dnsovertls = "true";
+  };
 }

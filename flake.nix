@@ -74,7 +74,8 @@
           pkgs-c11863f = import nixpkgs-c11863f {
             system = "aarch64-linux";
           };
-          secrets = inputs.secrets.outPath;
+          secrets = import inputs.secrets;
+          secretsPath = inputs.secrets.outPath;
         };
 
         modules = [
@@ -84,7 +85,11 @@
         ];
       };
       framework = nixpkgs.lib.nixosSystem {
-        specialArgs = inputs;
+        specialArgs =
+          inputs
+          // {
+            secretsPath = inputs.secrets.outPath;
+          };
         modules = [
           ./configuration.nix
           agenix.nixosModules.default
