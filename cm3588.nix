@@ -21,6 +21,7 @@
     ./modules/radicale.nix
     ./modules/samba.nix
     ./modules/shairport-sync.nix
+    ./modules/smartd.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
