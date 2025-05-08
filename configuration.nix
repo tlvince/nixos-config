@@ -38,7 +38,7 @@
         name = "drm/amdgpu/vcn: fix timeout";
         patch = pkgs.fetchpatch {
           url = "https://gitlab.freedesktop.org/-/project/176/uploads/f918cc6fbea107a9cc4236d05e3ad7e0/0001_dpg_pause_unpause_for_vcn_4_0_5.patch";
-          sha256 = lib.fakeSha256;
+          sha256 = "sha256-U9LMriAeAj37BOkBIFHXvCzAJkFNM8ObBoT05v+I3bA=";
         };
       }
     ];
