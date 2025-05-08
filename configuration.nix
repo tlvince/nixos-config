@@ -32,6 +32,16 @@
       "kvm-amd"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        # https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528#note_2898776
+        name = "drm/amdgpu/vcn: fix timeout";
+        patch = pkgs.fetchpatch {
+          url = "https://gitlab.freedesktop.org/-/project/176/uploads/f918cc6fbea107a9cc4236d05e3ad7e0/0001_dpg_pause_unpause_for_vcn_4_0_5.patch";
+          sha256 = lib.fakeSha256;
+        };
+      }
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
