@@ -20,7 +20,7 @@
     initialize = true;
     passwordFile = config.age.secrets.restic-postgresql.path;
     paths = [
-      config.services.postgresqlBackup.location
+      "${config.services.postgresqlBackup.location}/all.sql"
     ];
     rcloneConfigFile = config.age.secrets.rclone-postgresql.path;
     repository = "rclone:cm3588_drive:postgresql";
