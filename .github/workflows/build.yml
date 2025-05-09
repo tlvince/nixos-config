@@ -40,14 +40,16 @@ jobs:
       - name: Free up disk space
         # Increased disk usage on arm
         if: matrix.machine.platform == 'x86-64-linux'
-        uses: easimon/maximize-build-space@fc881a613ad2a34aca9c9624518214ebc21dfc0c # v10
+        uses: AdityaGarg8/remove-unwanted-software@90e01b21170618765a73370fcc3abbd1684a7793 # v5
         with:
-          overprovision-lvm: true
           remove-android: true
+          remove-cached-tools: true
           remove-codeql: true
           remove-docker-images: true
           remove-dotnet: true
           remove-haskell: true
+          remove-large-packages: true
+          remove-swapfile: true
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Generate GitHub token
