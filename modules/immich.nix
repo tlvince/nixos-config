@@ -10,6 +10,7 @@
       IMMICH_LOG_LEVEL = "warn";
       TZ = config.time.timeZone;
     };
+    mediaLocation = "/mnt/ichbiah/home/immich";
     redis = {
       # Managed ourselves
       enable = false;

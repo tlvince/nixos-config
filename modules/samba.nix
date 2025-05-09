@@ -42,7 +42,7 @@
       photos = {
         "browseable" = "yes";
         "comment" = "Photos";
-        "path" = "/mnt/shares/time-machine";
+        "path" = "/mnt/ichbiah/home/photos";
         "valid users" = "zan tlv";
         "writeable" = "yes";
       };
@@ -53,7 +53,7 @@
         "create mask" = "0660";
         "directory mask" = "0755";
         "force group" = config.users.groups.nas.name;
-        "path" = "/mnt/shares/shared";
+        "path" = "/mnt/ichbiah/home/shared";
         "valid users" = "zan tlv";
         "writeable" = "yes";
       };
@@ -62,7 +62,7 @@
         "browseable" = "yes";
         "comment" = "Time Machine";
         "fruit:time machine" = "yes";
-        "path" = "/mnt/shares/time-machine";
+        "path" = "/mnt/ichbiah/home/time-machine";
         "valid users" = "zan";
         "writeable" = "yes";
       };
@@ -70,7 +70,7 @@
       zdrive = {
         "browseable" = "yes";
         "comment" = "ZDrive";
-        "path" = "/mnt/shares/zan";
+        "path" = "/mnt/ichbiah/home/zan";
         "valid users" = "zan";
         "writeable" = "yes";
       };

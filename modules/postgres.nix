@@ -8,11 +8,13 @@
 
   services.postgresql = {
     enable = true;
+    dataDir = "/mnt/ichbiah/home/postgresql/${config.services.postgresql.package.psqlSchema}";
   };
 
   services.postgresqlBackup = {
     enable = true;
     compression = "none";
+    location = "/mnt/ichbiah/home/postgresql-backup";
     startAt = "*-*-* 04:00:00";
   };
 

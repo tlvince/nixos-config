@@ -54,7 +54,7 @@
               size = "100%";
               content = {
                 type = "btrfs";
-                mountpoint = "/mnt/btrfs-root";
+                mountpoint = "/mnt/fowler";
                 mountOptions = ["compress=zstd" "noatime"];
                 extraArgs = ["-f"];
                 subvolumes = {
@@ -82,6 +82,12 @@
       };
     };
   };
+
+  environment.etc.crypttab.text = ''
+    godel UUID=fda93065-2a13-4e26-a2b6-91df80d0ced0 /root/cryptsetup-keys.d/godel.key
+    huffman UUID=e017c3f2-fa81-43e6-af9a-33f99abbc647 /root/cryptsetup-keys.d/huffman.key
+  '';
+
   environment.systemPackages = with pkgs; [
     btrbk
     coreutils
@@ -106,7 +112,19 @@
     zsh-z
     zstd
   ];
+
   environment.variables.EDITOR = "nvim";
+
+  fileSystems."/mnt/ichbiah/home" = {
+    device = "/dev/mapper/godel";
+    fsType = "btrfs";
+    options = ["compress=zstd" "noatime" "subvol=/home"];
+  };
+  fileSystems."/mnt/ichbiah/snapshots" = {
+    device = "/dev/mapper/godel";
+    fsType = "btrfs";
+    options = ["compress=zstd" "noatime" "subvol=/snapshots"];
+  };
 
   hardware.deviceTree.overlays = [
     {
@@ -137,7 +155,7 @@
       allowedUDPPorts = [
         53
       ];
-      logRefusedConnections = false;
+      logRefusedConnections = true;
     };
     hostName = "cm3588";
   };
@@ -167,7 +185,10 @@
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
-    fileSystems = ["/"];
+    fileSystems = [
+      "/"
+      "/mnt/ichbiah/home"
+    ];
   };
   services.openssh = {
     enable = true;

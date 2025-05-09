@@ -41,7 +41,7 @@
         hosts = ["127.0.0.1:5232"];
       };
       storage = {
-        filesystem_folder = "/var/lib/radicale/collections";
+        filesystem_folder = "/mnt/ichbiah/home/radicale/collections";
         hook = "${pkgs.git}/bin/git add -A && (${pkgs.git}/bin/git diff --cached --quiet || ${pkgs.git}/bin/git -c user.name=%(user)s -c user.email=radicale-%(user)s@filo.uk commit -m \"Changes by \"%(user)s)";
       };
       web = {
