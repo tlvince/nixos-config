@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 defaults:
   run:
-    shell: bash -euo pipefail {0}
+    shell: bash -euxo pipefail {0}
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -38,16 +38,20 @@ jobs:
       pull-requests: write
     steps:
       - name: Free up disk space
-        # Increased disk usage on arm
+        # No effect on arm
         if: matrix.machine.platform == 'x86-64-linux'
-        uses: easimon/maximize-build-space@fc881a613ad2a34aca9c9624518214ebc21dfc0c # v10
-        with:
-          overprovision-lvm: true
-          remove-android: true
-          remove-codeql: true
-          remove-docker-images: true
-          remove-dotnet: true
-          remove-haskell: true
+        run: |
+          df -h
+
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/local/.ghcup
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+
+          sudo docker image prune --all --force
+
+          df -h
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Generate GitHub token
