@@ -38,8 +38,6 @@ jobs:
       pull-requests: write
     steps:
       - name: Free up disk space
-        # Increased disk usage on arm
-        if: matrix.machine.platform == 'x86-64-linux'
         run: |
           df -h
 
