@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 defaults:
   run:
-    shell: bash -euo pipefail {0}
+    shell: bash -euxo pipefail {0}
 concurrency:
   group: ${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -41,6 +41,8 @@ jobs:
         # Increased disk usage on arm
         if: matrix.machine.platform == 'x86-64-linux'
         run: |
+          df -h
+
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
@@ -53,6 +55,8 @@ jobs:
 
           sudo swapoff -a
           sudo rm -f /mnt/swapfile
+
+          df -h
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: Generate GitHub token
