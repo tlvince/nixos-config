@@ -55,6 +55,12 @@ jobs:
           sudo swapoff -a
           sudo rm -rf /mnt/swapfile
 
+          sudo modprobe zram
+          sudo zramctl /dev/zram0 --algorithm zstd --size "$(($(grep -Po 'MemTotal:\s*\K\d+' /proc/meminfo)/2))KiB"
+          sudo mkswap -U clear /dev/zram0
+          sudo swapon --discard --priority 100 /dev/zram0
+          sudo sysctl vm.swappiness=180 vm.watermark_boost_factor=0 vm.watermark_scale_factor=125 vm.page-cluster=0
+
           df -h
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
