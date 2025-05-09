@@ -43,18 +43,18 @@ jobs:
         run: |
           df -h
 
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf /usr/local/.ghcup
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf /opt/hostedtoolcache
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo rm -rfv /usr/share/dotnet
+          sudo rm -rfv /usr/local/lib/android
+          sudo rm -rfv /opt/ghc
+          sudo rm -rfv /usr/local/.ghcup
+          sudo rm -rfv "/usr/local/share/boost"
+          sudo rm -rfv /opt/hostedtoolcache
+          sudo rm -rfv "$AGENT_TOOLSDIRECTORY"
 
           sudo docker image prune --all --force
 
           sudo swapoff -a
-          sudo rm -f /mnt/swapfile
+          sudo rm -rfv /mnt/swapfile
 
           df -h
       - name: Checkout repository
