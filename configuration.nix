@@ -34,11 +34,11 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelPatches = [
       {
-        # https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528#note_2898776
-        name = "drm/amdgpu/vcn: fix timeout";
+        # https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528#note_2903939
+        name = "drm/amdgpu/vcn: turn-off-doorbell-for-vcn-ring-use";
         patch = pkgs.fetchpatch {
-          url = "https://gitlab.freedesktop.org/-/project/176/uploads/f918cc6fbea107a9cc4236d05e3ad7e0/0001_dpg_pause_unpause_for_vcn_4_0_5.patch";
-          sha256 = "sha256-U9LMriAeAj37BOkBIFHXvCzAJkFNM8ObBoT05v+I3bA=";
+          url ="https://gitlab.freedesktop.org/-/project/176/uploads/1e92f4d6f48df55732cde66a94db1d85/0001-turn-off-doorbell-for-vcn-ring-use.patch";
+          sha256 = "sha256-CSDu90At9rSPGw2p/7u9OSCLbB0jzgMypAOIlUCT1YI=";
         };
       }
     ];
