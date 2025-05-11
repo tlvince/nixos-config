@@ -38,7 +38,7 @@
         name = "drm/amdgpu/vcn: turn-off-doorbell-for-vcn-ring-use";
         patch = pkgs.fetchpatch {
           url ="https://gitlab.freedesktop.org/-/project/176/uploads/1e92f4d6f48df55732cde66a94db1d85/0001-turn-off-doorbell-for-vcn-ring-use.patch";
-          sha256 = lib.fakeSha256;
+          sha256 = "sha256-CSDu90At9rSPGw2p/7u9OSCLbB0jzgMypAOIlUCT1YI=";
         };
       }
     ];
