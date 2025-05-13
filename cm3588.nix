@@ -155,7 +155,7 @@
       allowedUDPPorts = [
         53
       ];
-      logRefusedConnections = true;
+      logRefusedConnections = false;
     };
     hostName = "cm3588";
   };
