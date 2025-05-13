@@ -38,7 +38,7 @@
         name = "drm/amdgpu/vcn: fix vcn race condition";
         patch = pkgs.fetchpatch {
           url = "https://gitlab.freedesktop.org/-/project/176/uploads/defeac39ec232976c7c82aab151bfe63/0001-drm-amdgpu-read-back-DB_CTRL-register-after-write-fo.patch";
-          sha256 = lib.fakeSha256;
+          sha256 = "sha256-cQ0Rz4SaxxzbmIPehZtxrclgp70abBwbWGghyELZnY0=";
         };
       }
     ];
