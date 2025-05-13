@@ -13,7 +13,7 @@
   '';
 
   smartdConf = pkgs.writeText "smartd.conf" ''
-    DEVICESCAN -a -n standby,q -s S/../../7/05 -m <nomailer> -M exec ${smartdNotify}
+    DEVICESCAN -a -n standby,q -s S/../../7/05 -m <nomailer> -M exec "${smartdNotify}/bin/smartd-notify.sh"
   '';
 in {
   age.secrets.notify.file = "${secretsPath}/notify.age";
