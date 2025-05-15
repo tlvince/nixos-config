@@ -32,6 +32,9 @@
       monospace-font-name = "Monospace 12.5";
       show-battery-percentage = true;
     };
+    "org/gnome/desktop/notifications" = {
+      show-in-lock-screen = false;
+    };
     "org/gnome/desktop/session" = {
       idle-delay = 120;
     };
