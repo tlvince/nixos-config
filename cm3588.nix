@@ -144,13 +144,16 @@
 
   i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
-    useDHCP = false;
+    domain = "filo.uk";
     enableIPv6 = false;
+    hostName = "cm3588";
     hosts = {
       "192.168.0.2" = [
         "home-assistant.filo.uk"
       ];
       "192.168.0.3" = [
+        "cm3588"
+        "cm3588.filo.uk"
         "immich.filo.uk"
         "radicale.filo.uk"
         "test.filo.uk"
@@ -167,7 +170,7 @@
       ];
       logRefusedConnections = false;
     };
-    hostName = "cm3588";
+    useDHCP = false;
   };
   nix.settings = {
     experimental-features = [
