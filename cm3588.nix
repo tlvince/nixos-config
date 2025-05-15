@@ -125,6 +125,12 @@
     fsType = "btrfs";
     options = ["compress=zstd" "noatime" "subvol=/snapshots"];
   };
+  fileSystems."/mnt/libraries/ichbiah" = {
+    device = "/mnt/ichbiah/home/photos";
+    depends = ["/mnt/ichbiah/home"];
+    fsType = "none";
+    options = ["bind" "ro" "nosuid" "nodev" "noexec"];
+  };
 
   hardware.deviceTree.overlays = [
     {
