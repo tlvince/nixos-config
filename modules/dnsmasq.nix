@@ -38,7 +38,7 @@
       ];
 
       # DHCP
-      #dhcp-authoritative
+      dhcp-authoritative = true;
       dhcp-option = [
         "option:dns-server,0.0.0.0"
         "option:router,192.168.0.1"

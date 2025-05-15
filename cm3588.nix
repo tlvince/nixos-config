@@ -147,9 +147,12 @@
     useDHCP = false;
     enableIPv6 = false;
     hosts = {
+      "192.168.0.2" = [
+        "home-assistant.filo.uk"
+      ];
       "192.168.0.3" = [
         "immich-next.filo.uk"
-        "radicale-next.filo.uk"
+        "radicale.filo.uk"
         "test.filo.uk"
       ];
     };
@@ -160,6 +163,7 @@
       ];
       allowedUDPPorts = [
         53
+        67
       ];
       logRefusedConnections = false;
     };
