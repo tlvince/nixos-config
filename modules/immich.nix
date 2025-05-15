@@ -44,7 +44,7 @@
         enabled = false;
       };
       server = {
-        externalDomain = "https://immich-next.filo.uk";
+        externalDomain = "https://immich.filo.uk";
       };
       storageTemplate = {
         enabled = true;
@@ -84,7 +84,7 @@
   services.nginx = {
     upstreams.immich.servers."127.0.0.1:${toString config.services.immich.port}" = {};
 
-    virtualHosts."immich-next.filo.uk" = {
+    virtualHosts."immich.filo.uk" = {
       useACMEHost = "filo.uk";
       forceSSL = true;
 

@@ -151,7 +151,7 @@
         "home-assistant.filo.uk"
       ];
       "192.168.0.3" = [
-        "immich-next.filo.uk"
+        "immich.filo.uk"
         "radicale.filo.uk"
         "test.filo.uk"
       ];
