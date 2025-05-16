@@ -47,7 +47,7 @@
         name = "wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl";
         patch = pkgs.fetchpatch {
           url = "https://github.com/torvalds/linux/commit/0aa8496adda570c2005410a30df963a16643a3dc.patch";
-          sha256 = lib.fakeSha256;
+          sha256 = "sha256-eK/TMV5X2kCCWjsaeM94x9ojLckvtPh7Rs8yEKYvP8s=";
         };
       }
     ];
