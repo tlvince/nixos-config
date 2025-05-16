@@ -15,6 +15,7 @@
     ./modules/acme.nix
     ./modules/btrbk.nix
     ./modules/dnsmasq.nix
+    ./modules/dmesgd.nix
     ./modules/immich.nix
     ./modules/nginx.nix
     ./modules/postgres.nix
