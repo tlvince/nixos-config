@@ -41,6 +41,15 @@
           sha256 = "sha256-cQ0Rz4SaxxzbmIPehZtxrclgp70abBwbWGghyELZnY0=";
         };
       }
+      {
+        # Fix broken mDNS/IPv6
+        # https://lore.kernel.org/lkml/EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me/
+        name = "wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl";
+        patch = pkgs.fetchpatch {
+          url = "https://github.com/torvalds/linux/commit/0aa8496adda570c2005410a30df963a16643a3dc.patch";
+          sha256 = "sha256-eK/TMV5X2kCCWjsaeM94x9ojLckvtPh7Rs8yEKYvP8s=";
+        };
+      }
     ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
