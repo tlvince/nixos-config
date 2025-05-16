@@ -2,8 +2,7 @@
   services.shairport-sync = {
     enable = true;
     openFirewall = true;
-    package = pkgs.shairport-sync.override {
-      enableAirplay2 = true;
+    package = pkgs.shairport-sync-airplay2.override {
       # Audio output
       enableAlsa = true;
       enableAo = false;
