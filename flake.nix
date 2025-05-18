@@ -4,8 +4,6 @@
   inputs = {
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
-    apple-fonts.inputs.nixpkgs.follows = "nixpkgs";
-    apple-fonts.url = "github:tlvince/apple-fonts.nix";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     ectool.inputs.nixpkgs.follows = "nixpkgs";

@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  apple-fonts,
   ectool,
   ...
 }: {
@@ -145,9 +144,9 @@
 
   fonts = {
     enableDefaultPackages = false;
-    packages = [
-      pkgs.noto-fonts-color-emoji
-      apple-fonts.packages."${pkgs.system}".sf-pro
+    packages = with pkgs; [
+      dejavu_fonts
+      noto-fonts-color-emoji
     ];
 
     fontconfig = {
@@ -166,26 +165,10 @@
 
       defaultFonts = {
         serif = ["DejaVu Serif"];
-        sansSerif = ["SF Pro Text"];
+        sansSerif = ["Adwaita Sans"];
         monospace = ["DejaVu Sans Mono"];
         emoji = ["Noto Color Emoji"];
       };
-
-      localConf = ''
-        <?xml version="1.0"?>
-        <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-        <fontconfig>
-          <selectfont>
-            <rejectfont>
-              <pattern>
-                <patelt name="family">
-                  <string>Cantarell</string>
-                </patelt>
-              </pattern>
-            </rejectfont>
-          </selectfont>
-        </fontconfig>
-      '';
     };
   };
 
@@ -400,7 +383,7 @@
   services.gnome.core-developer-tools.enable = false;
   services.gnome.core-os-services.enable = true;
   services.gnome.core-shell.enable = true;
-  services.gnome.core-utilities.enable = false;
+  services.gnome.core-apps.enable = false;
   services.gnome.games.enable = false;
   services.hardware.bolt.enable = true;
   services.printing.enable = false;
