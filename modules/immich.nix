@@ -91,6 +91,10 @@
           proxy_read_timeout 600s;
           proxy_send_timeout 600s;
           send_timeout       600s;
+
+          # https://github.com/immich-app/immich/pull/13543
+          proxy_buffering off;
+          proxy_request_buffering off;
         '';
         proxyPass = "http://immich";
         proxyWebsockets = true;
