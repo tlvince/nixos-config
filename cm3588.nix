@@ -13,15 +13,17 @@
 
     ./modules/acme.nix
     ./modules/btrbk.nix
-    ./modules/dnsmasq.nix
     ./modules/dmesgd.nix
+    ./modules/dnsmasq.nix
     ./modules/immich.nix
+    ./modules/mosquitto.nix
     ./modules/nginx.nix
     ./modules/postgres.nix
     ./modules/radicale.nix
     ./modules/samba.nix
     ./modules/shairport-sync.nix
     ./modules/smartd.nix
+    ./modules/zigbee2mqtt.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
