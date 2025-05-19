@@ -3,7 +3,6 @@
   lib,
   modulesPath,
   pkgs,
-  pkgs-immich,
   keys,
   ...
 }: {
