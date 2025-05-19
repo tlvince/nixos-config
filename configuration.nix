@@ -36,8 +36,8 @@
         # https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528#note_2906598
         name = "drm/amdgpu/vcn: fix vcn race condition";
         patch = pkgs.fetchpatch {
-          url = "https://gitlab.freedesktop.org/-/project/176/uploads/defeac39ec232976c7c82aab151bfe63/0001-drm-amdgpu-read-back-DB_CTRL-register-after-write-fo.patch";
-          sha256 = "sha256-cQ0Rz4SaxxzbmIPehZtxrclgp70abBwbWGghyELZnY0=";
+          url = "https://github.com/torvalds/linux/commit/ee7360fc27d6045510f8fe459b5649b2af27811a.patch";
+          sha256 = "sha256-HDXdZ752t11Jq+CNoLUfUdjMXxMdl+DC4psoYMlKw2Q=";
         };
       }
       {
