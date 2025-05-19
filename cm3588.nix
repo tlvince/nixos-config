@@ -15,6 +15,7 @@
     ./modules/btrbk.nix
     ./modules/dmesgd.nix
     ./modules/dnsmasq.nix
+    ./modules/home-assistant.nix
     ./modules/immich.nix
     ./modules/mosquitto.nix
     ./modules/nginx.nix
@@ -150,12 +151,10 @@
     enableIPv6 = false;
     hostName = "cm3588";
     hosts = {
-      "192.168.0.2" = [
-        "home-assistant.filo.uk"
-      ];
       "192.168.0.3" = [
         "cm3588"
         "cm3588.filo.uk"
+        "home-assistant.filo.uk"
         "immich.filo.uk"
         "radicale.filo.uk"
         "test.filo.uk"
