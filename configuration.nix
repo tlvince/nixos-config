@@ -37,7 +37,7 @@
         name = "drm/amdgpu/vcn: fix vcn race condition";
         patch = pkgs.fetchpatch {
           url = "https://github.com/torvalds/linux/commit/ee7360fc27d6045510f8fe459b5649b2af27811a.patch";
-          sha256 = "sha256-cQ0Rz4SaxxzbmIPehZtxrclgp70abBwbWGghyELZnY0=";
+          sha256 = "sha256-HDXdZ752t11Jq+CNoLUfUdjMXxMdl+DC4psoYMlKw2Q=";
         };
       }
       {
