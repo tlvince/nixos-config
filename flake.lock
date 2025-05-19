@@ -244,22 +244,6 @@
         "url": "https://github.com/NixOS/nixpkgs"
       }
     },
-    "nixpkgs-immich": {
-      "locked": {
-        "lastModified": 1746638048,
-        "narHash": "sha256-tD8iPsSpLJODQKis8/8J0baU6D0Pg6LgVlSGwWot/w0=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d95f6a109bb7aeaebe0dde02e7f2831447717627",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "d95f6a109bb7aeaebe0dde02e7f2831447717627",
-        "type": "github"
-      }
-    },
     "pre-commit-hooks-nix": {
       "inputs": {
         "flake-compat": [
@@ -294,7 +278,6 @@
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-immich": "nixpkgs-immich",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
