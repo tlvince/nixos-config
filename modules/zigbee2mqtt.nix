@@ -1,8 +1,13 @@
 {
   config,
   pkgs,
+  secretsPath,
   ...
 }: {
+  age.secrets."zigbee2mqtt.yaml" = {
+    file = "${secretsPath}/zigbee2mqtt.age";
+    owner = "zigbee2mqtt";
+  };
   services.zigbee2mqtt = {
     enable = true;
     package = pkgs.zigbee2mqtt_2;
@@ -13,7 +18,7 @@
         log_output = [
           "console"
         ];
-        network_key = "!secrets.yaml network_key";
+        network_key = "!/run/agenix/zigbee2mqtt.yaml network_key";
       };
       devices = "devices.yaml";
       frontend.enabled = false;
@@ -23,7 +28,9 @@
       permit_join = false;
       mqtt = {
         base_topic = "zigbee2mqtt";
+        password = "!/run/agenix/zigbee2mqtt.yaml mqtt_password";
         server = "mqtt://127.0.0.1:1883";
+        user = "root";
       };
       serial = {
         disable_led = true;
