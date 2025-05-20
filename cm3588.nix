@@ -21,6 +21,7 @@
     ./modules/nginx.nix
     ./modules/postgres.nix
     ./modules/radicale.nix
+    ./modules/redditd.nix
     ./modules/samba.nix
     ./modules/shairport-sync.nix
     ./modules/smartd.nix
@@ -107,6 +108,7 @@
     htop
     less
     neovim
+    rsync
     smartmontools
     tree
     tmux
