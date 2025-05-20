@@ -154,7 +154,7 @@
     enableIPv6 = false;
     hostName = "cm3588";
     hosts = {
-      "192.168.0.3" = [
+      "192.168.0.2" = [
         "cm3588"
         "cm3588.filo.uk"
         "home-assistant.filo.uk"
@@ -235,7 +235,7 @@
     enable = true;
     networks.wired = {
       name = "en*";
-      address = ["192.168.0.3/24"];
+      address = ["192.168.0.2/24"];
       gateway = ["192.168.0.1"];
     };
   };

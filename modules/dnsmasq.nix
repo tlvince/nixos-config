@@ -13,7 +13,7 @@
       domain-needed = true;
       filter-AAAA = true;
       interface = "enP4p65s0";
-      listen-address = ["192.168.0.3"];
+      listen-address = ["192.168.0.2"];
       local-ttl = 2;
       localise-queries = true;
 
