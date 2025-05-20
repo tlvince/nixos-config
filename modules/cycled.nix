@@ -21,6 +21,13 @@
       RuntimeDirectory = "cycled";
       RuntimeDirectoryMode = "0755";
 
+      # Reduce journal noise
+      CPUAccounting = false;
+      IOAccounting = false;
+      IPAccounting = false;
+      MemoryAccounting = false;
+      TasksAccounting = false;
+
       # Hardening
       CapabilityBoundingSet = [""];
       DynamicUser = true;
