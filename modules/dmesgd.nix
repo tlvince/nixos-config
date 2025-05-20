@@ -22,12 +22,31 @@ in {
     wantedBy = ["multi-user.target"];
     after = ["systemd-journald.socket"];
     serviceConfig = {
-      DynamicUser = true;
       ExecStart = "${dmesgd}/bin/dmesgd";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
       RestartSec = 10;
       SupplementaryGroups = ["systemd-journal"];
+
+      # Hardening
+      CapabilityBoundingSet = [""];
+      DynamicUser = true;
+      KeyringMode = "private";
+      LockPersonality = true;
+      PrivateDevices = true;
+      PrivateUsers = true;
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      RestrictAddressFamilies = "AF_INET";
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      UMask = 077;
     };
   };
 }
