@@ -13,6 +13,7 @@
 
     ./modules/acme.nix
     ./modules/btrbk.nix
+    ./modules/cycled.nix
     ./modules/dmesgd.nix
     ./modules/dnsmasq.nix
     ./modules/home-assistant.nix
