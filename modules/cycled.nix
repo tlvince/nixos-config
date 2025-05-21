@@ -12,7 +12,7 @@
     serviceConfig = {
       BindPaths = ["/home/tlv/dev/cycled/state.json:/run/cycled/state.json"];
       BindReadOnlyPaths = ["/home/tlv/dev/cycled:/run/cycled"];
-      ExecStart = "${pkgs.nodejs-slim}/bin/node --no-warnings=ExperimentalWarning /run/cycled/index.js";
+      ExecStart = "${pkgs.nodejs}/bin/node --no-warnings=ExperimentalWarning /run/cycled/index.js";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
       RestartSec = 10;

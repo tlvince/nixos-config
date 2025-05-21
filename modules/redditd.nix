@@ -12,7 +12,7 @@
     serviceConfig = {
       BindPaths = ["/home/tlv/dev/redditd/state.json:/run/redditd/state.json"];
       BindReadOnlyPaths = ["/home/tlv/dev/redditd:/run/redditd"];
-      ExecStart = "${pkgs.nodejs-slim}/bin/node --no-warnings=ExperimentalWarning /run/redditd/index.js";
+      ExecStart = "${pkgs.nodejs}/bin/node --no-warnings=ExperimentalWarning /run/redditd/index.js";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
       RestartSec = 10;
