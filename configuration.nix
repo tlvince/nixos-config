@@ -31,25 +31,6 @@
       "kvm-amd"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelPatches = [
-      {
-        # https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528#note_2906598
-        name = "drm/amdgpu/vcn: fix vcn race condition";
-        patch = pkgs.fetchpatch {
-          url = "https://github.com/torvalds/linux/commit/ee7360fc27d6045510f8fe459b5649b2af27811a.patch";
-          sha256 = "sha256-HDXdZ752t11Jq+CNoLUfUdjMXxMdl+DC4psoYMlKw2Q=";
-        };
-      }
-      {
-        # Fix broken mDNS/IPv6
-        # https://lore.kernel.org/lkml/EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me/
-        name = "wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl";
-        patch = pkgs.fetchpatch {
-          url = "https://github.com/torvalds/linux/commit/0aa8496adda570c2005410a30df963a16643a3dc.patch";
-          sha256 = "sha256-eK/TMV5X2kCCWjsaeM94x9ojLckvtPh7Rs8yEKYvP8s=";
-        };
-      }
-    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
