@@ -201,7 +201,7 @@
   programs.zsh.enable = true;
   services.btrfs.autoScrub = {
     enable = true;
-    interval = "monthly";
+    interval = "*-*-01 05:00"; # 5am monthly
     fileSystems = [
       "/"
       "/mnt/ichbiah/home"
