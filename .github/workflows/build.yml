@@ -20,21 +20,9 @@ jobs:
     strategy:
       matrix:
         machine:
-          - host: framework
+          - host: kernel
             platform: x86-64-linux
-            runner: ubuntu-24.04
-            type: nixosConfigurations
-          - host: cm3588
-            platform: aarch64-linux
-            runner: ubuntu-24.04-arm
-            type: nixosConfigurations
-          - host: nodejs
-            platform: x86-64-linux
-            runner: ubuntu-24.04
-            type: devShells.x86_64-linux
-          - host: kunkun
-            platform: aarch64-linux
-            runner: ubuntu-24.04-arm
+            runner: blacksmith-32vcpu-ubuntu-2404
             type: nixosConfigurations
     runs-on: ${{ matrix.machine.runner }}
     permissions:
