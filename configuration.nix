@@ -16,6 +16,7 @@
     blacklistedKernelModules = ["hid_sensor_hub"];
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
+      options cros_charge-control probe_with_fwk_charge_control=1
     '';
     initrd = {
       availableKernelModules = [
