@@ -22,11 +22,11 @@ jobs:
         machine:
           - host: framework
             platform: x86-64-linux
-            runner: ubuntu-24.04
+            runner: blacksmith-32vcpu-ubuntu-2404
             type: nixosConfigurations
           - host: cm3588
             platform: aarch64-linux
-            runner: ubuntu-24.04-arm
+            runner: blacksmith-32vcpu-ubuntu-2404-arm
             type: nixosConfigurations
           - host: nodejs
             platform: x86-64-linux
