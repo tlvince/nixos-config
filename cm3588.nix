@@ -201,11 +201,14 @@
   programs.zsh.enable = true;
   services.btrfs.autoScrub = {
     enable = true;
-    interval = "*-*-01 05:00"; # 5am monthly
+    interval = "*-*-01 05:00"; # 0500 monthly
     fileSystems = [
       "/"
       "/mnt/ichbiah/home"
     ];
+  };
+  systemd.timers.btrfs-scrub-mnt-ichbiah-home.timerConfig = {
+    OnCalendar = lib.mkForce "*-*-01 05:30"; # 0530 monthly
   };
   services.openssh = {
     enable = true;
