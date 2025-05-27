@@ -20,18 +20,10 @@ jobs:
     strategy:
       matrix:
         machine:
-          - host: framework
+          - host: kernel
             platform: x86-64-linux
             runner: blacksmith-32vcpu-ubuntu-2404
             type: nixosConfigurations
-          - host: cm3588
-            platform: aarch64-linux
-            runner: blacksmith-32vcpu-ubuntu-2404-arm
-            type: nixosConfigurations
-          - host: nodejs
-            platform: x86-64-linux
-            runner: ubuntu-24.04
-            type: devShells.x86_64-linux
     runs-on: ${{ matrix.machine.runner }}
     permissions:
       contents: read
@@ -54,9 +46,6 @@ jobs:
           df -h
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      - name: Generate GitHub token
-        uses: actions/create-github-app-token@df432ceedc7162793a195dd1713ff69aefc7379e # v2
-        id: generate-github-token
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.GH_APP_KEY }}
@@ -64,8 +53,6 @@ jobs:
           repositories: nixos-config-secrets
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@21a544727d0c62386e78b4befe52d19ad12692e3 # v17
-        with:
-          github-token: ${{ steps.generate-github-token.outputs.token }}
       - name: Set up public cache
         uses: cachix/cachix-action@0fc020193b5a1fa3ac4575aa3a7d3aa6a35435ad # v16
         with:
