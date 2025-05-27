@@ -104,6 +104,49 @@
           agenix.nixosModules.default
         ];
       };
+      kernel = nixpkgs.lib.nixosSystem {
+        specialArgs = inputs;
+        modules = [
+          (
+            {
+              pkgs,
+              lib,
+              config,
+              ...
+            }: {
+              boot = {
+                kernelPackages = pkgs.linuxPackages_latest;
+                loader.grub.device = "/dev/disk/by-id/wwn-0x500001234567890a";
+              };
+
+              fileSystems."/" = {
+                device = "/";
+                fsType = "btrfs";
+              };
+
+              nix.settings = {
+                experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
+                extra-substituters = [
+                  "https://tlvince-nixos-config.cachix.org"
+                  "https://nix-community.cachix.org"
+                ];
+                extra-trusted-public-keys = [
+                  "tlvince-nixos-config.cachix.org-1:PYVWI+uNlq7mSJxFSPDkkCEtaeQeF4WvjtQKa53ZOyM="
+                  "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+                ];
+              };
+
+              nixpkgs.config.allowUnfree = true;
+              nixpkgs.hostPlatform = "x86_64-linux";
+
+              system.stateVersion = "25.11";
+            }
+          )
+        ];
+      };
     };
   };
 }

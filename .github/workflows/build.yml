@@ -20,92 +20,26 @@ jobs:
     strategy:
       matrix:
         machine:
-          - host: framework
+          - host: kernel
             platform: x86-64-linux
-            runner: ubuntu-24.04
-            type: nixosConfigurations
-          - host: cm3588
-            platform: aarch64-linux
-            runner: ubuntu-24.04-arm
-            type: nixosConfigurations
-          - host: nodejs
-            platform: x86-64-linux
-            runner: ubuntu-24.04
-            type: devShells.x86_64-linux
-          - host: kunkun
-            platform: aarch64-linux
-            runner: ubuntu-24.04-arm
+            runner: blacksmith-32vcpu-ubuntu-2404
             type: nixosConfigurations
     runs-on: ${{ matrix.machine.runner }}
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - name: Free up disk space
-        # No effect on arm
-        if: matrix.machine.platform == 'x86-64-linux'
-        run: |
-          df -h
-
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/local/.ghcup
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-
-          sudo docker image prune --all --force
-
-          df -h
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
-      - name: Generate GitHub token
-        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2
-        id: generate-github-token
-        with:
-          app-id: ${{ vars.APP_ID }}
-          private-key: ${{ secrets.GH_APP_KEY }}
-          owner: tlvince
-          repositories: nixos-config-secrets
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@90bb610b90bf290cad97484ba341453bd1cbefea # v19
-        with:
-          github-token: ${{ steps.generate-github-token.outputs.token }}
       - name: Set up public cache
         uses: cachix/cachix-action@0fc020193b5a1fa3ac4575aa3a7d3aa6a35435ad # v16
         with:
           name: tlvince-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Run flake check
-        # All configurations are checked by default, so just run it in one
-        # matrix build
-        if: matrix.machine.host == 'framework'
-        run: |
-          CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
-          nix flake check --no-build | tee "$CHECK_OUTPUT"
-          [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
-          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
           OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths)"
           echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.machine.type}}.${{ matrix.machine.host }}\x1b[0m"
           echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
-      - name: Diff closures
-        if: github.event_name == 'pull_request' && matrix.machine.type == 'nixosConfigurations'
-        run: |
-          HOST_DRV="nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel"
-          PREV_FLAKE="github:${GITHUB_REPOSITORY}"
-          NEXT_FLAKE="."
-          DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --no-write-lock-file | tee "$DIFF_OUTPUT"
-          [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
-          echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
-      - name: Add job summary to PR
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
-        if: github.event_name == 'pull_request'
-        with:
-          script: |
-            const { readFile } = require('node:fs/promises')
-            const comment = require('.github/scripts/comment')
-            const header = '# ${{ matrix.machine.host }}'
-            const body = await readFile('${{ runner.temp }}/${{ env.PR_JOB_SUMMARY }}', { encoding: 'utf8' })
-            await comment({ github, context, header, body })
