@@ -6,8 +6,6 @@
     agenix.url = "github:ryantm/agenix";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
-    ectool.inputs.nixpkgs.follows = "nixpkgs";
-    ectool.url = "github:tlvince/ectool.nix";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=master";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
@@ -22,7 +20,6 @@
   outputs = {
     agenix,
     disko,
-    ectool,
     home-manager,
     lanzaboote,
     nixpkgs,

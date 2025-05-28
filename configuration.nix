@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  ectool,
   ...
 }: {
   imports = [
@@ -16,6 +15,7 @@
     blacklistedKernelModules = ["hid_sensor_hub"];
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
+      options cros_charge-control probe_with_fwk_charge_control=1
     '';
     initrd = {
       availableKernelModules = [
@@ -31,6 +31,15 @@
       "kvm-amd"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "mfd: cros_ec: Separate charge-control probing from USB-PD";
+        patch = pkgs.fetchpatch {
+          url = "https://lore.kernel.org/lkml/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/raw";
+          sha256 = "sha256-8nBcr7mFdUE40yHA1twDVbGKJ8tvAW+YRP23szUIhxk=";
+        };
+      }
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
@@ -57,7 +66,6 @@
     btrbk
     diff-so-fancy
     dig
-    ectool.packages."${pkgs.system}".ectool
     efm-langserver
     evolution
     exiftool
