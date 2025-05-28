@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  ectool,
   ...
 }: {
   imports = [
@@ -67,7 +66,6 @@
     btrbk
     diff-so-fancy
     dig
-    ectool.packages."${pkgs.system}".ectool
     efm-langserver
     evolution
     exiftool

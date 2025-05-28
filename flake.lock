@@ -80,26 +80,6 @@
         "type": "github"
       }
     },
-    "ectool": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1703923686,
-        "narHash": "sha256-OKwWIDm6GxMwoI0+mw0dAdeTC5i7VaZEZcIu+ALy+oc=",
-        "owner": "tlvince",
-        "repo": "ectool.nix",
-        "rev": "441b9b2534cc92cb69cf2b17c977ec8ccab13668",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tlvince",
-        "repo": "ectool.nix",
-        "type": "github"
-      }
-    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -274,7 +254,6 @@
       "inputs": {
         "agenix": "agenix",
         "disko": "disko",
-        "ectool": "ectool",
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
