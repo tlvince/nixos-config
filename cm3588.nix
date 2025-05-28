@@ -138,13 +138,6 @@
     options = ["bind" "ro" "nosuid" "nodev" "noexec"];
   };
 
-  hardware.deviceTree.overlays = [
-    {
-      name = "cm3588-audio-clock";
-      dtsFile = ./dts/cm3588-audio-clock.dts;
-    }
-  ];
-
   hardware.alsa.enable = true;
   hardware.enableRedistributableFirmware = true;
 
