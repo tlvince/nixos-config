@@ -30,6 +30,11 @@
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      # Disable Energy-Efficient Ethernet to workaround a router firmware bug
+      # that breaks 2.5Gbps ethernet
+      "igb.EEE=0"
+    ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {
