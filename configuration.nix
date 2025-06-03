@@ -212,6 +212,25 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "x86_64-linux";
 
+  nixpkgs.overlays = [
+    (
+      final: prev: {
+        # mt7925e 0000:c0:00.0: probe with driver mt7925e failed with error -5
+        # https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/log/mediatek/mt7925
+        linux-firmware = prev.linux-firmware.overrideAttrs (
+          old: {
+            version = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
+            src = pkgs.fetchgit {
+              url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
+              rev = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
+              hash = "sha256-32uyYuyxIqRVbKrLedhNj2rVsc+bpwvbKKwn5P3mUtg=";
+            };
+          }
+        );
+      }
+    )
+  ];
+
   programs.firefox = {
     enable = true;
     policies = {
