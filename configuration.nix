@@ -311,7 +311,7 @@
         volume = {
           "/mnt/btrfs-root" = {
             target = {
-              "ssh://bpim5:6683/mnt/catmull/snapshots/${config.networking.hostName}" = {
+              "ssh://cm3588/mnt/ichbiah/snapshots/framework" = {
                 subvolume = {
                   "/" = {
                     snapshot_name = "root";

@@ -218,7 +218,10 @@
     ];
     openFirewall = true;
     settings = {
-      AllowGroups = ["wheel"];
+      AllowGroups = [
+        "btrbk"
+        "wheel"
+      ];
       PasswordAuthentication = false;
       PermitRootLogin = "no";
     };
