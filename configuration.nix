@@ -219,7 +219,7 @@
           old: {
             version = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
             src = pkgs.fetchgit {
-              url = "mirror://kernel/linux/kernel/firmware/linux-firmware.git";
+              url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
               rev = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
             };
             outputHash = "sha256-iOQGK1vE05Wcx17hbFJVEW8PcmkHGPcCmO5xZaVQRog=";
