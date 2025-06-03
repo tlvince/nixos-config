@@ -212,6 +212,23 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "x86_64-linux";
 
+  nixpkgs.overlays = [
+    (
+      final: prev: {
+        linux-firmware = prev.linux-firmware.overrideAttrs (
+          old: {
+            version = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
+            src = pkgs.fetchgit {
+              url = "mirror://kernel/linux/kernel/firmware/linux-firmware.git";
+              rev = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
+            };
+            outputHash = "sha256-iOQGK1vE05Wcx17hbFJVEW8PcmkHGPcCmO5xZaVQRog=";
+          }
+        );
+      }
+    )
+  ];
+
   programs.firefox = {
     enable = true;
     policies = {
