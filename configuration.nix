@@ -215,6 +215,8 @@
   nixpkgs.overlays = [
     (
       final: prev: {
+        # mt7925e 0000:c0:00.0: probe with driver mt7925e failed with error -5
+        # https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/log/mediatek/mt7925
         linux-firmware = prev.linux-firmware.overrideAttrs (
           old: {
             version = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
