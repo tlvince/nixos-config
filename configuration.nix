@@ -217,7 +217,7 @@
       final: prev: {
         linux-firmware = prev.linux-firmware.overrideAttrs (
           old: {
-            version = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
+            version = "2025-06-03";
             src = pkgs.fetchgit {
               url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
               rev = "c799f5d3045f2495ceeefcc2b9055ef42843c0e2";
