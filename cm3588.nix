@@ -30,11 +30,6 @@
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams = [
-      # Disable Energy-Efficient Ethernet to workaround a router firmware bug
-      # that breaks 2.5Gbps ethernet
-      "igb.EEE=0"
-    ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {
@@ -241,6 +236,17 @@
       name = "en*";
       address = ["192.168.0.2/24"];
       gateway = ["192.168.0.1"];
+    };
+  };
+  # TODO: replace with systemd link when supported in NixOS
+  # https://github.com/systemd/systemd/pull/36302
+  systemd.services.disable-eee = {
+    description = "Disable Energy-Efficient Ethernet to workaround a router firmware bug that breaks 2.5Gbps ethernet";
+    after = ["network.target"];
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.ethtool}/bin/ethtool --set-eee enP4p65s0 eee off";
     };
   };
   time.timeZone = "Europe/London";
