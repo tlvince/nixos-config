@@ -66,7 +66,8 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@21a544727d0c62386e78b4befe52d19ad12692e3 # v17
         with:
           github-token: ${{ steps.generate-github-token.outputs.token }}
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Set up CI cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
         with:
           diagnostic-endpoint: ""
           use-flakehub: false
