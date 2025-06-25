@@ -8,7 +8,7 @@
   services.btrbk = {
     instances = {
       btrbk = {
-        onCalendar = "01:00";
+        onCalendar = "05:00";
         settings = {
           lockfile = "/var/lib/btrbk/btrbk.lock";
           timestamp_format = "long";

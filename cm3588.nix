@@ -12,6 +12,7 @@
     (modulesPath + "/profiles/minimal.nix")
 
     ./modules/acme.nix
+    ./modules/archive.nix
     ./modules/btrbk.nix
     ./modules/cycled.nix
     ./modules/dmesgd.nix
@@ -89,6 +90,7 @@
   };
 
   environment.etc.crypttab.text = ''
+    dijkstra UUID=e14d08e4-7123-4d86-bae0-b3de6f00454f /mnt/ichbiah/home/tlv/cryptsetup-keys.d/dijkstra.key noauto
     godel UUID=fda93065-2a13-4e26-a2b6-91df80d0ced0 /root/cryptsetup-keys.d/godel.key
     huffman UUID=e017c3f2-fa81-43e6-af9a-33f99abbc647 /root/cryptsetup-keys.d/huffman.key
   '';
@@ -194,14 +196,14 @@
   programs.zsh.enable = true;
   services.btrfs.autoScrub = {
     enable = true;
-    interval = "*-*-01 05:00"; # 0500 monthly
+    interval = "*-*-01 06:00"; # 0600 monthly
     fileSystems = [
       "/"
       "/mnt/ichbiah/home"
     ];
   };
   systemd.timers.btrfs-scrub-mnt-ichbiah-home.timerConfig = {
-    OnCalendar = lib.mkForce "*-*-01 05:30"; # 0530 monthly
+    OnCalendar = lib.mkForce "*-*-01 06:30"; # 0630 monthly
   };
   services.openssh = {
     enable = true;
