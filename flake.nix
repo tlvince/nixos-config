@@ -7,10 +7,10 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "git+https://github.com/nix-community/home-manager?shallow=1&ref=master";
+    home-manager.url = "github:nix-community/home-manager";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?shallow=1&ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
