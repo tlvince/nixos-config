@@ -25,6 +25,7 @@
       CPUAccounting = false;
       IOAccounting = false;
       IPAccounting = false;
+      LogLevelMax = "warning";
       MemoryAccounting = false;
       TasksAccounting = false;
 
