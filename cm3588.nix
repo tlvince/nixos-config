@@ -14,7 +14,6 @@
     ./modules/acme.nix
     ./modules/archive.nix
     ./modules/btrbk.nix
-    ./modules/cycled.nix
     ./modules/dmesgd.nix
     ./modules/dnsmasq.nix
     ./modules/home-assistant.nix
@@ -27,6 +26,7 @@
     ./modules/samba.nix
     ./modules/shairport-sync.nix
     ./modules/smartd.nix
+    ./modules/tunnel.nix
     ./modules/zigbee2mqtt.nix
   ];
   boot = {

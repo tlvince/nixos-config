@@ -93,6 +93,17 @@
           lanzaboote.nixosModules.lanzaboote
         ];
       };
+      kunkun = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit keys;
+          secrets = import inputs.secrets;
+          secretsPath = inputs.secrets.outPath;
+        };
+        modules = [
+          ./kunkun.nix
+          agenix.nixosModules.default
+        ];
+      };
     };
   };
 }
