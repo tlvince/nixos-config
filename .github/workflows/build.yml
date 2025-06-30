@@ -32,6 +32,10 @@ jobs:
             platform: x86-64-linux
             runner: ubuntu-24.04
             type: devShells.x86_64-linux
+          - host: kunkun
+            platform: aarch64-linux
+            runner: ubuntu-24.04-arm
+            type: nixosConfigurations
     runs-on: ${{ matrix.machine.runner }}
     permissions:
       contents: read
