@@ -102,7 +102,7 @@
     curl
     diffutils
     findutils
-    git
+    gitMinimal
     gnugrep
     gnupatch
     gnused
