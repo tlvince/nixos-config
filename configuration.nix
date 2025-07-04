@@ -31,10 +31,6 @@
       "kvm-amd"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
-    kernelParams = [
-      # Workaround intermittent flickers and grey screens
-      "amdgpu.sg_display=0"
-    ];
     kernelPatches = [
       {
         name = "mfd: cros_ec: Separate charge-control probing from USB-PD";
