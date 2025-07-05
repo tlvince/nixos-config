@@ -22,6 +22,7 @@ jobs:
         with:
           CLOSE_ISSUES: true
           INSERT_ISSUE_URLS: true
+          ISSUE_TEMPLATE: "{{ title }}\n{{ body }}\n{{ url }}"
       - name: Set Git user
         run: |
       - name: Commit and Push Changes

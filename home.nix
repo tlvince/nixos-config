@@ -144,7 +144,7 @@
     username = "tlv";
   };
 
-  # Workaround for "unable to download 'https://git.sr.ht/~rycee"
+  # TODO: workaround for "unable to download 'https://git.sr.ht/~rycee"
   # https://github.com/nix-community/home-manager/issues/4879
   manual = {
     html.enable = false;
