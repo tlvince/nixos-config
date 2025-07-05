@@ -13,7 +13,7 @@
     (modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
-    ./modules/cycled.nix
+    ../modules/cycled.nix
   ];
   boot = {
     initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "virtio_scsi" "usbhid"];

@@ -11,23 +11,23 @@
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
 
-    ./modules/acme.nix
-    ./modules/archive.nix
-    ./modules/btrbk.nix
-    ./modules/dmesgd.nix
-    ./modules/dnsmasq.nix
-    ./modules/home-assistant.nix
-    ./modules/immich.nix
-    ./modules/mosquitto.nix
-    ./modules/nginx.nix
-    ./modules/postgres.nix
-    ./modules/radicale.nix
-    ./modules/redditd.nix
-    ./modules/samba.nix
-    ./modules/shairport-sync.nix
-    ./modules/smartd.nix
-    ./modules/tunnel.nix
-    ./modules/zigbee2mqtt.nix
+    ../modules/acme.nix
+    ../modules/archive.nix
+    ../modules/btrbk.nix
+    ../modules/dmesgd.nix
+    ../modules/dnsmasq.nix
+    ../modules/home-assistant.nix
+    ../modules/immich.nix
+    ../modules/mosquitto.nix
+    ../modules/nginx.nix
+    ../modules/postgres.nix
+    ../modules/radicale.nix
+    ../modules/redditd.nix
+    ../modules/samba.nix
+    ../modules/shairport-sync.nix
+    ../modules/smartd.nix
+    ../modules/tunnel.nix
+    ../modules/zigbee2mqtt.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;

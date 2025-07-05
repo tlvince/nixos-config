@@ -1,20 +1,16 @@
 # nixos-config
 
-NixOS configuration for the [Framework Laptop 13 AMD Ryzen 5 7640U](https://github.com/tlvince/framework-laptop-13-amd-7640u).
+NixOS configuration for my machines.
 
-## Automation
+## Features
 
+- Daily [flake updates](https://github.com/tlvince/nixos-config/blob/b1b37216961830494906c5f41b86c0f4e285a095/.github/workflows/update-flake.yml) with [change reports](https://github.com/tlvince/nixos-config/blob/b1b37216961830494906c5f41b86c0f4e285a095/.github/workflows/build.yml) ([example run](https://github.com/tlvince/nixos-config/pull/287))
+- Secrets management with [agenix](https://github.com/ryantm/agenix) and [systemd credentials](https://systemd.io/CREDENTIALS/)
+- Stripped-back GNOME in Wayland-only mode
+- CLI-focused developer environments and [Foot](https://codeberg.org/dnkl/foot/) terminal
+- Homelab services targeting low-powered single-board computers
 
-Flake updates are [scheduled daily](https://github.com/tlvince/nixos-config/blob/53de242809614c64c61152210d624a7990fbc1b8/.github/workflows/update-flake.yml#L5), which, on update, triggers a [build](https://github.com/tlvince/nixos-config/blob/53de242809614c64c61152210d624a7990fbc1b8/.github/workflows/build.yml) that tests the update and runs a diff. [Example run](https://github.com/tlvince/nixos-config/pull/33).
+## Thanks
 
-## Untracked
-
-These require manual intervention:
-
-```
-/home/tlv/.aws
-/home/tlv/.gnupg
-/home/tlv/.password-store
-/home/tlv/.ssh
-/var/lib/btrbk/.ssh
-```
+- [K900/nix](https://gitlab.com/K900/nix/)
+- [Vimjoyer](https://www.youtube.com/@vimjoyer)

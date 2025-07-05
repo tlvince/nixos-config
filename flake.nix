@@ -69,7 +69,7 @@
         };
 
         modules = [
-          ./cm3588.nix
+          ./hosts/cm3588.nix
           agenix.nixosModules.default
           disko.nixosModules.disko
         ];
@@ -81,7 +81,7 @@
             secretsPath = inputs.secrets.outPath;
           };
         modules = [
-          ./configuration.nix
+          ./hosts/framework.nix
           agenix.nixosModules.default
           disko.nixosModules.disko
           home-manager.nixosModules.home-manager
@@ -100,7 +100,7 @@
           secretsPath = inputs.secrets.outPath;
         };
         modules = [
-          ./kunkun.nix
+          ./hosts/kunkun.nix
           agenix.nixosModules.default
         ];
       };
