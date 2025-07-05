@@ -13,9 +13,9 @@ jobs:
       contents: write
       issues: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: TODO to Issue
-        uses: alstr/todo-to-issue-action@v5
+        uses: alstr/todo-to-issue-action@3bd536e14a2cbceeab1fadef96bea5f725ed4270 # v5
         with:
           CLOSE_ISSUES: true
           INSERT_ISSUE_URLS: true
