@@ -153,6 +153,7 @@
   };
 
   # TODO: remove when https://github.com/NixOS/nix/issues/8508 is resolved
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/302
   nix.gc = {
     automatic = true;
     frequency = "weekly";

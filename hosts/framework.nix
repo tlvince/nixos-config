@@ -330,6 +330,7 @@
     btrbk = {
       # Timer disabled in favour of hourly & daily timers
       # TODO: upstream more configurables
+      # Issue URL: https://github.com/tlvince/nixos-config/issues/304
       onCalendar = null;
       settings = {
         backend_remote = "btrfs-progs-sudo";
