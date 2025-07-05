@@ -1,0 +1,32 @@
+name: Run TODO to Issue
+on:
+  - push
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: TODO to Issue
+        uses: alstr/todo-to-issue-action@v5
+        with:
+          CLOSE_ISSUES: true
+          INSERT_ISSUE_URLS: true
+      - name: Set Git user
+        run: |
+      - name: Commit and Push Changes
+        run: |
+          git add --all
+          if [[ $(git status --porcelain) ]]; then
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git commit --message "ci: automatically added GitHub issue links to TODOs" --message "[skip ci]"
+            git push origin master
+          else
+            echo "No changes to commit"
+          fi
