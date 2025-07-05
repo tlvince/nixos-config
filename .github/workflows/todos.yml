@@ -16,6 +16,9 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
       - name: TODO to Issue
         uses: alstr/todo-to-issue-action@3bd536e14a2cbceeab1fadef96bea5f725ed4270 # v5
+        env:
+          MANUAL_COMMIT_REF: 15a19daa0a8d46b58fcf73a1644df1fdf9e88203
+          MANUAL_BASE_REF: a6dc365a2aae0d2afbc6e2b357f75cd8dd76f2f9
         with:
           CLOSE_ISSUES: true
           INSERT_ISSUE_URLS: true
