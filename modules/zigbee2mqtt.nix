@@ -11,6 +11,7 @@
   services.zigbee2mqtt = {
     enable = true;
     # TODO: Lights entity is no longer being provided by the mqtt integration
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/315
     # Check for breaking change
     # labels: module:zigbee2mqtt
     package = pkgs.zigbee2mqtt_2;

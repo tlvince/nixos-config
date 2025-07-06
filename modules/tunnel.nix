@@ -4,6 +4,7 @@
   ...
 }: let
   # TODO: Replace hardcoded credentials path with CREDENTIALS_DIRECTORY
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/314
   # labels: module:tunnel, systemd
   sshConfig = pkgs.writeText "ssh-config" ''
     Host kunkun

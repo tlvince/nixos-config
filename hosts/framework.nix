@@ -13,6 +13,7 @@
   boot = {
     blacklistedKernelModules = ["hid_sensor_hub"];
     # TODO: Verify if snd_hda_intel is needed with Realtek
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/310
     # labels: host:framework
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
@@ -35,6 +36,7 @@
     kernelPatches = [
       {
         # TODO: Remove cros_ec patch to restore charge-control when released
+        # Issue URL: https://github.com/tlvince/nixos-config/issues/309
         # See https://patchwork.kernel.org/project/chrome-platform/patch/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/
         # See https://github.com/torvalds/linux/commits/master/drivers/power/supply/cros_charge-control.c
         # labels: host:framework, unreleased
@@ -185,6 +187,7 @@
     (chromium.override {
       commandLineArgs = [
         # TODO: Remove Chromium Vulkan flags when upstreamed
+        # Issue URL: https://github.com/tlvince/nixos-config/issues/308
         # Enables Touchpad gestures for navigation, VA-API, Vulkan (H.265/HEVC)
         # labels: host:framework
         "--enable-features=TouchpadOverscrollHistoryNavigation,VaapiVideoDecoder,VaapiIgnoreDriverChecks,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE"
@@ -279,6 +282,7 @@
   nixpkgs.hostPlatform = "x86_64-linux";
 
   # TODO: Modularise Firefox config
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/307
   # labels: host:framework
   programs.firefox = {
     enable = true;
@@ -439,6 +443,7 @@
   services.fwupd.enable = true;
 
   # TODO: Modularise GNOME config
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/306
   # labels: host:framework
 
   # https://github.com/NixOS/nixpkgs/blob/93da65ede655736068698f9da6470ca9d1484861/nixos/modules/services/desktop-managers/gnome.nix

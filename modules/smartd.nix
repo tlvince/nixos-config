@@ -13,6 +13,7 @@
   '';
 
   # TODO: Opt-in SMART devices
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/313
   # Scan by ID and/or replace with upstream module
   # labels: module:smartd
   smartdConf = pkgs.writeText "smartd.conf" ''

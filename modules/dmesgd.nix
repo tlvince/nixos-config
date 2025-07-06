@@ -29,6 +29,7 @@ in {
       SupplementaryGroups = ["systemd-journal"];
 
       # TODO: Use NixOS hardened systemd helper
+      # Issue URL: https://github.com/tlvince/nixos-config/issues/311
       # labels: systemd
       CapabilityBoundingSet = [""];
       DynamicUser = true;
