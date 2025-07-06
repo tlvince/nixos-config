@@ -38,7 +38,7 @@
         # TODO: Remove cros_ec patch to restore charge-control when released
         # Issue URL: https://github.com/tlvince/nixos-config/issues/309
         # See https://patchwork.kernel.org/project/chrome-platform/patch/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/
-        # See https://github.com/torvalds/linux/commits/master/drivers/power/supply/cros_charge-control.c
+        # See https://github.com/torvalds/linux/commits/master/drivers/mfd/cros_ec_dev.c
         # labels: host:framework, unreleased
         name = "mfd: cros_ec: Separate charge-control probing from USB-PD";
         patch = pkgs.fetchpatch {
