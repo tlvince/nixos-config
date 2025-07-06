@@ -18,6 +18,7 @@ jobs:
         uses: alstr/todo-to-issue-action@3bd536e14a2cbceeab1fadef96bea5f725ed4270 # v5
         with:
           CLOSE_ISSUES: true
+          ESCAPE: false
           INSERT_ISSUE_URLS: true
           ISSUE_TEMPLATE: "{{ title }}\n{{ body }}\n{{ url }}"
       - name: Commit and Push Changes

@@ -330,6 +330,7 @@
     btrbk = {
       # TODO: btrbk timer disabled in favour of hourly & daily timers
       # Remove when upstreamed in NixOS
+      # labels: btrbk, host:framework
       # Issue URL: https://github.com/tlvince/nixos-config/issues/304
       onCalendar = null;
       settings = {

@@ -152,6 +152,7 @@
 
   # TODO: GC does not clean up user profiles when ran as root
   # Remove when https://github.com/NixOS/nix/issues/8508 is resolved
+  # labels: home-manager
   # Issue URL: https://github.com/tlvince/nixos-config/issues/302
   nix.gc = {
     automatic = true;
