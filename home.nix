@@ -144,15 +144,14 @@
     username = "tlv";
   };
 
-  # TODO: workaround for "unable to download 'https://git.sr.ht/~rycee"
-  # https://github.com/nix-community/home-manager/issues/4879
   manual = {
     html.enable = false;
     manpages.enable = false;
     json.enable = false;
   };
 
-  # TODO: remove when https://github.com/NixOS/nix/issues/8508 is resolved
+  # TODO: GC does not clean up user profiles when ran as root
+  # Remove when https://github.com/NixOS/nix/issues/8508 is resolved
   # Issue URL: https://github.com/tlvince/nixos-config/issues/302
   nix.gc = {
     automatic = true;

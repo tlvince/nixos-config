@@ -57,9 +57,9 @@
     ];
   };
 
-  # TODO: remove after --restrict-path added upstream
+  # TODO: nixos/btrbk: unsupported restrict-path ssh filter option
+  # Remove when upstreamed, see https://github.com/NixOS/nixpkgs/issues/413678
   # Issue URL: https://github.com/tlvince/nixos-config/issues/305
-  # https://github.com/NixOS/nixpkgs/issues/413678
   users.users.btrbk.openssh.authorizedKeys.keys = lib.mkForce [
     ''command="${pkgs.util-linux}/bin/ionice -t -c 2 ${pkgs.coreutils}/bin/nice -n 10 ${pkgs.btrbk}/share/btrbk/scripts/ssh_filter_btrbk.sh --sudo --delete --target --restrict-path /mnt/ichbiah/snapshots/framework",restrict ${keys.btrbk}''
   ];

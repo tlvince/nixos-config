@@ -240,9 +240,9 @@
       gateway = ["192.168.0.1"];
     };
   };
-  # TODO: replace with systemd link when supported in NixOS
+  # TODO: Replace with systemd link to disable EEE when systemd v258 is released
+  # See https://github.com/systemd/systemd/pull/36302
   # Issue URL: https://github.com/tlvince/nixos-config/issues/303
-  # https://github.com/systemd/systemd/pull/36302
   systemd.services.disable-eee = {
     description = "Disable Energy-Efficient Ethernet to workaround a router firmware bug that breaks 2.5Gbps ethernet";
     after = ["network.target"];

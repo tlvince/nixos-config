@@ -328,8 +328,8 @@
 
   services.btrbk.instances = {
     btrbk = {
-      # Timer disabled in favour of hourly & daily timers
-      # TODO: upstream more configurables
+      # TODO: btrbk timer disabled in favour of hourly & daily timers
+      # Remove when upstreamed in NixOS
       # Issue URL: https://github.com/tlvince/nixos-config/issues/304
       onCalendar = null;
       settings = {
