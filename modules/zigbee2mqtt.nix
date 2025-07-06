@@ -10,6 +10,9 @@
   };
   services.zigbee2mqtt = {
     enable = true;
+    # TODO: Lights entity is no longer being provided by the mqtt integration
+    # Check for breaking change
+    # labels: module:zigbee2mqtt
     package = pkgs.zigbee2mqtt_2;
     settings = {
       advanced = {

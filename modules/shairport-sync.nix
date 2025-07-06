@@ -1,4 +1,6 @@
 {pkgs, ...}: {
+  # TODO: Handle avahi restart after EEE
+  # labels: module:shairport-sync
   services.shairport-sync = {
     enable = true;
     openFirewall = true;

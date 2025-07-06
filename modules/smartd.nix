@@ -12,6 +12,9 @@
     TITLE="SMART error: $SMARTD_FAILTYPE" MESSAGE="$SMARTD_MESSAGE" "${scripts.notify}/bin/notify"
   '';
 
+  # TODO: Opt-in SMART devices
+  # Scan by ID and/or replace with upstream module
+  # labels: module:smartd
   smartdConf = pkgs.writeText "smartd.conf" ''
     DEVICESCAN -a -n standby,q -s S/../../7/05 -m <nomailer> -M exec "${smartdNotify}/bin/smartd-notify"
   '';

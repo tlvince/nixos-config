@@ -28,7 +28,8 @@ in {
       RestartSec = 10;
       SupplementaryGroups = ["systemd-journal"];
 
-      # Hardening
+      # TODO: Use NixOS hardened systemd helper
+      # labels: systemd
       CapabilityBoundingSet = [""];
       DynamicUser = true;
       KeyringMode = "private";

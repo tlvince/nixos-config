@@ -3,6 +3,8 @@
   secrets,
   ...
 }: let
+  # TODO: Replace hardcoded credentials path with CREDENTIALS_DIRECTORY
+  # labels: module:tunnel, systemd
   sshConfig = pkgs.writeText "ssh-config" ''
     Host kunkun
       ExitOnForwardFailure yes

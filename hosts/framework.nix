@@ -12,6 +12,8 @@
 
   boot = {
     blacklistedKernelModules = ["hid_sensor_hub"];
+    # TODO: Verify if snd_hda_intel is needed with Realtek
+    # labels: host:framework
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
       options cros_charge-control probe_with_fwk_charge_control=1
@@ -32,6 +34,10 @@
     kernelPackages = pkgs.linuxPackages_latest;
     kernelPatches = [
       {
+        # TODO: Remove cros_ec patch to restore charge-control when released
+        # See https://patchwork.kernel.org/project/chrome-platform/patch/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/
+        # See https://github.com/torvalds/linux/commits/master/drivers/power/supply/cros_charge-control.c
+        # labels: host:framework, unreleased
         name = "mfd: cros_ec: Separate charge-control probing from USB-PD";
         patch = pkgs.fetchpatch {
           url = "https://lore.kernel.org/lkml/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/raw";
@@ -178,7 +184,9 @@
     zsh-z
     (chromium.override {
       commandLineArgs = [
-        # Touchpad gestures for navigation, VA-API, Vulkan (H.265/HEVC)
+        # TODO: Remove Chromium Vulkan flags when upstreamed
+        # Enables Touchpad gestures for navigation, VA-API, Vulkan (H.265/HEVC)
+        # labels: host:framework
         "--enable-features=TouchpadOverscrollHistoryNavigation,VaapiVideoDecoder,VaapiIgnoreDriverChecks,Vulkan,DefaultANGLEVulkan,VulkanFromANGLE"
       ];
     })
@@ -270,6 +278,8 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "x86_64-linux";
 
+  # TODO: Modularise Firefox config
+  # labels: host:framework
   programs.firefox = {
     enable = true;
     policies = {
@@ -329,8 +339,8 @@
   services.btrbk.instances = {
     btrbk = {
       # TODO: btrbk timer disabled in favour of hourly & daily timers
-      # Remove when upstreamed in NixOS
-      # labels: btrbk, host:framework
+      # Remove when upstreamed in NixOS or merged in with local btrbk module
+      # labels: module:btrbk, host:framework
       # Issue URL: https://github.com/tlvince/nixos-config/issues/304
       onCalendar = null;
       settings = {
@@ -427,6 +437,9 @@
   services.fprintd.enable = true;
   services.fstrim.enable = true;
   services.fwupd.enable = true;
+
+  # TODO: Modularise GNOME config
+  # labels: host:framework
 
   # https://github.com/NixOS/nixpkgs/blob/93da65ede655736068698f9da6470ca9d1484861/nixos/modules/services/desktop-managers/gnome.nix
   services.gnome.core-developer-tools.enable = false;
