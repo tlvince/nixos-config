@@ -13,7 +13,9 @@
     (modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
+    ../modules/acme.nix
     ../modules/cycled.nix
+    ../modules/nginx.nix
   ];
   boot = {
     initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "virtio_scsi" "usbhid"];
@@ -69,6 +71,12 @@
 
   i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
+    hosts = {
+      "127.0.0.1" = [
+        "home-assistant.filo.uk"
+        "test.filo.uk"
+      ];
+    };
     enableIPv6 = false;
     hostName = "kunkun";
     firewall = {
@@ -137,6 +145,24 @@
     };
   };
   services.fstrim.enable = true;
+  services.nginx = {
+    upstreams.home-assistant.servers."127.0.0.1:8080" = {};
+
+    virtualHosts."home-assistant.filo.uk" = {
+      forceSSL = true;
+      useACMEHost = "filo.uk";
+
+      locations."/" = {
+        proxyPass = "https://home-assistant";
+        recommendedProxySettings = true;
+        extraConfig = ''
+          proxy_ssl_name $host;
+          proxy_ssl_server_name on;
+        '';
+      };
+    };
+  };
+
   system.stateVersion = "25.05";
   system.tools = {
     nixos-build-vms.enable = false;
