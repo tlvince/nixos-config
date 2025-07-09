@@ -254,6 +254,11 @@
     };
   };
   time.timeZone = "Europe/London";
+  tlvince.smartd.devices = [
+    "/dev/nvme0"
+    "/dev/nvme1"
+    "/dev/nvme2"
+  ];
   users = {
     defaultUserShell = pkgs.zsh;
     groups.nas = {};
