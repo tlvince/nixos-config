@@ -39,9 +39,11 @@
 
       # DHCP
       dhcp-authoritative = true;
+      dhcp-host = secrets.dnsmasqHosts;
       dhcp-option = [
-        "option:dns-server,0.0.0.0"
+        "option:dns-server,0.0.0.0" # IP of dnsmasq host
         "option:router,192.168.0.1"
+        "tag:block,option:router" # Remove gateway
       ];
       dhcp-range = "192.168.0.10,192.168.0.251,24h";
 
