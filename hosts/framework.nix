@@ -493,6 +493,7 @@
     # Power switching, power saver handled by GNOME/UPower when low capacity (20%)
     # https://github.com/NixOS/nixpkgs/blob/2e1715cf7cf3c1e79436d566962aeedaffbfb49d/nixos/modules/services/hardware/upower.nix#L88
     # TODO: Restore variable refresh rate
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/320
     # Grey flickers, particularly in Firefox
     # See: https://community.frame.work/t/flickering-when-using-firefox-under-kde-wayland-on-ryzen-ai-300/69599
     # labels: host:framework
