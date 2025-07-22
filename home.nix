@@ -41,6 +41,11 @@
     "org/gnome/desktop/wm/preferences" = {
       titlebar-font = "Sans Bold 11";
     };
+    "org/gnome/mutter" = {
+      experimental-features = [
+        "variable-refresh-rate"
+      ];
+    };
     "org/gnome/settings-daemon/plugins/power" = {
       idle-dim = true;
       power-button-action = "suspend";
