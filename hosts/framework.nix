@@ -38,17 +38,25 @@
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
 
-    # TODO: Fix screen flickering
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/320
-    # Grey flickers, particularly in Firefox
-    #
-    # Attempts:
-    # [x] disable variable refresh rate
-    # [x] increase GPU memory to 1GB
-    #
-    # See: https://community.frame.work/t/flickering-when-using-firefox-under-kde-wayland-on-ryzen-ai-300/69599
-    # labels: host:framework
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      # TODO: Fix screen flickering
+      # Issue URL: https://github.com/tlvince/nixos-config/issues/320
+      # Grey flickers, particularly in Firefox
+      #
+      # Attempts:
+      # [x] disable variable refresh rate
+      # [x] reseating display cable
+      # [x] increase GPU memory to 1GB, 8GB
+      # [ ] disable PSR-SU
+      #
+      # See: https://community.frame.work/t/flickering-when-using-firefox-under-kde-wayland-on-ryzen-ai-300/69599
+      # labels: host:framework
+
+      # Disables Panel Self-Refresh with Selective Update (PSR-SU)
+      # See: https://gitlab.freedesktop.org/drm/amd/-/issues/3827
+      "amdgpu.dcdebugmask=0x200"
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
