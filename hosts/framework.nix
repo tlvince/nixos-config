@@ -47,10 +47,13 @@
     # [x] reseating display cable
     # [x] increase GPU memory to 1GB, 8GB
     # [x] disable PSR-SU
+    # [x] linux-firmware git
+    # [x] 6.16-rc6
     #
     # See: https://community.frame.work/t/flickering-when-using-firefox-under-kde-wayland-on-ryzen-ai-300/69599
+    # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # labels: host:framework
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_testing;
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
@@ -284,24 +287,6 @@
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "x86_64-linux";
-
-  nixpkgs.overlays = [
-    (
-      final: prev: {
-        # https://gitlab.freedesktop.org/drm/amd/-/issues/4341
-        linux-firmware = prev.linux-firmware.overrideAttrs (
-          old: {
-            version = "25ea3ecfb5418e5674137a5442727128e23061fe";
-            src = pkgs.fetchgit {
-              url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
-              rev = "25ea3ecfb5418e5674137a5442727128e23061fe";
-              hash = "sha256-HXoIPV/WCYw0ZutYdoaM9S2L/1nlXEEqtpfXWlkrkD0=";
-            };
-          }
-        );
-      }
-    )
-  ];
 
   # TODO: Modularise Firefox config
   # Issue URL: https://github.com/tlvince/nixos-config/issues/307
