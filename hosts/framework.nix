@@ -17,6 +17,7 @@
     # labels: host:framework
     extraModprobeConfig = ''
       options snd_hda_intel power_save=1
+      options cros_charge-control probe_with_fwk_charge_control=1
     '';
     initrd = {
       availableKernelModules = [
@@ -31,13 +32,6 @@
     kernelModules = [
       "kvm-amd"
     ];
-    # TODO: Restore userspace charge limiter
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/309
-    # See https://patchwork.kernel.org/project/chrome-platform/patch/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/
-    # See https://github.com/torvalds/linux/commits/master/drivers/mfd/cros_ec_dev.c
-    # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
-    # labels: host:framework, unreleased
-
     # TODO: Fix screen flickering
     # Issue URL: https://github.com/tlvince/nixos-config/issues/320
     # Grey flickers, particularly in Firefox
@@ -54,6 +48,21 @@
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # labels: host:framework
     kernelPackages = pkgs.linuxPackages_testing;
+    kernelPatches = [
+      {
+        # TODO: Remove cros_ec patch to restore charge-control when released
+        # Issue URL: https://github.com/tlvince/nixos-config/issues/309
+        # See https://patchwork.kernel.org/project/chrome-platform/patch/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/
+        # See https://github.com/torvalds/linux/commits/master/drivers/mfd/cros_ec_dev.c
+        # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
+        # labels: host:framework, unreleased
+        name = "mfd: cros_ec: Separate charge-control probing from USB-PD";
+        patch = pkgs.fetchpatch {
+          url = "https://lore.kernel.org/lkml/20250521-cros-ec-mfd-chctl-probe-v1-1-6ebfe3a6efa7@weissschuh.net/raw";
+          sha256 = "sha256-8nBcr7mFdUE40yHA1twDVbGKJ8tvAW+YRP23szUIhxk=";
+        };
+      }
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
