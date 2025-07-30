@@ -14,7 +14,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
 
     ../modules/acme.nix
-    ../modules/barberd.nix
     ../modules/cpuload.nix
     ../modules/cycled.nix
     ../modules/nginx.nix
