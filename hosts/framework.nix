@@ -300,7 +300,7 @@
             src = pkgs.fetchgit {
               url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
               rev = "d30c7b425f6d9c9e9f54bcafa99b375342b3a774";
-              hash = "sha256-HXoIPV/WCYw0ZutYdoaM9S2L/1nlXEEqtpfXWlkrkD0=";
+              hash = "sha256-FZzQz9Y+xFIURJEZS1oNabB+7MhO4FRY6/WzdikhKKo=";
             };
           }
         );
