@@ -19,6 +19,7 @@
       WorkingDirectory = "/run/barberd";
       RuntimeDirectory = "barberd";
       RuntimeDirectoryMode = "0755";
+      RuntimeMaxSec = 60;
 
       # Reduce journal noise
       CPUAccounting = false;

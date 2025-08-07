@@ -20,6 +20,7 @@
       WorkingDirectory = "/run/cycled";
       RuntimeDirectory = "cycled";
       RuntimeDirectoryMode = "0755";
+      RuntimeMaxSec = 60;
 
       # Reduce journal noise
       CPUAccounting = false;
