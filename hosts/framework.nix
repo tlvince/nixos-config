@@ -308,6 +308,8 @@
     )
   ];
 
+  programs.adb.enable = true;
+
   # TODO: Modularise Firefox config
   # Issue URL: https://github.com/tlvince/nixos-config/issues/307
   # labels: host:framework
@@ -531,7 +533,10 @@
     defaultUserShell = pkgs.zsh;
     users.tlv = {
       isNormalUser = true;
-      extraGroups = ["wheel"];
+      extraGroups = [
+        "adb"
+        "wheel"
+      ];
     };
   };
 }
