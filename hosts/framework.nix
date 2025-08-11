@@ -290,24 +290,6 @@
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  nixpkgs.overlays = [
-    (
-      final: prev: {
-        # https://gitlab.freedesktop.org/drm/amd/-/issues/4463
-        linux-firmware = prev.linux-firmware.overrideAttrs (
-          old: {
-            version = "d30c7b425f6d9c9e9f54bcafa99b375342b3a774";
-            src = pkgs.fetchgit {
-              url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
-              rev = "d30c7b425f6d9c9e9f54bcafa99b375342b3a774";
-              hash = "sha256-FZzQz9Y+xFIURJEZS1oNabB+7MhO4FRY6/WzdikhKKo=";
-            };
-          }
-        );
-      }
-    )
-  ];
-
   programs.adb.enable = true;
 
   # TODO: Modularise Firefox config
