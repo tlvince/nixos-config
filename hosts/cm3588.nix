@@ -18,6 +18,7 @@
     ../modules/dnsmasq.nix
     ../modules/home-assistant.nix
     ../modules/immich.nix
+    ../modules/librespot.nix
     ../modules/mosquitto.nix
     ../modules/nginx.nix
     ../modules/postgres.nix
