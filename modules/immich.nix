@@ -57,9 +57,9 @@
         ensureClauses.login = true;
       }
     ];
-    extensions = ps: with ps; [pgvecto-rs];
+    extensions = ps: with ps; [pgvector vectorchord];
     settings = {
-      shared_preload_libraries = ["vectors.so"];
+      shared_preload_libraries = ["vchord.so"];
       search_path = "\"$user\", public, vectors";
     };
   };
