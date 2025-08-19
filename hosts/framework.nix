@@ -213,6 +213,7 @@
     enableDefaultPackages = false;
     packages = with pkgs; [
       dejavu_fonts
+      noto-fonts-cjk-sans
       noto-fonts-color-emoji
     ];
 
