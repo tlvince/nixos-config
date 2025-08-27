@@ -6,7 +6,10 @@
   nixpkgs.overlays = [
     (
       final: prev: {
+        # TODO: Use upstream librespot package
+        # https://github.com/NixOS/nixpkgs/pull/437539
         # https://github.com/librespot-org/librespot/issues/1527
+        # labels: module:librespot, host:cm3588
         librespot = final.callPackage ../packages/librespot.nix {};
       }
     )
