@@ -49,6 +49,7 @@
       pkgs.mkShellNoCC {
         packages = with pkgs; [
           # TODO: Restore azure-cli
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/333
           # See https://github.com/NixOS/nixpkgs/issues/437525
           eslint_d
           nodePackages."@astrojs/language-server"
