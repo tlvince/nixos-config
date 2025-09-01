@@ -156,7 +156,7 @@
   # Issue URL: https://github.com/tlvince/nixos-config/issues/302
   nix.gc = {
     automatic = true;
-    frequency = "weekly";
+    dates = "weekly";
     options = "--delete-older-than 30d";
     randomizedDelaySec = "1 hour";
   };
