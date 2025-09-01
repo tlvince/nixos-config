@@ -4,7 +4,10 @@
 }: {
   services.immich = {
     enable = true;
-    database.enable = false;
+    database = {
+      enable = false;
+      enableVectors = false;
+    };
     environment = {
       IMMICH_LOG_LEVEL = "warn";
       TZ = config.time.timeZone;
