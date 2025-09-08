@@ -39,6 +39,8 @@
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
 
+    kernelPackages = pkgs.linuxPackages_latest;
+
     # TODO: Fix screen flickering
     # Issue URL: https://github.com/tlvince/nixos-config/issues/320
     # Grey flickers, particularly in Firefox
@@ -55,7 +57,15 @@
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
     # labels: host:framework
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "drm/amd/display: Enable urgent latency adjustment on DCN35";
+        patch = pkgs.fetchpatch {
+          url = "https://github.com/torvalds/linux/commit/756c85e4d0ddc497b4ad5b1f41ad54e838e06188.patch";
+          sha256 = "sha256-bOF1ec72KO3bRRqAt3LWYwjEHCWB/rNMQ38UZH2qYNc=";
+        };
+      }
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
