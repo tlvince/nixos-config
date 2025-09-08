@@ -116,6 +116,15 @@
             }: {
               boot = {
                 kernelPackages = pkgs.linuxPackages_latest;
+                kernelPatches = [
+                  {
+                    name = "drm/amd/display: Enable urgent latency adjustment on DCN35";
+                    patch = pkgs.fetchpatch {
+                      url = "https://github.com/torvalds/linux/commit/756c85e4d0ddc497b4ad5b1f41ad54e838e06188.patch";
+                      sha256 = "sha256-bOF1ec72KO3bRRqAt3LWYwjEHCWB/rNMQ38UZH2qYNc=";
+                    };
+                  }
+                ];
                 loader.grub.device = "/dev/disk/by-id/wwn-0x500001234567890a";
               };
 
