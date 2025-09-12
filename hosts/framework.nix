@@ -207,9 +207,6 @@
   environment.variables = {
     EDITOR = "nvim";
     QT_QPA_PLATFORM = "wayland";
-
-    # https://github.com/tlvince/nixos-config/issues/320
-    MUTTER_DEBUG_DISABLE_HW_CURSORS = 1;
   };
 
   fonts = {
@@ -293,6 +290,24 @@
 
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "x86_64-linux";
+
+  nixpkgs.overlays = [
+    (
+      final: prev: {
+        # https://gitlab.freedesktop.org/drm/amd/-/issues/4463
+        linux-firmware = prev.linux-firmware.overrideAttrs (
+          old: {
+            version = "ba7d706f9cf6e65e9956e65ac44906a78a790a02";
+            src = pkgs.fetchgit {
+              url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
+              rev = "ba7d706f9cf6e65e9956e65ac44906a78a790a02";
+              hash = "sha256-vVxd5YQPtNsMqqYejfNlo5zOCpoSMwIcXT+k1/okIh0=";
+            };
+          }
+        );
+      }
+    )
+  ];
 
   programs.adb.enable = true;
 
