@@ -207,9 +207,6 @@
   environment.variables = {
     EDITOR = "nvim";
     QT_QPA_PLATFORM = "wayland";
-
-    # https://github.com/tlvince/nixos-config/issues/320
-    MUTTER_DEBUG_DISABLE_HW_CURSORS = 1;
   };
 
   fonts = {
