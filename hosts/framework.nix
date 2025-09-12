@@ -149,7 +149,7 @@
     fzf
     gcc
     gh
-    gitMinimal
+    git
     gnome-calculator
     gnome-calendar
     gnome-clocks
