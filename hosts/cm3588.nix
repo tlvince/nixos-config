@@ -196,6 +196,7 @@
     overlays = [
       (self: super: {
         # TODO: Remove hm aarch64-linux build overlay
+        # Issue URL: https://github.com/tlvince/nixos-config/issues/346
         # See: https://github.com/NixOS/nixpkgs/issues/445212
         # See: https://github.com/NixOS/nixpkgs/pull/444018
         # labels: host:cm3588, systemd, unreleased
