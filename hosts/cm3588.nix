@@ -195,7 +195,10 @@
     hostPlatform = "aarch64-linux";
     overlays = [
       (self: super: {
-        # https://github.com/NixOS/nixpkgs/pull/444018
+        # TODO: Remove hm aarch64-linux build overlay
+        # See: https://github.com/NixOS/nixpkgs/issues/445212
+        # See: https://github.com/NixOS/nixpkgs/pull/444018
+        # labels: host:cm3588, systemd, unreleased
         hm = super.hm.overrideAttrs (oldAttrs: {
           patches =
             (oldAttrs.patches or [])
