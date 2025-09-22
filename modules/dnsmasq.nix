@@ -55,6 +55,13 @@
   };
 
   networking.nameservers = [
+    # TODO: Restore NextDNS
+    # Fixed in systemd >= 257.9
+    # See: https://github.com/NixOS/nixpkgs/issues/440073
+    # See: https://github.com/systemd/systemd/issues/38509
+    # See: https://github.com/NixOS/nixpkgs/pull/440130
+    # https://nixpk.gs/pr-tracker.html?pr=440130
+    # labels: host:cm3588, systemd
     "1.1.1.1#cloudflare-dns.com"
     "1.0.0.1#cloudflare-dns.com"
   ];
