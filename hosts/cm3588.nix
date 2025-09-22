@@ -199,7 +199,7 @@
         # Issue URL: https://github.com/tlvince/nixos-config/issues/346
         # See: https://github.com/NixOS/nixpkgs/issues/445212
         # See: https://github.com/NixOS/nixpkgs/pull/444018
-        # labels: host:cm3588, systemd, unreleased
+        # labels: host:cm3588
         hm = super.hm.overrideAttrs (oldAttrs: {
           patches =
             (oldAttrs.patches or [])
