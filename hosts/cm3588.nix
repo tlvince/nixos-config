@@ -193,6 +193,22 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
+    overlays = [
+      (self: super: {
+        # https://github.com/NixOS/nixpkgs/pull/444018
+        hm = super.hm.overrideAttrs (oldAttrs: {
+          patches =
+            (oldAttrs.patches or [])
+            ++ [
+              (super.fetchpatch2 {
+                name = "really-fix-building-on-arm.patch";
+                url = "https://github.com/johnrichardrinehart/hm/commit/f3947be0720bfd9ce3312478d64cd35a619c5eae.patch";
+                hash = "sha256-etKCfcTlX9bGEwBKqawC0CEoB8Y2FGE6Sr8Ae0ihvuM=";
+              })
+            ];
+        });
+      })
+    ];
   };
   programs.nano.enable = false;
   programs.zsh.enable = true;
