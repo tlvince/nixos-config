@@ -18,6 +18,7 @@
     ../modules/dnsmasq.nix
     ../modules/home-assistant.nix
     ../modules/immich.nix
+    ../modules/immich-kiosk.nix
     ../modules/librespot.nix
     ../modules/mosquitto.nix
     ../modules/nginx.nix
@@ -156,6 +157,7 @@
         "cm3588.filo.uk"
         "home-assistant.filo.uk"
         "immich.filo.uk"
+        "immich-kiosk.filo.uk"
         "radicale.filo.uk"
         "test.filo.uk"
       ];
