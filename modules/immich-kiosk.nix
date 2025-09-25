@@ -20,6 +20,8 @@
       KIOSK_BEHIND_PROXY = "true";
       KIOSK_DISABLE_SCREENSAVER = "true";
       KIOSK_DISABLE_UI = "true";
+      KIOSK_DURATION = "30";
+      KIOSK_IMAGE_FIT = "cover";
       KIOSK_IMMICH_URL = "https://immich.filo.uk/";
       KIOSK_LAYOUT = "splitview";
       KIOSK_PORT = "5291";
