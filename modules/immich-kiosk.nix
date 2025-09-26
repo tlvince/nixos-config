@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   secretsPath,
   ...
@@ -17,6 +18,10 @@
     wantedBy = ["multi-user.target"];
     after = ["immich-server.service"];
     environment = {
+      KIOSK_ALBUMS = lib.strings.concatStringsSep ", " [
+        "4fa933cf-051f-4621-9ac7-8d06776c261c"
+        "6466548c-4995-4fb5-ab1f-f63cc9ff3e5f"
+      ];
       KIOSK_BEHIND_PROXY = "true";
       KIOSK_DISABLE_SCREENSAVER = "true";
       KIOSK_DISABLE_UI = "true";
