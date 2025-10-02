@@ -145,6 +145,7 @@
     evolution
     exiftool
     fd
+    framework-tool
     foot
     fzf
     gcc
