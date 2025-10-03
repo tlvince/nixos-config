@@ -15,7 +15,6 @@
     # labels: host:kunkun
 
     ../modules/acme.nix
-    ../modules/barberd.nix
     ../modules/cpuload.nix
     ../modules/cycled.nix
     ../modules/nginx.nix
