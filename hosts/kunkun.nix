@@ -16,6 +16,7 @@
 
     ../modules/acme.nix
     ../modules/cpuload.nix
+    ../modules/cycled.nix
     ../modules/nginx.nix
   ];
   boot = {
