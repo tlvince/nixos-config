@@ -19,7 +19,6 @@
     ../modules/home-assistant.nix
     ../modules/immich.nix
     ../modules/immich-kiosk.nix
-    ../modules/librespot.nix
     ../modules/mosquitto.nix
     ../modules/nginx.nix
     ../modules/postgres.nix
