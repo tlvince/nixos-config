@@ -18,6 +18,9 @@
       enable = false;
       host = config.services.redis.servers.immich.unixSocket;
     };
+    # TODO: Configure immich notifications
+    # Use https://search.nixos.org/options?channel=unstable&show=services.immich.secretSettings&query=services.immich
+    # labels: module:immich
     settings = {
       backup = {
         database = {
