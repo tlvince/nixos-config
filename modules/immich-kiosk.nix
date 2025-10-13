@@ -37,6 +37,7 @@
       KIOSK_TRANSITION = "cross-fade";
     };
     # TODO: Remove immich-kiosk credentials wrapper
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/354
     # See https://github.com/damongolding/immich-kiosk/discussions/553
     # labels: module:immich-kiosk
     script = ''
@@ -45,6 +46,7 @@
     '';
     serviceConfig = {
       # TODO: Package immich-kiosk
+      # Issue URL: https://github.com/tlvince/nixos-config/issues/353
       # Currently running locally. Should be added to nixpkgs.
       # labels: module:immich-kiosk
       BindReadOnlyPaths = ["/home/tlv/dev/immich-kiosk:/run/immich-kiosk"];
