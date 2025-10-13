@@ -36,11 +36,17 @@
       KIOSK_SLEEP_START = "00";
       KIOSK_TRANSITION = "cross-fade";
     };
+    # TODO: Remove immich-kiosk credentials wrapper
+    # See https://github.com/damongolding/immich-kiosk/discussions/553
+    # labels: module:immich-kiosk
     script = ''
       export KIOSK_IMMICH_API_KEY=$(cat "$CREDENTIALS_DIRECTORY/immich-kiosk-api-key")
       exec /run/immich-kiosk/immich-kiosk
     '';
     serviceConfig = {
+      # TODO: Package immich-kiosk
+      # Currently running locally. Should be added to nixpkgs.
+      # labels: module:immich-kiosk
       BindReadOnlyPaths = ["/home/tlv/dev/immich-kiosk:/run/immich-kiosk"];
       LoadCredential = "immich-kiosk-api-key:${config.age.secrets.immich-kiosk-api-key.path}";
       Restart = "on-failure";
