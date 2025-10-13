@@ -19,6 +19,7 @@
       host = config.services.redis.servers.immich.unixSocket;
     };
     # TODO: Configure immich notifications
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/352
     # Use https://search.nixos.org/options?channel=unstable&show=services.immich.secretSettings&query=services.immich
     # labels: module:immich
     settings = {
