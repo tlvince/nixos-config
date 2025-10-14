@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  pkgs-immich-kiosk,
+  pkgs-master,
   secretsPath,
   ...
 }: {
@@ -43,7 +43,7 @@
     # labels: module:immich-kiosk
     script = ''
       export KIOSK_IMMICH_API_KEY=$(cat "$CREDENTIALS_DIRECTORY/immich-kiosk-api-key")
-      exec ${pkgs-immich-kiosk.immich-kiosk}/bin/immich-kiosk
+      exec ${pkgs-master.immich-kiosk}/bin/immich-kiosk
     '';
     serviceConfig = {
       LoadCredential = "immich-kiosk-api-key:${config.age.secrets.immich-kiosk-api-key.path}";
