@@ -16,6 +16,7 @@
     # https://nixpkgs-tracker.ocfox.me/?pr=451925
     # labels: module:immich-kiosk
     nixpkgs-master.url = "github:nixos/nixpkgs/master";
+    nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/kiosk-module";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
@@ -29,6 +30,7 @@
     lanzaboote,
     nixpkgs,
     nixpkgs-master,
+    nixpkgs-immich-kiosk,
     secrets,
     self,
     tmux-colours-onedark,
@@ -78,6 +80,7 @@
         };
 
         modules = [
+          "${nixpkgs-immich-kiosk}/nixos/modules/services/web-apps/immich-kiosk.nix"
           ./hosts/cm3588.nix
           agenix.nixosModules.default
           disko.nixosModules.disko

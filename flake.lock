@@ -221,6 +221,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-immich-kiosk": {
+      "locked": {
+        "lastModified": 1760455070,
+        "narHash": "sha256-dlwDg6OWBvnkbUFVo1wWrvlkLewnKOYU5+UxnbhY6TM=",
+        "owner": "tlvince",
+        "repo": "nixpkgs",
+        "rev": "c24cf3b7984bb818c70c6965c3865a3ab63a0345",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "ref": "kiosk-module",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-master": {
       "locked": {
         "lastModified": 1760450483,
@@ -270,6 +286,7 @@
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-immich-kiosk": "nixpkgs-immich-kiosk",
         "nixpkgs-master": "nixpkgs-master",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
