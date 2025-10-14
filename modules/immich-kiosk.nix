@@ -3,7 +3,6 @@
   lib,
   pkgs,
   pkgs-master,
-  pkgs-immich-kiosk,
   secretsPath,
   ...
 }: {
@@ -16,7 +15,7 @@
 
   age.secrets.immich-kiosk-api-key.file = "${secretsPath}/immich-kiosk-api-key.age";
 
-  pkgs-immich-kiosk.services.immich-kiosk = {
+  services.immich-kiosk = {
     enable = true;
     immichUrl = "https://immich.filo.uk/";
     immichApiKeyFile = config.age.secrets.immich-kiosk-api-key.path;

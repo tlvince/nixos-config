@@ -75,14 +75,12 @@
           pkgs-master = import nixpkgs-master {
             system = "aarch64-linux";
           };
-          pkgs-immich-kiosk = import nixpkgs-immich-kiosk {
-            system = "aarch64-linux";
-          };
           secrets = import inputs.secrets;
           secretsPath = inputs.secrets.outPath;
         };
 
         modules = [
+          "${nixpkgs-immich-kiosk}/nixos/modules/services/web-apps/immich-kiosk.nix"
           ./hosts/cm3588.nix
           agenix.nixosModules.default
           disko.nixosModules.disko
