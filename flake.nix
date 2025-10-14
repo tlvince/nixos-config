@@ -11,6 +11,7 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/immich-kiosk";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
@@ -23,6 +24,7 @@
     home-manager,
     lanzaboote,
     nixpkgs,
+    nixpkgs-immich-kiosk,
     secrets,
     self,
     tmux-colours-onedark,
@@ -64,6 +66,9 @@
       cm3588 = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit keys;
+          pkgs-immich-kiosk = import nixpkgs-immich-kiosk {
+            system = "aarch64-linux";
+          };
           secrets = import inputs.secrets;
           secretsPath = inputs.secrets.outPath;
         };
