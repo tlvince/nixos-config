@@ -19,6 +19,7 @@
     enable = true;
     immichUrl = "https://immich.filo.uk/";
     immichApiKeyFile = config.age.secrets.immich-kiosk-api-key.path;
+    package = pkgs-master.immich-kiosk;
     port = 5291;
     settings = {
       albums = [
