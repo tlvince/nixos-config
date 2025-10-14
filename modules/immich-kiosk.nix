@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-immich-kiosk,
   secretsPath,
   ...
 }: {
@@ -42,19 +43,13 @@
     # labels: module:immich-kiosk
     script = ''
       export KIOSK_IMMICH_API_KEY=$(cat "$CREDENTIALS_DIRECTORY/immich-kiosk-api-key")
-      exec /run/immich-kiosk/immich-kiosk
+      exec ${pkgs-immich-kiosk.immich-kiosk}/bin/immich-kiosk
     '';
     serviceConfig = {
-      # TODO: Package immich-kiosk
-      # Issue URL: https://github.com/tlvince/nixos-config/issues/353
-      # Currently running locally. Should be added to nixpkgs.
-      # labels: module:immich-kiosk
-      BindReadOnlyPaths = ["/home/tlv/dev/immich-kiosk:/run/immich-kiosk"];
       LoadCredential = "immich-kiosk-api-key:${config.age.secrets.immich-kiosk-api-key.path}";
       Restart = "on-failure";
       RestartSec = 10;
       RuntimeDirectory = "immich-kiosk";
-      RuntimeDirectoryMode = "0755";
       SyslogIdentifier = "immich-kiosk";
       WorkingDirectory = "/run/immich-kiosk";
 
