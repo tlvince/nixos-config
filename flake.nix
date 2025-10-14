@@ -11,6 +11,8 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # TODO: Use upstream nixpkgs immich-kiosk package
+    # labels: module:immich-kiosk
     nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/immich-kiosk";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
