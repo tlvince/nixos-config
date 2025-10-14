@@ -223,11 +223,11 @@
     },
     "nixpkgs-immich-kiosk": {
       "locked": {
-        "lastModified": 1760453900,
-        "narHash": "sha256-e0zUQK7Pf25SGsJIh7Ms46aEWdlfJzSVu2lTNIRJQnM=",
+        "lastModified": 1760454655,
+        "narHash": "sha256-2CI7VbCaBQFyJEgyHrjXryd9dDM3IU2atCtgKwLfx24=",
         "owner": "tlvince",
         "repo": "nixpkgs",
-        "rev": "d96a2d9ae96e47a8621d592bccca30e9c05c7c2b",
+        "rev": "f121e31e5251768e660c9a76884e91bcd6fa0794",
         "type": "github"
       },
       "original": {
