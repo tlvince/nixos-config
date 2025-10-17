@@ -207,11 +207,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1760284886,
-        "narHash": "sha256-TK9Kr0BYBQ/1P5kAsnNQhmWWKgmZXwUQr4ZMjCzWf2c=",
+        "lastModified": 1760524057,
+        "narHash": "sha256-EVAqOteLBFmd7pKkb0+FIUyzTF61VKi7YmvP1tw4nEw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "cf3f5c4def3c7b5f1fc012b3d839575dbe552d43",
+        "rev": "544961dfcce86422ba200ed9a0b00dd4b1486ec5",
         "type": "github"
       },
       "original": {
@@ -233,22 +233,6 @@
       "original": {
         "owner": "tlvince",
         "ref": "kiosk-module",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs-master": {
-      "locked": {
-        "lastModified": 1760450483,
-        "narHash": "sha256-PiByY7OR3XMtV53a5khh95N7g9dnPSfs/zjWVZ3k8IQ=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "5326097975b4259fa5cbbafcb8a6d71735bacb0a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "master",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -287,7 +271,6 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "nixpkgs-immich-kiosk": "nixpkgs-immich-kiosk",
-        "nixpkgs-master": "nixpkgs-master",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
