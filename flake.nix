@@ -11,6 +11,7 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-famly-fetch.url = "github:tlvince/nixpkgs/add-famly-fetch";
     nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/kiosk-module";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
@@ -24,6 +25,7 @@
     home-manager,
     lanzaboote,
     nixpkgs,
+    nixpkgs-famly-fetch,
     nixpkgs-immich-kiosk,
     secrets,
     self,
@@ -89,9 +91,19 @@
           disko.nixosModules.disko
           home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs = inputs;
+            home-manager.extraSpecialArgs =
+              inputs
+              // {
+                nixpkgs-famly-fetch = import nixpkgs-famly-fetch {
+                  system = "x86_64-linux";
+                };
+                secretsPath = inputs.secrets.outPath;
+              };
             home-manager.useGlobalPkgs = true;
             home-manager.users.tlv = import ./home.nix;
+            home-manager.sharedModules = [
+              agenix.homeManagerModules.default
+            ];
           }
           lanzaboote.nixosModules.lanzaboote
         ];
