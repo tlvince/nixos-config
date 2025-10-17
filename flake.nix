@@ -11,11 +11,6 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # TODO: Use upstream nixpkgs immich-kiosk package
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/356
-    # https://nixpkgs-tracker.ocfox.me/?pr=451925
-    # labels: module:immich-kiosk
-    nixpkgs-master.url = "github:nixos/nixpkgs/master";
     nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/kiosk-module";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
@@ -29,7 +24,6 @@
     home-manager,
     lanzaboote,
     nixpkgs,
-    nixpkgs-master,
     nixpkgs-immich-kiosk,
     secrets,
     self,
@@ -72,9 +66,6 @@
       cm3588 = nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit keys;
-          pkgs-master = import nixpkgs-master {
-            system = "aarch64-linux";
-          };
           secrets = import inputs.secrets;
           secretsPath = inputs.secrets.outPath;
         };
