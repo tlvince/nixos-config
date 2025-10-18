@@ -83,6 +83,9 @@
         specialArgs =
           inputs
           // {
+            pkgs-famly-fetch = import nixpkgs-famly-fetch {
+              system = "x86_64-linux";
+            };
             secretsPath = inputs.secrets.outPath;
           };
         modules = [
@@ -91,19 +94,9 @@
           disko.nixosModules.disko
           home-manager.nixosModules.home-manager
           {
-            home-manager.extraSpecialArgs =
-              inputs
-              // {
-                nixpkgs-famly-fetch = import nixpkgs-famly-fetch {
-                  system = "x86_64-linux";
-                };
-                secretsPath = inputs.secrets.outPath;
-              };
+            home-manager.extraSpecialArgs = inputs;
             home-manager.useGlobalPkgs = true;
             home-manager.users.tlv = import ./home.nix;
-            home-manager.sharedModules = [
-              agenix.homeManagerModules.default
-            ];
           }
           lanzaboote.nixosModules.lanzaboote
         ];

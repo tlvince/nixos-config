@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ../modules/famly-fetch.nix
     ../modules/smartd.nix
     ../modules/zed.nix
   ];
