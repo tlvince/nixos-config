@@ -146,6 +146,14 @@
 
       # https://typicode.github.io/husky/get-started.html#disabling-hooks
       HUSKY = 0;
+
+      # XDG
+      CARGO_HOME = "$XDG_DATA_HOME/cargo";
+      GOCACHE = "$XDG_CACHE_HOME/go/build";
+      GOMODCACHE = "$XDG_CACHE_HOME/go/mod";
+      NODE_REPL_HISTORY = "$XDG_DATA_HOME/node_repl_history";
+      NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
+      RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
     };
     stateVersion = "23.05";
     username = "tlv";
