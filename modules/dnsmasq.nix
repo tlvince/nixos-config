@@ -1,8 +1,4 @@
-{
-  config,
-  secrets,
-  ...
-}: {
+{secrets, ...}: {
   services.dnsmasq = {
     enable = true;
     resolveLocalQueries = false;

@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   systemd.services.librespot = {
     after = ["network.target" "sound.target"];
     description = "Librespot (an open source Spotify client)";

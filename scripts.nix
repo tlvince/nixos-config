@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   notify = pkgs.writeScriptBin "notify" ''
     DEVICE="mobile_app_pixel_7a"
     ${pkgs.jq}/bin/jq --null-input --arg title "$TITLE" --arg message "$MESSAGE" '{"title": $title, "message": $message}' | \
