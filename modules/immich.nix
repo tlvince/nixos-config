@@ -1,7 +1,11 @@
 {
   config,
+  secrets,
+  secretsPath,
   ...
 }: {
+  age.secrets.immich-smtp.file = "${secretsPath}/immich-smtp.age";
+
   services.immich = {
     enable = true;
     database = {
@@ -18,10 +22,9 @@
       enable = false;
       host = config.services.redis.servers.immich.unixSocket;
     };
-    # TODO: Configure immich notifications
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/352
-    # Use https://search.nixos.org/options?channel=unstable&show=services.immich.secretSettings&query=services.immich
-    # labels: module:immich
+    secretSettings = {
+      notifications.smtp.transport.password = config.age.secrets.immich-smtp.path;
+    };
     settings = {
       backup = {
         database = {
@@ -43,6 +46,17 @@
       };
       newVersionCheck = {
         enabled = false;
+      };
+      notifications = {
+        smtp = {
+          enabled = true;
+          from = "Immich Photo Server <noreply@filo.uk>";
+          transport = {
+            host = "smtp.eu.mailgun.org";
+            port = 587;
+            username = secrets.immichSmtpUsername;
+          };
+        };
       };
       server = {
         externalDomain = "https://immich.filo.uk";
