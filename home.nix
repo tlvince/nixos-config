@@ -2,9 +2,16 @@
   config,
   lib,
   pkgs,
+  nixpkgs-famly-fetch,
+  secretsPath,
   tmux-colours-onedark,
   ...
 }: {
+  age = {
+    identityPaths = ["/home/tlv/.ssh/config.d/tlvince/agenix"];
+    secrets.famly-fetch.file = "${secretsPath}/famly-fetch.age";
+  };
+
   dconf.settings = {
     "org/gnome/desktop/background" = {
       color-shading-type = "solid";
@@ -627,6 +634,14 @@
     };
 
     syntaxHighlighting.enable = true;
+  };
+
+  systemd.user.services.famly-fetch = {
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${nixpkgs-famly-fetch.famly-fetch}/bin/famly-fetch --filename-pattern '%%Y%%m%%d_%%H%%M%%S_%%ID' --journey --messages --notes --no-text-comments --pictures-folder %h/pictures/famly-fetch --state-file %C/famly-fetch/state.json --stop-on-existing";
+      EnvironmentFile = "%t/agenix/famly-fetch";
+    };
   };
 
   wayland.windowManager.sway = {

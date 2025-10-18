@@ -221,6 +221,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-famly-fetch": {
+      "locked": {
+        "lastModified": 1760797766,
+        "narHash": "sha256-iEYSIM8JE28jkYrCmwYDOSqi8ooY9M3W4+xnM2QrRWc=",
+        "owner": "tlvince",
+        "repo": "nixpkgs",
+        "rev": "c33b13959beaf55e4043c53d7b35c31255b022da",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "ref": "add-famly-fetch",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-immich-kiosk": {
       "locked": {
         "lastModified": 1760455070,
@@ -270,6 +286,7 @@
         "home-manager": "home-manager_2",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-famly-fetch": "nixpkgs-famly-fetch",
         "nixpkgs-immich-kiosk": "nixpkgs-immich-kiosk",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
@@ -299,11 +316,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1759254349,
-        "narHash": "sha256-TW9PFSGG1QpcD164scciRJ1MJWtZSWfO5EiFy+fH24M=",
+        "lastModified": 1760739912,
+        "narHash": "sha256-mmnd7+boAzVQqbCqMsU+nlEyumJaFruGJmSGPphn5Ao=",
         "owner": "tlvince",
         "repo": "nixos-config-secrets",
-        "rev": "f7814d8d01f5b0219cb65a7d98d5ee8b3b4b75d1",
+        "rev": "d29254b18e9da89bc6ee574b5b982de320f56e9a",
         "type": "github"
       },
       "original": {
