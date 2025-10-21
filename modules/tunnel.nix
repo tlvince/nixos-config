@@ -3,14 +3,10 @@
   secrets,
   ...
 }: let
-  # TODO: Replace hardcoded credentials path with CREDENTIALS_DIRECTORY
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/314
-  # labels: module:tunnel, systemd
   sshConfig = pkgs.writeText "ssh-config" ''
     Host kunkun
       ExitOnForwardFailure yes
       HostName ${secrets.kunkun}
-      IdentityFile /run/credentials/tunnel@kunkun.service/ssh_host_key
       RemoteForward 8080 home-assistant.filo.uk:443
       ServerAliveInterval 60
       SessionType none
@@ -22,7 +18,7 @@ in {
     wantedBy = ["multi-user.target"];
     serviceConfig = {
       LoadCredential = ["ssh_host_key:/etc/ssh/ssh_host_ed25519_key"];
-      ExecStart = "${pkgs.openssh}/bin/ssh -F ${sshConfig} %i";
+      ExecStart = "${pkgs.openssh}/bin/ssh -F ${sshConfig} -i %d/ssh_host_key %i";
       Restart = "on-failure";
       SyslogIdentifier = "tunnel";
       User = "tunnel";
