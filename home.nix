@@ -169,6 +169,11 @@
     randomizedDelaySec = "1 hour";
   };
 
+  programs.diff-so-fancy = {
+    enable = true;
+    enableGitIntegration = true;
+  };
+
   programs.foot = {
     enable = true;
     settings = {
@@ -202,49 +207,45 @@
 
   programs.git = {
     enable = true;
-    aliases = {
-      br = "branch";
-      brrm = "!git branch | grep -vE '^\\*|main|master' | xargs -n 1 git branch -D";
-      c = "commit";
-      cfa = "commit --all --amend --no-edit";
-      ci = "commit --all";
-      cia = "commit --all --message";
-      cl = "clone --recursive";
-      co = "checkout";
-      cob = "checkout -b";
-      com = "checkout master";
-      cp = "cherry-pick";
-      cpc = "cherry-pick --continue";
-      d = "diff";
-      dfs = "diff --stat";
-      g = "grep --ignore-case";
-      l = "log -p --follow";
-      lh = "log --follow --pretty=format:'%H'";
-      lhr = "log --reverse --pretty=format:'%H'";
-      lm = "log --follow --pretty=format:'%s'";
-      lo = "log --graph --decorate --pretty=oneline --abbrev-commit";
-      lpp = "log --graph --all --pretty=format:'%h by %an (%cr):%d %s' --abbrev-commit --decorate --date-order";
-      ls = "ls-files";
-      mt = "mergetool";
-      pa = "push --all all";
-      pd = "pull --rebase --tags";
-      pu = "push --tags";
-      rbc = "rebase --continue";
-      s = "status --short --ignore-submodules=dirty";
-      subpd = "submodule foreach --recursive git pull origin master";
-      subpu = "submodule foreach --recursive git push origin master";
-      # Overrides
-      ctags = "!.git/hooks/ctags";
-      # Show verbose output about tags, branches or remotes";
-      branches = "branch -a";
-      remotes = "remote -v";
-      tags = "tag -l";
-    };
-    attributes = [
-      "* text=auto"
-    ];
-    diff-so-fancy.enable = true;
-    extraConfig = {
+    settings = {
+      alias = {
+        br = "branch";
+        brrm = "!git branch | grep -vE '^\\*|main|master' | xargs -n 1 git branch -D";
+        c = "commit";
+        cfa = "commit --all --amend --no-edit";
+        ci = "commit --all";
+        cia = "commit --all --message";
+        cl = "clone --recursive";
+        co = "checkout";
+        cob = "checkout -b";
+        com = "checkout master";
+        cp = "cherry-pick";
+        cpc = "cherry-pick --continue";
+        d = "diff";
+        dfs = "diff --stat";
+        g = "grep --ignore-case";
+        l = "log -p --follow";
+        lh = "log --follow --pretty=format:'%H'";
+        lhr = "log --reverse --pretty=format:'%H'";
+        lm = "log --follow --pretty=format:'%s'";
+        lo = "log --graph --decorate --pretty=oneline --abbrev-commit";
+        lpp = "log --graph --all --pretty=format:'%h by %an (%cr):%d %s' --abbrev-commit --decorate --date-order";
+        ls = "ls-files";
+        mt = "mergetool";
+        pa = "push --all all";
+        pd = "pull --rebase --tags";
+        pu = "push --tags";
+        rbc = "rebase --continue";
+        s = "status --short --ignore-submodules=dirty";
+        subpd = "submodule foreach --recursive git pull origin master";
+        subpu = "submodule foreach --recursive git push origin master";
+        # Overrides
+        ctags = "!.git/hooks/ctags";
+        # Show verbose output about tags, branches or remotes";
+        branches = "branch -a";
+        remotes = "remote -v";
+        tags = "tag -l";
+      };
       apply = {
         whitespace = "fix";
       };
@@ -287,16 +288,21 @@
       push = {
         default = "simple";
       };
+      user = {
+        email = "git@tlvince.com";
+        name = "Tom Vincent";
+      };
       web = {
         browser = "gio open";
       };
     };
+    attributes = [
+      "* text=auto"
+    ];
     signing = {
       key = "AB184CDBE6AEACDE";
       signByDefault = true;
     };
-    userEmail = "git@tlvince.com";
-    userName = "Tom Vincent";
   };
 
   programs.gpg = {
