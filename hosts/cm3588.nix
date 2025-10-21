@@ -198,6 +198,7 @@
       (
         final: prev: {
           # TODO: Remove overlay when stringzilla aarch64-linux is fixed
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/363
           # See https://github.com/NixOS/nixpkgs/issues/453821
           # labels: host:cm3588, module:immich
           python313 = prev.python313.override {
