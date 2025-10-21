@@ -59,7 +59,7 @@
         };
       };
       server = {
-        externalDomain = "https://immich.filo.uk";
+        externalDomain = "https://my.immich.app";
       };
       storageTemplate = {
         enabled = true;
