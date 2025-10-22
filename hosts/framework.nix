@@ -6,6 +6,7 @@
 }: {
   imports = [
     ../modules/famly-fetch.nix
+    ../modules/gnome.nix
     ../modules/smartd.nix
     ../modules/zed.nix
   ];
@@ -143,7 +144,6 @@
     diff-so-fancy
     dig
     efm-langserver
-    evolution
     exiftool
     fd
     framework-tool
@@ -152,15 +152,7 @@
     gcc
     gh
     git
-    gnome-calculator
-    gnome-calendar
-    gnome-clocks
-    gnome-contacts
     gnome-monitor-config
-    gnome-text-editor
-    gnomeExtensions.appindicator
-    gnomeExtensions.light-style
-    gnomeExtensions.night-theme-switcher
     gnumake
     gnupg
     htop
@@ -169,16 +161,12 @@
     jq
     libreoffice
     libva-utils
-    loupe
     moreutils
     mpv
-    nautilus
     neovim
     nodejs
     optipng
-    papers
     pass-wayland
-    pinentry-gnome3
     powerstat
     powertop
     prettierd
@@ -458,43 +446,10 @@
   services.fprintd.enable = true;
   services.fstrim.enable = true;
   services.fwupd.enable = true;
-
-  # TODO: Modularise GNOME config
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/306
-  # labels: host:framework
-
-  # https://github.com/NixOS/nixpkgs/blob/93da65ede655736068698f9da6470ca9d1484861/nixos/modules/services/desktop-managers/gnome.nix
-  services.gnome.core-developer-tools.enable = false;
-  services.gnome.core-os-services.enable = true;
-  services.gnome.core-shell.enable = true;
-  services.gnome.core-apps.enable = false;
-  services.gnome.games.enable = false;
   services.hardware.bolt.enable = true;
-  services.printing.enable = false;
-  services.desktopManager.gnome.enable = true;
-  services.displayManager.gdm.enable = true;
-
-  # services.gnome.core-shell
-  services.gnome.gnome-browser-connector.enable = false;
-  services.gnome.gnome-initial-setup.enable = false;
-  services.gnome.gnome-remote-desktop.enable = false;
-  services.gnome.gnome-user-share.enable = false;
-  services.gnome.rygel.enable = false;
-  services.gnome.sushi.enable = true;
-
-  environment.gnome.excludePackages = with pkgs; [
-    # services.gnome.core-shell
-    evince
-    geary
-    gnome-backgrounds
-    gnome-shell-extensions
-    gnome-tour
-    gnome-user-docs
-    orca
-  ];
-
-  services.resolved.enable = true;
   services.power-profiles-daemon.enable = true;
+  services.printing.enable = false;
+  services.resolved.enable = true;
 
   services.pipewire = {
     enable = true;
