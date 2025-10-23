@@ -477,7 +477,6 @@
     users.tlv = {
       isNormalUser = true;
       extraGroups = [
-        "adb"
         "wheel"
       ];
     };
