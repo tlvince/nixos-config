@@ -194,27 +194,6 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
-    overlays = [
-      (
-        final: prev: {
-          # TODO: Remove overlay when stringzilla aarch64-linux is fixed
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/363
-          # See https://github.com/NixOS/nixpkgs/issues/453821
-          # labels: host:cm3588, module:immich
-          python313 = prev.python313.override {
-            packageOverrides = pyfinal: pyprev: {
-              stringzilla = pyprev.stringzilla.overrideAttrs (oldAttrs: {
-                env =
-                  (oldAttrs.env or {})
-                  // {
-                    NIX_CFLAGS_COMPILE = "-D_POSIX_C_SOURCE=200809L";
-                  };
-              });
-            };
-          };
-        }
-      )
-    ];
   };
   programs.nano.enable = false;
   programs.zsh.enable = true;
