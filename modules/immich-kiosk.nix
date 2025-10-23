@@ -15,6 +15,11 @@
   services.immich-kiosk = {
     enable = true;
     immichUrl = "https://immich.filo.uk/";
+    # TODO: Update immich-kiosk to v0.26.1
+    # Use new secrets handling https://github.com/damongolding/immich-kiosk/releases/tag/v0.26.1
+    # Depends on Go v1.25.3 (https://github.com/NixOS/nixpkgs/pull/451802)
+    # https://nixpkgs-tracker.ocfox.me/?pr=451802
+    # labels: module:immich-kiosk, host:cm3588, unreleased
     immichApiKeyFile = config.age.secrets.immich-kiosk-api-key.path;
     port = 5291;
     settings = {
