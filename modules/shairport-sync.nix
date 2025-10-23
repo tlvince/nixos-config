@@ -1,7 +1,4 @@
 {pkgs, ...}: {
-  # TODO: Handle avahi restart after EEE
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/312
-  # labels: module:shairport-sync
   services.shairport-sync = {
     enable = true;
     openFirewall = true;

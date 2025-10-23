@@ -237,21 +237,18 @@
   };
   systemd.network = {
     enable = true;
+    # Workaround router firmware bug that breaks 2.5Gbps ethernet
+    links.wired = {
+      matchConfig.Type = "ether";
+      extraConfig = ''
+        [EnergyEfficientEthernet]
+        Enable=false
+      '';
+    };
     networks.wired = {
       name = "en*";
       address = ["192.168.0.2/24"];
       gateway = ["192.168.0.1"];
-    };
-  };
-  # TODO: Replace with systemd link to disable EEE when systemd v258 is released
-  # See https://github.com/systemd/systemd/pull/36302
-  # labels: host:cm3588, systemd, unreleased
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/303
-  systemd.services.disable-eee = {
-    description = "Disable Energy-Efficient Ethernet to workaround a router firmware bug that breaks 2.5Gbps ethernet";
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.ethtool}/bin/ethtool --set-eee enP4p65s0 eee off";
     };
   };
   time.timeZone = "Europe/London";
