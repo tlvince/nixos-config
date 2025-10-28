@@ -40,6 +40,7 @@
     # See https://github.com/torvalds/linux/commits/master/drivers/mfd/cros_ec_dev.c
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
+    kernelPackages = pkgs.linuxPackages_latest;
 
     # TODO: Fix screen flickering
     # Issue URL: https://github.com/tlvince/nixos-config/issues/320
@@ -57,7 +58,16 @@
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
     # labels: host:framework
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "drm/amd/display: Increase DCN35 SR enter/exit latency";
+        patch = pkgs.fetchpatch {
+          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/e213cbf551d73380e4603612e8beb1d4/0001-drm-amd-display-Increase-DCN35-SR-enter-exit-latency.patch";
+          sha256 = "sha256-ga7hb12sAgN5eNIDLusygJyTPz7kQlxXsNH2f9OAwJw=";
+        };
+      }
+    ];
+
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
@@ -199,7 +209,7 @@
     QT_QPA_PLATFORM = "wayland";
 
     # https://github.com/tlvince/nixos-config/issues/320
-    MUTTER_DEBUG_DISABLE_HW_CURSORS = 1;
+    #MUTTER_DEBUG_DISABLE_HW_CURSORS = 1;
   };
 
   fonts = {
