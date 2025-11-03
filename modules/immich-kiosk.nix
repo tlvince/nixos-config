@@ -5,7 +5,7 @@
 }: {
   age.secrets.immich-kiosk = {
     file = "${secretsPath}/immich-kiosk.age";
-    mode = "770";
+    mode = "640";
     owner = "nginx";
     group = "nginx";
   };
