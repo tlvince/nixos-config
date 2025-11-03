@@ -42,6 +42,7 @@
       pkgs.mkShellNoCC {
         packages = with pkgs; [
           alejandra
+          zed-editor-fhs
         ];
       };
     devShells.x86_64-linux.nodejs = let
