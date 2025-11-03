@@ -17,15 +17,6 @@
     secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
-
-    # TODO: Remove lanzaboote rust-overlay workaround
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/370
-    # See https://github.com/nix-community/lanzaboote/issues/485
-    # See https://github.com/nix-community/lanzaboote/pull/487
-    # labels: host:framework
-    lanzaboote.inputs.rust-overlay.follows = "rust-overlay";
-    rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
-    rust-overlay.url = "github:oxalica/rust-overlay";
   };
 
   outputs = {
