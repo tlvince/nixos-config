@@ -45,7 +45,7 @@ in {
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
       ProtectProc = "invisible";
-      RestrictAddressFamilies = "AF_INET";
+      RestrictAddressFamilies = ["AF_INET" "AF_UNIX"];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       UMask = 077;
