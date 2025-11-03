@@ -19,6 +19,7 @@
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
 
     # TODO: Remove lanzaboote rust-overlay workaround
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/370
     # See https://github.com/nix-community/lanzaboote/issues/485
     # See https://github.com/nix-community/lanzaboote/pull/487
     # labels: host:framework
