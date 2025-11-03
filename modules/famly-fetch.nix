@@ -6,6 +6,7 @@
 }: {
   systemd.user.services.famly-fetch = {
     script = ''
+      set -euo pipefail
       # Source and export environment variables in systemd EnvironmentFile= format
       set -a
       source <(${pkgs.age}/bin/age -i $HOME/.ssh/config.d/tlvince/agenix -d ${secretsPath}/famly-fetch.age)
