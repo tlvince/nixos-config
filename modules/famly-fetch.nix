@@ -5,7 +5,6 @@
   ...
 }: {
   systemd.user.services.famly-fetch = {
-    wantedBy = ["default.target"];
     script = ''
       # Source and export environment variables in systemd EnvironmentFile= format
       set -a
