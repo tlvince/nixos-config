@@ -194,6 +194,9 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
+    overlays = [
+      (import ../overlays/onnxruntime.nix)
+    ];
   };
   programs.nano.enable = false;
   programs.zsh.enable = true;
