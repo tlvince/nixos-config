@@ -195,6 +195,7 @@
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
     # TODO: Remove onnxruntime and rapidocr overlay
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/373
     # python3Packages.rapidocr-onnxruntime currently marked "bad" due to missing
     # cpuinfo in the build sandbox (works fine at runtime).
     # See: https://github.com/NixOS/nixpkgs/pull/458575
