@@ -15,6 +15,8 @@
   '';
 in {
   systemd.services."tunnel@kunkun" = {
+    after = ["systemd-networkd-wait-online.service"];
+    requires = ["systemd-networkd-wait-online.service"];
     wantedBy = ["multi-user.target"];
     serviceConfig = {
       LoadCredential = ["ssh_host_key:/etc/ssh/ssh_host_ed25519_key"];
