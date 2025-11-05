@@ -194,6 +194,13 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
+    # TODO: Remove onnxruntime and rapidocr overlay
+    # python3Packages.rapidocr-onnxruntime currently marked "bad" due to missing
+    # cpuinfo in the build sandbox (works fine at runtime).
+    # See: https://github.com/NixOS/nixpkgs/pull/458575
+    # Maybe fixed in next onnxruntime release:
+    # https://github.com/NixOS/nixpkgs/pull/450587
+    # labels: host:cm3588, module:immich, unreleased
     overlays = [
       (import ../overlays/onnxruntime.nix)
     ];
