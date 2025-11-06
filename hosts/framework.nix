@@ -60,10 +60,10 @@
     # labels: host:framework
     kernelPatches = [
       {
-        name = "drm/amd/display: Increase DCN35 SR enter/exit latency";
+        name = "drm/amd/display: Increase DCN35 SR latency by 3us";
         patch = pkgs.fetchpatch {
-          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/e213cbf551d73380e4603612e8beb1d4/0001-drm-amd-display-Increase-DCN35-SR-enter-exit-latency.patch";
-          sha256 = "sha256-ga7hb12sAgN5eNIDLusygJyTPz7kQlxXsNH2f9OAwJw=";
+          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/daad272f57fc56572461d789bc105809/0001-drm-amd-display-Increase-DCN35-SR-latency-by-3us.patch";
+          sha256 = "sha256-84FgDHdqQ4OD4a5a3UoUGGC0Ip/oMug+t2FDpTHhzbc=";
         };
       }
     ];
