@@ -10,6 +10,8 @@
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
+    nix-ai-tools.inputs.nixpkgs.follows = "nixpkgs";
+    nix-ai-tools.url = "github:numtide/nix-ai-tools";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-famly-fetch.url = "github:tlvince/nixpkgs/add-famly-fetch";
     nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/kiosk-module";
@@ -24,6 +26,7 @@
     disko,
     home-manager,
     lanzaboote,
+    nix-ai-tools,
     nixpkgs,
     nixpkgs-famly-fetch,
     nixpkgs-immich-kiosk,
@@ -84,6 +87,7 @@
         specialArgs =
           inputs
           // {
+            pkgs-ai = nix-ai-tools.packages."x86_64-linux";
             pkgs-famly-fetch = import nixpkgs-famly-fetch {
               system = "x86_64-linux";
             };
