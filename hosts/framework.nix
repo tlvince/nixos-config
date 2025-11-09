@@ -15,12 +15,6 @@
 
   boot = {
     blacklistedKernelModules = ["hid_sensor_hub"];
-    # TODO: Verify if snd_hda_intel is needed with Realtek
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/310
-    # labels: host:framework
-    extraModprobeConfig = ''
-      options snd_hda_intel power_save=1
-    '';
     initrd = {
       availableKernelModules = [
         "nvme"
