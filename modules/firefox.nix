@@ -9,6 +9,7 @@
       DisableFeedbackCommands = true;
       DisableFirefoxAccounts = true;
       DisableFirefoxStudies = true;
+      DisableMasterPasswordCreation = true;
       DisablePocket = true;
       DisableProfileImport = true;
       DisableSetDesktopBackground = true;
@@ -26,7 +27,9 @@
         Search = true;
         Snippets = false;
         SponsoredPocket = false;
+        SponsoredStories = false;
         SponsoredTopSites = false;
+        Stories = false;
         TopSites = true;
       };
       FirefoxSuggest = {
@@ -34,6 +37,13 @@
         Locked = true;
         SponsoredSuggestions = false;
         WebSuggestions = false;
+      };
+      GenerativeAI = {
+        Chatbot = false;
+        Enabled = false;
+        LinkPreviews = false;
+        Locked = true;
+        TabGroups = false;
       };
       UserMessaging = {
         ExtensionRecommendations = false;
