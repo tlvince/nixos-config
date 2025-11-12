@@ -22,9 +22,6 @@
       enable = false;
       host = config.services.redis.servers.immich.unixSocket;
     };
-    secretSettings = {
-      notifications.smtp.transport.password = config.age.secrets.immich-smtp.path;
-    };
     settings = {
       backup = {
         database = {
@@ -53,6 +50,7 @@
           from = "Immich Photo Server <noreply@filo.uk>";
           transport = {
             host = "smtp.eu.mailgun.org";
+            password._secret = config.age.secrets.immich-smtp.path;
             port = 587;
             username = secrets.immichSmtpUsername;
           };
