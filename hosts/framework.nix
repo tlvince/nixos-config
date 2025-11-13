@@ -166,7 +166,6 @@
     jq
     libreoffice
     libva-utils
-    moreutils
     mpv
     neovim
     nodejs

@@ -542,6 +542,7 @@
       rd = "rmdir";
       serve = "python3 -m http.server --bind 127.0.0.1";
       sudu = "sudo -iu";
+      sync-nixpkgs = "nix flake update --inputs-from $HOME/dev/nixos-config";
       ts = "date --utc +'%Y-%m-%dT%H:%M:%S.%3NZ'";
       th = "dict -d moby-thesaurus";
       webcam = "mpv --demuxer-lavf-format=video4linux2 --demuxer-lavf-o=video_size=1920x1080,input_format=mjpeg av://v4l2:/dev/video0 --profile=low-latency --untimed --vf=hflip";
