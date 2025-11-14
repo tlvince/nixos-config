@@ -47,13 +47,9 @@
 
   programs.evolution = {
     enable = true;
-    # TODO: Add evolution-ews when build fixed
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/381
-    # See https://github.com/NixOS/nixpkgs/issues/461607
-    # labels: host:framework, module:gnome
-    # plugins = with pkgs; [
-    #   evolution-ews
-    # ];
+    plugins = with pkgs; [
+      evolution-ews
+    ];
   };
 
   home-manager.users.tlv = {
