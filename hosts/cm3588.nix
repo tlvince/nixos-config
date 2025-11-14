@@ -194,6 +194,13 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
+    overlays = [
+      # TODO: Remove immich-kiosk overlay
+      # Issue URL: https://github.com/tlvince/nixos-config/issues/365
+      # https://nixpkgs-tracker.ocfox.me/?pr=461579
+      # labels: module:immich-kiosk, host:cm3588, unreleased
+      (import ../overlays/immich-kiosk.nix)
+    ];
   };
   programs.nano.enable = false;
   programs.zsh.enable = true;
