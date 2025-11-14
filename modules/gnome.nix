@@ -31,7 +31,6 @@
 
   # GNOME-specific system packages
   environment.systemPackages = with pkgs; [
-    evolution
     gnome-calculator
     gnome-calendar
     gnome-clocks
@@ -45,6 +44,16 @@
     papers
     pinentry-gnome3
   ];
+
+  programs.evolution = {
+    enable = true;
+    # TODO: Add evolution-ews when build fixed
+    # See https://github.com/NixOS/nixpkgs/issues/461607
+    # labels: host:framework, module:gnome
+    # plugins = with pkgs; [
+    #   evolution-ews
+    # ];
+  };
 
   home-manager.users.tlv = {
     config,
