@@ -9,6 +9,9 @@
   services.postgresql = {
     enable = true;
     dataDir = "/mnt/ichbiah/home/postgresql/${config.services.postgresql.package.psqlSchema}";
+    settings = {
+      log_checkpoints = false;
+    };
   };
 
   services.postgresqlBackup = {

@@ -1,8 +1,4 @@
-{
-  config,
-  secrets,
-  ...
-}: {
+{secrets, ...}: {
   services.dnsmasq = {
     enable = true;
     resolveLocalQueries = false;
@@ -64,5 +60,10 @@
   services.resolved = {
     enable = true;
     dnsovertls = "true";
+  };
+
+  systemd.services.dnsmasq = {
+    after = ["systemd-networkd-wait-online.service"];
+    requires = ["systemd-networkd-wait-online.service"];
   };
 }

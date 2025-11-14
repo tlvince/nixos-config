@@ -5,6 +5,9 @@
   ...
 }: {
   imports = [
+    ../modules/famly-fetch.nix
+    ../modules/firefox.nix
+    ../modules/gnome.nix
     ../modules/smartd.nix
     ../modules/zed.nix
   ];
@@ -13,12 +16,6 @@
 
   boot = {
     blacklistedKernelModules = ["hid_sensor_hub"];
-    # TODO: Verify if snd_hda_intel is needed with Realtek
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/310
-    # labels: host:framework
-    extraModprobeConfig = ''
-      options snd_hda_intel power_save=1
-    '';
     initrd = {
       availableKernelModules = [
         "nvme"
@@ -38,6 +35,7 @@
     # See https://github.com/torvalds/linux/commits/master/drivers/mfd/cros_ec_dev.c
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
+    kernelPackages = pkgs.linuxPackages_latest;
 
     # TODO: Fix screen flickering
     # Issue URL: https://github.com/tlvince/nixos-config/issues/320
@@ -55,7 +53,16 @@
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
     # labels: host:framework
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "drm/amd/display: Increase DCN35 SR latency by 3us";
+        patch = pkgs.fetchpatch {
+          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/daad272f57fc56572461d789bc105809/0001-drm-amd-display-Increase-DCN35-SR-latency-by-3us.patch";
+          sha256 = "sha256-84FgDHdqQ4OD4a5a3UoUGGC0Ip/oMug+t2FDpTHhzbc=";
+        };
+      }
+    ];
+
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
@@ -142,23 +149,15 @@
     diff-so-fancy
     dig
     efm-langserver
-    evolution
     exiftool
     fd
+    framework-tool
     foot
     fzf
     gcc
     gh
-    gitMinimal
-    gnome-calculator
-    gnome-calendar
-    gnome-clocks
-    gnome-contacts
+    git
     gnome-monitor-config
-    gnome-text-editor
-    gnomeExtensions.appindicator
-    gnomeExtensions.light-style
-    gnomeExtensions.night-theme-switcher
     gnumake
     gnupg
     htop
@@ -167,16 +166,12 @@
     jq
     libreoffice
     libva-utils
-    loupe
     moreutils
     mpv
-    nautilus
     neovim
     nodejs
     optipng
-    papers
     pass-wayland
-    pinentry-gnome3
     powerstat
     powertop
     prettierd
@@ -293,56 +288,6 @@
 
   programs.adb.enable = true;
 
-  # TODO: Modularise Firefox config
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/307
-  # labels: host:framework
-  programs.firefox = {
-    enable = true;
-    policies = {
-      AppAutoUpdate = false;
-      AutofillAddressEnabled = false;
-      AutofillCreditCardEnabled = false;
-      CaptivePortal = false;
-      DisableFeedbackCommands = true;
-      DisableFirefoxAccounts = true;
-      DisableFirefoxStudies = true;
-      DisablePocket = true;
-      DisableProfileImport = true;
-      DisableSetDesktopBackground = true;
-      DisableTelemetry = true;
-      DontCheckDefaultBrowser = true;
-      NoDefaultBookmarks = true;
-      OfferToSaveLogins = false;
-      OverrideFirstRunPage = "";
-      OverridePostUpdatePage = "";
-      PasswordManagerEnabled = false;
-      FirefoxHome = {
-        Highlights = false;
-        Locked = true;
-        Pocket = false;
-        Search = true;
-        Snippets = false;
-        SponsoredPocket = false;
-        SponsoredTopSites = false;
-        TopSites = true;
-      };
-      FirefoxSuggest = {
-        ImproveSuggest = false;
-        Locked = true;
-        SponsoredSuggestions = false;
-        WebSuggestions = false;
-      };
-      UserMessaging = {
-        ExtensionRecommendations = false;
-        FeatureRecommendations = false;
-        FirefoxLabs = false;
-        Locked = true;
-        MoreFromMozilla = false;
-        SkipOnboarding = true;
-        UrlbarInterventions = false;
-      };
-    };
-  };
   programs.nano.enable = false;
   programs.zsh.enable = true;
 
@@ -453,43 +398,10 @@
   services.fprintd.enable = true;
   services.fstrim.enable = true;
   services.fwupd.enable = true;
-
-  # TODO: Modularise GNOME config
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/306
-  # labels: host:framework
-
-  # https://github.com/NixOS/nixpkgs/blob/93da65ede655736068698f9da6470ca9d1484861/nixos/modules/services/desktop-managers/gnome.nix
-  services.gnome.core-developer-tools.enable = false;
-  services.gnome.core-os-services.enable = true;
-  services.gnome.core-shell.enable = true;
-  services.gnome.core-apps.enable = false;
-  services.gnome.games.enable = false;
   services.hardware.bolt.enable = true;
-  services.printing.enable = false;
-  services.desktopManager.gnome.enable = true;
-  services.displayManager.gdm.enable = true;
-
-  # services.gnome.core-shell
-  services.gnome.gnome-browser-connector.enable = false;
-  services.gnome.gnome-initial-setup.enable = false;
-  services.gnome.gnome-remote-desktop.enable = false;
-  services.gnome.gnome-user-share.enable = false;
-  services.gnome.rygel.enable = false;
-  services.gnome.sushi.enable = true;
-
-  environment.gnome.excludePackages = with pkgs; [
-    # services.gnome.core-shell
-    evince
-    geary
-    gnome-backgrounds
-    gnome-shell-extensions
-    gnome-tour
-    gnome-user-docs
-    orca
-  ];
-
-  services.resolved.enable = true;
   services.power-profiles-daemon.enable = true;
+  services.printing.enable = false;
+  services.resolved.enable = true;
 
   services.pipewire = {
     enable = true;
@@ -504,10 +416,8 @@
     ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
     # Power switching, power saver handled by GNOME/UPower when low capacity (20%)
     # https://github.com/NixOS/nixpkgs/blob/2e1715cf7cf3c1e79436d566962aeedaffbfb49d/nixos/modules/services/hardware/upower.nix#L88
-    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.gnome-monitor-config}/bin/gnome-monitor-config set --logical-monitor --monitor eDP-1 --primary --mode '2880x1920@60.001+vrr' --scale 2", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level'"
-    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.gnome-monitor-config}/bin/gnome-monitor-config set --logical-monitor --monitor eDP-1 --primary --mode '2880x1920@120.000+vrr' --scale 2", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo high > /sys/class/drm/card1/device/power_dpm_force_performance_level'"
-    # https://github.com/tlvince/nixos-config/issues/320
-    ACTION=="add", SUBSYSTEM=="drm", DRIVERS=="amdgpu", ATTR{device/power_dpm_force_performance_level}="high"
+    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.gnome-monitor-config}/bin/gnome-monitor-config set --logical-monitor --monitor eDP-1 --primary --mode '2880x1920@60.001+vrr' --scale 2", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
+    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.gnome-monitor-config}/bin/gnome-monitor-config set --logical-monitor --monitor eDP-1 --primary --mode '2880x1920@120.000+vrr' --scale 2", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
   '';
 
   system.stateVersion = "23.05";
@@ -519,7 +429,6 @@
     users.tlv = {
       isNormalUser = true;
       extraGroups = [
-        "adb"
         "wheel"
       ];
     };

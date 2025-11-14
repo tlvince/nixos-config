@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - name: Generate GitHub token
-        uses: actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b # v2
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2
         id: generate-github-token
         with:
           app-id: ${{ vars.APP_ID }}
@@ -21,9 +21,9 @@ jobs:
           owner: tlvince
           repositories: nixos-config-secrets
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@90bb610b90bf290cad97484ba341453bd1cbefea # v19
+        uses: cachix/install-nix-action@fd24c48048070c1be9acd18c9d369a83f0fe94d7 # v31
         with:
-          github-token: ${{ steps.generate-github-token.outputs.token }}
+          github_access_token: ${{ steps.generate-github-token.outputs.token }}
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@c5930b397a673a70ca70be06020e943aeac310a1 # v27
         id: update-flake-lock

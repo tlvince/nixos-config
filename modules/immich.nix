@@ -1,7 +1,11 @@
 {
   config,
+  secrets,
+  secretsPath,
   ...
 }: {
+  age.secrets.immich-smtp.file = "${secretsPath}/immich-smtp.age";
+
   services.immich = {
     enable = true;
     database = {
@@ -40,8 +44,20 @@
       newVersionCheck = {
         enabled = false;
       };
+      notifications = {
+        smtp = {
+          enabled = true;
+          from = "Immich Photo Server <noreply@filo.uk>";
+          transport = {
+            host = "smtp.eu.mailgun.org";
+            password._secret = config.age.secrets.immich-smtp.path;
+            port = 587;
+            username = secrets.immichSmtpUsername;
+          };
+        };
+      };
       server = {
-        externalDomain = "https://immich.filo.uk";
+        externalDomain = "https://my.immich.app";
       };
       storageTemplate = {
         enabled = true;

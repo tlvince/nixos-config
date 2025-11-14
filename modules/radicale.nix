@@ -6,7 +6,7 @@
 }: {
   age.secrets.radicale = {
     file = "${secretsPath}/radicale.age";
-    mode = "770";
+    mode = "640";
     owner = "nginx";
     group = "nginx";
   };

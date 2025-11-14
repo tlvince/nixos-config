@@ -1,88 +1,13 @@
 {
   config,
-  lib,
   pkgs,
   tmux-colours-onedark,
   ...
 }: {
-  dconf.settings = {
-    "org/gnome/desktop/background" = {
-      color-shading-type = "solid";
-      picture-options = "zoom";
-      picture-uri = "file://${config.xdg.dataHome}/backgrounds/ChromeOSWind-1.png";
-      picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/ChromeOSWind-2.png";
-      primary-color = "#3465a4";
-      secondary-color = "#000000";
-    };
-    "org/gnome/desktop/input-sources" = {
-      sources = [
-        (lib.hm.gvariant.mkTuple ["xkb" "us+altgr-intl"])
-      ];
-      xkb-options = [
-        "caps:escape"
-      ];
-    };
-    "org/gnome/desktop/interface" = {
-      document-font-name = "Sans 11";
-      enable-animations = false;
-      enable-hot-corners = false;
-      font-antialiasing = "grayscale";
-      font-hinting = "none";
-      font-name = "Sans 11";
-      monospace-font-name = "Monospace 12.5";
-      show-battery-percentage = true;
-    };
-    "org/gnome/desktop/notifications" = {
-      show-in-lock-screen = false;
-    };
-    "org/gnome/desktop/session" = {
-      idle-delay = 120;
-    };
-    "org/gnome/desktop/wm/preferences" = {
-      titlebar-font = "Sans Bold 11";
-    };
-    "org/gnome/mutter" = {
-      experimental-features = [
-        "variable-refresh-rate"
-      ];
-    };
-    "org/gnome/settings-daemon/plugins/power" = {
-      idle-dim = true;
-      power-button-action = "suspend";
-      power-saver-profile-on-low-battery = true;
-      sleep-inactive-ac-type = "nothing";
-      sleep-inactive-battery-timeout = 900;
-      sleep-inactive-battery-type = "suspend";
-    };
-    "org/gnome/shell" = {
-      disable-user-extensions = false;
-      enabled-extensions = [
-        "appindicatorsupport@rgcjonas.gmail.com"
-        "light-style@gnome-shell-extensions.gcampax.github.com"
-        "nightthemeswitcher@romainvigier.fr"
-      ];
-      favorite-apps = [
-        "firefox.desktop"
-        "foot.desktop"
-        "org.gnome.Nautilus.desktop"
-        "org.gnome.Evolution.desktop"
-        "org.gnome.Calendar.desktop"
-      ];
-    };
-  };
-
   home = {
     homeDirectory = "/home/tlv";
     file = {
       ".digrc".text = "+noall +answer";
-      "${config.xdg.dataHome}/backgrounds/ChromeOSWind-1.png".source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/ChromeOSWind/ChromeOSWind-1.png";
-        hash = "sha256-lT6dvLymLtlJ+xFFyX7k1aV0lTBceZXRJSeCQvJqA3o=";
-      };
-      "${config.xdg.dataHome}/backgrounds/ChromeOSWind-2.png".source = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/ChromeOSWind/ChromeOSWind-2.png";
-        hash = "sha256-jB0T07ro1QtJ6fYcu/IKHZB8ESNbqwpVHtA9nr8alUg=";
-      };
     };
     sessionVariables = {
       # Zsh's "< file" built-in pager
@@ -139,6 +64,14 @@
 
       # https://typicode.github.io/husky/get-started.html#disabling-hooks
       HUSKY = 0;
+
+      # XDG
+      CARGO_HOME = "$XDG_DATA_HOME/cargo";
+      GOCACHE = "$XDG_CACHE_HOME/go/build";
+      GOMODCACHE = "$XDG_CACHE_HOME/go/mod";
+      NODE_REPL_HISTORY = "$XDG_DATA_HOME/node_repl_history";
+      NPM_CONFIG_USERCONFIG = "$XDG_CONFIG_HOME/npm/npmrc";
+      RUSTUP_HOME = "$XDG_DATA_HOME/rustup";
     };
     stateVersion = "23.05";
     username = "tlv";
@@ -159,6 +92,11 @@
     dates = "weekly";
     options = "--delete-older-than 30d";
     randomizedDelaySec = "1 hour";
+  };
+
+  programs.diff-so-fancy = {
+    enable = true;
+    enableGitIntegration = true;
   };
 
   programs.foot = {
@@ -194,49 +132,45 @@
 
   programs.git = {
     enable = true;
-    aliases = {
-      br = "branch";
-      brrm = "!git branch | grep -vE '^\\*|main|master' | xargs -n 1 git branch -D";
-      c = "commit";
-      cfa = "commit --all --amend --no-edit";
-      ci = "commit --all";
-      cia = "commit --all --message";
-      cl = "clone --recursive";
-      co = "checkout";
-      cob = "checkout -b";
-      com = "checkout master";
-      cp = "cherry-pick";
-      cpc = "cherry-pick --continue";
-      d = "diff";
-      dfs = "diff --stat";
-      g = "grep --ignore-case";
-      l = "log -p --follow";
-      lh = "log --follow --pretty=format:'%H'";
-      lhr = "log --reverse --pretty=format:'%H'";
-      lm = "log --follow --pretty=format:'%s'";
-      lo = "log --graph --decorate --pretty=oneline --abbrev-commit";
-      lpp = "log --graph --all --pretty=format:'%h by %an (%cr):%d %s' --abbrev-commit --decorate --date-order";
-      ls = "ls-files";
-      mt = "mergetool";
-      pa = "push --all all";
-      pd = "pull --rebase --tags";
-      pu = "push --tags";
-      rbc = "rebase --continue";
-      s = "status --short --ignore-submodules=dirty";
-      subpd = "submodule foreach --recursive git pull origin master";
-      subpu = "submodule foreach --recursive git push origin master";
-      # Overrides
-      ctags = "!.git/hooks/ctags";
-      # Show verbose output about tags, branches or remotes";
-      branches = "branch -a";
-      remotes = "remote -v";
-      tags = "tag -l";
-    };
-    attributes = [
-      "* text=auto"
-    ];
-    diff-so-fancy.enable = true;
-    extraConfig = {
+    settings = {
+      alias = {
+        br = "branch";
+        brrm = "!git branch | grep -vE '^\\*|main|master' | xargs -n 1 git branch -D";
+        c = "commit";
+        cfa = "commit --all --amend --no-edit";
+        ci = "commit --all";
+        cia = "commit --all --message";
+        cl = "clone --recursive";
+        co = "checkout";
+        cob = "checkout -b";
+        com = "checkout master";
+        cp = "cherry-pick";
+        cpc = "cherry-pick --continue";
+        d = "diff";
+        dfs = "diff --stat";
+        g = "grep --ignore-case";
+        l = "log -p --follow";
+        lh = "log --follow --pretty=format:'%H'";
+        lhr = "log --reverse --pretty=format:'%H'";
+        lm = "log --follow --pretty=format:'%s'";
+        lo = "log --graph --decorate --pretty=oneline --abbrev-commit";
+        lpp = "log --graph --all --pretty=format:'%h by %an (%cr):%d %s' --abbrev-commit --decorate --date-order";
+        ls = "ls-files";
+        mt = "mergetool";
+        pa = "push --all all";
+        pd = "pull --rebase --tags";
+        pu = "push --tags";
+        rbc = "rebase --continue";
+        s = "status --short --ignore-submodules=dirty";
+        subpd = "submodule foreach --recursive git pull origin master";
+        subpu = "submodule foreach --recursive git push origin master";
+        # Overrides
+        ctags = "!.git/hooks/ctags";
+        # Show verbose output about tags, branches or remotes";
+        branches = "branch -a";
+        remotes = "remote -v";
+        tags = "tag -l";
+      };
       apply = {
         whitespace = "fix";
       };
@@ -279,16 +213,21 @@
       push = {
         default = "simple";
       };
+      user = {
+        email = "git@tlvince.com";
+        name = "Tom Vincent";
+      };
       web = {
         browser = "gio open";
       };
     };
+    attributes = [
+      "* text=auto"
+    ];
     signing = {
       key = "AB184CDBE6AEACDE";
       signByDefault = true;
     };
-    userEmail = "git@tlvince.com";
-    userName = "Tom Vincent";
   };
 
   programs.gpg = {
@@ -309,7 +248,6 @@
     defaultCacheTtlSsh = 28800; # 8 hours
     maxCacheTtl = 57600; # 16 hours
     maxCacheTtlSsh = 57600; # 16 hours
-    pinentry.package = pkgs.pinentry-gnome3;
   };
 
   programs.home-manager.enable = true;
@@ -666,12 +604,6 @@
           args = {}
         }
       ]
-    '';
-
-    configFile."systemd/user/org.gnome.Shell@wayland.service.d/override.conf".text = ''
-      [Service]
-      ExecStart=
-      ExecStart=${pkgs.gnome-shell}/bin/gnome-shell --no-x11
     '';
 
     userDirs = {

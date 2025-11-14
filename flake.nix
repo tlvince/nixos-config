@@ -10,7 +10,11 @@
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
+    nix-ai-tools.inputs.nixpkgs.follows = "nixpkgs";
+    nix-ai-tools.url = "github:numtide/nix-ai-tools";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-famly-fetch.url = "github:tlvince/nixpkgs/add-famly-fetch";
+    nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/kiosk-module";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
@@ -22,7 +26,10 @@
     disko,
     home-manager,
     lanzaboote,
+    nix-ai-tools,
     nixpkgs,
+    nixpkgs-famly-fetch,
+    nixpkgs-immich-kiosk,
     secrets,
     self,
     tmux-colours-onedark,
@@ -38,6 +45,7 @@
       pkgs.mkShellNoCC {
         packages = with pkgs; [
           alejandra
+          zed-editor-fhs
         ];
       };
     devShells.x86_64-linux.nodejs = let
@@ -69,6 +77,7 @@
         };
 
         modules = [
+          "${nixpkgs-immich-kiosk}/nixos/modules/services/web-apps/immich-kiosk.nix"
           ./hosts/cm3588.nix
           agenix.nixosModules.default
           disko.nixosModules.disko
@@ -78,6 +87,10 @@
         specialArgs =
           inputs
           // {
+            pkgs-ai = nix-ai-tools.packages."x86_64-linux";
+            pkgs-famly-fetch = import nixpkgs-famly-fetch {
+              system = "x86_64-linux";
+            };
             secretsPath = inputs.secrets.outPath;
           };
         modules = [
