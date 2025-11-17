@@ -285,13 +285,6 @@
   nixpkgs = {
     config.allowUnfree = true;
     hostPlatform = "x86_64-linux";
-    overlays = [
-      # TODO: Remove evolution-ews overlay when updated
-      # Issue URL: https://github.com/tlvince/nixos-config/issues/381
-      # See https://github.com/NixOS/nixpkgs/issues/461607
-      # labels: host:framework, module:gnome
-      (import ../overlays/evolution-ews.nix)
-    ];
   };
 
   programs.adb.enable = true;

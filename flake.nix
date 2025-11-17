@@ -77,6 +77,10 @@
         };
 
         modules = [
+          # TODO: Upstream nixos/immich-kiosk module
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/365
+          # https://nixpkgs-tracker.ocfox.me/?pr=461579
+          # labels: module:immich-kiosk, host:cm3588
           "${nixpkgs-immich-kiosk}/nixos/modules/services/web-apps/immich-kiosk.nix"
           ./hosts/cm3588.nix
           agenix.nixosModules.default
@@ -87,7 +91,13 @@
         specialArgs =
           inputs
           // {
+            # TODO: Remove nix-ai-tools when codex-acp is in nixpkgs
+            # https://github.com/NixOS/nixpkgs/pull/459454
+            # labels: host:framework
             pkgs-ai = nix-ai-tools.packages."x86_64-linux";
+            # TODO: Remove nixpkgs-famly-fetch when famly-fetch is upstreamed
+            # https://github.com/NixOS/nixpkgs/pull/452904
+            # labels: host:framework
             pkgs-famly-fetch = import nixpkgs-famly-fetch {
               system = "x86_64-linux";
             };
