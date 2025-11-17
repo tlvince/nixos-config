@@ -92,10 +92,12 @@
           inputs
           // {
             # TODO: Remove nix-ai-tools when codex-acp is in nixpkgs
+            # Issue URL: https://github.com/tlvince/nixos-config/issues/384
             # https://github.com/NixOS/nixpkgs/pull/459454
             # labels: host:framework
             pkgs-ai = nix-ai-tools.packages."x86_64-linux";
             # TODO: Remove nixpkgs-famly-fetch when famly-fetch is upstreamed
+            # Issue URL: https://github.com/tlvince/nixos-config/issues/383
             # https://github.com/NixOS/nixpkgs/pull/452904
             # labels: host:framework
             pkgs-famly-fetch = import nixpkgs-famly-fetch {
