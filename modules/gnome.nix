@@ -96,6 +96,11 @@
         idle-delay = 120;
       };
 
+      "org/gnome/desktop/sound" = {
+        event-sounds = false;
+        theme-name = "__custom";
+      };
+
       "org/gnome/desktop/wm/preferences" = {
         titlebar-font = "Sans Bold 11";
       };
@@ -153,5 +158,21 @@
       ExecStart=
       ExecStart=${pkgs.gnome-shell}/bin/gnome-shell --no-x11
     '';
+
+    # services.gnome.core-services pulls in the freedesktop sound theme:
+    # https://github.com/NixOS/nixpkgs/blob/93da65ede655736068698f9da6470ca9d1484861/nixos/modules/services/desktop-managers/gnome.nix#L355-L359
+    # Power sounds are played despite org/gnome/desktop/sound event-sounds=false
+    # Workaround by disabling them in a custom theme:
+    # https://specifications.freedesktop.org/sound-theme/latest/sound_lookup.html
+    xdg.dataFile."sounds/__custom/index.theme".text = ''
+      [Sound Theme]
+      Name=__custom
+      Directories=stereo
+
+      [stereo]
+      OutputProfile=stereo
+    '';
+    xdg.dataFile."sounds/__custom/stereo/power-plug.disabled".text = "";
+    xdg.dataFile."sounds/__custom/stereo/power-unplug.disabled".text = "";
   };
 }
