@@ -55,10 +55,6 @@
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
     # labels: host:framework
-    kernelParams = [
-      # https://docs.kernel.org/gpu/amdgpu/driver-core.html#c.DC_DEBUG_MASK
-      "amdgpu.dcdebugmask=0x2"
-    ];
 
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
