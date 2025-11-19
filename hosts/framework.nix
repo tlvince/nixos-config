@@ -174,6 +174,7 @@
     pure-prompt
     python3
     rclone
+    ripgrep
     rquickshare
     sbctl
     signal-desktop
