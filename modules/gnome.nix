@@ -43,6 +43,7 @@
     nautilus
     papers
     pinentry-gnome3
+    seahorse
   ];
 
   programs.evolution = {
