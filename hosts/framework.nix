@@ -50,14 +50,20 @@
     # [x] 6.16-rc6
     # [x] increase DCN35 SR latency by 2us
     # [ ] disable memory stutter (dcdebugmask=0x2)
+    # [ ] fixed scratch registers
     #
     # See: https://community.frame.work/t/flickering-when-using-firefox-under-kde-wayland-on-ryzen-ai-300/69599
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
     # labels: host:framework
-    kernelParams = [
-      # https://docs.kernel.org/gpu/amdgpu/driver-core.html#c.DC_DEBUG_MASK
-      "amdgpu.dcdebugmask=0x2"
+    kernelPatches = [
+      {
+        name = "drm/amd/display: Fix scratch registers for DCN35";
+        patch = pkgs.fetchpatch {
+          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/ace55c0cf547f48a4fb623fdd2e6fd6f/Fix-scratch-registers-for-DCN35.patch";
+          sha256 = "sha256-84FgDHdqQ4OD4a5a3UoUGGC0Ip/oMug+t2FDpTHhzbc=";
+        };
+      }
     ];
 
     kernel.sysctl = {
