@@ -10,10 +10,7 @@
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    nix-ai-tools.inputs.nixpkgs.follows = "nixpkgs";
-    nix-ai-tools.url = "github:numtide/nix-ai-tools";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-famly-fetch.url = "github:tlvince/nixpkgs/add-famly-fetch";
     nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/kiosk-module";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
@@ -26,9 +23,7 @@
     disko,
     home-manager,
     lanzaboote,
-    nix-ai-tools,
     nixpkgs,
-    nixpkgs-famly-fetch,
     nixpkgs-immich-kiosk,
     secrets,
     self,
@@ -91,18 +86,6 @@
         specialArgs =
           inputs
           // {
-            # TODO: Remove nix-ai-tools when codex-acp is in nixpkgs
-            # Issue URL: https://github.com/tlvince/nixos-config/issues/384
-            # https://github.com/NixOS/nixpkgs/pull/459454
-            # labels: host:framework
-            pkgs-ai = nix-ai-tools.packages."x86_64-linux";
-            # TODO: Remove nixpkgs-famly-fetch when famly-fetch is upstreamed
-            # Issue URL: https://github.com/tlvince/nixos-config/issues/383
-            # https://github.com/NixOS/nixpkgs/pull/452904
-            # labels: host:framework
-            pkgs-famly-fetch = import nixpkgs-famly-fetch {
-              system = "x86_64-linux";
-            };
             secretsPath = inputs.secrets.outPath;
           };
         modules = [
