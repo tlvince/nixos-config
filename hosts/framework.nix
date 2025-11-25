@@ -5,10 +5,11 @@
   ...
 }: {
   imports = [
-    ../overlays/jail.nix
+    ../modules/antigravity.nix
     ../modules/famly-fetch.nix
     ../modules/firefox.nix
     ../modules/gnome.nix
+    ../modules/jail.nix
     ../modules/smartd.nix
     ../modules/zed.nix
   ];
@@ -140,7 +141,6 @@
     "/share/zsh"
   ];
   environment.systemPackages = with pkgs; [
-    antigravity.jailed
     aspell
     aspellDicts.en
     awscli2
