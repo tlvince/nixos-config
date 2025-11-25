@@ -9,6 +9,7 @@
     additionalCombinators = builtinCombinators:
       with builtinCombinators; {
         # TODO: Remove jail.nix network combinator override
+        # Issue URL: https://github.com/tlvince/nixos-config/issues/394
         # Bind uplink resolvers for systemd-resolved compatibility
         # See: https://todo.sr.ht/~alexdavid/jail.nix/6
         # labels: module:jail, host:framework
