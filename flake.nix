@@ -8,6 +8,7 @@
     disko.url = "github:nix-community/disko";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
+    jail-nix.url = "sourcehut:~alexdavid/jail.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -22,6 +23,7 @@
     agenix,
     disko,
     home-manager,
+    jail-nix,
     lanzaboote,
     nixpkgs,
     nixpkgs-immich-kiosk,

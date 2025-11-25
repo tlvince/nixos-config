@@ -5,6 +5,7 @@
   ...
 }: {
   imports = [
+    ../overlays/jail.nix
     ../modules/famly-fetch.nix
     ../modules/firefox.nix
     ../modules/gnome.nix
@@ -139,6 +140,7 @@
     "/share/zsh"
   ];
   environment.systemPackages = with pkgs; [
+    antigravity.jailed
     aspell
     aspellDicts.en
     awscli2

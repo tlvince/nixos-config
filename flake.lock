@@ -159,6 +159,21 @@
         "type": "github"
       }
     },
+    "jail-nix": {
+      "locked": {
+        "lastModified": 1762538197,
+        "narHash": "sha256-sUSOVnLLVhBeh2vi1t1CySwAe5whvVgeOOdApW29UC0=",
+        "owner": "~alexdavid",
+        "repo": "jail.nix",
+        "rev": "7720833ef4aeffbd307c8b75f08d6b349b8ac8f7",
+        "type": "sourcehut"
+      },
+      "original": {
+        "owner": "~alexdavid",
+        "repo": "jail.nix",
+        "type": "sourcehut"
+      }
+    },
     "lanzaboote": {
       "inputs": {
         "crane": "crane",
@@ -242,6 +257,7 @@
         "agenix": "agenix",
         "disko": "disko",
         "home-manager": "home-manager_2",
+        "jail-nix": "jail-nix",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "nixpkgs-immich-kiosk": "nixpkgs-immich-kiosk",
