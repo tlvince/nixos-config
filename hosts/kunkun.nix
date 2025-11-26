@@ -9,9 +9,8 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
+    (modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-    # TODO: Restore perlless profile
-    # labels: host:kunkun
 
     ../modules/acme.nix
     ../modules/cpuload.nix
@@ -46,7 +45,6 @@
     gzip
     htop
     less
-    neovim
     rsync
     tree
     tmux
@@ -55,8 +53,6 @@
     zsh-z
     zstd
   ];
-
-  environment.variables.EDITOR = "nvim";
 
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
@@ -106,8 +102,11 @@
     config.allowUnfree = true;
     hostPlatform = "aarch64-linux";
   };
+
   programs.nano.enable = false;
+  programs.vim.enable = true;
   programs.zsh.enable = true;
+
   security.sudo.extraRules = [
     {
       users = ["tlv"];
