@@ -51,16 +51,23 @@
     # [x] linux-firmware git
     # [x] 6.16-rc6
     # [x] increase DCN35 SR latency by 2us
-    # [ ] disable memory stutter (dcdebugmask=0x2)
+    # [✓] increase DCN35 SR latency by 3us
+    # [✓] disable memory stutter (dcdebugmask=0x2)
     # [x] fixed scratch registers
+    # [ ] increase DCN35 SR latency by 4us
     #
     # See: https://community.frame.work/t/flickering-when-using-firefox-under-kde-wayland-on-ryzen-ai-300/69599
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
     # labels: host:framework
-    kernelParams = [
-      # https://docs.kernel.org/gpu/amdgpu/driver-core.html#c.DC_DEBUG_MASK
-      "amdgpu.dcdebugmask=0x2"
+    kernelPatches = [
+      {
+        name = "drm/amd/display: Increase DCN35 SR latency by 4us";
+        patch = pkgs.fetchpatch {
+          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/b95833bf0f89463336f3d4a133233e01/0001-drm-amd-display-Increase-DCN35-SR-latency-by-4us.patch";
+          sha256 = "sha256-dDCX+SndUonRmw591apqHhA7wrT6KmKm5vX/YOWYeHk=";
+        };
+      }
     ];
 
     kernel.sysctl = {
