@@ -54,7 +54,7 @@
     # [✓] increase DCN35 SR latency by 3us
     # [✓] disable memory stutter (dcdebugmask=0x2)
     # [x] fixed scratch registers
-    # [ ] increase DCN35 SR latency by 4us
+    # [✓] increase DCN35 SR latency by 4us
     #
     # See: https://community.frame.work/t/flickering-when-using-firefox-under-kde-wayland-on-ryzen-ai-300/69599
     # See: https://gitlab.freedesktop.org/drm/amd/-/issues/4451
@@ -62,10 +62,10 @@
     # labels: host:framework
     kernelPatches = [
       {
-        name = "drm/amd/display: Increase DCN35 SR latency by 4us";
+        name = "drm/amd/display: Increase DCN35 SR enter/exit latency by 2us";
         patch = pkgs.fetchpatch {
-          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/b95833bf0f89463336f3d4a133233e01/0001-drm-amd-display-Increase-DCN35-SR-latency-by-4us.patch";
-          sha256 = "sha256-dDCX+SndUonRmw591apqHhA7wrT6KmKm5vX/YOWYeHk=";
+          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/e213cbf551d73380e4603612e8beb1d4/0001-drm-amd-display-Increase-DCN35-SR-enter-exit-latency.patch";
+          sha256 = "sha256-ga7hb12sAgN5eNIDLusygJyTPz7kQlxXsNH2f9OAwJw=";
         };
       }
     ];
