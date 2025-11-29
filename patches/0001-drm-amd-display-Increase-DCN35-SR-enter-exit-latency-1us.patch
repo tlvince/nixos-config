@@ -1,0 +1,122 @@
+From 33c02272b77ddcd7427a0ce25a15c88055b032d9 Mon Sep 17 00:00:00 2001
+From: Leo Li <sunpeng.li@amd.com>
+Date: Tue, 28 Oct 2025 14:21:28 -0400
+Subject: [PATCH] drm/amd/display: Increase DCN35 SR enter/exit latency
+
+[Why & How]
+
+On Framework laptops with DDR5 modules, underflow can be observed.
+It's unclear why it only occurs on specific desktop contents. However,
+increasing enter/exit latencies by 1us seems to resolve it.
+
+Fixes: https://gitlab.freedesktop.org/drm/amd/-/issues/4463
+Signed-off-by: Leo Li <sunpeng.li@amd.com>
+---
+ .../display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c  | 32 +++++++++----------
+ .../drm/amd/display/dc/dml/dcn35/dcn35_fpu.c  |  4 +--
+ 2 files changed, 18 insertions(+), 18 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 35d20a663d67a..640db9ac56227 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -768,32 +768,32 @@ static struct wm_table ddr5_wm_table = {
+ 			.wm_inst = WM_A,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_B,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_C,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_D,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.72,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 	}
+@@ -805,32 +805,32 @@ static struct wm_table lpddr5_wm_table = {
+ 			.wm_inst = WM_A,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.65333,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_B,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.65333,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_C,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.65333,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 		{
+ 			.wm_inst = WM_D,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+ 			.pstate_latency_us = 11.65333,
+-			.sr_exit_time_us = 28.0,
+-			.sr_enter_plus_exit_time_us = 30.0,
++			.sr_exit_time_us = 29.0,
++			.sr_enter_plus_exit_time_us = 31.0,
+ 			.valid = true,
+ 		},
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+index 817a370e80a77..1442197f0e02d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn35/dcn35_fpu.c
+@@ -164,8 +164,8 @@ struct _vcs_dpi_soc_bounding_box_st dcn3_5_soc = {
+ 		},
+ 	},
+ 	.num_states = 5,
+-	.sr_exit_time_us = 28.0,
+-	.sr_enter_plus_exit_time_us = 30.0,
++	.sr_exit_time_us = 29.0,
++	.sr_enter_plus_exit_time_us = 31.0,
+ 	.sr_exit_z8_time_us = 250.0,
+ 	.sr_enter_plus_exit_z8_time_us = 350.0,
+ 	.fclk_change_latency_us = 24.0,
+-- 
+2.51.0
+
