@@ -50,6 +50,7 @@
     # [x] disable PSR-SU
     # [x] linux-firmware git
     # [x] 6.16-rc6
+    # [x] increase DCN35 SR latency by 1us
     # [x] increase DCN35 SR latency by 2us
     # [✓] increase DCN35 SR latency by 3us
     # [✓] disable memory stutter (dcdebugmask=0x2)
@@ -62,8 +63,11 @@
     # labels: host:framework
     kernelPatches = [
       {
-        name = "drm/amd/display: Increase DCN35 SR enter/exit latency by 1us";
-        patch = ../patches/0001-drm-amd-display-Increase-DCN35-SR-enter-exit-latency-1us.patch;
+        name = "drm/amd/display: Increase DCN35 SR enter/exit latency by 2us";
+        patch = pkgs.fetchpatch {
+          url = "https://gitlab.freedesktop.org/-/project/4522/uploads/e213cbf551d73380e4603612e8beb1d4/0001-drm-amd-display-Increase-DCN35-SR-enter-exit-latency.patch";
+          sha256 = "sha256-ga7hb12sAgN5eNIDLusygJyTPz7kQlxXsNH2f9OAwJw=";
+        };
       }
     ];
 
