@@ -14,18 +14,20 @@
 
   services.immich-kiosk = {
     enable = true;
-    immichUrl = "https://immich.filo.uk/";
-    immichApiKeyFile = config.age.secrets.immich-kiosk-api-key.path;
-    port = 5291;
     settings = {
       albums = [
         "4fa933cf-051f-4621-9ac7-8d06776c261c"
         "6466548c-4995-4fb5-ab1f-f63cc9ff3e5f"
       ];
-      behind_proxy = true;
       disable_ui = true;
       duration = 30;
       image_fit = "cover";
+      immich_api_key._secret = config.age.secrets.immich-kiosk-api-key.path;
+      immich_url = "https://immich.filo.uk/";
+      kiosk = {
+        behind_proxy = true;
+        port = 5291;
+      };
       layout = "splitview";
       sleep_dim_screen = true;
       sleep_end = "07";
