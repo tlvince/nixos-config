@@ -42,20 +42,9 @@ jobs:
       pull-requests: write
     steps:
       - name: Free up disk space
-        # No effect on arm
-        if: matrix.machine.platform == 'x86-64-linux'
-        run: |
-          df -h
-
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /usr/local/.ghcup
-          sudo rm -rf /usr/local/share/boost
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-
-          sudo docker image prune --all --force
-
-          df -h
+        uses: wimpysworld/nothing-but-nix@10c936d9e46521bf923f75458e0cbd4fa309300d
+        with:
+          hatchet-protocol: holster
       - name: Checkout repository
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - name: Generate GitHub token
