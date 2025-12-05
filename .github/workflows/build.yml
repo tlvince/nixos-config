@@ -45,6 +45,7 @@ jobs:
         # No effect on arm
         if: matrix.machine.platform != 'aarch64-linux'
         run: |
+          df -h
           sudo mkdir /nix /mnt/nix
           sudo mount --bind /mnt/nix /nix
       - name: Checkout repository
@@ -100,3 +101,5 @@ jobs:
             const header = '# ${{ matrix.machine.host }}'
             const body = await readFile('${{ runner.temp }}/${{ env.PR_JOB_SUMMARY }}', { encoding: 'utf8' })
             await comment({ github, context, header, body })
+      - name: Cleanup
+        run: df -h
