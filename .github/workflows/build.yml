@@ -42,9 +42,11 @@ jobs:
       pull-requests: write
     steps:
       - name: Free up disk space
-        uses: wimpysworld/nothing-but-nix@10c936d9e46521bf923f75458e0cbd4fa309300d
-        with:
-          hatchet-protocol: holster
+        # No effect on arm
+        if: matrix.machine.platform != 'aarch64-linux'
+        run: |
+          sudo mkdir /mnt/nix-cache
+          sudo mount --bind /mnt/nix /nix
       - name: Checkout repository
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
       - name: Generate GitHub token
