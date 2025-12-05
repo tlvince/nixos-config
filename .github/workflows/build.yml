@@ -45,7 +45,7 @@ jobs:
         # No effect on arm
         if: matrix.machine.platform != 'aarch64-linux'
         run: |
-          sudo mkdir /mnt/nix-cache
+          sudo mkdir /nix /mnt/nix
           sudo mount --bind /mnt/nix /nix
       - name: Checkout repository
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6
