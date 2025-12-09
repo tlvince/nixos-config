@@ -213,22 +213,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-immich-kiosk": {
-      "locked": {
-        "lastModified": 1764750910,
-        "narHash": "sha256-xhCVUyqLD5gZlE3LyDZUCveUnW/RIqP9yidHR606wXM=",
-        "owner": "tlvince",
-        "repo": "nixpkgs",
-        "rev": "a0f178530d937c85fdfbc0392be4ff3846351655",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tlvince",
-        "ref": "kiosk-module",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "pre-commit": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -260,7 +244,6 @@
         "jail-nix": "jail-nix",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-immich-kiosk": "nixpkgs-immich-kiosk",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
       }
