@@ -12,7 +12,6 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-immich-kiosk.url = "github:tlvince/nixpkgs/kiosk-module";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
@@ -26,7 +25,6 @@
     jail-nix,
     lanzaboote,
     nixpkgs,
-    nixpkgs-immich-kiosk,
     secrets,
     self,
     tmux-colours-onedark,
@@ -74,11 +72,6 @@
         };
 
         modules = [
-          # TODO: Upstream nixos/immich-kiosk module
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/365
-          # https://nixpkgs-tracker.ocfox.me/?pr=461579
-          # labels: module:immich-kiosk, host:cm3588
-          "${nixpkgs-immich-kiosk}/nixos/modules/services/web-apps/immich-kiosk.nix"
           ./hosts/cm3588.nix
           agenix.nixosModules.default
           disko.nixosModules.disko
