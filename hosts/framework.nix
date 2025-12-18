@@ -8,7 +8,6 @@
     ../modules/famly-fetch.nix
     ../modules/firefox.nix
     ../modules/gnome.nix
-    ../modules/jail.nix
     ../modules/llm-agents.nix
     ../modules/smartd.nix
     ../modules/zed.nix

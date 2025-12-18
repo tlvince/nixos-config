@@ -1,8 +1,10 @@
 {
-  jail,
+  jail-nix,
   pkgs,
   ...
-}: {
+}: let
+  jail = jail-nix.lib.init pkgs;
+in {
   environment.systemPackages = [
     (
       jail "antigravity" pkgs.antigravity (with jail.combinators; [
