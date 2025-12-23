@@ -12,6 +12,8 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nvf.inputs.nixpkgs.follows = "nixpkgs";
+    nvf.url = "github:notashelf/nvf";
     secrets.flake = false;
     secrets.url = "github:tlvince/nixos-config-secrets";
     tmux-colours-onedark.flake = false;
@@ -25,6 +27,7 @@
     jail-nix,
     lanzaboote,
     nixpkgs,
+    nvf,
     secrets,
     self,
     tmux-colours-onedark,
@@ -94,6 +97,7 @@
             home-manager.users.tlv = import ./home.nix;
           }
           lanzaboote.nixosModules.lanzaboote
+          nvf.nixosModules.default
         ];
       };
       kunkun = nixpkgs.lib.nixosSystem {

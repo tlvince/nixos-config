@@ -9,6 +9,7 @@
     ../modules/firefox.nix
     ../modules/gnome.nix
     ../modules/llm-agents.nix
+    ../modules/neovim.nix
     ../modules/smartd.nix
     ../modules/zed.nix
   ];
@@ -214,7 +215,7 @@
   fonts = {
     enableDefaultPackages = false;
     packages = with pkgs; [
-      dejavu_fonts
+      nerd-fonts.dejavu-sans-mono
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
     ];
@@ -236,7 +237,7 @@
       defaultFonts = {
         serif = ["DejaVu Serif"];
         sansSerif = ["Adwaita Sans"];
-        monospace = ["DejaVu Sans Mono"];
+        monospace = ["DejaVuSansM Nerd Font Mono"];
         emoji = ["Noto Color Emoji"];
       };
     };
