@@ -96,6 +96,21 @@
         "type": "github"
       }
     },
+    "flake-compat_2": {
+      "locked": {
+        "lastModified": 1747046372,
+        "narHash": "sha256-CIVLLkVgvHYbgI2UpXvIIBJ12HWgX+fjA8Xf8PUmqCY=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "9100a0f413b0c601e0533d1d94ffd501ce2e7885",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "type": "github"
+      }
+    },
     "gitignore": {
       "inputs": {
         "nixpkgs": [
@@ -245,7 +260,8 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "secrets": "secrets",
-        "tmux-colours-onedark": "tmux-colours-onedark"
+        "tmux-colours-onedark": "tmux-colours-onedark",
+        "zedless": "zedless"
       }
     },
     "rust-overlay": {
@@ -313,6 +329,27 @@
       "original": {
         "owner": "tlvince",
         "repo": "tmux-colours-onedark",
+        "type": "github"
+      }
+    },
+    "zedless": {
+      "inputs": {
+        "flake-compat": "flake-compat_2",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1765144705,
+        "narHash": "sha256-3dp5Ns3WiI9zquXx71ef6gagyeXCwF6ihYALCGNvnlk=",
+        "owner": "zedless-editor",
+        "repo": "zedless",
+        "rev": "6914bc386d4574ea7dbe6b02a9a400a2d28814e6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zedless-editor",
+        "repo": "zedless",
         "type": "github"
       }
     }
