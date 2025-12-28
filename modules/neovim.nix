@@ -213,6 +213,7 @@ in {
           enableTreesitter = true;
 
           # TODO: broken
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/409
           # astro.enable = true;
           # hcl.enable = true;
 
