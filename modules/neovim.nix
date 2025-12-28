@@ -1,5 +1,6 @@
 {pkgs, ...}: let
   # TODO: Add vim-waikiki to nixpkgs
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/410
   # labels: module:neovim
   waikiki = pkgs.vimUtils.buildVimPlugin {
     name = "vim-waikiki";
