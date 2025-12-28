@@ -1,4 +1,6 @@
 {pkgs, ...}: let
+  # TODO: Add vim-waikiki to nixpkgs
+  # labels: module:neovim
   waikiki = pkgs.vimUtils.buildVimPlugin {
     name = "vim-waikiki";
     src = pkgs.fetchFromGitHub {
@@ -212,8 +214,9 @@ in {
           enableFormat = true;
           enableTreesitter = true;
 
-          # TODO: broken
+          # TODO: Restore astro and hcl language servers
           # Issue URL: https://github.com/tlvince/nixos-config/issues/409
+          # labels: module:neovim
           # astro.enable = true;
           # hcl.enable = true;
 
