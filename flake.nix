@@ -6,6 +6,8 @@
     agenix.url = "github:ryantm/agenix";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
+    zedless.inputs.nixpkgs.follows = "nixpkgs";
+    zedless.url = "github:zedless-editor/zedless";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     jail-nix.url = "sourcehut:~alexdavid/jail.nix";
@@ -31,6 +33,7 @@
     secrets,
     self,
     tmux-colours-onedark,
+    zedless,
     ...
   } @ inputs: let
     keys = import ./keys.nix;
