@@ -3,7 +3,8 @@
   secrets,
   secretsPath,
   ...
-}: {
+}:
+{
   age.secrets.immich-smtp.file = "${secretsPath}/immich-smtp.age";
 
   services.immich = {
@@ -68,7 +69,7 @@
   };
 
   services.postgresql = {
-    ensureDatabases = ["immich"];
+    ensureDatabases = [ "immich" ];
     ensureUsers = [
       {
         name = "immich";
@@ -76,9 +77,13 @@
         ensureClauses.login = true;
       }
     ];
-    extensions = ps: with ps; [pgvector vectorchord];
+    extensions =
+      ps: with ps; [
+        pgvector
+        vectorchord
+      ];
     settings = {
-      shared_preload_libraries = ["vchord.so"];
+      shared_preload_libraries = [ "vchord.so" ];
       search_path = "\"$user\", public, vectors";
     };
   };
@@ -87,7 +92,7 @@
     enable = true;
     # Ephemeral
     appendOnly = false;
-    save = [];
+    save = [ ];
   };
 
   systemd.services.immich-server.serviceConfig.SupplementaryGroups = [
@@ -95,7 +100,7 @@
   ];
 
   services.nginx = {
-    upstreams.immich.servers."127.0.0.1:${toString config.services.immich.port}" = {};
+    upstreams.immich.servers."127.0.0.1:${toString config.services.immich.port}" = { };
 
     virtualHosts."immich.filo.uk" = {
       useACMEHost = "filo.uk";

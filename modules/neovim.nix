@@ -1,4 +1,5 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   # TODO: Add vim-waikiki to nixpkgs
   # Issue URL: https://github.com/tlvince/nixos-config/issues/410
   # labels: module:neovim
@@ -11,7 +12,8 @@
       rev = "7af1879a8ea0e4a0a7bd181ed17ad3d37478215e";
     };
   };
-in {
+in
+{
   programs.nvf = {
     enable = true;
     settings = {
@@ -231,11 +233,11 @@ in {
           ts.enable = true;
           yaml.enable = true;
 
-          astro.format.type = ["prettierd"];
-          css.format.type = ["prettierd"];
-          markdown.format.type = ["prettierd"];
-          svelte.format.type = ["prettierd"];
-          ts.format.type = ["prettierd"];
+          astro.format.type = [ "prettierd" ];
+          css.format.type = [ "prettierd" ];
+          markdown.format.type = [ "prettierd" ];
+          svelte.format.type = [ "prettierd" ];
+          ts.format.type = [ "prettierd" ];
         };
         lineNumberMode = "none";
         lsp = {

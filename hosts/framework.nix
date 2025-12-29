@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ../modules/famly-fetch.nix
     ../modules/firefox.nix
@@ -14,10 +15,10 @@
     ../modules/zed.nix
   ];
 
-  age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
   boot = {
-    blacklistedKernelModules = ["hid_sensor_hub"];
+    blacklistedKernelModules = [ "hid_sensor_hub" ];
     initrd = {
       availableKernelModules = [
         "nvme"
@@ -117,23 +118,38 @@
                 content = {
                   type = "btrfs";
                   mountpoint = "/mnt/btrfs-root";
-                  mountOptions = ["compress=zstd" "noatime"];
+                  mountOptions = [
+                    "compress=zstd"
+                    "noatime"
+                  ];
                   subvolumes = {
                     "/root" = {
                       mountpoint = "/";
-                      mountOptions = ["compress=zstd" "noatime"];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                     };
                     "/log" = {
                       mountpoint = "/var/log";
-                      mountOptions = ["compress=zstd" "noatime"];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                     };
                     "/home" = {
                       mountpoint = "/home";
-                      mountOptions = ["compress=zstd" "noatime"];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                     };
                     "/nix" = {
                       mountpoint = "/nix";
-                      mountOptions = ["compress=zstd" "noatime"];
+                      mountOptions = [
+                        "compress=zstd"
+                        "noatime"
+                      ];
                     };
                   };
                 };
@@ -235,10 +251,10 @@
       };
 
       defaultFonts = {
-        serif = ["DejaVu Serif"];
-        sansSerif = ["Adwaita Sans"];
-        monospace = ["DejaVuSansM Nerd Font Mono"];
-        emoji = ["Noto Color Emoji"];
+        serif = [ "DejaVu Serif" ];
+        sansSerif = [ "Adwaita Sans" ];
+        monospace = [ "DejaVuSansM Nerd Font Mono" ];
+        emoji = [ "Noto Color Emoji" ];
       };
     };
   };
@@ -304,7 +320,7 @@
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
-    fileSystems = ["/"];
+    fileSystems = [ "/" ];
   };
 
   services.btrbk.instances = {
@@ -338,7 +354,7 @@
                   "/" = {
                     snapshot_name = "root";
                   };
-                  "/home" = {};
+                  "/home" = { };
                 };
               };
             };
@@ -351,8 +367,8 @@
   systemd.services.btrbk-local = {
     description = "Take local Btrfs snapshots";
     unitConfig.Documentation = "man:btrbk(1)";
-    path = ["/run/wrappers"] ++ config.services.btrbk.extraPackages;
-    after = ["time-sync.target"];
+    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
+    after = [ "time-sync.target" ];
     serviceConfig = {
       User = "btrbk";
       Group = "btrbk";
@@ -367,9 +383,13 @@
   systemd.services.btrbk-remote = {
     description = "Takes local Btrfs snapshots and back up to given targets";
     unitConfig.Documentation = "man:btrbk(1)";
-    path = ["/run/wrappers"] ++ config.services.btrbk.extraPackages;
-    wants = ["network-online.target"];
-    after = ["btrbk-local.service" "network-online.target" "time-sync.target"];
+    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
+    wants = [ "network-online.target" ];
+    after = [
+      "btrbk-local.service"
+      "network-online.target"
+      "time-sync.target"
+    ];
     serviceConfig = {
       User = "btrbk";
       Group = "btrbk";
@@ -383,7 +403,7 @@
 
   systemd.timers.btrbk-local = {
     description = "Timer to take Btrfs snapshots and maintain retention policies.";
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       AccuracySec = "10min";
       OnBootSec = "5min";
@@ -395,7 +415,7 @@
 
   systemd.timers.btrbk-remote = {
     description = "Timer to take Btrfs snapshots and maintain retention policies.";
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       AccuracySec = "10min";
       OnBootSec = "5min";

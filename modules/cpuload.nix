@@ -1,7 +1,8 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   systemd.services.cpuload = {
-    wantedBy = ["multi-user.target"];
-    after = ["systemd-journald.socket"];
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-journald.socket" ];
     serviceConfig = {
       ExecStart = "${pkgs.coreutils}/bin/timeout 30s ${pkgs.coreutils}/bin/sha1sum /dev/zero";
       Restart = "on-failure";
@@ -10,7 +11,7 @@
       SyslogIdentifier = "cpuload";
 
       # Hardening
-      CapabilityBoundingSet = [""];
+      CapabilityBoundingSet = [ "" ];
       DynamicUser = true;
       KeyringMode = "private";
       LockPersonality = true;
@@ -24,7 +25,10 @@
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
       ProtectProc = "invisible";
-      RestrictAddressFamilies = ["AF_INET" "AF_UNIX"];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_UNIX"
+      ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       UMask = 077;
@@ -32,7 +36,7 @@
   };
 
   systemd.timers.cpuload = {
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "daily";
       RandomizedDelaySec = "6h";

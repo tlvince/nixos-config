@@ -5,7 +5,8 @@
   pkgs,
   keys,
   ...
-}: {
+}:
+{
   imports = [
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
@@ -62,24 +63,39 @@
               content = {
                 type = "btrfs";
                 mountpoint = "/mnt/fowler";
-                mountOptions = ["compress=zstd" "noatime"];
-                extraArgs = ["-f"];
+                mountOptions = [
+                  "compress=zstd"
+                  "noatime"
+                ];
+                extraArgs = [ "-f" ];
                 subvolumes = {
                   "/root" = {
                     mountpoint = "/";
-                    mountOptions = ["compress=zstd" "noatime"];
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                   "/log" = {
                     mountpoint = "/var/log";
-                    mountOptions = ["compress=zstd" "noatime"];
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                   "/home" = {
                     mountpoint = "/home";
-                    mountOptions = ["compress=zstd" "noatime"];
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                   "/nix" = {
                     mountpoint = "/nix";
-                    mountOptions = ["compress=zstd" "noatime"];
+                    mountOptions = [
+                      "compress=zstd"
+                      "noatime"
+                    ];
                   };
                 };
               };
@@ -128,18 +144,32 @@
   fileSystems."/mnt/ichbiah/home" = {
     device = "/dev/mapper/godel";
     fsType = "btrfs";
-    options = ["compress=zstd" "noatime" "subvol=/home"];
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=/home"
+    ];
   };
   fileSystems."/mnt/ichbiah/snapshots" = {
     device = "/dev/mapper/godel";
     fsType = "btrfs";
-    options = ["compress=zstd" "noatime" "subvol=/snapshots"];
+    options = [
+      "compress=zstd"
+      "noatime"
+      "subvol=/snapshots"
+    ];
   };
   fileSystems."/mnt/libraries/ichbiah" = {
     device = "/mnt/ichbiah/home/photos";
-    depends = ["/mnt/ichbiah/home"];
+    depends = [ "/mnt/ichbiah/home" ];
     fsType = "none";
-    options = ["bind" "ro" "nosuid" "nodev" "noexec"];
+    options = [
+      "bind"
+      "ro"
+      "nosuid"
+      "nodev"
+      "noexec"
+    ];
   };
 
   hardware.alsa.enable = true;
@@ -247,8 +277,8 @@
     };
     networks.wired = {
       name = "en*";
-      address = ["192.168.0.2/24"];
-      gateway = ["192.168.0.1"];
+      address = [ "192.168.0.2/24" ];
+      gateway = [ "192.168.0.1" ];
     };
   };
   time.timeZone = "Europe/London";
@@ -259,14 +289,14 @@
   ];
   users = {
     defaultUserShell = pkgs.zsh;
-    groups.nas = {};
+    groups.nas = { };
     users.tlv = {
       extraGroups = [
         config.users.groups.nas.name
         "wheel"
       ];
       isNormalUser = true;
-      openssh.authorizedKeys.keys = [keys.tlv];
+      openssh.authorizedKeys.keys = [ keys.tlv ];
     };
     users.zan = {
       extraGroups = [

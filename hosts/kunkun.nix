@@ -4,7 +4,8 @@
   pkgs,
   keys,
   ...
-}: {
+}:
+{
   imports = [
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
@@ -18,7 +19,12 @@
     ../modules/nginx.nix
   ];
   boot = {
-    initrd.availableKernelModules = ["xhci_pci" "virtio_pci" "virtio_scsi" "usbhid"];
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "virtio_pci"
+      "virtio_scsi"
+      "usbhid"
+    ];
     initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
@@ -57,7 +63,10 @@
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "btrfs";
-    options = ["compress=zstd" "noatime"];
+    options = [
+      "compress=zstd"
+      "noatime"
+    ];
   };
   fileSystems."/boot" = {
     device = "/dev/disk/by-partlabel/disk-main-boot";
@@ -109,11 +118,11 @@
 
   security.sudo.extraRules = [
     {
-      users = ["tlv"];
+      users = [ "tlv" ];
       commands = [
         {
           command = "ALL";
-          options = ["NOPASSWD"];
+          options = [ "NOPASSWD" ];
         }
       ];
     }
@@ -146,7 +155,7 @@
   };
   services.fstrim.enable = true;
   services.nginx = {
-    upstreams.home-assistant.servers."127.0.0.1:8080" = {};
+    upstreams.home-assistant.servers."127.0.0.1:8080" = { };
 
     virtualHosts."home-assistant.filo.uk" = {
       forceSSL = true;
@@ -181,13 +190,13 @@
   time.timeZone = "Europe/London";
   users = {
     defaultUserShell = pkgs.zsh;
-    groups.cm3588 = {};
+    groups.cm3588 = { };
     users.tlv = {
       extraGroups = [
         "wheel"
       ];
       isNormalUser = true;
-      openssh.authorizedKeys.keys = [keys.tlv];
+      openssh.authorizedKeys.keys = [ keys.tlv ];
     };
     users.cm3588 = {
       group = config.users.groups.cm3588.name;

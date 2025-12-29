@@ -3,15 +3,16 @@
   pkgs,
   secretsPath,
   ...
-}: {
+}:
+{
   age.secrets.notify.file = "${secretsPath}/notify.age";
 
   systemd.services.redditd = {
-    wantedBy = ["multi-user.target"];
-    after = ["systemd-journald.socket"];
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-journald.socket" ];
     serviceConfig = {
-      BindPaths = ["/home/tlv/dev/redditd/state.json:/run/redditd/state.json"];
-      BindReadOnlyPaths = ["/home/tlv/dev/redditd:/run/redditd"];
+      BindPaths = [ "/home/tlv/dev/redditd/state.json:/run/redditd/state.json" ];
+      BindReadOnlyPaths = [ "/home/tlv/dev/redditd:/run/redditd" ];
       ExecStart = "${pkgs.nodejs}/bin/node --no-warnings=ExperimentalWarning /run/redditd/index.js";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
@@ -31,7 +32,7 @@
       TasksAccounting = false;
 
       # Hardening
-      CapabilityBoundingSet = [""];
+      CapabilityBoundingSet = [ "" ];
       DynamicUser = true;
       KeyringMode = "private";
       LockPersonality = true;
@@ -45,7 +46,10 @@
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
       ProtectProc = "invisible";
-      RestrictAddressFamilies = ["AF_INET" "AF_UNIX"];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_UNIX"
+      ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       UMask = 077;
@@ -53,7 +57,7 @@
   };
 
   systemd.timers.redditd = {
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       OnBootSec = "5min";
       OnCalendar = "00..01,06..23:00/1";

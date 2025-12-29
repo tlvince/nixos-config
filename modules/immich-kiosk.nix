@@ -2,7 +2,8 @@
   config,
   secretsPath,
   ...
-}: {
+}:
+{
   age.secrets.immich-kiosk = {
     file = "${secretsPath}/immich-kiosk.age";
     mode = "640";
@@ -38,7 +39,7 @@
   };
 
   services.nginx = {
-    upstreams.immich-kiosk.servers."127.0.0.1:5291" = {};
+    upstreams.immich-kiosk.servers."127.0.0.1:5291" = { };
     virtualHosts."immich-kiosk.filo.uk" = {
       basicAuthFile = config.age.secrets.immich-kiosk.path;
       useACMEHost = "filo.uk";

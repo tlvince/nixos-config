@@ -3,7 +3,8 @@
   pkgs,
   secretsPath,
   ...
-}: let
+}:
+let
   scripts = import ../scripts.nix {
     inherit config pkgs;
   };
@@ -14,24 +15,25 @@
       TITLE="${config.networking.hostName} kernel alert" MESSAGE="$MESSAGE" "${scripts.notify}/bin/notify"
     done
   '';
-in {
+in
+{
   age.secrets.notify.file = "${secretsPath}/notify.age";
 
   systemd.services.dmesgd = {
     description = "Monitor kernel diagnostic messages";
-    wantedBy = ["multi-user.target"];
-    after = ["systemd-journald.socket"];
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-journald.socket" ];
     serviceConfig = {
       ExecStart = "${dmesgd}/bin/dmesgd";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
       RestartSec = 10;
-      SupplementaryGroups = ["systemd-journal"];
+      SupplementaryGroups = [ "systemd-journal" ];
 
       # TODO: Use NixOS hardened systemd helper
       # Issue URL: https://github.com/tlvince/nixos-config/issues/311
       # labels: systemd
-      CapabilityBoundingSet = [""];
+      CapabilityBoundingSet = [ "" ];
       DynamicUser = true;
       KeyringMode = "private";
       LockPersonality = true;
@@ -45,7 +47,10 @@ in {
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
       ProtectProc = "invisible";
-      RestrictAddressFamilies = ["AF_INET" "AF_UNIX"];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_UNIX"
+      ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       UMask = 077;

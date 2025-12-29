@@ -22,97 +22,100 @@
     tmux-colours-onedark.url = "github:tlvince/tmux-colours-onedark";
   };
 
-  outputs = {
-    agenix,
-    disko,
-    home-manager,
-    jail-nix,
-    lanzaboote,
-    nixpkgs,
-    nvf,
-    secrets,
-    self,
-    tmux-colours-onedark,
-    zedless,
-    ...
-  } @ inputs: let
-    keys = import ./keys.nix;
-  in {
-    devShells.x86_64-linux.default = let
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-      };
+  outputs =
+    {
+      agenix,
+      disko,
+      home-manager,
+      jail-nix,
+      lanzaboote,
+      nixpkgs,
+      nvf,
+      secrets,
+      self,
+      tmux-colours-onedark,
+      zedless,
+      ...
+    }@inputs:
+    let
+      keys = import ./keys.nix;
     in
-      pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          alejandra
-        ];
-      };
-    devShells.x86_64-linux.nodejs = let
-      pkgs = import nixpkgs {
-        system = "x86_64-linux";
-        config.allowUnfree = true;
-      };
-    in
-      pkgs.mkShellNoCC {
-        packages = with pkgs; [
-          azure-cli
-          eslint_d
-          nodePackages."@astrojs/language-server"
-          nodePackages.bash-language-server
-          nodePackages.typescript-language-server
-          nodejs_22
-          mongodb-tools
-          mongosh
-          terraform
-          terraform-ls
-        ];
-      };
-    nixosConfigurations = {
-      cm3588 = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit keys;
-          secrets = import inputs.secrets;
-          secretsPath = inputs.secrets.outPath;
+    {
+      devShells.x86_64-linux.default =
+        let
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+          };
+        in
+        pkgs.mkShellNoCC {
+          packages = with pkgs; [
+            alejandra
+          ];
         };
-
-        modules = [
-          ./hosts/cm3588.nix
-          agenix.nixosModules.default
-          disko.nixosModules.disko
-        ];
-      };
-      framework = nixpkgs.lib.nixosSystem {
-        specialArgs =
-          inputs
-          // {
+      devShells.x86_64-linux.nodejs =
+        let
+          pkgs = import nixpkgs {
+            system = "x86_64-linux";
+            config.allowUnfree = true;
+          };
+        in
+        pkgs.mkShellNoCC {
+          packages = with pkgs; [
+            azure-cli
+            eslint_d
+            nodePackages."@astrojs/language-server"
+            nodePackages.bash-language-server
+            nodePackages.typescript-language-server
+            nodejs_22
+            mongodb-tools
+            mongosh
+            terraform
+            terraform-ls
+          ];
+        };
+      nixosConfigurations = {
+        cm3588 = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit keys;
+            secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
-        modules = [
-          ./hosts/framework.nix
-          agenix.nixosModules.default
-          disko.nixosModules.disko
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.extraSpecialArgs = inputs;
-            home-manager.useGlobalPkgs = true;
-            home-manager.users.tlv = import ./home.nix;
-          }
-          lanzaboote.nixosModules.lanzaboote
-          nvf.nixosModules.default
-        ];
-      };
-      kunkun = nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit keys;
-          secrets = import inputs.secrets;
-          secretsPath = inputs.secrets.outPath;
+
+          modules = [
+            ./hosts/cm3588.nix
+            agenix.nixosModules.default
+            disko.nixosModules.disko
+          ];
         };
-        modules = [
-          ./hosts/kunkun.nix
-          agenix.nixosModules.default
-        ];
+        framework = nixpkgs.lib.nixosSystem {
+          specialArgs = inputs // {
+            secretsPath = inputs.secrets.outPath;
+          };
+          modules = [
+            ./hosts/framework.nix
+            agenix.nixosModules.default
+            disko.nixosModules.disko
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.extraSpecialArgs = inputs;
+              home-manager.useGlobalPkgs = true;
+              home-manager.users.tlv = import ./home.nix;
+            }
+            lanzaboote.nixosModules.lanzaboote
+            nvf.nixosModules.default
+          ];
+        };
+        kunkun = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit keys;
+            secrets = import inputs.secrets;
+            secretsPath = inputs.secrets.outPath;
+          };
+          modules = [
+            ./hosts/kunkun.nix
+            agenix.nixosModules.default
+          ];
+        };
       };
     };
-  };
 }

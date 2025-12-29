@@ -3,7 +3,8 @@
   pkgs,
   secretsPath,
   ...
-}: {
+}:
+{
   age.secrets."zigbee2mqtt.yaml" = {
     file = "${secretsPath}/zigbee2mqtt.age";
     owner = "zigbee2mqtt";
@@ -39,5 +40,5 @@
       version = 4;
     };
   };
-  systemd.services.zigbee2mqtt.after = ["mosquitto.service"];
+  systemd.services.zigbee2mqtt.after = [ "mosquitto.service" ];
 }

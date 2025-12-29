@@ -2,7 +2,8 @@
   pkgs,
   secretsPath,
   ...
-}: {
+}:
+{
   systemd.user.services.famly-fetch = {
     script = ''
       set -euo pipefail
@@ -21,7 +22,7 @@
       ];
 
       # Hardening
-      CapabilityBoundingSet = [""];
+      CapabilityBoundingSet = [ "" ];
       KeyringMode = "private";
       LockPersonality = true;
       PrivateDevices = true;
@@ -33,7 +34,10 @@
       ProtectKernelModules = true;
       ProtectKernelTunables = true;
       ProtectProc = "invisible";
-      RestrictAddressFamilies = ["AF_INET" "AF_UNIX"];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_UNIX"
+      ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
       UMask = 077;

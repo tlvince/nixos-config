@@ -1,10 +1,11 @@
-{...}: {
+{ ... }:
+{
   services.home-assistant = {
     enable = true;
     config = {
       automation = "!include automations.yaml";
-      frontend = {};
-      history = {};
+      frontend = { };
+      history = { };
       homeassistant = {
         country = "GB";
         elevation = "!secret elevation";
@@ -57,7 +58,7 @@
   };
 
   services.nginx = {
-    upstreams.home-assistant.servers."127.0.0.1:8123" = {};
+    upstreams.home-assistant.servers."127.0.0.1:8123" = { };
 
     virtualHosts."home-assistant.filo.uk" = {
       forceSSL = true;

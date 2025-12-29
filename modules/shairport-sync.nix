@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   services.shairport-sync = {
     enable = true;
     openFirewall = true;

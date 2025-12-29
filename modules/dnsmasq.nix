@@ -1,4 +1,5 @@
-{secrets, ...}: {
+{ secrets, ... }:
+{
   services.dnsmasq = {
     enable = true;
     resolveLocalQueries = false;
@@ -9,7 +10,7 @@
       domain-needed = true;
       filter-AAAA = true;
       interface = "enP4p65s0";
-      listen-address = ["192.168.0.2"];
+      listen-address = [ "192.168.0.2" ];
       local-ttl = 2;
       localise-queries = true;
 
@@ -63,7 +64,7 @@
   };
 
   systemd.services.dnsmasq = {
-    after = ["systemd-networkd-wait-online.service"];
-    requires = ["systemd-networkd-wait-online.service"];
+    after = [ "systemd-networkd-wait-online.service" ];
+    requires = [ "systemd-networkd-wait-online.service" ];
   };
 }

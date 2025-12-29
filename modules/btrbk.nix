@@ -3,7 +3,8 @@
   lib,
   pkgs,
   ...
-}: {
+}:
+{
   services.btrbk = {
     instances = {
       btrbk = {
@@ -29,7 +30,7 @@
                 "/" = {
                   snapshot_name = "root";
                 };
-                "/home" = {};
+                "/home" = { };
                 "/var/log" = {
                   snapshot_name = "log";
                 };

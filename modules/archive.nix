@@ -1,4 +1,5 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   archive = pkgs.writeShellApplication {
     name = "archive";
     runtimeInputs = with pkgs; [
@@ -16,7 +17,8 @@
       sdparm --command=stop --readonly /dev/disk/by-uuid/cb299988-72fa-42ae-91f2-593150f06c3f
     '';
   };
-in {
+in
+{
   systemd.services.archive = {
     description = "Archive btrbk snapshots";
     serviceConfig = {
@@ -25,7 +27,7 @@ in {
     };
   };
   systemd.timers.archive = {
-    wantedBy = ["timers.target"];
+    wantedBy = [ "timers.target" ];
     timerConfig = {
       OnCalendar = "05:30";
     };

@@ -2,7 +2,8 @@
   pkgs,
   secrets,
   ...
-}: let
+}:
+let
   sshConfig = pkgs.writeText "ssh-config" ''
     Host kunkun
       ExitOnForwardFailure yes
@@ -13,13 +14,14 @@
       StrictHostKeyChecking accept-new
       User cm3588
   '';
-in {
+in
+{
   systemd.services."tunnel@kunkun" = {
-    after = ["systemd-networkd-wait-online.service"];
-    requires = ["systemd-networkd-wait-online.service"];
-    wantedBy = ["multi-user.target"];
+    after = [ "systemd-networkd-wait-online.service" ];
+    requires = [ "systemd-networkd-wait-online.service" ];
+    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
-      LoadCredential = ["ssh_host_key:/etc/ssh/ssh_host_ed25519_key"];
+      LoadCredential = [ "ssh_host_key:/etc/ssh/ssh_host_ed25519_key" ];
       ExecStart = "${pkgs.openssh}/bin/ssh -F ${sshConfig} -i %d/ssh_host_key %i";
       Restart = "on-failure";
       SyslogIdentifier = "tunnel";
@@ -44,5 +46,5 @@ in {
     home = "/var/lib/tunnel";
     isSystemUser = true;
   };
-  users.groups.tunnel = {};
+  users.groups.tunnel = { };
 }
