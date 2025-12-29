@@ -39,40 +39,25 @@
     }@inputs:
     let
       keys = import ./keys.nix;
+      pkgs = import nixpkgs { inherit system; };
+      system = "x86_64-linux";
     in
     {
-      devShells.x86_64-linux.default =
-        let
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-          };
-        in
-        pkgs.mkShellNoCC {
-          packages = with pkgs; [
-            alejandra
-          ];
-        };
-      devShells.x86_64-linux.nodejs =
-        let
-          pkgs = import nixpkgs {
-            system = "x86_64-linux";
-            config.allowUnfree = true;
-          };
-        in
-        pkgs.mkShellNoCC {
-          packages = with pkgs; [
-            azure-cli
-            eslint_d
-            nodePackages."@astrojs/language-server"
-            nodePackages.bash-language-server
-            nodePackages.typescript-language-server
-            nodejs_22
-            mongodb-tools
-            mongosh
-            terraform
-            terraform-ls
-          ];
-        };
+      devShells.${system}.nodejs = pkgs.mkShellNoCC {
+        packages = with pkgs; [
+          azure-cli
+          eslint_d
+          nodePackages."@astrojs/language-server"
+          nodePackages.bash-language-server
+          nodePackages.typescript-language-server
+          nodejs_22
+          mongodb-tools
+          mongosh
+          terraform
+          terraform-ls
+        ];
+      };
+      formatter.${system} = pkgs.nixfmt-tree;
       nixosConfigurations = {
         cm3588 = nixpkgs.lib.nixosSystem {
           specialArgs = {

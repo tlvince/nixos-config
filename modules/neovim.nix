@@ -227,7 +227,10 @@ in
           css.enable = true;
           json.enable = true;
           markdown.enable = true;
-          nix.enable = true;
+          nix = {
+            enable = true;
+            format.type = "nixfmt";
+          };
           tailwind.enable = true;
           terraform.enable = true;
           ts.enable = true;
