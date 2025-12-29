@@ -391,8 +391,12 @@
 
     autocd = true;
     autosuggestion.enable = true;
+    dotDir = "${config.xdg.configHome}/zsh";
     enableCompletion = true;
-    history.ignoreAllDups = true;
+    history = {
+      ignoreAllDups = true;
+      path = "${config.xdg.stateHome}/zsh_history";
+    };
 
     initContent =
       ''
