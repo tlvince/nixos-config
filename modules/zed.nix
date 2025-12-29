@@ -3,6 +3,9 @@
   zedless,
   ...
 }: let
+  # TODO: Drop Zedless patch
+  # See: https://github.com/zedless-editor/zedless/pull/63
+  # labels: module:zed
   zedlessPkg = zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless.overrideAttrs (old: {
     patches =
       (old.patches or [])
