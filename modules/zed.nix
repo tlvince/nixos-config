@@ -1,38 +1,11 @@
-{
-  pkgs,
-  zedless,
-  ...
-}:
-let
-  # TODO: Drop Zedless patch
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/412
-  # See: https://github.com/zedless-editor/zedless/pull/81
-  # labels: module:zed
-  zedlessPkg = zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless.overrideAttrs (
-    old:
-    let
-      prevPostPatch = old.postPatch or "";
-    in
-    {
-      postPatch =
-        prevPostPatch
-        + pkgs.lib.optionalString (prevPostPatch != "") "\n"
-        + ''
-          # The generate-licenses script wants a specific version of cargo-about eventhough
-          # newer versions work just as well.
-          substituteInPlace script/generate-licenses \
-            --replace-fail '$CARGO_ABOUT_VERSION' '${pkgs.cargo-about.version}'
-        '';
-    }
-  );
-in
+{ ... }:
 {
   home-manager.users.tlv =
-    { pkgs, ... }:
+    { pkgs, zedless, ... }:
     {
       programs.zed-editor = {
         enable = true;
-        package = zedlessPkg;
+        package = zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless;
         extensions = [
           "html"
           "nix"
@@ -101,6 +74,10 @@ in
             "Exec=zeditor %U"
             "Exec=zeditor --new %U"
           ]
-          (builtins.readFile "${zedlessPkg}/share/applications/cooking.schizo.Zedless.desktop");
+          (
+            builtins.readFile "${
+              zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless
+            }/share/applications/cooking.schizo.Zedless.desktop"
+          );
     };
 }
