@@ -29,11 +29,7 @@ in {
         vtsls
       ];
       userSettings = {
-        auto_update = false;
         buffer_font_size = 16;
-        collaboration_panel = {
-          button = false;
-        };
         cursor_blink = false;
         git = {
           inline_blame = {
@@ -70,10 +66,6 @@ in {
           };
         };
         tab_size = 2;
-        telemetry = {
-          diagnostics = false;
-          metrics = false;
-        };
         vim_mode = true;
       };
     };
