@@ -60,24 +60,5 @@
           vim_mode = true;
         };
       };
-
-      # Use the Home Manager wrapper
-      xdg.dataFile."applications/cooking.schizo.Zedless.desktop".text =
-        pkgs.lib.replaceStrings
-          [
-            "TryExec=zedless"
-            "Exec=zedless %U"
-            "Exec=zedless --new %U"
-          ]
-          [
-            "TryExec=zeditor"
-            "Exec=zeditor %U"
-            "Exec=zeditor --new %U"
-          ]
-          (
-            builtins.readFile "${
-              zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless
-            }/share/applications/cooking.schizo.Zedless.desktop"
-          );
     };
 }
