@@ -220,27 +220,34 @@ in
           # TODO: Restore astro and hcl language servers
           # Issue URL: https://github.com/tlvince/nixos-config/issues/409
           # labels: module:neovim
-          # astro.enable = true;
+          # astro = {
+          #   enable = true;
+          #   format.type = [ "prettierd" ];
+          # };
           # hcl.enable = true;
 
           bash.enable = true;
-          css.enable = true;
+          css = {
+            enable = true;
+            format.type = [ "prettierd" ];
+          };
           json.enable = true;
-          markdown.enable = true;
+          markdown = {
+            enable = true;
+            format.type = [ "prettierd" ];
+          };
           nix = {
             enable = true;
-            format.type = "nixfmt";
+            format.type = [ "nixfmt" ];
           };
+          svelte.format.type = [ "prettierd" ];
           tailwind.enable = true;
           terraform.enable = true;
-          ts.enable = true;
+          ts = {
+            enable = true;
+            format.type = [ "prettierd" ];
+          };
           yaml.enable = true;
-
-          astro.format.type = [ "prettierd" ];
-          css.format.type = [ "prettierd" ];
-          markdown.format.type = [ "prettierd" ];
-          svelte.format.type = [ "prettierd" ];
-          ts.format.type = [ "prettierd" ];
         };
         lineNumberMode = "none";
         lsp = {
