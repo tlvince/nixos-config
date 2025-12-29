@@ -1,20 +1,24 @@
 diff --git a/script/generate-licenses b/script/generate-licenses
-index 9602813f0c..d16d11c203 100755
+index 9f34b1c7b5..c8f1f9d67e 100755
 --- a/script/generate-licenses
 +++ b/script/generate-licenses
-@@ -16,15 +16,7 @@ cat assets/icons/LICENSES >> $OUTPUT_FILE
+@@ -28,18 +28,8 @@
+ } >>"$OUTPUT_FILE"
  
- echo -e "# ###### CODE LICENSES ######\n" >> $OUTPUT_FILE
- 
--if ! cargo install --list | grep "cargo-about v$CARGO_ABOUT_VERSION" > /dev/null; then
--  echo "Installing cargo-about@$CARGO_ABOUT_VERSION..."
--  cargo install "cargo-about@$CARGO_ABOUT_VERSION"
+-if ! cargo about --version | grep "cargo-about $CARGO_ABOUT_VERSION" &>/dev/null; then
+-    echo "Installing cargo-about@^$CARGO_ABOUT_VERSION..."
+-    cargo install "cargo-about@^$CARGO_ABOUT_VERSION"
 -else
--  echo "cargo-about@$CARGO_ABOUT_VERSION is already installed."
+-    echo "cargo-about@^$CARGO_ABOUT_VERSION is already installed."
 -fi
 -
  echo "Generating cargo licenses"
- cargo about generate \
--    --fail \
+-if [ -z "${ALLOW_MISSING_LICENSES-}" ]; then FAIL_FLAG=--fail; else FAIL_FLAG=""; fi
+-if [ -z "${ALLOW_MISSING_LICENSES-}" ]; then WRAPPER=fail_on_stderr; else WRAPPER=""; fi
+ set -x
+-$WRAPPER cargo about generate \
+-    $FAIL_FLAG \
++cargo about generate \
      -c script/licenses/zed-licenses.toml \
-     "${TEMPLATE_FILE}" >> $OUTPUT_FILE
+     "$TEMPLATE_FILE" >>"$OUTPUT_FILE"
+ set +x
