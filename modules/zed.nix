@@ -60,5 +60,15 @@
           vim_mode = true;
         };
       };
+
+      # Use the Home Manager wrapper
+      xdg.dataFile."applications/cooking.schizo.Zedless.desktop".source =
+        pkgs.runCommand "zedless-desktop" { }
+          ''
+            ${pkgs.gnused}/bin/sed -E 's/^(TryExec|Exec)=zedless/\1=zeditor/' \
+              ${
+                zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless
+              }/share/applications/cooking.schizo.Zedless.desktop > $out
+          '';
     };
 }
