@@ -50,13 +50,13 @@
     in
     {
       darwinConfigurations = {
-        hostname = darwin.lib.darwinSystem {
+        lamma = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
             ./hosts/lamma.nix
             home-manager.darwinModules.home-manager
             {
-              home-manager.users.tlv = ./lamma/home.nix;
+              home-manager.users.tom = ./hosts/lamma/home.nix;
             }
           ];
         };
@@ -76,6 +76,7 @@
         ];
       };
       formatter.${system} = pkgs.nixfmt-tree;
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
       nixosConfigurations = {
         cm3588 = nixpkgs.lib.nixosSystem {
           specialArgs = {

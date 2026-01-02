@@ -2,6 +2,7 @@
   ...
 }:
 {
+  documentation.enable = false;
 
   networking = {
     applicationFirewall = {
@@ -28,7 +29,7 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
     trusted-users = [
-      "tlv"
+      "tom"
     ];
   };
   nixpkgs = {
@@ -72,7 +73,9 @@
 
       screencapture.location = "~/Pictures/screenshots";
     };
-    primaryUser = "tlv";
+    primaryUser = "tom";
+    stateVersion = 6;
   };
+  users.users.tom.home = "/Users/tom";
   time.timeZone = "Europe/London";
 }
