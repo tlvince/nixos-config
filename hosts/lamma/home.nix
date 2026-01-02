@@ -13,6 +13,10 @@
     ghostty = {
       enable = true;
       package = pkgs.ghostty-bin;
+      settings = {
+        font-size = 16;
+        theme = "dark:Atom One Dark,light:Atom One Light";
+      };
     };
     git = {
       enable = true;
