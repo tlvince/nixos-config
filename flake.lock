@@ -60,6 +60,26 @@
         "type": "github"
       }
     },
+    "darwin_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1767028240,
+        "narHash": "sha256-0/fLUqwJ4Z774muguUyn5t8AQ6wyxlNbHexpje+5hRo=",
+        "owner": "nix-darwin",
+        "repo": "nix-darwin",
+        "rev": "c31afa6e76da9bbc7c9295e39c7de9fca1071ea1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-darwin",
+        "repo": "nix-darwin",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -365,6 +385,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "darwin": "darwin_2",
         "disko": "disko",
         "home-manager": "home-manager_2",
         "jail-nix": "jail-nix",

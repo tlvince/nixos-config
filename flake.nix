@@ -4,6 +4,8 @@
   inputs = {
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
+    darwin.url = "github:nix-darwin/nix-darwin";
+    darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     zedless.inputs.nixpkgs.follows = "nixpkgs";
@@ -26,6 +28,7 @@
     {
       agenix,
       disko,
+      darwin,
       home-manager,
       jail-nix,
       lanzaboote,
@@ -46,6 +49,18 @@
       system = "x86_64-linux";
     in
     {
+      darwinConfigurations = {
+        lamma = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            ./hosts/lamma.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.users.tom = ./hosts/lamma/home.nix;
+            }
+          ];
+        };
+      };
       devShells.${system}.nodejs = pkgs.mkShellNoCC {
         packages = with pkgs; [
           azure-cli
@@ -61,6 +76,7 @@
         ];
       };
       formatter.${system} = pkgs.nixfmt-tree;
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
       nixosConfigurations = {
         cm3588 = nixpkgs.lib.nixosSystem {
           specialArgs = {
