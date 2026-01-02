@@ -3,7 +3,7 @@
   ...
 }:
 {
-  home.stateVersion = "23.05";
+  home.stateVersion = "25.11";
   manual = {
     html.enable = false;
     json.enable = false;
