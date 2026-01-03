@@ -19,31 +19,35 @@ jobs:
       PR_JOB_SUMMARY: pr-job-summary
     strategy:
       matrix:
-        machine:
-          - host: framework
-            platform: x86-64-linux
+        flake:
+          - name: framework
+            attr: nixosConfigurations.framework.config.system.build.toplevel
+            system: x86-64-linux
             runner: ubuntu-24.04
-            type: nixosConfigurations
-          - host: cm3588
-            platform: aarch64-linux
+          - name: cm3588
+            attr: nixosConfigurations.cm3588.config.system.build.toplevel
+            system: aarch64-linux
             runner: ubuntu-24.04-arm
-            type: nixosConfigurations
-          - host: nodejs
-            platform: x86-64-linux
+          - name: nodejs
+            attr: devShells.x86_64-linux.nodejs
+            system: x86-64-linux
             runner: ubuntu-24.04
-            type: devShells.x86_64-linux
-          - host: kunkun
-            platform: aarch64-linux
+          - name: kunkun
+            attr: nixosConfigurations.kunkun.config.system.build.toplevel
+            system: aarch64-linux
             runner: ubuntu-24.04-arm
-            type: nixosConfigurations
-    runs-on: ${{ matrix.machine.runner }}
+          - name: lamma
+            attr: darwinConfigurations.lamma.system
+            system: aarch64-darwin
+            runner: macos-26
+    runs-on: ${{ matrix.flake.runner }}
     permissions:
       contents: read
       pull-requests: write
     steps:
       - name: Relocate Nix store
-        # ~60GB available on /mnt vs ~20GB on / for x86-64 runners (not on arm)
-        if: matrix.machine.platform == 'x86-64-linux'
+        # ~60GB available on /mnt vs ~20GB on / for x86-64 runners
+        if: matrix.flake.system == 'x86-64-linux'
         run: |
           sudo mkdir /nix /mnt/nix
           sudo mount --bind /mnt/nix /nix
@@ -69,25 +73,22 @@ jobs:
       - name: Run flake check
         # All configurations are checked by default, so just run it in one
         # matrix build
-        if: matrix.machine.host == 'framework'
+        if: matrix.flake.name == 'framework'
         run: |
           CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
-          nix flake check --no-build | tee "$CHECK_OUTPUT"
+          nix flake check --all-systems --no-build | tee "$CHECK_OUTPUT"
           [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
-          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths)"
-          echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.machine.type}}.${{ matrix.machine.host }}\x1b[0m"
-          echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+          OUT_PATH="$(nix build ".#${{ matrix.flake.attr }}" --print-out-paths)"
+          echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.flake.attr }}\x1b[0m"
+          echo -e "## Build ${{ matrix.flake.name }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Diff closures
-        if: github.event_name == 'pull_request' && matrix.machine.type == 'nixosConfigurations'
+        if: github.event_name == 'pull_request'
         run: |
-          HOST_DRV="nixosConfigurations.${{ matrix.machine.host }}.config.system.build.toplevel"
-          PREV_FLAKE="github:${GITHUB_REPOSITORY}"
-          NEXT_FLAKE="."
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          nix store diff-closures "${PREV_FLAKE}#${HOST_DRV}" "${NEXT_FLAKE}#${HOST_DRV}" --no-write-lock-file | tee "$DIFF_OUTPUT"
+          nix store diff-closures "github:${GITHUB_REPOSITORY}#${{ matrix.flake.attr }}" ".#${{ matrix.flake.attr }}" --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && sed -i 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Add job summary to PR
@@ -97,6 +98,6 @@ jobs:
           script: |
             const { readFile } = require('node:fs/promises')
             const comment = require('.github/scripts/comment')
-            const header = '# ${{ matrix.machine.host }}'
+            const header = '# ${{ matrix.flake.name }}'
             const body = await readFile('${{ runner.temp }}/${{ env.PR_JOB_SUMMARY }}', { encoding: 'utf8' })
             await comment({ github, context, header, body })
