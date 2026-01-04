@@ -32,6 +32,14 @@ in
         fzf-lua = {
           enable = true;
           profile = "fzf-vim";
+          setupOpts = {
+            # TODO: fzf-lua files picker does not work with git ls-files
+            # Set by programs.fzf.defaultCommand (FZF_DEFAULT_COMMAND)
+            # repro: ``:lua FzfLua.files({ cmd = "git ls-files" })``
+            # Workaround with fallback to fzf-lua default (fd)
+            # labels: module:neovim
+            files.cmd = "";
+          };
         };
         git = {
           gitsigns.enable = true;
@@ -333,6 +341,7 @@ in
         utility.mkdir.enable = true;
         viAlias = true;
         vimAlias = true;
+        # Used by blink.cmp, fzf-lua
         visuals.nvim-web-devicons.enable = true;
         withRuby = false;
       };
