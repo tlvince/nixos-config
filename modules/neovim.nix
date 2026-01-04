@@ -34,6 +34,7 @@ in
           profile = "fzf-vim";
           setupOpts = {
             # TODO: fzf-lua files picker does not work with git ls-files
+            # Issue URL: https://github.com/tlvince/nixos-config/issues/416
             # Set by programs.fzf.defaultCommand (FZF_DEFAULT_COMMAND)
             # repro: ``:lua FzfLua.files({ cmd = "git ls-files" })``
             # Workaround with fallback to fzf-lua default (fd)
