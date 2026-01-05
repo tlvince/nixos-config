@@ -15,6 +15,10 @@
     manpages.enable = false;
   };
   programs = {
+    chromium = {
+      enable = true;
+      package = pkgs.brave;
+    };
     ghostty = {
       enable = true;
       package = pkgs.ghostty-bin;
