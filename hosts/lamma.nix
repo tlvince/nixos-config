@@ -45,10 +45,15 @@
       CustomUserPreferences = {
         "com.apple.AdLib" = {
           allowApplePersonalizedAdvertising = false;
+          allowIdentifierForAdvertising = false;
         };
         "com.apple.Siri" = {
           "UAProfileCheckingStatus" = 0;
           "siriEnabled" = 0;
+        };
+        "com.apple.assistant.support" = {
+          "Search Queries Data Sharing Status" = 2;
+          "Siri Data Sharing Opt-In Status" = 2;
         };
       };
 
