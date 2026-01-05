@@ -224,11 +224,7 @@ in
         ];
         languages = {
           enableFormat = true;
-          # TODO: module 'nvim-treesitter.configs' not found
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/418
-          # See https://github.com/NotAShelf/nvf/issues/1312
-          # labels: module:neovim
-          enableTreesitter = false;
+          enableTreesitter = true;
 
           # TODO: Restore astro and hcl language servers
           # Issue URL: https://github.com/tlvince/nixos-config/issues/409
@@ -340,7 +336,7 @@ in
         };
         treesitter = {
           autotagHtml = true;
-          enable = false;
+          enable = true;
           fold = true;
         };
         utility.mkdir.enable = true;
