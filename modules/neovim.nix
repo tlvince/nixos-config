@@ -225,6 +225,7 @@ in
         languages = {
           enableFormat = true;
           # TODO: module 'nvim-treesitter.configs' not found
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/418
           # See https://github.com/NotAShelf/nvf/issues/1312
           # labels: module:neovim
           enableTreesitter = false;
