@@ -26,7 +26,6 @@ let
     FeedbackSurveysEnabled = false;
     HttpsOnlyMode = "force_enabled";
     HttpsUpgradesEnabled = true;
-    MetricsReportingEnabled = false;
     SafeBrowsingDeepScanningEnabled = false;
     SafeBrowsingExtendedReportingEnabled = false;
     SafeBrowsingSurveysEnabled = false;
