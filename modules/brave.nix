@@ -20,7 +20,7 @@ let
     BraveVPNDisabled = true;
     BraveWalletDisabled = true;
     BraveWebDiscoveryEnabled = false;
-    BrowserSignin = false;
+    BrowserSignin = 0;
     DefaultBraveFingerprintingV2Setting = 3;
     DefaultBrowserSettingEnabled = false;
     FeedbackSurveysEnabled = false;
