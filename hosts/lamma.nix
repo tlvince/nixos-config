@@ -28,7 +28,7 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     ];
     trusted-users = [
-      "tom"
+      "tlv"
     ];
   };
   nixpkgs = {
@@ -72,10 +72,10 @@
       screencapture.location = "~/Pictures/screenshots";
       trackpad.Clicking = true;
     };
-    primaryUser = "tom";
+    primaryUser = "tlv";
     stateVersion = 6;
   };
 
   time.timeZone = "Europe/London";
-  users.users.tom.home = "/Users/tom";
+  users.users.tlv.home = "/Users/tlv";
 }
