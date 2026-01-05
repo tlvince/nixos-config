@@ -56,7 +56,7 @@
             ./hosts/lamma.nix
             home-manager.darwinModules.home-manager
             {
-              home-manager.users.tom = ./hosts/lamma/home.nix;
+              home-manager.users.tlv = ./hosts/lamma/home.nix;
             }
           ];
         };

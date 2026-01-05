@@ -2,6 +2,10 @@
   ...
 }:
 {
+  imports = [
+    ../modules/brave.nix
+  ];
+
   documentation.enable = false;
 
   networking = {
