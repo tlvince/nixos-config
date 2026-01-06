@@ -4,6 +4,7 @@
 {
   imports = [
     ../modules/brave.nix
+    ../modules/neovim.nix
   ];
 
   documentation.enable = false;
@@ -80,6 +81,10 @@
 
       screencapture.location = "~/Pictures/screenshots";
       trackpad.Clicking = true;
+    };
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToEscape = true;
     };
     primaryUser = "tlv";
     stateVersion = 6;

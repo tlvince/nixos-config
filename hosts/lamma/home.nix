@@ -37,13 +37,6 @@
       };
     };
     htop.enable = true;
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
-      vimdiffAlias = true;
-    };
     zsh = {
       enable = true;
       initContent = ''
