@@ -56,6 +56,7 @@ in
             gnused
             jq
             less
+            python3
             ripgrep
             tree
             wget
