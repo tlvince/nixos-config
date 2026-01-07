@@ -165,6 +165,7 @@
     "/share/zsh"
   ];
   environment.systemPackages = with pkgs; [
+    android-tools
     aspell
     aspellDicts.en
     awscli2
@@ -311,8 +312,6 @@
     config.allowUnfree = true;
     hostPlatform = "x86_64-linux";
   };
-
-  programs.adb.enable = true;
 
   programs.nano.enable = false;
   programs.zsh.enable = true;
