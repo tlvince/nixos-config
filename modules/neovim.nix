@@ -25,6 +25,22 @@ in
           sourcePlugins.emoji.enable = true;
         };
         autopairs.nvim-autopairs.enable = true;
+        autocmds = [
+          {
+            event = [ "QuickFixCmdPost" ];
+            pattern = [ "[^l]*" ];
+            command = "cwindow";
+            nested = true;
+            desc = "Open quickfix window after quickfix command";
+          }
+          {
+            event = [ "QuickFixCmdPost" ];
+            pattern = [ "l*" ];
+            command = "lwindow";
+            nested = true;
+            desc = "Open location list window after location list command";
+          }
+        ];
         clipboard = {
           enable = true;
           registers = "unnamedplus";
