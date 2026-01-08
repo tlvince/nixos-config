@@ -12,6 +12,8 @@
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
 
+    ../modules/host-common.nix
+    ../modules/host-common-nixos.nix
     ../modules/acme.nix
     ../modules/archive.nix
     ../modules/btrbk.nix
@@ -173,9 +175,6 @@
   };
 
   hardware.alsa.enable = true;
-  hardware.enableRedistributableFirmware = true;
-
-  i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
     domain = "filo.uk";
     enableIPv6 = false;
@@ -204,29 +203,7 @@
     };
     useDHCP = false;
   };
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    extra-substituters = [
-      "https://tlvince-nixos-config.cachix.org"
-      "https://nix-community.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "tlvince-nixos-config.cachix.org-1:PYVWI+uNlq7mSJxFSPDkkCEtaeQeF4WvjtQKa53ZOyM="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-    trusted-users = [
-      "tlv"
-    ];
-  };
-  nixpkgs = {
-    config.allowUnfree = true;
-    hostPlatform = "aarch64-linux";
-  };
-  programs.nano.enable = false;
-  programs.zsh.enable = true;
+  nixpkgs.hostPlatform = "aarch64-linux";
   services.btrfs.autoScrub = {
     enable = true;
     interval = "*-*-01 06:00"; # 0600 monthly
@@ -256,7 +233,6 @@
       PermitRootLogin = "no";
     };
   };
-  services.fstrim.enable = true;
   system.stateVersion = "25.05";
   system.tools = {
     nixos-build-vms.enable = false;
@@ -281,14 +257,12 @@
       gateway = [ "192.168.0.1" ];
     };
   };
-  time.timeZone = "Europe/London";
   tlvince.smartd.devices = [
     "/dev/nvme0"
     "/dev/nvme1"
     "/dev/nvme2"
   ];
   users = {
-    defaultUserShell = pkgs.zsh;
     groups.nas = { };
     users.tlv = {
       extraGroups = [

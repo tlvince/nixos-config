@@ -13,6 +13,8 @@
     (modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
+    ../modules/host-common.nix
+    ../modules/host-common-nixos.nix
     ../modules/acme.nix
     ../modules/cpuload.nix
     ../modules/cycled.nix
@@ -73,9 +75,6 @@
     fsType = "vfat";
   };
 
-  hardware.enableRedistributableFirmware = true;
-
-  i18n.defaultLocale = "en_GB.UTF-8";
   networking = {
     hosts = {
       "127.0.0.1" = [
@@ -90,31 +89,9 @@
     };
     useDHCP = false;
   };
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    extra-substituters = [
-      "https://tlvince-nixos-config.cachix.org"
-      "https://nix-community.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "tlvince-nixos-config.cachix.org-1:PYVWI+uNlq7mSJxFSPDkkCEtaeQeF4WvjtQKa53ZOyM="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-    trusted-users = [
-      "tlv"
-    ];
-  };
-  nixpkgs = {
-    config.allowUnfree = true;
-    hostPlatform = "aarch64-linux";
-  };
+  nixpkgs.hostPlatform = "aarch64-linux";
 
-  programs.nano.enable = false;
   programs.vim.enable = true;
-  programs.zsh.enable = true;
 
   security.sudo.extraRules = [
     {
@@ -153,7 +130,6 @@
       PermitRootLogin = "no";
     };
   };
-  services.fstrim.enable = true;
   services.nginx = {
     upstreams.home-assistant.servers."127.0.0.1:8080" = { };
 
@@ -187,9 +163,7 @@
       DHCP = "yes";
     };
   };
-  time.timeZone = "Europe/London";
   users = {
-    defaultUserShell = pkgs.zsh;
     groups.cm3588 = { };
     users.tlv = {
       extraGroups = [

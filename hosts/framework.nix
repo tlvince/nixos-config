@@ -6,6 +6,8 @@
 }:
 {
   imports = [
+    ../modules/host-common.nix
+    ../modules/host-common-nixos.nix
     ../modules/famly-fetch.nix
     ../modules/firefox.nix
     ../modules/gnome.nix
@@ -261,10 +263,7 @@
   };
 
   hardware.cpu.amd.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
   hardware.sensor.iio.enable = false;
-
-  i18n.defaultLocale = "en_GB.UTF-8";
 
   networking.firewall = {
     enable = true;
@@ -293,28 +292,7 @@
     randomizedDelaySec = "1 hour";
   };
 
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    extra-substituters = [
-      "https://tlvince-nixos-config.cachix.org"
-      "https://nix-community.cachix.org"
-    ];
-    extra-trusted-public-keys = [
-      "tlvince-nixos-config.cachix.org-1:PYVWI+uNlq7mSJxFSPDkkCEtaeQeF4WvjtQKa53ZOyM="
-      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-    ];
-  };
-
-  nixpkgs = {
-    config.allowUnfree = true;
-    hostPlatform = "x86_64-linux";
-  };
-
-  programs.nano.enable = false;
-  programs.zsh.enable = true;
+  nixpkgs.hostPlatform = "x86_64-linux";
 
   services.btrfs.autoScrub = {
     enable = true;
@@ -425,7 +403,6 @@
   };
 
   services.fprintd.enable = true;
-  services.fstrim.enable = true;
   services.fwupd.enable = true;
   services.hardware.bolt.enable = true;
   services.power-profiles-daemon.enable = true;
@@ -451,10 +428,7 @@
 
   system.stateVersion = "23.05";
 
-  time.timeZone = "Europe/London";
-
   users = {
-    defaultUserShell = pkgs.zsh;
     users.tlv = {
       isNormalUser = true;
       extraGroups = [
