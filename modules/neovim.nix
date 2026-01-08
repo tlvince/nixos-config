@@ -40,6 +40,12 @@ in
             nested = true;
             desc = "Open location list window after location list command";
           }
+          {
+            event = [ "BufWritePost" ];
+            pattern = [ "*/documents/wiki/*" ];
+            command = "silent! Gwrite | silent! execute 'Git commit -m ' . shellescape('Updated ' . expand('%:.'))";
+            desc = "Auto-commit on save with fugitive";
+          }
         ];
         clipboard = {
           enable = true;
