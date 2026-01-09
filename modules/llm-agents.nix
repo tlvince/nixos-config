@@ -56,6 +56,7 @@ in
             gnused
             jq
             less
+            nix
             python3
             ripgrep
             tree
