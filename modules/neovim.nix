@@ -341,6 +341,7 @@ in
           expandtab = true;
           guicursor = "";
           shiftwidth = 2;
+          showcmd = false;
           softtabstop = 2;
           spelllang = "en_gb";
           tabstop = 2;
