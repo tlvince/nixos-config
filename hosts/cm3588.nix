@@ -35,6 +35,10 @@
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      # Disable UAS for WD Elements to prevent controller resets
+      "usb-storage.quirks=1058:2621:u"
+    ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {
