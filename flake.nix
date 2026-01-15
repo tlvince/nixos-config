@@ -54,7 +54,7 @@
           system = "aarch64-darwin";
           modules = [
             ./hosts/lamma.nix
-            nvf.nixosModules.default
+            nvf.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               home-manager.users.tlv = ./hosts/lamma/home.nix;
