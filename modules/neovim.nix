@@ -329,6 +329,7 @@ in
             })
           '';
           # TODO: Remove nvim-treesitter TS syntax highlighting workaround
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/423
           # See: https://github.com/NixOS/nixpkgs/issues/478561
           # labels: module:neovim
           treesitter-runtime = ''
