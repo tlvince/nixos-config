@@ -328,6 +328,12 @@ in
               },
             })
           '';
+          # TODO: Remove nvim-treesitter TS syntax highlighting workaround
+          # See: https://github.com/NixOS/nixpkgs/issues/478561
+          # labels: module:neovim
+          treesitter-runtime = ''
+            vim.opt.rtp:prepend("${pkgs.vimPlugins.nvim-treesitter}/runtime")
+          '';
           waikiki = ''
             vim.g.waikiki_wiki_patterns     = { "/wiki/", "/wiki-" }
             vim.g.waikiki_default_maps      = 1
