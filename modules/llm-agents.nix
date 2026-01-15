@@ -8,6 +8,29 @@ let
 in
 {
   environment.systemPackages = [
+    (jail "opencode" pkgs.opencode (
+      with jail.combinators;
+      [
+        mount-cwd
+        network
+        (fwd-env "XDG_CACHE_HOME")
+        (fwd-env "XDG_CONFIG_HOME")
+        (fwd-env "XDG_DATA_HOME")
+        (fwd-env "XDG_STATE_HOME")
+        (try-readwrite (noescape "~/.cache/opencode"))
+        (try-readwrite (noescape "~/.config/opencode"))
+        (try-readwrite (noescape "~/.local/share/opencode"))
+        (try-readwrite (noescape "~/.local/state/opencode"))
+        (add-pkg-deps (
+          with pkgs;
+          [
+            git
+            less
+            ripgrep
+          ]
+        ))
+      ]
+    ))
     (jail "yolo-codex" pkgs.codex (
       with jail.combinators;
       [
