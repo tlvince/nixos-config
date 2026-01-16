@@ -14,7 +14,7 @@ let
       btrbk --config /dev/null archive /mnt/ichbiah/snapshots /mnt/eich/snapshots
       umount /mnt/eich
       systemctl stop systemd-cryptsetup@eich.service
-      sdparm --command=stop --readonly /dev/disk/by-uuid/cb299988-72fa-42ae-91f2-593150f06c3f
+      sdparm --command=stop --readonly /dev/disk/by-uuid/112bdd0b-de41-4622-a659-694b9f61032a
     '';
   };
 in

@@ -110,7 +110,7 @@
 
   environment.etc.crypttab.text = ''
     dijkstra UUID=e14d08e4-7123-4d86-bae0-b3de6f00454f /mnt/ichbiah/home/tlv/cryptsetup-keys.d/dijkstra.key noauto
-    eich UUID=cb299988-72fa-42ae-91f2-593150f06c3f /mnt/ichbiah/home/tlv/cryptsetup-keys.d/eich.key noauto
+    eich UUID=112bdd0b-de41-4622-a659-694b9f61032a /mnt/ichbiah/home/tlv/cryptsetup-keys.d/eich.key noauto
     godel UUID=fda93065-2a13-4e26-a2b6-91df80d0ced0 /root/cryptsetup-keys.d/godel.key
     huffman UUID=e017c3f2-fa81-43e6-af9a-33f99abbc647 /root/cryptsetup-keys.d/huffman.key
   '';
