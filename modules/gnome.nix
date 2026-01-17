@@ -66,8 +66,8 @@
         "org/gnome/desktop/background" = {
           color-shading-type = "solid";
           picture-options = "zoom";
-          picture-uri = "file://${config.xdg.dataHome}/backgrounds/ChromeOSWind-1.png";
-          picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/ChromeOSWind-2.png";
+          picture-uri = "file://${config.xdg.dataHome}/backgrounds/Solitude-1.png";
+          picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/Solitude-2.png";
           primary-color = "#3465a4";
           secondary-color = "#000000";
         };
@@ -145,13 +145,13 @@
       };
 
       home.file = {
-        "${config.xdg.dataHome}/backgrounds/ChromeOSWind-1.png".source = pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/ChromeOSWind/ChromeOSWind-1.png";
-          hash = "sha256-lT6dvLymLtlJ+xFFyX7k1aV0lTBceZXRJSeCQvJqA3o=";
+        "${config.xdg.dataHome}/backgrounds/Solitude-1.png".source = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/Solitude/Solitude-1.png";
+          hash = "sha256-iFKSl8cx8ZqDpcQI/VwWzDq0W8HSwLj4GJlXUKLzETM=";
         };
-        "${config.xdg.dataHome}/backgrounds/ChromeOSWind-2.png".source = pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/ChromeOSWind/ChromeOSWind-2.png";
-          hash = "sha256-jB0T07ro1QtJ6fYcu/IKHZB8ESNbqwpVHtA9nr8alUg=";
+        "${config.xdg.dataHome}/backgrounds/Solitude-2.png".source = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/Solitude/Solitude-2.png";
+          hash = "sha256-zbMEMQEOpuHBumL7eoiFXrYZ+WRIL89I3D1r8zDN1t4=";
         };
       };
 
