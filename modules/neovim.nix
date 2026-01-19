@@ -356,6 +356,7 @@ in
         };
         searchCase = "smart";
         startPlugins = with pkgs.vimPlugins; [
+          vim-rhubarb
           vim-vinegar
           waikiki
         ];
