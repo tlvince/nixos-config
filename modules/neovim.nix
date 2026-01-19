@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 let
   # TODO: Add vim-waikiki to nixpkgs
   # Issue URL: https://github.com/tlvince/nixos-config/issues/410
@@ -45,6 +45,47 @@ in
             pattern = [ "*/documents/wiki/*" ];
             command = "silent! Gwrite | silent! execute 'Git commit -m ' . shellescape('Updated ' . expand('%:.'))";
             desc = "Auto-commit on save with fugitive";
+          }
+          {
+            event = [ "FileType" ];
+            pattern = [ "markdown" ];
+            callback = lib.generators.mkLuaInline ''
+              function()
+                  vim.opt_local.formatoptions:append("rn")
+
+                  -- Unordered lists
+                  vim.opt_local.comments = {
+                    "b:- [ ]",
+                    "b:- [x]",
+                    "b:*",
+                    "b:-",
+                    "b:+",
+                  }
+
+                  local opts = { buffer = true, expr = true, silent = true, noremap = true }
+
+                  vim.keymap.set("i", "<CR>", function()
+                    local line = vim.api.nvim_get_current_line()
+
+                    -- Empty list item
+                    local indent = line:match("^(%s*)[-*+]%s*$")
+                                or line:match("^(%s*)- %[ x%]%s*$")
+                                or line:match("^(%s*)%d+%.%s*$")
+                    if indent then
+                      return "<C-U>" .. indent .. "<CR>"
+                    end
+
+                    -- Ordered lists
+                    local i, num = line:match("^(%s*)(%d+)%.%s+%S")
+                    if num then
+                      return "<CR>" .. i .. (tonumber(num) + 1) .. ". "
+                    end
+
+                    return "<CR>"
+                  end, opts)
+                end
+            '';
+            desc = "Automated bullet lists (bullets.vim)";
           }
         ];
         clipboard = {
