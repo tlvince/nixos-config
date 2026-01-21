@@ -1,18 +1,4 @@
 { lib, pkgs, ... }:
-let
-  # TODO: Add vim-waikiki to nixpkgs
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/410
-  # labels: module:neovim
-  waikiki = pkgs.vimUtils.buildVimPlugin {
-    name = "vim-waikiki";
-    src = pkgs.fetchFromGitHub {
-      hash = "sha256-8zMKrmCV4Erp0Q4WyuqyyKgZS5JGu1dXSzrhftdmNFE=";
-      owner = "fcpg";
-      repo = "vim-waikiki";
-      rev = "7af1879a8ea0e4a0a7bd181ed17ad3d37478215e";
-    };
-  };
-in
 {
   programs.nvf = {
     enable = true;
@@ -369,13 +355,6 @@ in
               },
             })
           '';
-          # TODO: Remove nvim-treesitter TS syntax highlighting workaround
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/423
-          # See: https://github.com/NixOS/nixpkgs/issues/478561
-          # labels: module:neovim
-          treesitter-runtime = ''
-            vim.opt.rtp:prepend("${pkgs.vimPlugins.nvim-treesitter}/runtime")
-          '';
           waikiki = ''
             vim.g.waikiki_wiki_patterns     = { "/wiki/", "/wiki-" }
             vim.g.waikiki_default_maps      = 1
@@ -399,7 +378,7 @@ in
         startPlugins = with pkgs.vimPlugins; [
           vim-rhubarb
           vim-vinegar
-          waikiki
+          vim-waikiki
         ];
         theme = {
           enable = true;
