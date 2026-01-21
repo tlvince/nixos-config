@@ -34,6 +34,9 @@
     ../modules/zigbee2mqtt.nix
   ];
   boot = {
+    blacklistedKernelModules = [
+      "gpio_ir_recv" # Unused and throwing kernel traces as of 6.18.6
+    ];
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       grub.enable = false;
