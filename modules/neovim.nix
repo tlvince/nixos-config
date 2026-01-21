@@ -274,16 +274,7 @@
         languages = {
           enableFormat = true;
           enableTreesitter = true;
-
-          # TODO: Restore astro and hcl language servers
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/409
-          # labels: module:neovim
-          # astro = {
-          #   enable = true;
-          #   format.type = [ "prettierd" ];
-          # };
-          # hcl.enable = true;
-
+          astro.enable = true;
           bash.enable = true;
           css = {
             enable = true;
