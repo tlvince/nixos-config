@@ -13,6 +13,7 @@ in
       [
         mount-cwd
         network
+        wayland # Clipboard
         (fwd-env "XDG_CACHE_HOME")
         (fwd-env "XDG_CONFIG_HOME")
         (fwd-env "XDG_DATA_HOME")
@@ -21,10 +22,6 @@ in
         (try-readwrite (noescape "~/.config/opencode"))
         (try-readwrite (noescape "~/.local/share/opencode"))
         (try-readwrite (noescape "~/.local/state/opencode"))
-        # Clipboard
-        (set-env "WAYLAND_DISPLAY" "wayland-0")
-        (set-env "XDG_RUNTIME_DIR" "/run/user/1000")
-        (readonly "/run/user/1000/wayland-0")
         (add-pkg-deps (
           with pkgs;
           [
