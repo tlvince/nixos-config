@@ -60,7 +60,7 @@
 
   services.resolved = {
     enable = true;
-    dnsovertls = "true";
+    settings.Resolve.DNSOverTLS = "true";
   };
 
   systemd.services.dnsmasq = {
