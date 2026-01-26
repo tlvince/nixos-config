@@ -31,6 +31,7 @@
     ../modules/shairport-sync.nix
     ../modules/smartd.nix
     ../modules/tunnel.nix
+    ../modules/webdav.nix
     ../modules/zigbee2mqtt.nix
   ];
   boot = {
@@ -191,6 +192,7 @@
         "immich-kiosk.filo.uk"
         "radicale.filo.uk"
         "test.filo.uk"
+        "webdav.filo.uk"
       ];
     };
     firewall = {
