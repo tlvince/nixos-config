@@ -284,6 +284,7 @@
           markdown = {
             enable = true;
             format.type = [ "prettierd" ];
+            lsp.servers = [ "markdown-oxide" ];
           };
           nix = {
             enable = true;
