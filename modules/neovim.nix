@@ -7,7 +7,10 @@
         autocomplete.blink-cmp = {
           enable = true;
           friendly-snippets.enable = true;
-          setupOpts.keymap.preset = "default";
+          setupOpts = {
+            cmdline.keymap.preset = "inherit";
+            keymap.preset = "default";
+          };
           sourcePlugins.emoji.enable = true;
         };
         autopairs.nvim-autopairs.enable = true;
