@@ -188,6 +188,8 @@
     gnumake
     gnupg
     htop
+    hunspellDicts.en_GB-ise
+    hyphenDicts.en_GB
     imagemagick
     jpegoptim
     jq
