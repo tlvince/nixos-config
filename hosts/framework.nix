@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   lib,
   ...
@@ -172,7 +171,6 @@
     aspellDicts.en
     awscli2
     brightnessctl
-    btrbk
     diff-so-fancy
     dig
     efm-langserver
@@ -302,22 +300,38 @@
 
   services.btrbk.instances = {
     btrbk = {
-      # TODO: btrbk timer disabled in favour of hourly & daily timers
-      # Remove when upstreamed in NixOS or merged in with local btrbk module
-      # labels: module:btrbk, host:framework
-      # Issue URL: https://github.com/tlvince/nixos-config/issues/304
-      onCalendar = null;
+      onCalendar = "hourly";
+      snapshotOnly = true;
       settings = {
-        backend_remote = "btrfs-progs-sudo";
+        lockfile = "/var/lib/btrbk/btrbk.lock";
+        snapshot_create = "onchange";
+        snapshot_dir = "snapshots";
+
+        snapshot_preserve = "24h 7d 0w 0m 0y";
+        snapshot_preserve_min = "latest";
+
+        volume = {
+          "/mnt/btrfs-root" = {
+            subvolume = {
+              "/" = {
+                snapshot_name = "root";
+              };
+              "/home" = { };
+            };
+          };
+        };
+      };
+    };
+
+    remote = {
+      onCalendar = "12:00";
+      settings = {
         lockfile = "/var/lib/btrbk/btrbk.lock";
         snapshot_create = "onchange";
         snapshot_dir = "snapshots";
         ssh_identity = "/var/lib/btrbk/.ssh/id_ed25519";
         ssh_user = "btrbk";
-        timestamp_format = "long";
 
-        archive_preserve = "30d *m";
-        archive_preserve_min = "latest";
         snapshot_preserve = "24h 7d 0w 0m 0y";
         snapshot_preserve_min = "latest";
         target_preserve = "0h 14d 6w 4m 1y";
@@ -326,79 +340,17 @@
         volume = {
           "/mnt/btrfs-root" = {
             target = {
-              "ssh://cm3588/mnt/ichbiah/snapshots/framework" = {
-                subvolume = {
-                  "/" = {
-                    snapshot_name = "root";
-                  };
-                  "/home" = { };
-                };
+              "ssh://cm3588/mnt/ichbiah/snapshots/framework" = { };
+            };
+            subvolume = {
+              "/" = {
+                snapshot_name = "root";
               };
+              "/home" = { };
             };
           };
         };
       };
-    };
-  };
-
-  systemd.services.btrbk-local = {
-    description = "Take local Btrfs snapshots";
-    unitConfig.Documentation = "man:btrbk(1)";
-    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
-    after = [ "time-sync.target" ];
-    serviceConfig = {
-      User = "btrbk";
-      Group = "btrbk";
-      Type = "oneshot";
-      ExecStart = "${pkgs.btrbk}/bin/btrbk snapshot";
-      Nice = config.services.btrbk.niceness;
-      IOSchedulingClass = config.services.btrbk.ioSchedulingClass;
-      StateDirectory = "btrbk";
-    };
-  };
-
-  systemd.services.btrbk-remote = {
-    description = "Takes local Btrfs snapshots and back up to given targets";
-    unitConfig.Documentation = "man:btrbk(1)";
-    path = [ "/run/wrappers" ] ++ config.services.btrbk.extraPackages;
-    wants = [ "network-online.target" ];
-    after = [
-      "btrbk-local.service"
-      "network-online.target"
-      "time-sync.target"
-    ];
-    serviceConfig = {
-      User = "btrbk";
-      Group = "btrbk";
-      Type = "oneshot";
-      ExecStart = "${pkgs.btrbk}/bin/btrbk run";
-      Nice = config.services.btrbk.niceness;
-      IOSchedulingClass = config.services.btrbk.ioSchedulingClass;
-      StateDirectory = "btrbk";
-    };
-  };
-
-  systemd.timers.btrbk-local = {
-    description = "Timer to take Btrfs snapshots and maintain retention policies.";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      AccuracySec = "10min";
-      OnBootSec = "5min";
-      OnCalendar = "hourly";
-      Persistent = true;
-      RandomizedDelaySec = "5min";
-    };
-  };
-
-  systemd.timers.btrbk-remote = {
-    description = "Timer to take Btrfs snapshots and maintain retention policies.";
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      AccuracySec = "10min";
-      OnBootSec = "5min";
-      OnCalendar = "daily";
-      Persistent = true;
-      RandomizedDelaySec = "5min";
     };
   };
 
