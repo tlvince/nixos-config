@@ -2,6 +2,7 @@
 {
   programs.nvf = {
     enable = true;
+    defaultEditor = true;
     settings = {
       vim = {
         autocomplete.blink-cmp = {
