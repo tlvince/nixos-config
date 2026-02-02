@@ -274,14 +274,6 @@
     };
   };
 
-  programs.neovim = {
-    enable = false;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-    vimdiffAlias = true;
-  };
-
   programs.readline = {
     enable = true;
 
@@ -523,8 +515,6 @@
       htop = "htop -u $USER";
       ls = "ls --color=auto --human-readable --no-group";
       mysql = "mysql --pager=\"less -nSFX\"";
-      vi = "nvim";
-      visudo = "sudo EDITOR=nvim visudo";
 
       # Shortcuts
       ".." = "cd ..";

@@ -196,7 +196,6 @@
     libreoffice
     libva-utils
     mpv
-    neovim
     nodejs
     optipng
     pass-wayland
