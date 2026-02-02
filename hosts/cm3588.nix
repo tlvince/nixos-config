@@ -134,7 +134,6 @@
     gzip
     htop
     less
-    neovim
     rsync
     smartmontools
     tree
@@ -144,8 +143,6 @@
     zsh-z
     zstd
   ];
-
-  environment.variables.EDITOR = "nvim";
 
   fileSystems."/mnt/ichbiah/home" = {
     device = "/dev/mapper/godel";
@@ -209,6 +206,7 @@
     useDHCP = false;
   };
   nixpkgs.hostPlatform = "aarch64-linux";
+  programs.vim.enable = true;
   services.btrfs.autoScrub = {
     enable = true;
     interval = "*-*-01 06:00"; # 0600 monthly
