@@ -91,7 +91,10 @@
   };
   nixpkgs.hostPlatform = "aarch64-linux";
 
-  programs.vim.enable = true;
+  programs.vim = {
+    enable = true;
+    defaultEditor = true;
+  };
 
   security.sudo.extraRules = [
     {

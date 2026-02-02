@@ -206,7 +206,12 @@
     useDHCP = false;
   };
   nixpkgs.hostPlatform = "aarch64-linux";
-  programs.vim.enable = true;
+
+  programs.vim = {
+    enable = true;
+    defaultEditor = true;
+  };
+
   services.btrfs.autoScrub = {
     enable = true;
     interval = "*-*-01 06:00"; # 0600 monthly
