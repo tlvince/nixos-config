@@ -14,6 +14,7 @@
       enableVectors = false;
     };
     environment = {
+      IMMICH_ALLOW_SETUP = "false";
       IMMICH_LOG_LEVEL = "warn";
       TZ = config.time.timeZone;
     };
