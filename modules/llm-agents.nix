@@ -22,6 +22,9 @@ in
         (try-readwrite (noescape "~/.config/opencode"))
         (try-readwrite (noescape "~/.local/share/opencode"))
         (try-readwrite (noescape "~/.local/state/opencode"))
+        (set-env "OPENCODE_DISABLE_AUTOUPDATE" "true")
+        (set-env "OPENCODE_DISABLE_DEFAULT_PLUGINS" "true")
+        (set-env "OPENCODE_DISABLE_LSP_DOWNLOAD" "true")
         (add-pkg-deps (
           with pkgs;
           [
