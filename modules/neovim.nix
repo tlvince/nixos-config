@@ -86,13 +86,16 @@
           enable = true;
           profile = "fzf-vim";
           setupOpts = {
-            # TODO: fzf-lua files picker does not work with git ls-files
-            # Issue URL: https://github.com/tlvince/nixos-config/issues/416
-            # Set by programs.fzf.defaultCommand (FZF_DEFAULT_COMMAND)
-            # repro: ``:lua FzfLua.files({ cmd = "git ls-files" })``
-            # Workaround with fallback to fzf-lua default (fd)
-            # labels: module:neovim
-            files.cmd = "";
+            files = {
+              # FZF_DEFAULT_COMMAND prefers `git ls-files`, but FzfLua's files
+              # picker adds flags unsupported by `git`, so fallback to the
+              # default cmd (`fd`)
+              cmd = "";
+              fzf_opts = {
+                # Shorter paths rank higher
+                "--scheme" = "default";
+              };
+            };
           };
         };
         git = {
@@ -106,6 +109,12 @@
             mode = "n";
             action = "<Cmd>FzfLua global<CR>";
             desc = "fzf-lua: global";
+          }
+          {
+            key = "<C-\\>";
+            mode = "n";
+            action = "<Cmd>FzfLua buffers<CR>";
+            desc = "fzf-lua: buffers";
           }
           {
             key = "<LocalLeader>i";
