@@ -91,6 +91,8 @@
               # picker adds flags unsupported by `git`, so fallback to the
               # default cmd (`fd`)
               cmd = "";
+            };
+            global = {
               fzf_opts = {
                 # Shorter paths rank higher
                 "--scheme" = "default";
