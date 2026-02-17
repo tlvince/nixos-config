@@ -1,6 +1,7 @@
 {
-  pkgs,
   lib,
+  pkgs,
+  secrets,
   ...
 }:
 {
@@ -263,25 +264,33 @@
   hardware.cpu.amd.updateMicrocode = true;
   hardware.sensor.iio.enable = false;
 
-  networking.firewall = {
-    enable = true;
-    allowedTCPPorts = [
-      # Expo
-      8081
-      # rquickshare
-      44812
+  networking = {
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [
+        # Expo
+        8081
+        # rquickshare
+        44812
+      ];
+      # https://wiki.nixos.org/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
+      extraCommands = ''
+        iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
+        iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
+      '';
+      extraStopCommands = ''
+        iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
+        iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
+      '';
+    };
+    hostName = "framework";
+    nameservers = [
+      "2a07:a8c0::#${secrets.nextdns.framework}.dns.nextdns.io"
+      "2a07:a8c1::#${secrets.nextdns.framework}.dns.nextdns.io"
+      "45.90.28.0#${secrets.nextdns.framework}.dns.nextdns.io"
+      "45.90.30.0#${secrets.nextdns.framework}.dns.nextdns.io"
     ];
-    # https://wiki.nixos.org/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
-    extraCommands = ''
-      iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
-      iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
-    '';
-    extraStopCommands = ''
-      iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
-      iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
-    '';
   };
-  networking.hostName = "framework";
 
   nix.gc = {
     automatic = true;
@@ -359,12 +368,16 @@
   services.hardware.bolt.enable = true;
   services.power-profiles-daemon.enable = true;
   services.printing.enable = false;
-  services.resolved.enable = true;
 
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+  };
+
+  services.resolved = {
+    enable = true;
+    settings.Resolve.DNSOverTLS = "true";
   };
 
   services.udev.extraRules = ''

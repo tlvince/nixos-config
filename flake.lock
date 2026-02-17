@@ -409,11 +409,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1769362072,
-        "narHash": "sha256-TwqNt/clWvKFsvhaGw0+7bnd1So3/BG5wZLuNbbaDlk=",
+        "lastModified": 1771317735,
+        "narHash": "sha256-y5KMm28zf0ddeXnbC/5B4bIk+l7dwt6+Hs2pgrAHfSQ=",
         "owner": "tlvince",
         "repo": "nixos-config-secrets",
-        "rev": "c98644ea10c74a5c501867b25225340d4c8cbb21",
+        "rev": "50e41571d14573f057fad2e1de6a99919625b30a",
         "type": "github"
       },
       "original": {

@@ -94,6 +94,7 @@
         };
         framework = nixpkgs.lib.nixosSystem {
           specialArgs = inputs // {
+            secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
           modules = [

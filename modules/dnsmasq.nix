@@ -52,10 +52,10 @@
   };
 
   networking.nameservers = [
-    "2a07:a8c0::#${secrets.nextdns}.dns.nextdns.io"
-    "2a07:a8c1::#${secrets.nextdns}.dns.nextdns.io"
-    "45.90.28.0#${secrets.nextdns}.dns.nextdns.io"
-    "45.90.30.0#${secrets.nextdns}.dns.nextdns.io"
+    "2a07:a8c0::#${secrets.nextdns.cm3588}.dns.nextdns.io"
+    "2a07:a8c1::#${secrets.nextdns.cm3588}.dns.nextdns.io"
+    "45.90.28.0#${secrets.nextdns.cm3588}.dns.nextdns.io"
+    "45.90.30.0#${secrets.nextdns.cm3588}.dns.nextdns.io"
   ];
 
   services.resolved = {
