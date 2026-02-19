@@ -211,6 +211,7 @@
     tmux
     tree
     wl-clipboard
+    yq-go
     yt-dlp
     zip
     zsh
