@@ -367,7 +367,7 @@
       bind-key | resize-pane -Z
 
       # Colours
-      set-option -ga terminal-overrides ",tmux-256color:Tc,xterm-256color:Tc"
+      set-option -as terminal-features ",*:RGB"
       ${pkgs.lib.fileContents "${tmux-colours-onedark}/tmux-colours-onedark.conf"}
     '';
     historyLimit = 10000;
@@ -376,7 +376,7 @@
     prefix = "C-a";
     secureSocket = true;
     sensibleOnTop = false;
-    terminal = "screen-256color";
+    terminal = "tmux-256color";
   };
 
   programs.zsh = {
