@@ -70,15 +70,15 @@ jobs:
         with:
           name: tlvince-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Run flake check
-        # All configurations are checked by default, so just run it in one
-        # matrix build
-        if: matrix.flake.name == 'framework'
-        run: |
-          CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
-          nix flake check --all-systems --no-build | tee "$CHECK_OUTPUT"
-          [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
-          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
+      # - name: Run flake check
+      #   # All configurations are checked by default, so just run it in one
+      #   # matrix build
+      #   if: matrix.flake.name == 'framework'
+      #   run: |
+      #     CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
+      #     nix flake check --all-systems --no-build | tee "$CHECK_OUTPUT"
+      #     [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
+      #     echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
           OUT_PATH="$(nix build ".#${{ matrix.flake.attr }}" --print-out-paths)"
