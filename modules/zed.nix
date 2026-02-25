@@ -1,11 +1,11 @@
 { ... }:
 {
   home-manager.users.tlv =
-    { pkgs, zedless, ... }:
+    { pkgs, zed, ... }:
     {
       programs.zed-editor = {
         enable = true;
-        package = zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless;
+        package = zed.packages.${pkgs.stdenv.hostPlatform.system}.default;
         extensions = [
           "html"
           "nix"
@@ -20,7 +20,11 @@
           vtsls
         ];
         userSettings = {
+          auto_update = false;
           buffer_font_size = 16;
+          collaboration_panel = {
+            button = false;
+          };
           cursor_blink = false;
           git = {
             inline_blame = {
@@ -57,18 +61,12 @@
             };
           };
           tab_size = 2;
+          telemetry = {
+            diagnostics = false;
+            metrics = false;
+          };
           vim_mode = true;
         };
       };
-
-      # Use the Home Manager wrapper
-      xdg.dataFile."applications/org.zedless.Zedless.desktop".source =
-        pkgs.runCommand "zedless-desktop" { }
-          ''
-            ${pkgs.gnused}/bin/sed -E 's/^(TryExec|Exec)=zedless/\1=zeditor/' \
-              ${
-                zedless.packages.${pkgs.stdenv.hostPlatform.system}.zedless
-              }/share/applications/org.zedless.Zedless.desktop > $out
-          '';
     };
 }

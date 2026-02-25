@@ -76,7 +76,10 @@ jobs:
         if: matrix.flake.name == 'framework'
         run: |
           CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
-          nix flake check --all-systems --no-build | tee "$CHECK_OUTPUT"
+          # TODO: Restore flake check no-build
+          # When zed-editor v0.225.x reaches stable
+          # labels: ci
+          nix flake check --all-systems | tee "$CHECK_OUTPUT"
           [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
@@ -88,6 +91,10 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
+          # TODO: CI runs fail on long-running jobs
+          # If builds take longer than 1 hour (e.g. kernel), the job fails
+          # See: https://github.com/actions/create-github-app-token/issues/121#issuecomment-2043214796
+          # labels: ci
           nix store diff-closures "github:${GITHUB_REPOSITORY}#${{ matrix.flake.attr }}" ".#${{ matrix.flake.attr }}" --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && perl -i -pe 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
