@@ -76,6 +76,7 @@ jobs:
         if: matrix.flake.name == 'framework'
         run: |
           CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
+          nix flake archive --no-write-lock-file >/dev/null
           nix flake check --all-systems --no-build | tee "$CHECK_OUTPUT"
           [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
           echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
@@ -88,8 +89,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          git fetch --no-tags --depth=1 origin "${{ github.event.pull_request.base.sha }}"
-          nix store diff-closures "git+file://${GITHUB_WORKSPACE}?rev=${{ github.event.pull_request.base.sha }}&shallow=1#${{ matrix.flake.attr }}" ".#${{ matrix.flake.attr }}" --no-write-lock-file | tee "$DIFF_OUTPUT"
+          nix store diff-closures "github:${GITHUB_REPOSITORY}#${{ matrix.flake.attr }}" ".#${{ matrix.flake.attr }}" --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && perl -i -pe 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Add job summary to PR
