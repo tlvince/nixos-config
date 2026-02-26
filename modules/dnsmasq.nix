@@ -39,6 +39,7 @@
       dhcp-host = secrets.dnsmasqHosts;
       dhcp-option = [
         "option:dns-server,0.0.0.0" # IP of dnsmasq host
+        "option:domain-search,filo.uk"
         "option:router,192.168.0.1"
         "tag:block,option:router" # Remove gateway
       ];
