@@ -12,6 +12,7 @@
           "terraform"
         ];
         extraPackages = with pkgs; [
+          codex-acp
           nixd
           nixfmt
           package-version-server
@@ -20,6 +21,11 @@
           vtsls
         ];
         userSettings = {
+          agent_servers = {
+            codex = {
+              command = "${pkgs.codex-acp.outPath}/bin/codex-acp";
+            };
+          };
           auto_update = false;
           buffer_font_size = 16;
           collaboration_panel = {
