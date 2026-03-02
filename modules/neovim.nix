@@ -5,6 +5,7 @@
       markdown-oxide = prev.markdown-oxide.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [
           # TODO: Drop markdown-oxide workspace symbols patch
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/443
           # https://github.com/Feel-ix-343/markdown-oxide/pull/345
           # labels: neovim
           (prev.fetchpatch {
