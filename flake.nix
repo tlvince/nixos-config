@@ -8,14 +8,6 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
-    # TODO: Remove zed flake
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/441
-    # When wgpu render reaches stable
-    # See: https://github.com/NixOS/nixpkgs/pull/494156
-    # See: https://zed.dev/releases/stable/0.225.9
-    # labels: module:zed
-    zed.inputs.nixpkgs.follows = "nixpkgs";
-    zed.url = "github:zed-industries/zed";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     jail-nix.url = "sourcehut:~alexdavid/jail.nix";
@@ -43,7 +35,6 @@
       secrets,
       self,
       tmux-colours-onedark,
-      zed,
       ...
     }@inputs:
     let

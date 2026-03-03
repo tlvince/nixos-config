@@ -1,11 +1,10 @@
 { ... }:
 {
   home-manager.users.tlv =
-    { pkgs, zed, ... }:
+    { pkgs, ... }:
     {
       programs.zed-editor = {
         enable = true;
-        package = zed.packages.${pkgs.stdenv.hostPlatform.system}.default;
         extensions = [
           "html"
           "nix"
