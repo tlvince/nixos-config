@@ -90,7 +90,7 @@ jobs:
           DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
           # Local source to avoid fetching via potentially expired GitHub token
           git fetch --no-tags --depth=1 origin "${{ github.event.pull_request.base.sha }}"
-          nix store diff-closures "git+file://${GITHUB_WORKSPACE}?rev=${{ github.event.pull_request.base.sha }}&shallow=1#${{ matrix.flake.attr }}" ".#${{ matrix.flake.attr }}" --no-write-lock-file | tee "$DIFF_OUTPUT"
+          nix store diff-closures "git+file://${GITHUB_WORKSPACE}?ref=refs/heads/${{ github.base_ref }}&rev=${{ github.event.pull_request.base.sha }}&shallow=1#${{ matrix.flake.attr }}" ".#${{ matrix.flake.attr }}" --no-write-lock-file | tee "$DIFF_OUTPUT"
           [[ -s "$DIFF_OUTPUT" ]] && perl -i -pe 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
           echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Add job summary to PR
