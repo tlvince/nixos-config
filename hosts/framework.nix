@@ -269,6 +269,23 @@
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      # TODO: Drop linux-firmware NPU power state patch
+      # Suspend currently fails, see:
+      # https://gitlab.freedesktop.org/drm/amd/-/issues/5009
+      # labels: host:framework
+      linux-firmware = prev.linux-firmware.overrideAttrs (old: {
+        version = "58cf579b98c0c4878deeda1acb5db70e699875b5";
+        src = pkgs.fetchgit {
+          url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git";
+          rev = "58cf579b98c0c4878deeda1acb5db70e699875b5";
+          hash = "sha256-uEW7oIB+9tUQyfmyki6hpLCQtHoPFKn1RsS4hT+I5zA=";
+        };
+      });
+    })
+  ];
+
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
