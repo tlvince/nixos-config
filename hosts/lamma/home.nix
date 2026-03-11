@@ -4,6 +4,9 @@
 }:
 {
   home = {
+    packages = with pkgs; [
+      mactop
+    ];
     sessionVariables = {
       ZSHZ_CMD = "j";
     };
