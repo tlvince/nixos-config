@@ -54,6 +54,8 @@
             nvf.darwinModules.default
             home-manager.darwinModules.home-manager
             {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
               home-manager.users.tlv = ./hosts/lamma/home.nix;
             }
           ];
@@ -102,6 +104,7 @@
             {
               home-manager.extraSpecialArgs = inputs;
               home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
               home-manager.users.tlv = import ./home.nix;
             }
             lanzaboote.nixosModules.lanzaboote
