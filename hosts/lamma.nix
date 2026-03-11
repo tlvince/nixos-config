@@ -21,6 +21,18 @@
   };
 
   nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.overlays = [
+    (final: prev: {
+      # TODO: Remove mactop overlay
+      # Build fails as of 2.0.5, see:
+      # https://github.com/NixOS/nixpkgs/issues/483467
+      # https://github.com/NixOS/nixpkgs/pull/477686
+      # labels: host:lamma
+      mactop = prev.mactop.overrideAttrs (old: {
+        doCheck = false;
+      });
+    })
+  ];
 
   security.pam.services.sudo_local.touchIdAuth = true;
 
