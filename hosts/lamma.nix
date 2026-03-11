@@ -24,6 +24,7 @@
   nixpkgs.overlays = [
     (final: prev: {
       # TODO: Remove mactop overlay
+      # Issue URL: https://github.com/tlvince/nixos-config/issues/451
       # Build fails as of 2.0.5, see:
       # https://github.com/NixOS/nixpkgs/issues/483467
       # https://github.com/NixOS/nixpkgs/pull/477686
