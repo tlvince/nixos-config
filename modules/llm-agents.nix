@@ -36,7 +36,7 @@ in
         ))
       ]
     ))
-    (jail "yolo-codex" pkgs.codex (
+    (jail "codex" pkgs.codex (
       with jail.combinators;
       [
         mount-cwd
@@ -44,7 +44,8 @@ in
         (add-pkg-deps (
           with pkgs;
           [
-            # https://github.com/numtide/llm-agents.nix/blob/b6f6693bc2b970af3d2220845d13009c63faad2f/packages/claudebox/default.nix#L7-L21
+            # https://github.com/numtide/claudebox/blob/33a7705a6232acfe77397e20c8710456221277a1/package.nix#L15-L33
+            coreutils
             curl
             fd
             findutils
