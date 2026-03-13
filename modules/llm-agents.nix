@@ -70,5 +70,40 @@ in
         (try-readwrite (noescape "~/.codex"))
       ]
     ))
+    (jail "claude-code" pkgs.claude-code (
+      with jail.combinators;
+      [
+        mount-cwd
+        network
+        (add-pkg-deps (
+          with pkgs;
+          [
+            # https://github.com/numtide/claudebox/blob/33a7705a6232acfe77397e20c8710456221277a1/package.nix#L15-L33
+            coreutils
+            curl
+            fd
+            findutils
+            gawk
+            git
+            gnugrep
+            gnused
+            jq
+            less
+            nix
+            python3
+            ripgrep
+            tree
+            wget
+            which
+          ]
+        ))
+        (set-argv [
+          "--dangerously-skip-permissions"
+          (noescape "\"$@\"")
+        ])
+        (try-readwrite (noescape "~/.claude"))
+        (try-readwrite (noescape "~/.claude.json"))
+      ]
+    ))
   ];
 }
