@@ -9,12 +9,12 @@ let
       util-linux
     ];
     text = ''
-      systemctl start systemd-cryptsetup@eich.service
-      mount -o compress=zstd,noatime /dev/mapper/eich /mnt/eich
-      btrbk --config /dev/null archive /mnt/ichbiah/snapshots /mnt/eich/snapshots
-      umount /mnt/eich
-      systemctl stop systemd-cryptsetup@eich.service
-      sdparm --command=stop --readonly /dev/disk/by-uuid/112bdd0b-de41-4622-a659-694b9f61032a
+      systemctl start systemd-cryptsetup@dijkstra.service
+      mount -o compress=zstd,noatime /dev/mapper/dijkstra /mnt/dijkstra
+      btrbk --config /dev/null archive /mnt/ichbiah/snapshots /mnt/dijkstra/snapshots
+      umount /mnt/dijkstra
+      systemctl stop systemd-cryptsetup@dijkstra.service
+      sdparm --command=stop --readonly /dev/disk/by-uuid/e14d08e4-7123-4d86-bae0-b3de6f00454f
     '';
   };
 in
