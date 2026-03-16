@@ -11,7 +11,6 @@
     enable = true;
     database = {
       enable = false;
-      enableVectors = false;
     };
     environment = {
       IMMICH_ALLOW_SETUP = "false";
