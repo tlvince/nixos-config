@@ -331,6 +331,11 @@
     };
   };
 
+  systemd.services."btrbk-remote" = {
+    after = [ "NetworkManager-wait-online.service" ];
+    requires = [ "NetworkManager-wait-online.service" ];
+  };
+
   services.fprintd.enable = true;
   services.fwupd.enable = true;
   services.hardware.bolt.enable = true;
