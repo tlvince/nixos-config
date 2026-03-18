@@ -69,6 +69,7 @@
 
       dock = {
         autohide = true;
+        static-only = true;
         # Disable hot corners
         wvous-bl-corner = 1;
         wvous-br-corner = 1;
@@ -78,9 +79,10 @@
 
       finder = {
         AppleShowAllExtensions = true;
+        FXPreferredViewStyle = "clmv";
+        FXRemoveOldTrashItems = true;
         NewWindowTarget = "Home";
-        ShowPathbar = true;
-        ShowStatusBar = true;
+        QuitMenuItem = true;
       };
 
       screencapture.location = "~/Pictures/screenshots";
