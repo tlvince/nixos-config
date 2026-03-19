@@ -413,6 +413,7 @@
           autotagHtml = true;
           enable = true;
           fold = true;
+          foldByDefault = true;
         };
         utility.mkdir.enable = true;
         viAlias = true;
