@@ -390,6 +390,7 @@
         options = {
           conceallevel = 2;
           expandtab = true;
+          foldenable = true;
           guicursor = "";
           shiftwidth = 2;
           showcmd = false;
@@ -413,7 +414,6 @@
           autotagHtml = true;
           enable = true;
           fold = true;
-          foldByDefault = true;
         };
         utility.mkdir.enable = true;
         viAlias = true;
