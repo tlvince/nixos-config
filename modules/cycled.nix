@@ -11,17 +11,17 @@
     wantedBy = [ "multi-user.target" ];
     after = [ "systemd-journald.socket" ];
     serviceConfig = {
-      BindPaths = [ "/home/tlv/dev/cycled/state.json:/run/cycled/state.json" ];
       BindReadOnlyPaths = [ "/home/tlv/dev/cycled:/run/cycled" ];
       ExecStart = "${pkgs.nodejs-slim}/bin/node --no-warnings=ExperimentalWarning /run/cycled/index.js";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
       RestartSec = 10;
       SyslogIdentifier = "cycled";
-      WorkingDirectory = "/run/cycled";
+      WorkingDirectory = "%S/cycled";
       RuntimeDirectory = "cycled";
       RuntimeDirectoryMode = "0755";
       RuntimeMaxSec = 60;
+      StateDirectory = "cycled";
 
       # Reduce journal noise
       CPUAccounting = false;
