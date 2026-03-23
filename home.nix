@@ -226,6 +226,7 @@
       "* text=auto"
     ];
     signing = {
+      format = "openpgp";
       key = "AB184CDBE6AEACDE";
       signByDefault = true;
     };
@@ -603,6 +604,7 @@
 
     userDirs = {
       enable = true;
+      setSessionVariables = true;
 
       desktop = "${config.home.homeDirectory}/desktop";
       documents = "${config.home.homeDirectory}/documents";
