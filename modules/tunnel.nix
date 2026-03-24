@@ -29,7 +29,6 @@ in
       Group = "tunnel";
 
       # Reduce journal noise
-      CPUAccounting = false;
       IOAccounting = false;
       IPAccounting = false;
       MemoryAccounting = false;

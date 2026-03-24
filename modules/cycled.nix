@@ -24,7 +24,6 @@
       StateDirectory = "cycled";
 
       # Reduce journal noise
-      CPUAccounting = false;
       IOAccounting = false;
       IPAccounting = false;
       LogLevelMax = "warning";
