@@ -95,6 +95,7 @@ in
             tree
             wget
             which
+            zsh
           ]
         ))
         (set-argv [
