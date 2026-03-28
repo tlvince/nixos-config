@@ -6,6 +6,7 @@
 }:
 {
   imports = [
+    ../modules/cc-proxy.nix
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
     ../modules/famly-fetch.nix
