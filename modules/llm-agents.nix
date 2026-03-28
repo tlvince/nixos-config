@@ -101,6 +101,14 @@ in
           "--dangerously-skip-permissions"
           (noescape "\"$@\"")
         ])
+        (set-env "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY" "1")
+        (set-env "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC" "1")
+        (set-env "DISABLE_AUTOUPDATER" "1")
+        (set-env "DISABLE_COST_WARNINGS" "1")
+        (set-env "DISABLE_ERROR_REPORTING" "1")
+        (set-env "DISABLE_FEEDBACK_COMMAND" "1")
+        (set-env "DISABLE_INSTALLATION_CHECKS" "1")
+        (set-env "DISABLE_TELEMETRY" "1")
         (try-readwrite (noescape "~/.claude"))
         (try-readwrite (noescape "~/.claude.json"))
       ]
