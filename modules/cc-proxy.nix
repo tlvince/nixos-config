@@ -16,7 +16,9 @@
       CapabilityBoundingSet = [ "" ];
       KeyringMode = "private";
       LockPersonality = true;
+      NoNewPrivileges = true;
       PrivateDevices = true;
+      PrivateTmp = true;
       ProtectClock = true;
       ProtectControlGroups = true;
       ProtectHostname = true;
@@ -30,6 +32,8 @@
       ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      SystemCallArchitectures = "native";
       UMask = 077;
     };
   };
