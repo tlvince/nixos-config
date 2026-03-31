@@ -10,6 +10,7 @@
     file = {
       ".digrc".text = "+noall +answer";
     };
+    preferXdgDirectories = true;
     sessionVariables = {
       # Zsh's "< file" built-in pager
       READNULLCMD = "$PAGER";
@@ -93,6 +94,22 @@
     dates = "weekly";
     options = "--delete-older-than 30d";
     randomizedDelaySec = "1 hour";
+  };
+
+  programs.bun = {
+    enable = true;
+    enableGitIntegration = false;
+    package = null;
+    settings = {
+      install = {
+        minimumReleaseAge = 604800; # 7 days
+        minimumReleaseAgeExcludes = [
+          "@types/bun"
+          "typescript"
+        ];
+      };
+      telemetry = false;
+    };
   };
 
   programs.diff-so-fancy = {
