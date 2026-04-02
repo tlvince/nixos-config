@@ -65,10 +65,10 @@
         packages = with pkgs; [
           azure-cli
           eslint_d
-          nodePackages."@astrojs/language-server"
-          nodePackages.bash-language-server
-          nodePackages.typescript-language-server
-          nodejs_22
+          astro-language-server
+          bash-language-server
+          typescript-language-server
+          nodejs_24
           mongodb-tools
           mongosh
           terraform
