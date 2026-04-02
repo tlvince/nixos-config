@@ -122,13 +122,20 @@
     settings = {
       main = {
         font = "monospace:size=12.5";
-        include = "${pkgs.foot.themes}/share/foot/themes/onedark";
+        include = [
+          "${pkgs.foot.themes}/share/foot/themes/onedark"
+          "${pkgs.foot.themes}/share/foot/themes/solarized-light"
+        ];
+        initial-color-theme = "dark";
         initial-window-mode = "fullscreen";
       };
       cursor = {
         style = "beam";
         blink = "yes";
         beam-thickness = 1;
+      };
+      key-bindings = {
+        color-theme-toggle = "F12";
       };
       scrollback = {
         lines = 10000;
