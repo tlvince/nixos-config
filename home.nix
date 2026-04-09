@@ -174,7 +174,7 @@
         d = "diff";
         dfs = "diff --stat";
         g = "grep --ignore-case";
-        l = "log -p --follow";
+        l = "log --patch";
         lh = "log --follow --pretty=format:'%H'";
         lhr = "log --reverse --pretty=format:'%H'";
         lm = "log --follow --pretty=format:'%s'";
