@@ -17,10 +17,6 @@
       LESS = "--chop-long-lines --ignore-case --LONG-PROMPT --no-init --RAW-CONTROL-CHARS --quit-if-one-screen --quit-on-intr";
       SYSTEMD_LESS = "$LESS";
 
-      # Set in modules/neovim.nix
-      # EDITOR = nvim;
-      VISUAL = "zeditor";
-
       # Default to Wayland for Chrome/Electron
       # https://nixos.org/manual/nixos/unstable/release-notes#sec-release-23.11
       NIXOS_OZONE_WL = 1;
