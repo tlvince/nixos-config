@@ -32,7 +32,6 @@
 
   # GNOME-specific system packages
   environment.systemPackages = with pkgs; [
-    errands
     gnome-calculator
     gnome-calendar
     gnome-clocks
