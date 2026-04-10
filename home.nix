@@ -582,7 +582,7 @@
       p = "wl-paste";
       s = "spell";
       v = "nvim";
-      y = "yq --colors --prettyPrint -oy";
+      y = "yq-pretty";
     };
 
     syntaxHighlighting.enable = true;

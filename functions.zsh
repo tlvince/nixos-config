@@ -49,3 +49,7 @@ cht() {
 curl-headers() {
   curl --dump-header - --output /dev/null --silent --show-error "$@" | "$PAGER"
 }
+
+yq-pretty() {
+  yq --colors --output-format yaml --prettyPrint "$@" | "$PAGER"
+}
