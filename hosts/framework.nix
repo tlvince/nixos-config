@@ -140,6 +140,7 @@
     aspellDicts.en
     awscli2
     brightnessctl
+    bun
     diff-so-fancy
     dig
     efm-langserver
