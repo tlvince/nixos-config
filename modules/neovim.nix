@@ -401,6 +401,7 @@
         };
         searchCase = "smart";
         startPlugins = with pkgs.vimPlugins; [
+          vim-eunuch
           vim-rhubarb
           vim-vinegar
           vim-waikiki
