@@ -102,6 +102,7 @@
     package = null;
     settings = {
       install = {
+        exact = true;
         minimumReleaseAge = 604800; # 7 days
         minimumReleaseAgeExcludes = [
           "@types/bun"
