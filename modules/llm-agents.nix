@@ -28,6 +28,7 @@ in
         (add-pkg-deps (
           with pkgs;
           [
+            bun
             git
             less
             ripgrep
@@ -112,6 +113,25 @@ in
         (set-env "DISABLE_TELEMETRY" "1")
         (try-readwrite (noescape "~/.claude"))
         (try-readwrite (noescape "~/.claude.json"))
+      ]
+    ))
+    (jail "gemini-cli" pkgs.gemini-cli (
+      with jail.combinators;
+      [
+        mount-cwd
+        network
+        (add-pkg-deps (
+          with pkgs;
+          [
+            ripgrep
+          ]
+        ))
+        (set-argv [
+          "--yolo"
+          (noescape "\"$@\"")
+        ])
+        (set-env "GEMINI_TELEMETRY_ENABLED" "0")
+        (try-readwrite (noescape "~/.gemini"))
       ]
     ))
   ];
