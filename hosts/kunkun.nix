@@ -144,7 +144,6 @@
         proxyPass = "https://home-assistant";
         recommendedProxySettings = true;
         extraConfig = ''
-          proxy_set_header Host home-assistant.filo.uk;
           proxy_ssl_name home-assistant.filo.uk;
           proxy_ssl_server_name on;
         '';
