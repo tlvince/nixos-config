@@ -21,7 +21,6 @@
     ../modules/famlyd.nix
     ../modules/home-assistant.nix
     ../modules/immich.nix
-    ../modules/immich-kiosk.nix
     ../modules/mosquitto.nix
     ../modules/nginx.nix
     ../modules/postgres.nix
