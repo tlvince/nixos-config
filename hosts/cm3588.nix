@@ -18,6 +18,7 @@
     ../modules/archive.nix
     ../modules/dmesgd.nix
     ../modules/dnsmasq.nix
+    ../modules/famlyd.nix
     ../modules/home-assistant.nix
     ../modules/immich.nix
     ../modules/immich-kiosk.nix
