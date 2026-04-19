@@ -271,6 +271,11 @@
 
   nixpkgs.hostPlatform = "x86_64-linux";
 
+  programs.localsend = {
+    enable = true;
+    openFirewall = true;
+  };
+
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
