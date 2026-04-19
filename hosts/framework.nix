@@ -174,7 +174,6 @@
     python3
     rclone
     ripgrep
-    rquickshare
     sbctl
     signal-desktop
     tmux
@@ -240,8 +239,6 @@
       allowedTCPPorts = [
         # Expo
         8081
-        # rquickshare
-        44812
       ];
       # https://wiki.nixos.org/wiki/WireGuard#Setting_up_WireGuard_with_NetworkManager
       extraCommands = ''
