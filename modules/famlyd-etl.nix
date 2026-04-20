@@ -8,8 +8,6 @@
   age.secrets.famlyd-etl.file = "${secretsPath}/famlyd-etl.age";
 
   systemd.services.famlyd-etl = {
-    wantedBy = [ "multi-user.target" ];
-    after = [ "systemd-journald.socket" ];
     unitConfig = {
       StartLimitBurst = 4;
       StartLimitIntervalSec = 60;
@@ -53,14 +51,6 @@
       RestrictNamespaces = true;
       RestrictRealtime = true;
       UMask = 077;
-    };
-  };
-
-  systemd.timers.famlyd-etl = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      OnCalendar = "Mon..Fri 01:00";
-      RandomizedDelaySec = "1m";
     };
   };
 }

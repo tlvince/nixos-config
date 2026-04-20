@@ -9,8 +9,8 @@
 
   systemd.services.famlyd = {
     wantedBy = [ "multi-user.target" ];
-    after = [ "systemd-journald.socket" ];
     unitConfig = {
+      OnSuccess = "famlyd-etl.service";
       StartLimitBurst = 4;
       StartLimitIntervalSec = 60;
     };
@@ -22,6 +22,7 @@
       Restart = "on-failure";
       RestartSec = 5;
       SyslogIdentifier = "famlyd";
+      Type = "oneshot";
       WorkingDirectory = "%t/famlyd";
       RuntimeDirectory = "famlyd";
       RuntimeDirectoryMode = "0755";
