@@ -5,9 +5,9 @@
   ...
 }:
 {
-  age.secrets.famlyd.file = "${secretsPath}/famlyd.age";
+  age.secrets.famlyd-etl.file = "${secretsPath}/famlyd-etl.age";
 
-  systemd.services.famlyd = {
+  systemd.services.famlyd-etl = {
     wantedBy = [ "multi-user.target" ];
     after = [ "systemd-journald.socket" ];
     unitConfig = {
@@ -16,16 +16,20 @@
     };
     serviceConfig = {
       BindReadOnlyPaths = [ "/home/tlv/dev/famlyd:/run/famlyd" ];
-      ExecStart = "${pkgs.bun}/bin/bun /run/famlyd/famlyd.js";
-      StandardOutput = "append:/mnt/ichbiah/home/famlyd/calendar.jsonl";
-      LoadCredential = "famlyd:${config.age.secrets.famlyd.path}";
+      ExecStart = "${pkgs.bun}/bin/bun /run/famlyd/famlyd-etl.js";
+      LoadCredential = "famlyd-etl:${config.age.secrets.famlyd-etl.path}";
       Restart = "on-failure";
       RestartSec = 5;
-      SyslogIdentifier = "famlyd";
-      WorkingDirectory = "%t/famlyd";
-      RuntimeDirectory = "famlyd";
+      SyslogIdentifier = "famlyd-etl";
+      WorkingDirectory = "%t/famlyd-etl";
+      RuntimeDirectory = "famlyd-etl";
       RuntimeDirectoryMode = "0755";
-      RuntimeMaxSec = 9;
+      RuntimeMaxSec = 30;
+      StateDirectory = "famlyd-etl";
+      Environment = [
+        "FAMLY_IMPORT_PATH=/mnt/ichbiah/home/famlyd/calendar.jsonl"
+        "FAMLY_IMPORT_FAMILY_ID=Nw3xoEMzs7TpLoeqztwkdgQE9sG2"
+      ];
 
       # Hardening
       CapabilityBoundingSet = [ "" ];
@@ -52,11 +56,11 @@
     };
   };
 
-  systemd.timers.famlyd = {
+  systemd.timers.famlyd-etl = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "Mon..Fri 23:59:00";
-      RandomizedDelaySec = "5s";
+      OnCalendar = "Mon..Fri 01:00";
+      RandomizedDelaySec = "1m";
     };
   };
 }
