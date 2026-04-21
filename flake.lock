@@ -323,6 +323,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-lemonade": {
+      "locked": {
+        "lastModified": 1774387122,
+        "narHash": "sha256-RDXfLr3Y9fvYlMpp59JHAMtoo7BXkjaWBlS7doyDyx0=",
+        "owner": "Videl",
+        "repo": "nixpkgs",
+        "rev": "fec54e17fee7ee83d90a447aec5a910762e0fdfb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Videl",
+        "repo": "nixpkgs",
+        "rev": "fec54e17fee7ee83d90a447aec5a910762e0fdfb",
+        "type": "github"
+      }
+    },
     "nvf": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -381,6 +397,7 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "nixpkgs-amdgpu": "nixpkgs-amdgpu",
+        "nixpkgs-lemonade": "nixpkgs-lemonade",
         "nvf": "nvf",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"

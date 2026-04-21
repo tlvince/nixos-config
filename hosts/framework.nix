@@ -13,6 +13,7 @@
     ../modules/fastflowlm.nix
     ../modules/firefox.nix
     ../modules/gnome.nix
+    ../modules/lemonade-ai.nix
     ../modules/llm-agents.nix
     ../modules/neovim.nix
     ../modules/smartd.nix
@@ -370,6 +371,8 @@
   '';
 
   system.stateVersion = "23.05";
+
+  services.lemonade-ai.enable = true;
 
   users = {
     users.tlv = {

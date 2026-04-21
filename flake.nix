@@ -18,6 +18,10 @@
     # See: https://github.com/NixOS/nixpkgs/pull/494907
     # labels: host:framework
     nixpkgs-amdgpu.url = "github:Aleksanaa/nixpkgs/d8805ed18bfb7ed81cd7f64ae8a31b22ede0d8f5";
+    # TODO: Drop lemonade-ai overlay
+    # See: https://github.com/NixOS/nixpkgs/pull/498314
+    # labels: host:framework
+    nixpkgs-lemonade.url = "github:Videl/nixpkgs/fec54e17fee7ee83d90a447aec5a910762e0fdfb";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:notashelf/nvf";
@@ -37,6 +41,7 @@
       lanzaboote,
       nixpkgs,
       nixpkgs-amdgpu,
+      nixpkgs-lemonade,
       nvf,
       secrets,
       self,
@@ -65,6 +70,17 @@
                 hash = "sha256-HrPk7BrqyLnyt8Y/qgCZ1Eyic7w2KPiJLUI23tx8GFc=";
               };
             });
+          })
+        ];
+      };
+      pkgsLemonade = import nixpkgs-lemonade {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [
+          (final: _: {
+            lemonade-ai = final.callPackage ./pkgs/lemonade-ai/package.nix {
+              lemonadeAiLockfile = nixpkgs-lemonade + "/pkgs/by-name/le/lemonade-ai/web-app.package-lock.json";
+            };
           })
         ];
       };
@@ -118,6 +134,7 @@
         framework = nixpkgs.lib.nixosSystem {
           specialArgs = inputs // {
             inherit pkgsAmdgpu;
+            inherit pkgsLemonade;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
