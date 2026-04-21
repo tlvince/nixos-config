@@ -323,9 +323,8 @@
             format.type = [ "nixfmt" ];
           };
           svelte.format.type = [ "prettierd" ];
-          tailwind.enable = true;
           terraform.enable = true;
-          ts = {
+          typescript = {
             enable = true;
             format.type = [ "prettierd" ];
           };
@@ -350,6 +349,7 @@
             renameSymbol = "grn";
             signatureHelp = "<C-s>";
           };
+          presets.tailwindcss-language-server.enable = true;
         };
         luaConfigRC = {
           # Open a file (relative to the current file)
