@@ -10,6 +10,7 @@
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
     ../modules/famly-fetch.nix
+    ../modules/fastflowlm.nix
     ../modules/firefox.nix
     ../modules/gnome.nix
     ../modules/llm-agents.nix

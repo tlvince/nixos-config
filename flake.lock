@@ -307,6 +307,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-amdgpu": {
+      "locked": {
+        "lastModified": 1776095273,
+        "narHash": "sha256-gcwXCN56NptYfKtdep28+eqWOhr0E4xjHMWDo/wMOlc=",
+        "owner": "Aleksanaa",
+        "repo": "nixpkgs",
+        "rev": "d8805ed18bfb7ed81cd7f64ae8a31b22ede0d8f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Aleksanaa",
+        "repo": "nixpkgs",
+        "rev": "d8805ed18bfb7ed81cd7f64ae8a31b22ede0d8f5",
+        "type": "github"
+      }
+    },
     "nvf": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -364,6 +380,7 @@
         "jail-nix": "jail-nix",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
+        "nixpkgs-amdgpu": "nixpkgs-amdgpu",
         "nvf": "nvf",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
