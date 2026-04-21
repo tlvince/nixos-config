@@ -14,6 +14,7 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     # TODO: Drop fastflowlm overlay
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/468
     # See: https://github.com/NixOS/nixpkgs/pull/494907
     # labels: host:framework
     nixpkgs-amdgpu.url = "github:Aleksanaa/nixpkgs/d8805ed18bfb7ed81cd7f64ae8a31b22ede0d8f5";
