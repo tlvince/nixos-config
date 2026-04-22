@@ -27,6 +27,9 @@
       StateDirectory = "flm";
       SyslogIdentifier = "flm";
 
+      # Reduce journal noise
+      LogLevelMax = "warning";
+
       PrivateTmp = true;
       NoNewPrivileges = true;
       ProtectSystem = "full";
