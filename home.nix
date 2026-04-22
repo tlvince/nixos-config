@@ -44,6 +44,7 @@
       DO_NOT_TRACK = 1; # https://consoledonottrack.com
       EXPO_NO_TELEMETRY = 1; # Expo
       GATSBY_TELEMETRY_DISABLED = 1; # Gatsby
+      GH_TELEMETRY = "false"; # GitHub CLI
       GOTELEMETRY = "false"; # Go
       HASURA_GRAPHQL_ENABLE_TELEMETRY = "false"; # Hasura
       HOMEBREW_NO_ANALYTICS = 1;
