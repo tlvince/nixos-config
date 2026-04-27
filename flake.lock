@@ -153,6 +153,26 @@
         "type": "github"
       }
     },
+    "ghostwriter": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777298666,
+        "narHash": "sha256-3v+vue1Qkhr+oQxh3D7nhN6WSgDsBSnoviM8Xdb8TlI=",
+        "owner": "tlvince",
+        "repo": "ghostwriter",
+        "rev": "e1e34d84968735532f542a98d05af19516b3a745",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "repo": "ghostwriter",
+        "type": "github"
+      }
+    },
     "gitignore": {
       "inputs": {
         "nixpkgs": [
@@ -376,6 +396,7 @@
         "agenix": "agenix",
         "darwin": "darwin_2",
         "disko": "disko",
+        "ghostwriter": "ghostwriter",
         "home-manager": "home-manager_2",
         "jail-nix": "jail-nix",
         "lanzaboote": "lanzaboote",

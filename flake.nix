@@ -8,6 +8,8 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
+    ghostwriter.url = "github:tlvince/ghostwriter";
+    ghostwriter.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     jail-nix.url = "sourcehut:~alexdavid/jail.nix";
@@ -32,6 +34,7 @@
       agenix,
       disko,
       darwin,
+      ghostwriter,
       home-manager,
       jail-nix,
       lanzaboote,
