@@ -16,7 +16,7 @@ jobs:
         uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3
         id: generate-github-token
         with:
-          app-id: ${{ vars.APP_ID }}
+          client-id: ${{ vars.GH_APP_CLIENT_ID }}
           private-key: ${{ secrets.GH_APP_KEY }}
           owner: tlvince
           repositories: nixos-config-secrets
