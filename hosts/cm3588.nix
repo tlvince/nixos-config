@@ -19,7 +19,6 @@
     ../modules/dmesgd.nix
     ../modules/dnsmasq.nix
     ../modules/famlyd.nix
-    ../modules/famlyd-etl.nix
     ../modules/home-assistant.nix
     ../modules/immich.nix
     ../modules/mosquitto.nix
