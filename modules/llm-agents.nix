@@ -123,6 +123,8 @@ in
         (add-pkg-deps (
           with pkgs;
           [
+            bashInteractive # bash -c used by run_shell_command tool
+            bun
             ripgrep
           ]
         ))
