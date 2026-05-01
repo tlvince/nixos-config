@@ -5,7 +5,7 @@
 }:
 {
   environment.systemPackages = [
-    ghostwriter.packages.${pkgs.system}.asr
+    ghostwriter.packages.${pkgs.stdenv.hostPlatform.system}.asr
   ];
 
   hardware.uinput.enable = true;
