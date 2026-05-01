@@ -16,6 +16,7 @@
       User = "flm";
 
       Environment = [
+        "FLM_DISABLE_UPDATE_CHECK=1"
         "FLM_MODEL_PATH=/var/lib/flm"
         "XILINX_XRT=${pkgsAmdgpu.xrt-lib-with-xdna}"
       ];
