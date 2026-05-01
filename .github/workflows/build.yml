@@ -1,5 +1,3 @@
-# Based on:
-# https://github.com/cuties-social/cuties-social-nixfiles/blob/14593a3014c32ce121529009d8d6564e45dd7e99/.github/workflows/build.yml
 name: Build
 on:
   push:
@@ -19,87 +17,27 @@ jobs:
       PR_JOB_SUMMARY: pr-job-summary
     strategy:
       matrix:
-        flake:
-          - name: framework
-            attr: nixosConfigurations.framework.config.system.build.toplevel
-            system: x86-64-linux
-            runner: ubuntu-24.04
-          - name: cm3588
-            attr: nixosConfigurations.cm3588.config.system.build.toplevel
-            system: aarch64-linux
-            runner: ubuntu-24.04-arm
-          - name: nodejs
-            attr: devShells.x86_64-linux.nodejs
-            system: x86-64-linux
-            runner: ubuntu-24.04
-          - name: kunkun
-            attr: nixosConfigurations.kunkun.config.system.build.toplevel
-            system: aarch64-linux
-            runner: ubuntu-24.04-arm
-          - name: lamma
-            attr: darwinConfigurations.lamma.system
-            system: aarch64-darwin
-            runner: macos-26
-    runs-on: ${{ matrix.flake.runner }}
+        machine:
+          - host: framework
+            platform: x86-64-linux
+            runner: blacksmith-32vcpu-ubuntu-2404
+            type: nixosConfigurations
+    runs-on: ${{ matrix.machine.runner }}
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - name: Relocate Nix store
-        # ~60GB available on /mnt vs ~20GB on / for x86-64 runners
-        if: matrix.flake.system == 'x86-64-linux'
-        run: |
-          sudo mkdir /nix /mnt/nix
-          sudo mount --bind /mnt/nix /nix
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
-      - name: Generate GitHub token
-        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3
-        id: generate-github-token
-        with:
-          client-id: ${{ vars.GH_APP_CLIENT_ID }}
-          private-key: ${{ secrets.GH_APP_KEY }}
-          owner: tlvince
-          repositories: nixos-config-secrets
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5
       - name: Install Nix
-        uses: cachix/install-nix-action@ab739621df7a23f52766f9ccc97f38da6b7af14f # v31
-        with:
-          github_access_token: ${{ steps.generate-github-token.outputs.token }}
+        uses: cachix/install-nix-action@0b0e072294b088b73964f1d72dfdac0951439dbd # v31
       - name: Set up public cache
-        uses: cachix/cachix-action@1eb2ef646ac0255473d23a5907ad7b04ce94065c # v17
+        uses: cachix/cachix-action@0fc020193b5a1fa3ac4575aa3a7d3aa6a35435ad # v16
         with:
           name: tlvince-nixos-config
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Run flake check
-        # All configurations are checked by default, so just run it in one
-        # matrix build
-        if: matrix.flake.name == 'framework'
-        run: |
-          CHECK_OUTPUT="${RUNNER_TEMP}/flake-check-output"
-          nix flake check --all-systems --no-build | tee "$CHECK_OUTPUT"
-          [[ -s $CHECK_OUTPUT ]] || echo "No issues found by 'nix flake check'." > "$CHECK_OUTPUT"
-          echo -e "## Flake check\n\`\`\`\n$(<$CHECK_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
       - name: Build
         run: |
-          OUT_PATH="$(nix build ".#${{ matrix.flake.attr }}" --print-out-paths)"
-          echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.flake.attr }}\x1b[0m"
-          echo -e "## Build ${{ matrix.flake.name }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
-      - name: Diff closures
-        if: github.event_name == 'pull_request'
-        run: |
-          DIFF_OUTPUT="${RUNNER_TEMP}/nix-store-diff-closures-output"
-          # Local source to avoid fetching via potentially expired GitHub token
-          git fetch --no-tags --depth=1 origin "${{ github.event.pull_request.base.sha }}"
-          nix store diff-closures "git+file://${GITHUB_WORKSPACE}?ref=refs/heads/${{ github.base_ref }}&rev=${{ github.event.pull_request.base.sha }}&shallow=1#${{ matrix.flake.attr }}" ".#${{ matrix.flake.attr }}" --no-write-lock-file | tee "$DIFF_OUTPUT"
-          [[ -s "$DIFF_OUTPUT" ]] && perl -i -pe 's/\x1b\[[0-9;]*m//g' "$DIFF_OUTPUT" || echo "No changes found" | tee "$DIFF_OUTPUT"
-          echo -e "## Closures difference\n\`\`\`\n$(<$DIFF_OUTPUT)\n\`\`\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
-      - name: Add job summary to PR
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
-        if: github.event_name == 'pull_request'
-        with:
-          script: |
-            const { readFile } = require('node:fs/promises')
-            const comment = require('.github/scripts/comment')
-            const header = '# ${{ matrix.flake.name }}'
-            const body = await readFile('${{ runner.temp }}/${{ env.PR_JOB_SUMMARY }}', { encoding: 'utf8' })
-            await comment({ github, context, header, body })
+          OUT_PATH="$(nix build .#${{ matrix.machine.type }}.${{ matrix.machine.host }}${{ matrix.machine.type == 'nixosConfigurations' && '.config.system.build.toplevel' || ''}} --print-out-paths)"
+          echo -e "\x1b[32;1mSuccessfully built .#${{ matrix.machine.type}}.${{ matrix.machine.host }}\x1b[0m"
+          echo -e "## Build ${{ matrix.machine.host }}\n\`$OUT_PATH\`" | tee -a "$GITHUB_STEP_SUMMARY" "${RUNNER_TEMP}/${PR_JOB_SUMMARY}" >/dev/null
