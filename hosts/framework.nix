@@ -169,6 +169,7 @@
     nodejs
     optipng
     pass-wayland
+    planify
     powerstat
     powertop
     prettierd
