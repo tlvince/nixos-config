@@ -144,6 +144,7 @@
     brightnessctl
     bun
     diff-so-fancy
+    diffpdf
     dig
     efm-langserver
     exiftool
