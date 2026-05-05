@@ -55,6 +55,7 @@ in
     serviceConfig = mkServiceConfig "famlyd" // {
       LoadCredential = "famlyd:${config.age.secrets.famlyd.path}";
       StandardOutput = "append:/mnt/ichbiah/home/famlyd/calendar.jsonl";
+      StandardError = "journal";
       TimeoutStartSec = 9;
       Type = "oneshot";
     };
@@ -89,6 +90,7 @@ in
       LoadCredential = "famlyd-backup:${config.age.secrets.famlyd-etl.path}";
       RuntimeMaxSec = 60;
       StandardOutput = "file:/mnt/ichbiah/home/famlyd/backup.jsonl";
+      StandardError = "journal";
     };
   };
 
