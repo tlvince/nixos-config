@@ -40,6 +40,7 @@
       };
       server = {
         hosts = [ "127.0.0.1:5232" ];
+        max_connections = 64;
       };
       storage = {
         filesystem_folder = "/mnt/ichbiah/home/radicale/collections";
