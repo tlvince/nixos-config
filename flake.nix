@@ -150,6 +150,14 @@
             agenix.nixosModules.default
           ];
         };
+        nea = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit keys;
+          };
+          modules = [
+            ./hosts/nea.nix
+          ];
+        };
       };
     };
 }

@@ -36,6 +36,10 @@ jobs:
             attr: nixosConfigurations.kunkun.config.system.build.toplevel
             system: aarch64-linux
             runner: ubuntu-24.04-arm
+          - name: nea
+            attr: nixosConfigurations.nea.config.system.build.toplevel
+            system: aarch64-linux
+            runner: ubuntu-24.04-arm
           - name: lamma
             attr: darwinConfigurations.lamma.system
             system: aarch64-darwin
