@@ -44,6 +44,12 @@
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelPatches = [
+      {
+        name = "framework-mic-boost-fix";
+        patch = ../patches/framework-alc285-mic-boost-fix.patch;
+      }
+    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
