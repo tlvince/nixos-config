@@ -6,6 +6,7 @@
   home = {
     packages = with pkgs; [
       mactop
+      tree
     ];
     sessionVariables = {
       ZSHZ_CMD = "j";
