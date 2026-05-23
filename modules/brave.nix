@@ -31,6 +31,7 @@ let
     SafeBrowsingExtendedReportingEnabled = false;
     SafeBrowsingSurveysEnabled = false;
     SearchSuggestEnabled = false;
+    SyncDisabled = true;
     TorDisabled = true;
     UpdatesSuppressed = true;
     UserFeedbackAllowed = false;
