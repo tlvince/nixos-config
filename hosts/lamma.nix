@@ -23,15 +23,50 @@
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.overlays = [
     (final: prev: {
-      # TODO: Remove mactop overlay
+      # TODO: Remove mactop overlay once PR #477686 is merged and nixpkgs updated
       # Issue URL: https://github.com/tlvince/nixos-config/issues/451
       # Build fails as of 2.0.5, see:
       # https://github.com/NixOS/nixpkgs/issues/483467
       # https://github.com/NixOS/nixpkgs/pull/477686
       # labels: host:lamma
-      mactop = prev.mactop.overrideAttrs (old: {
+      mactop = prev.buildGoModule {
+        pname = "mactop";
+        version = "2.1.3";
+
+        src = prev.fetchFromGitHub {
+          owner = "metaspartan";
+          repo = "mactop";
+          tag = "v2.1.3";
+          hash = "sha256-NMgEK7yO195finurJh04+CE1vegTp+v/RhveQ0rtDPw";
+        };
+
+        vendorHash = "";
+
+        proxyVendor = true;
+
+        ldflags = [
+          "-s"
+          "-w"
+        ];
+
+        doInstallCheck = true;
         doCheck = false;
-      });
+        nativeInstallCheckInputs = [ prev.versionCheckHook ];
+
+        versionCheckProgramArg = "--version";
+
+        passthru.updateScript = prev.nix-update-script { };
+
+        meta = {
+          description = "Terminal-based monitoring tool 'top' designed to display real-time metrics for Apple Silicon chips";
+          homepage = "https://github.com/metaspartan/mactop";
+          changelog = "https://github.com/metaspartan/mactop/releases/tag/v2.1.3";
+          license = prev.lib.licenses.mit;
+          maintainers = with prev.lib.maintainers; [ natsukium ];
+          mainProgram = "mactop";
+          platforms = [ "aarch64-darwin" ];
+        };
+      };
     })
   ];
 
