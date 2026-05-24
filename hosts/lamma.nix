@@ -37,10 +37,10 @@
           owner = "metaspartan";
           repo = "mactop";
           tag = "v2.1.3";
-          hash = "sha256-NMgEK7yO195finurJh04+CE1vegTp+v/RhveQ0rtDPw";
+          hash = "sha256-rWALbjy7s6X3hegcUxoR0XUXKFZGnWRWV5OeXtN3BjU=";
         };
 
-        vendorHash = "";
+        vendorHash = "sha256-TF66wg8nyAb/kZ80XLaD7H39EehZQ896DS6Ce3+P8Lk=";
 
         proxyVendor = true;
 
