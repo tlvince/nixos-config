@@ -45,6 +45,7 @@
     # labels: host:framework, unreleased
     kernelPackages = pkgs.linuxPackages_latest;
     # TODO: Drop MT7925 bluetooth patch
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/484
     # https://lore.kernel.org/all/770d36b07311bf88210c187923f243fb9f126f04.1777058551.git.pav@iki.fi/
     # https://github.com/NixOS/nixpkgs/issues/521528
     # https://github.com/NixOS/nixpkgs/pull/520443#issuecomment-4477149587
