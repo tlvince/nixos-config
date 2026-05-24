@@ -3,7 +3,7 @@
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
-  # https://github.com/NixOS/nixpkgs/blob/93da65ede655736068698f9da6470ca9d1484861/nixos/modules/services/desktop-managers/gnome.nix
+  # https://github.com/NixOS/nixpkgs/blob/d6a0b47d7cd342564e5bb423f558cddcf038a9b7/nixos/modules/services/desktop-managers/gnome.nix
   services.gnome = {
     core-developer-tools.enable = false;
     core-os-services.enable = true;
@@ -11,7 +11,7 @@
     core-apps.enable = false;
     games.enable = false;
 
-    # services.gnome.gnome-shell
+    # services.gnome.core-shell
     gnome-browser-connector.enable = false;
     gnome-initial-setup.enable = false;
     gnome-remote-desktop.enable = false;
@@ -21,8 +21,6 @@
   };
 
   environment.gnome.excludePackages = with pkgs; [
-    evince
-    geary
     gnome-backgrounds
     gnome-shell-extensions
     gnome-tour
@@ -44,7 +42,6 @@
     nautilus
     papers
     pinentry-gnome3
-    seahorse
   ];
 
   programs.evolution = {
@@ -54,6 +51,8 @@
     ];
   };
 
+  programs.seahorse.enable = true;
+
   home-manager.users.tlv =
     {
       config,
@@ -62,7 +61,12 @@
       ...
     }:
     {
+      # dconf watch /
       dconf.settings = {
+        "org/gnome/desktop/a11y/interface" = {
+          "reduced-motion" = "reduce";
+        };
+
         "org/gnome/desktop/background" = {
           color-shading-type = "solid";
           picture-options = "zoom";
@@ -112,12 +116,6 @@
           titlebar-font = "Sans Bold 11";
         };
 
-        "org/gnome/mutter" = {
-          experimental-features = [
-            "variable-refresh-rate"
-          ];
-        };
-
         "org/gnome/settings-daemon/plugins/power" = {
           idle-dim = true;
           power-button-action = "suspend";
@@ -160,13 +158,13 @@
       };
 
       # Disable XWayland
-      xdg.configFile."systemd/user/org.gnome.Shell@wayland.service.d/override.conf".text = ''
+      xdg.configFile."systemd/user/org.gnome.Shell@user.service.d/override.conf".text = ''
         [Service]
         ExecStart=
-        ExecStart=${pkgs.gnome-shell}/bin/gnome-shell --no-x11
+        ExecStart=${pkgs.gnome-shell}/bin/gnome-shell --no-x11 --mode=%i
       '';
 
-      # services.gnome.core-services pulls in the freedesktop sound theme:
+      # services.gnome.core-os-services pulls in the freedesktop sound theme:
       # https://github.com/NixOS/nixpkgs/blob/93da65ede655736068698f9da6470ca9d1484861/nixos/modules/services/desktop-managers/gnome.nix#L355-L359
       # Power sounds are played despite org/gnome/desktop/sound event-sounds=false
       # Workaround by disabling them in a custom theme:
