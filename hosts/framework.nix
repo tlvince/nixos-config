@@ -44,21 +44,6 @@
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
     kernelPackages = pkgs.linuxPackages_latest;
-    # TODO: Drop MT7925 bluetooth patch
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/484
-    # https://lore.kernel.org/all/770d36b07311bf88210c187923f243fb9f126f04.1777058551.git.pav@iki.fi/
-    # https://github.com/NixOS/nixpkgs/issues/521528
-    # https://github.com/NixOS/nixpkgs/pull/520443#issuecomment-4477149587
-    # labels: host:framework
-    kernelPatches = [
-      {
-        name = "Bluetooth: btmtk: accept too short WMT FUNC_CTRL events";
-        patch = pkgs.fetchurl {
-          url = "https://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth-next.git/patch/?id=162b1adeb057d28ad84fd8a03f3c50cf08db5c62";
-          hash = "sha256-ij0hQmC0U++AdXWQy6nycnDe6z4yaMoQIrSiLal5DHc=";
-        };
-      }
-    ];
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
