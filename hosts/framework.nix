@@ -157,7 +157,6 @@
     aspellDicts.en
     awscli2
     brightnessctl
-    bun
     diff-so-fancy
     diffpdf
     dig
@@ -182,7 +181,6 @@
     libreoffice
     libva-utils
     mpv
-    nodejs
     optipng
     pass-wayland
     planify
