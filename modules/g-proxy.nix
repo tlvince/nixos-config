@@ -3,10 +3,10 @@
   systemd.user.services.g-proxy = {
     serviceConfig = {
       WorkingDirectory = "%h/dev/g-proxy";
-      ExecStart = "%h/dev/g-proxy/server/.venv/bin/python server/src/run.py";
+      ExecStart = "%h/dev/g-proxy/.venv/bin/python run.py";
       Restart = "on-failure";
       RestartSec = 10;
-      BindReadOnlyPaths = [ "%h/dev/g-proxy" ];
+      BindPaths = [ "%h/dev/g-proxy" ];
       TemporaryFileSystem = [ "%h:ro" ];
 
       CapabilityBoundingSet = [ "" ];
