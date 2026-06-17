@@ -16,6 +16,7 @@
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
     ../modules/acme.nix
+    ../modules/barberd.nix
     ../modules/cpuload.nix
     ../modules/cycled.nix
     ../modules/nginx.nix
