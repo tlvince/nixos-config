@@ -36,16 +36,30 @@
         "workgroup" = "FILO";
         "server string" = config.networking.hostName;
 
+        "access based share enum" = "yes";
+        "disable netbios" = "yes";
         "ea support" = "yes";
         "hosts allow" = "192.168.0. 127.0.0.1 localhost";
         "hosts deny" = "0.0.0.0/0";
-        "logging" = "systemd";
         "map to guest" = "Never";
-        "min protocol" = "SMB3_02";
+        "min protocol" = "SMB3_11";
         "restrict anonymous" = "2";
         "security" = "user";
+        "server role" = "standalone";
+        "server smb encrypt" = "required";
 
-        # Disable Printing
+        # Disable file logging, log only important auth failures
+        "log file" = "/dev/null";
+        "log level" = "0 auth:2 passdb:2";
+        "logging" = "systemd";
+        "max log size" = "0";
+
+        # Never map anything to the excutable bit
+        "map archive" = "no";
+        "map system" = "no";
+        "map hidden" = "no";
+
+        # Disable printing
         "disable spoolss" = "yes";
         "load printers" = "no";
         "printcap name" = "/dev/null";
@@ -55,14 +69,15 @@
 
         # TimeMachine
         # https://wiki.samba.org/index.php/Configure_Samba_to_Work_Better_with_Mac_OS_X
-        "vfs objects" = "fruit streams_xattr";
+        "vfs objects" = "catia fruit streams_xattr";
+        "fruit:aapl" = "yes";
+        "fruit:delete_empty_adfiles" = "yes";
         "fruit:metadata" = "stream";
         "fruit:model" = "MacSamba";
-        "fruit:veto_appledouble" = "no";
         "fruit:nfs_aces" = "no";
-        "fruit:wipe_intentionally_left_blank_rfork" = "yes";
-        "fruit:delete_empty_adfiles" = "yes";
         "fruit:posix_rename" = "yes";
+        "fruit:veto_appledouble" = "no";
+        "fruit:wipe_intentionally_left_blank_rfork" = "yes";
       };
 
       photos = {
