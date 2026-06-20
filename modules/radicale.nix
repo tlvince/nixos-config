@@ -61,9 +61,8 @@
       forceSSL = true;
       useACMEHost = "filo.uk";
 
-      locations."/radicale" = {
+      locations."/" = {
         extraConfig = ''
-          proxy_set_header X-Script-Name /radicale;
           proxy_set_header X-Remote-User $remote_user;
           proxy_read_timeout 300s;
           proxy_send_timeout 300s;
