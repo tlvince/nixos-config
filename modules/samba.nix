@@ -84,6 +84,14 @@
         "writeable" = "yes";
       };
 
+      tdrive = {
+        "browseable" = "yes";
+        "comment" = "TDrive";
+        "path" = "/mnt/ichbiah/home/tlv";
+        "valid users" = "tlv";
+        "writeable" = "yes";
+      };
+
       timemachine = {
         "browseable" = "yes";
         "comment" = "Time Machine";
