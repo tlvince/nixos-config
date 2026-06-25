@@ -303,14 +303,6 @@
   };
   systemd.network = {
     enable = true;
-    # Workaround router firmware bug that breaks 2.5Gbps ethernet
-    links.wired = {
-      matchConfig.Type = "ether";
-      extraConfig = ''
-        [EnergyEfficientEthernet]
-        Enable=false
-      '';
-    };
     networks.wired = {
       name = "en*";
       address = [ "192.168.0.2/24" ];
