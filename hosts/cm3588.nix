@@ -286,6 +286,7 @@
     settings = {
       AllowGroups = [
         "btrbk"
+        "git"
         "wheel"
       ];
       PasswordAuthentication = false;
@@ -323,6 +324,7 @@
   ];
   users = {
     groups.nas = { };
+    groups.git = { };
 
     users.tlv = {
       extraGroups = [
@@ -338,6 +340,17 @@
         config.users.groups.nas.name
       ];
       isNormalUser = true;
+    };
+
+    users.git = {
+      createHome = true;
+      group = config.users.groups.git.name;
+      home = "/mnt/ichbiah/home/git";
+      isSystemUser = true;
+      shell = pkgs.bash;
+      openssh.authorizedKeys.keys = [
+        ''command="cd ${config.users.users.git.home} && ${pkgs.git}/bin/git-shell -c \"$SSH_ORIGINAL_COMMAND\"",restrict ${keys.pixel}''
+      ];
     };
   };
   zramSwap.enable = true;
