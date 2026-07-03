@@ -306,7 +306,10 @@
         languages = {
           enableFormat = true;
           enableTreesitter = true;
-          astro.enable = true;
+          # TODO: Restore nvim Astro support
+          # See: https://github.com/NotAShelf/nvf/issues/1681
+          # labels: module:neovim
+          # astro.enable = true;
           bash.enable = true;
           css = {
             enable = true;
