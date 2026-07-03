@@ -1,22 +1,5 @@
 { lib, pkgs, ... }:
 {
-  nixpkgs.overlays = [
-    (_final: prev: {
-      markdown-oxide = prev.markdown-oxide.overrideAttrs (old: {
-        patches = (old.patches or [ ]) ++ [
-          # TODO: Drop markdown-oxide workspace symbols patch
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/443
-          # https://github.com/Feel-ix-343/markdown-oxide/pull/345
-          # labels: module:neovim
-          (prev.fetchpatch {
-            url = "https://github.com/tlvince/markdown-oxide/commit/46b0a90c21f178bc7afbc64fba5a4281c6795fdb.patch";
-            hash = "sha256-OQ20PLFqKiypsZcCb9aeEXjTjJ1Q0OTfq2GkjhsqdZA=";
-          })
-        ];
-      });
-    })
-  ];
-
   programs.nvf = {
     enable = true;
     defaultEditor = true;
