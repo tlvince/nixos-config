@@ -170,7 +170,6 @@
     planify
     powerstat
     powertop
-    prettierd
     pure-prompt
     python3
     rclone

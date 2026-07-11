@@ -295,26 +295,19 @@
           # labels: module:neovim
           # astro.enable = true;
           bash.enable = true;
-          css = {
-            enable = true;
-            format.type = [ "prettierd" ];
-          };
+          css.enable = true;
           json.enable = true;
           markdown = {
             enable = true;
-            format.type = [ "prettierd" ];
+            format.type = [ "prettier" ];
             lsp.servers = [ "markdown-oxide" ];
           };
           nix = {
             enable = true;
             format.type = [ "nixfmt" ];
           };
-          svelte.format.type = [ "prettierd" ];
           terraform.enable = true;
-          typescript = {
-            enable = true;
-            format.type = [ "prettierd" ];
-          };
+          typescript.enable = true;
           yaml.enable = true;
         };
         lineNumberMode = "none";
