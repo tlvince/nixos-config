@@ -5,7 +5,9 @@
 {
   home = {
     packages = with pkgs; [
-      mactop
+      # TODO: Restore mactop
+      # labels: host:lamma
+      # mactop
       tree
     ];
     sessionVariables = {
