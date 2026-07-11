@@ -32,6 +32,11 @@
       ffmpeg = {
         transcode = "disabled";
       };
+      integrityChecks = {
+        checksumFiles.cronExpression = "0 22 * * 0";
+        missingFiles.cronExpression = "0 21 * * *";
+        untrackedFiles.cronExpression = "30 21 * * *";
+      };
       library = {
         scan = {
           cronExpression = "0 3 * * *";
