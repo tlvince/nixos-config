@@ -148,13 +148,13 @@
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
-    changeDirWidgetCommand = "(git ls-tree -d -r --name-only HEAD || fd --type directory) 2>/dev/null";
+    changeDirWidget.command = "(git ls-tree -d -r --name-only HEAD || fd --type directory) 2>/dev/null";
     defaultCommand = "(git ls-files --cached --exclude-standard --others || fd --type file) 2>/dev/null";
     defaultOptions = [
       "--cycle"
       "--no-mouse"
     ];
-    fileWidgetCommand = "(git ls-files --cached --exclude-standard --others || fd --type file) 2>/dev/null";
+    fileWidget.command = "(git ls-files --cached --exclude-standard --others || fd --type file) 2>/dev/null";
   };
 
   programs.git = {
