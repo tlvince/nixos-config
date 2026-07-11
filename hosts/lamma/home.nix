@@ -6,6 +6,7 @@
   home = {
     packages = with pkgs; [
       # TODO: Restore mactop
+      # Issue URL: https://github.com/tlvince/nixos-config/issues/495
       # labels: host:lamma
       # mactop
       tree
