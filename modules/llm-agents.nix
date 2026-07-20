@@ -37,5 +37,22 @@ in
         ))
       ]
     ))
+    (jail "pi" pkgs.pi-coding-agent (
+      with jail.combinators;
+      [
+        mount-cwd
+        network
+        (try-readwrite (noescape "~/.config/pi"))
+        (set-env "PI_CODING_AGENT_DIR" "/home/tlv/.config/pi")
+        (set-env "PI_OFFLINE" "true")
+        (add-pkg-deps (
+          with pkgs;
+          [
+            fd
+            ripgrep
+          ]
+        ))
+      ]
+    ))
   ];
 }
