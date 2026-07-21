@@ -13,6 +13,7 @@ in
       [
         mount-cwd
         network
+        no-new-session # Allow SIGWINCH for terminal resizing, TIOCSTI disabled
         wayland # Clipboard
         (fwd-env "XDG_CACHE_HOME")
         (fwd-env "XDG_CONFIG_HOME")
@@ -42,6 +43,7 @@ in
       [
         mount-cwd
         network
+        no-new-session # Allow SIGWINCH for terminal resizing, TIOCSTI disabled
         (try-readwrite (noescape "~/.config/pi"))
         (set-env "PI_CODING_AGENT_DIR" "/home/tlv/.config/pi")
         (set-env "PI_OFFLINE" "true")
