@@ -554,7 +554,7 @@
       mpva = "mpv --no-video";
       mpvn = "mpv --no-ytdl";
       myip = "curl --silent https://ifconfig.me";
-      nd = "nix develop --command $SHELL";
+      nd = ''nix develop --profile $XDG_STATE_HOME/nix/profiles/''${PWD:t}-dev --command $SHELL'';
       pc = "pass -c";
       pct = "passCopyTail";
       pg = "passGenerate";
