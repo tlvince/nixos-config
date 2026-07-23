@@ -1,6 +1,7 @@
 {
   agent-sandbox,
   pkgs,
+  pkgsMactop,
   ...
 }:
 let
@@ -13,10 +14,7 @@ in
     packages = with pkgs; [
       appcleaner
       localsend
-      # TODO: Restore mactop
-      # Issue URL: https://github.com/tlvince/nixos-config/issues/495
-      # labels: host:lamma
-      # mactop
+      pkgsMactop.mactop
       pi-sandboxed
       tree
     ];

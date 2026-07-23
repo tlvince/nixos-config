@@ -298,6 +298,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-mactop": {
+      "locked": {
+        "lastModified": 1784819523,
+        "narHash": "sha256-p+NtmgITwFSXG98NlhxLnOLasDRnzbAFPTshaSlEuP0=",
+        "owner": "tlvince",
+        "repo": "nixpkgs",
+        "rev": "660ede29a5becf98204f44a8eadf21aefd6bc558",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "repo": "nixpkgs",
+        "rev": "660ede29a5becf98204f44a8eadf21aefd6bc558",
+        "type": "github"
+      }
+    },
     "nvf": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -354,6 +370,7 @@
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
         "nixpkgs-amdgpu": "nixpkgs-amdgpu",
+        "nixpkgs-mactop": "nixpkgs-mactop",
         "nvf": "nvf",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"

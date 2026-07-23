@@ -14,6 +14,10 @@
     ghostwriter.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
+    # TODO: Drop mactop overlay
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/499
+    # labels: host:lamma
+    nixpkgs-mactop.url = "github:tlvince/nixpkgs/660ede29a5becf98204f44a8eadf21aefd6bc558";
     jail-nix.url = "sourcehut:~alexdavid/jail.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
@@ -43,6 +47,7 @@
       lanzaboote,
       nixpkgs,
       nixpkgs-amdgpu,
+      nixpkgs-mactop,
       nvf,
       secrets,
       self,
@@ -54,6 +59,10 @@
       keys = import ./keys.nix;
       pkgs = import nixpkgs {
         inherit system;
+        config.allowUnfree = true;
+      };
+      pkgsMactop = import nixpkgs-mactop {
+        system = "aarch64-darwin";
         config.allowUnfree = true;
       };
       pkgsAmdgpu = import nixpkgs-amdgpu {
@@ -80,14 +89,14 @@
         lamma = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           specialArgs = {
-            inherit agent-sandbox;
+            inherit agent-sandbox pkgsMactop;
           };
           modules = [
             ./hosts/lamma.nix
             nvf.darwinModules.default
             home-manager.darwinModules.home-manager
             {
-              home-manager.extraSpecialArgs = { inherit agent-sandbox; };
+              home-manager.extraSpecialArgs = { inherit agent-sandbox pkgsMactop; };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.tlv = ./hosts/lamma/home.nix;
