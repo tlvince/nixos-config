@@ -1,10 +1,17 @@
 {
+  agent-sandbox,
   pkgs,
   ...
 }:
+let
+  pi-sandboxed = import ../../modules/pi-sandbox.nix {
+    inherit agent-sandbox pkgs;
+  };
+in
 {
   home = {
     packages = with pkgs; [
+      pi-sandboxed
       appcleaner
       # TODO: Restore mactop
       # Issue URL: https://github.com/tlvince/nixos-config/issues/495
