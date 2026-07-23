@@ -5,6 +5,7 @@
 {
   home = {
     packages = with pkgs; [
+      appcleaner
       # TODO: Restore mactop
       # Issue URL: https://github.com/tlvince/nixos-config/issues/495
       # labels: host:lamma
