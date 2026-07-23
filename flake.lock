@@ -23,6 +23,26 @@
         "type": "github"
       }
     },
+    "agent-sandbox": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783979936,
+        "narHash": "sha256-4REe4iLlQbOFJ2ur2m8bPFuI/Tk5p/cBy3UPM3TNupY=",
+        "owner": "archie-judd",
+        "repo": "agent-sandbox.nix",
+        "rev": "bab6b8a24348f0ca2063a48fdc7a98a526a522a3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "archie-judd",
+        "repo": "agent-sandbox.nix",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1783203018,
@@ -325,6 +345,7 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
+        "agent-sandbox": "agent-sandbox",
         "darwin": "darwin_2",
         "disko": "disko",
         "ghostwriter": "ghostwriter",

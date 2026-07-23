@@ -2,6 +2,8 @@
   description = "@tlvince's NixOS config";
 
   inputs = {
+    agent-sandbox.url = "github:archie-judd/agent-sandbox.nix";
+    agent-sandbox.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
     darwin.url = "github:nix-darwin/nix-darwin";
@@ -31,6 +33,7 @@
 
   outputs =
     {
+      agent-sandbox,
       agenix,
       disko,
       darwin,
@@ -76,11 +79,15 @@
       darwinConfigurations = {
         lamma = darwin.lib.darwinSystem {
           system = "aarch64-darwin";
+          specialArgs = {
+            inherit agent-sandbox;
+          };
           modules = [
             ./hosts/lamma.nix
             nvf.darwinModules.default
             home-manager.darwinModules.home-manager
             {
+              home-manager.extraSpecialArgs = { inherit agent-sandbox; };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.tlv = ./hosts/lamma/home.nix;
