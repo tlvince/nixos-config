@@ -330,6 +330,7 @@
             signatureHelp = "<C-s>";
           };
           presets.tailwindcss-language-server.enable = true;
+          servers.nil.settings.nil.nix.flake.autoArchive = false;
         };
         luaConfigRC = {
           # Open a file (relative to the current file)
