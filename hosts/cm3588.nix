@@ -320,6 +320,7 @@
 
     users.tlv = {
       extraGroups = [
+        config.users.groups.git.name
         config.users.groups.nas.name
         "wheel"
       ];
@@ -338,6 +339,7 @@
       createHome = true;
       group = config.users.groups.git.name;
       home = "/mnt/ichbiah/home/git";
+      homeMode = "750";
       isSystemUser = true;
       shell = pkgs.bash;
       openssh.authorizedKeys.keys = [
