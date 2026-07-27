@@ -1,7 +1,6 @@
 {
   agent-sandbox,
   pkgs,
-  pkgsMactop,
   ...
 }:
 let
@@ -14,7 +13,7 @@ in
     packages = with pkgs; [
       appcleaner
       localsend
-      pkgsMactop.mactop
+      mactop
       pi-sandboxed
       tree
     ];
