@@ -282,19 +282,19 @@
         "type": "github"
       }
     },
-    "nixpkgs-amdgpu": {
+    "nixpkgs-flm": {
       "locked": {
-        "lastModified": 1776095273,
-        "narHash": "sha256-gcwXCN56NptYfKtdep28+eqWOhr0E4xjHMWDo/wMOlc=",
-        "owner": "Aleksanaa",
+        "lastModified": 1785629081,
+        "narHash": "sha256-S6lPmoRQ2UjC3JsFDtGp5Xi7dpKRFVEI77YpPhmek0U=",
+        "owner": "JohnMolotov",
         "repo": "nixpkgs",
-        "rev": "d8805ed18bfb7ed81cd7f64ae8a31b22ede0d8f5",
+        "rev": "db67e0576aa590228a55deacae8abdb9254f4580",
         "type": "github"
       },
       "original": {
-        "owner": "Aleksanaa",
+        "owner": "JohnMolotov",
         "repo": "nixpkgs",
-        "rev": "d8805ed18bfb7ed81cd7f64ae8a31b22ede0d8f5",
+        "rev": "db67e0576aa590228a55deacae8abdb9254f4580",
         "type": "github"
       }
     },
@@ -353,7 +353,7 @@
         "jail-nix": "jail-nix",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-amdgpu": "nixpkgs-amdgpu",
+        "nixpkgs-flm": "nixpkgs-flm",
         "nvf": "nvf",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"

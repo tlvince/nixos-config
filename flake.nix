@@ -17,11 +17,11 @@
     jail-nix.url = "sourcehut:~alexdavid/jail.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    # TODO: Drop fastflowlm overlay
+    # TODO: Drop fastflowlm pin when PR is merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/468
-    # See: https://github.com/NixOS/nixpkgs/pull/494907
+    # See: https://github.com/NixOS/nixpkgs/pull/513841
     # labels: host:framework
-    nixpkgs-amdgpu.url = "github:Aleksanaa/nixpkgs/d8805ed18bfb7ed81cd7f64ae8a31b22ede0d8f5";
+    nixpkgs-flm.url = "github:JohnMolotov/nixpkgs/db67e0576aa590228a55deacae8abdb9254f4580";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:notashelf/nvf";
@@ -42,7 +42,7 @@
       jail-nix,
       lanzaboote,
       nixpkgs,
-      nixpkgs-amdgpu,
+      nixpkgs-flm,
       nvf,
       secrets,
       self,
@@ -56,23 +56,9 @@
         inherit system;
         config.allowUnfree = true;
       };
-      pkgsAmdgpu = import nixpkgs-amdgpu {
+      pkgsFlm = import nixpkgs-flm {
         inherit system;
         config.allowUnfree = true;
-        overlays = [
-          (final: prev: {
-            fastflowlm = prev.fastflowlm.overrideAttrs (_: {
-              version = "0.9.39";
-              src = prev.fetchFromGitHub {
-                owner = "FastFlowLM";
-                repo = "FastFlowLM";
-                tag = "v0.9.39";
-                fetchSubmodules = true;
-                hash = "sha256-HrPk7BrqyLnyt8Y/qgCZ1Eyic7w2KPiJLUI23tx8GFc=";
-              };
-            });
-          })
-        ];
       };
     in
     {
@@ -126,7 +112,7 @@
         };
         framework = nixpkgs.lib.nixosSystem {
           specialArgs = inputs // {
-            inherit pkgsAmdgpu;
+            inherit pkgsFlm;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
