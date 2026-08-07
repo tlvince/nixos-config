@@ -44,6 +44,7 @@ in
         mount-cwd
         network
         no-new-session # Allow SIGWINCH for terminal resizing, TIOCSTI disabled
+        wayland # Clipboard
         (try-readwrite (noescape "~/.config/pi"))
         (set-env "PI_CODING_AGENT_DIR" "/home/tlv/.config/pi")
         (set-env "PI_OFFLINE" "true")
@@ -52,6 +53,8 @@ in
           [
             fd
             ripgrep
+            which
+            wl-clipboard
           ]
         ))
       ]
