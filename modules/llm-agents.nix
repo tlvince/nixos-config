@@ -1,5 +1,6 @@
 {
   jail-nix,
+  llm-agents,
   pkgs,
   ...
 }:
@@ -29,7 +30,35 @@ in
         (add-pkg-deps (
           with pkgs;
           [
-            bun
+            git
+            less
+            ripgrep
+            wl-clipboard
+          ]
+        ))
+      ]
+    ))
+    (jail "opencode2" llm-agents.packages.${pkgs.system}.opencode2 (
+      with jail.combinators;
+      [
+        mount-cwd
+        network
+        no-new-session # Allow SIGWINCH for terminal resizing, TIOCSTI disabled
+        wayland # Clipboard
+        (fwd-env "XDG_CACHE_HOME")
+        (fwd-env "XDG_CONFIG_HOME")
+        (fwd-env "XDG_DATA_HOME")
+        (fwd-env "XDG_STATE_HOME")
+        (try-readwrite (noescape "~/.cache/opencode"))
+        (try-readwrite (noescape "~/.config/opencode"))
+        (try-readwrite (noescape "~/.local/share/opencode"))
+        (try-readwrite (noescape "~/.local/state/opencode"))
+        (set-env "OPENCODE_DISABLE_AUTOUPDATE" "true")
+        (set-env "OPENCODE_DISABLE_DEFAULT_PLUGINS" "true")
+        (set-env "OPENCODE_DISABLE_LSP_DOWNLOAD" "true")
+        (add-pkg-deps (
+          with pkgs;
+          [
             git
             less
             ripgrep

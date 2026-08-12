@@ -15,6 +15,8 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     jail-nix.url = "sourcehut:~alexdavid/jail.nix";
+    llm-agents.inputs.nixpkgs.follows = "nixpkgs";
+    llm-agents.url = "github:numtide/llm-agents.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     # TODO: Drop fastflowlm pin when PR is merged upstream
@@ -40,6 +42,7 @@
       ghostwriter,
       home-manager,
       jail-nix,
+      llm-agents,
       lanzaboote,
       nixpkgs,
       nixpkgs-flm,
