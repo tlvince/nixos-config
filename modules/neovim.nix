@@ -289,11 +289,7 @@
         languages = {
           enableFormat = true;
           enableTreesitter = true;
-          # TODO: Restore nvim Astro support
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/491
-          # See: https://github.com/NotAShelf/nvf/issues/1681
-          # labels: module:neovim
-          # astro.enable = true;
+          astro.enable = true;
           bash.enable = true;
           css.enable = true;
           json.enable = true;
