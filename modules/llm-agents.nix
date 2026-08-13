@@ -30,7 +30,7 @@ in
         (add-pkg-deps (
           with pkgs;
           [
-            git
+            gitMinimal
             less
             ripgrep
             wl-clipboard
@@ -38,7 +38,7 @@ in
         ))
       ]
     ))
-    (jail "opencode2" llm-agents.packages.${pkgs.system}.opencode2 (
+    (jail "opencode2" llm-agents.packages.${pkgs.stdenv.hostPlatform.system}.opencode2 (
       with jail.combinators;
       [
         mount-cwd
@@ -59,7 +59,7 @@ in
         (add-pkg-deps (
           with pkgs;
           [
-            git
+            gitMinimal
             less
             ripgrep
             wl-clipboard
