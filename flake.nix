@@ -148,9 +148,12 @@
         nea = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit keys;
+            secrets = import inputs.secrets;
+            secretsPath = inputs.secrets.outPath;
           };
           modules = [
             ./hosts/nea.nix
+            agenix.nixosModules.default
           ];
         };
       };

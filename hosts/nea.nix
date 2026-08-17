@@ -1,7 +1,9 @@
 {
+  config,
   modulesPath,
   pkgs,
   keys,
+  secretsPath,
   ...
 }:
 {
@@ -16,6 +18,11 @@
     ../modules/host-common-nixos.nix
     ../modules/cpuload.nix
   ];
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+  age.secrets."wireguard-nea" = {
+    file = "${secretsPath}/wireguard-nea.age";
+  };
+
   boot = {
     initrd.availableKernelModules = [
       "xhci_pci"
@@ -75,10 +82,32 @@
     enableIPv6 = false;
     hostName = "nea";
     firewall = {
+      allowedUDPPorts = [
+        51820 # WireGuard
+      ];
       logRefusedConnections = false;
     };
     useDHCP = false;
   };
+
+  networking.wireguard.interfaces.wg0 = {
+    ips = [
+      "10.12.3.1/32"
+    ];
+    listenPort = 51820;
+    privateKeyFile = config.age.secrets."wireguard-nea".path;
+    peers = [
+      {
+        name = "mobile";
+        publicKey = "5PKxnLmOs2ZHDWAsULapVF5tYNCWemOcVSt1+irocDo=";
+        allowedIPs = [
+          "10.12.3.2/32"
+        ];
+      }
+    ];
+  };
+
+  systemd.services."wireguard-wg0".after = [ "agenix-install-secrets.service" ];
   nixpkgs.hostPlatform = "aarch64-linux";
 
   programs.vim = {
@@ -143,7 +172,10 @@
         "wheel"
       ];
       isNormalUser = true;
-      openssh.authorizedKeys.keys = [ keys.tlv ];
+      openssh.authorizedKeys.keys = [
+        keys.connectbot
+        keys.tlv
+      ];
     };
   };
 }
