@@ -47,6 +47,7 @@
     coreutils
     curl
     diffutils
+    fd
     findutils
     gitMinimal
     gnugrep
@@ -56,9 +57,12 @@
     gzip
     htop
     less
+    pi-coding-agent
+    ripgrep
     rsync
     tree
     tmux
+    which
     xz
     zsh
     zsh-z
