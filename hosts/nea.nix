@@ -11,12 +11,18 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
+    # TODO: restore perlless profile
+    # Required for xdg-open, required by opencode
+    # labels: host:nea
     #(modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
-    ../modules/host-common.nix
-    ../modules/host-common-nixos.nix
+    ../modules/acme.nix
     ../modules/cpuload.nix
+    ../modules/host-common-nixos.nix
+    ../modules/host-common.nix
+    ../modules/nginx.nix
+    ../modules/opencode.nix
   ];
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets."wireguard-nea" = {
@@ -60,14 +66,12 @@
     gzip
     htop
     less
-    opencode
     pi-coding-agent
     ripgrep
     rsync
     tree
     tmux
     which
-    xdg-utils
     xz
     zsh
     zsh-z
@@ -93,6 +97,9 @@
     firewall = {
       allowedUDPPorts = [
         51820 # WireGuard
+      ];
+      interfaces.wg0.allowedTCPPorts = [
+        443 # nginx
       ];
       logRefusedConnections = false;
     };
