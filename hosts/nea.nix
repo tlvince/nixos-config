@@ -175,10 +175,6 @@
       DHCP = "yes";
     };
   };
-  systemd.services."wireguard-wg0" = {
-    requires = [ "agenix-install-secrets.service" ];
-    after = [ "agenix-install-secrets.service" ];
-  };
   users = {
     users.tlv = {
       extraGroups = [
