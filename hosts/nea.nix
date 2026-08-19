@@ -22,6 +22,9 @@
   age.secrets."wireguard-nea" = {
     file = "${secretsPath}/wireguard-nea.age";
   };
+  age.secrets."wireguard-nea-psk" = {
+    file = "${secretsPath}/wireguard-nea-psk.age";
+  };
 
   boot = {
     initrd.availableKernelModules = [
@@ -107,11 +110,11 @@
         allowedIPs = [
           "10.12.3.2/32"
         ];
+        presharedKeyFile = config.age.secrets."wireguard-nea-psk".path;
       }
     ];
   };
 
-  systemd.services."wireguard-wg0".after = [ "agenix-install-secrets.service" ];
   nixpkgs.hostPlatform = "aarch64-linux";
 
   programs.vim = {
@@ -169,6 +172,10 @@
       name = "en*";
       DHCP = "yes";
     };
+  };
+  systemd.services."wireguard-wg0" = {
+    requires = [ "agenix-install-secrets.service" ];
+    after = [ "agenix-install-secrets.service" ];
   };
   users = {
     users.tlv = {
