@@ -18,6 +18,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
 
     ../modules/acme.nix
+    ../modules/caltrack.nix
     ../modules/cpuload.nix
     ../modules/host-common-nixos.nix
     ../modules/host-common.nix
