@@ -186,7 +186,6 @@
       ];
       isNormalUser = true;
       openssh.authorizedKeys.keys = [
-        keys.connectbot
         keys.tlv
       ];
     };
