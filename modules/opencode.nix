@@ -36,7 +36,12 @@
     description = "opencode web server";
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
-    path = [ pkgs.xdg-utils ];
+    path = with pkgs; [
+      fd
+      gitMinimal
+      ripgrep
+      xdg-utils
+    ];
     serviceConfig = {
       User = "tlv";
       ExecStart = "${pkgs.opencode}/bin/opencode web --hostname 127.0.0.1 --port 4096";
