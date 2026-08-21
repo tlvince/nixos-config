@@ -58,8 +58,9 @@
   systemd.timers.redditd = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnBootSec = "5min";
-      OnCalendar = "00..01,06..23:00/1";
+      AccuracySec = 5;
+      OnBootSec = "1min";
+      OnCalendar = "00..01,06..23:*:00/30";
       RandomizedDelaySec = 10;
     };
   };
