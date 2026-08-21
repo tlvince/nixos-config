@@ -358,6 +358,7 @@
     clock24 = true;
     customPaneNavigationAndResize = true;
     escapeTime = 0;
+    focusEvents = true;
     extraConfig = ''
       # Toggle the last window with prefix
       bind-key C-a last-window
@@ -386,6 +387,18 @@
 
       # Pass OSC 52 (e.g. opentui clipboard)
       set -g allow-passthrough on
+
+      # Forward app OSC 52 to foot and keep tmux buffers in sync
+      set -g set-clipboard on
+
+      # Serve clipboard reads from the outer terminal
+      set -g get-clipboard request
+
+      # Focus follows mouse
+      set -g focus-follows-mouse on
+
+      # Modified keys (Ctrl/Meta/Shift combos) for TUIs
+      set -g extended-keys on
 
       # Disable noisy right-hand status bar
       set-option -g status-right ""
