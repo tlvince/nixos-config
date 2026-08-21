@@ -7,13 +7,13 @@
 {
   imports = [
     ../modules/asr.nix
-    ../modules/g-proxy.nix
-    ../modules/host-common.nix
-    ../modules/host-common-nixos.nix
     ../modules/famly-fetch.nix
     ../modules/fastflowlm.nix
     ../modules/firefox.nix
+    ../modules/g-proxy.nix
     ../modules/gnome.nix
+    ../modules/host-common-nixos.nix
+    ../modules/host-common.nix
     ../modules/llm-agents.nix
     ../modules/neovim.nix
     ../modules/smartd.nix
