@@ -384,6 +384,9 @@
       bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "wl-copy && wl-paste -n | wl-copy -p"
       bind-key p run "wl-paste -n | tmux load-buffer - ; tmux paste-buffer"
 
+      # Pass OSC 52 (e.g. opentui clipboard)
+      set -g allow-passthrough on
+
       # Disable noisy right-hand status bar
       set-option -g status-right ""
 
@@ -554,7 +557,7 @@
       mpva = "mpv --no-video";
       mpvn = "mpv --no-ytdl";
       myip = "curl --silent https://ifconfig.me";
-      nd = ''nix develop --profile $XDG_STATE_HOME/nix/profiles/''${PWD:t}-dev --command $SHELL'';
+      nd = "nix develop --profile $XDG_STATE_HOME/nix/profiles/\${PWD:t}-dev --command $SHELL";
       pc = "pass -c";
       pct = "passCopyTail";
       pg = "passGenerate";

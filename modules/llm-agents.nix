@@ -15,7 +15,6 @@ in
         mount-cwd
         network
         no-new-session # Allow SIGWINCH for terminal resizing, TIOCSTI disabled
-        wayland # Clipboard
         (fwd-env "XDG_CACHE_HOME")
         (fwd-env "XDG_CONFIG_HOME")
         (fwd-env "XDG_DATA_HOME")
@@ -33,7 +32,6 @@ in
             gitMinimal
             less
             ripgrep
-            wl-clipboard
           ]
         ))
       ]
