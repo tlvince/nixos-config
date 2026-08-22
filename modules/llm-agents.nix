@@ -45,7 +45,8 @@ in
         wayland # Clipboard
         (try-readwrite (noescape "~/.config/pi"))
         (set-env "PI_CODING_AGENT_DIR" "/home/tlv/.config/pi")
-        (set-env "PI_OFFLINE" "true")
+        (set-env "PI_SKIP_VERSION_CHECK" "1")
+        (set-env "PI_TELEMETRY" "0")
         (add-pkg-deps (
           with pkgs;
           [
