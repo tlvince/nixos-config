@@ -5,6 +5,7 @@
   ...
 }:
 # TODO: Drop opencode override when updated in nixpkgs
+# Issue URL: https://github.com/tlvince/nixos-config/issues/509
 # labels: host:nea
 let
   opencode =
