@@ -4,6 +4,29 @@
   secretsPath,
   ...
 }:
+# TODO: Drop opencode override when updated in nixpkgs
+# labels: host:nea
+let
+  opencode =
+    let
+      base = pkgs.opencode.overrideAttrs (_: {
+        version = "1.18.21";
+        src = pkgs.fetchFromGitHub {
+          owner = "anomalyco";
+          repo = "opencode";
+          tag = "v1.18.21";
+          hash = "sha256-WKG/lts+wzDjYJ5pOZ0X4Kb0rJ1TzYQzQgjyQBY+bxs=";
+        };
+      });
+    in
+    base.overrideAttrs (old: {
+      passthru = old.passthru // {
+        node_modules = old.passthru.node_modules.overrideAttrs (_: {
+          outputHash = "sha256-WqEZQCVl4oQFVbrhlWVaBW+JiSqjSK+LILPkDV9Avds=";
+        });
+      };
+    });
+in
 {
   age.secrets.opencode = {
     file = "${secretsPath}/opencode.age";
@@ -44,7 +67,7 @@
     ];
     serviceConfig = {
       User = "tlv";
-      ExecStart = "${pkgs.opencode}/bin/opencode web --hostname 127.0.0.1 --port 4096";
+      ExecStart = "${opencode}/bin/opencode web --hostname 127.0.0.1 --port 4096";
       Restart = "on-failure";
       RestartSec = 5;
       Environment = [
