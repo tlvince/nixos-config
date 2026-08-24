@@ -29,8 +29,11 @@
   age.secrets."wireguard-nea" = {
     file = "${secretsPath}/wireguard-nea.age";
   };
-  age.secrets."wireguard-nea-psk" = {
-    file = "${secretsPath}/wireguard-nea-psk.age";
+  age.secrets."wireguard-nea-mobile-psk" = {
+    file = "${secretsPath}/wireguard-nea-mobile-psk.age";
+  };
+  age.secrets."wireguard-nea-framework-psk" = {
+    file = "${secretsPath}/wireguard-nea-framework-psk.age";
   };
 
   boot = {
@@ -98,9 +101,32 @@
       interfaces.wg0.allowedTCPPorts = [
         443 # nginx
       ];
+      interfaces.wg0.allowedUDPPorts = [
+        53 # dnsmasq
+      ];
       logRefusedConnections = false;
     };
     useDHCP = false;
+  };
+
+  services.dnsmasq = {
+    enable = true;
+    resolveLocalQueries = false;
+    settings = {
+      bind-interfaces = true;
+      interface = "wg0";
+      listen-address = [ "10.12.3.1" ];
+
+      domain-needed = true;
+      local = "/filo.uk/";
+      no-hosts = true;
+      no-resolv = true;
+
+      host-record = [
+        "caltrack.filo.uk,10.12.3.1"
+        "opencode.filo.uk,10.12.3.1"
+      ];
+    };
   };
 
   networking.wireguard.interfaces.wg0 = {
@@ -113,10 +139,14 @@
       {
         name = "mobile";
         publicKey = "5PKxnLmOs2ZHDWAsULapVF5tYNCWemOcVSt1+irocDo=";
-        allowedIPs = [
-          "10.12.3.2/32"
-        ];
-        presharedKeyFile = config.age.secrets."wireguard-nea-psk".path;
+        allowedIPs = [ "10.12.3.2/32" ];
+        presharedKeyFile = config.age.secrets."wireguard-nea-mobile-psk".path;
+      }
+      {
+        name = "framework";
+        publicKey = "oQfdwYibhttuZ3KfLAmVPGQtZNiEHr/PufF4OLp3SA4=";
+        allowedIPs = [ "10.12.3.3/32" ];
+        presharedKeyFile = config.age.secrets."wireguard-nea-framework-psk".path;
       }
     ];
   };
