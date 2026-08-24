@@ -1,17 +1,52 @@
 {
-  config,
   pkgs,
-  secretsPath,
   ...
 }:
-# TODO: Drop opencode override when updated in nixpkgs
-# Issue URL: https://github.com/tlvince/nixos-config/issues/509
-# labels: host:nea
 let
+  # Chromium needs an icon usable as "any" for a PWA to be installable.
+  # "any maskable" will throw a warning, but quickest fix
+  # https://web.dev/articles/maskable-icon#how
+  pwaManifest = pkgs.writeText "site.webmanifest" (
+    builtins.toJSON {
+      name = "OpenCode";
+      short_name = "OpenCode";
+      id = "/";
+      start_url = "/";
+      scope = "/";
+      display = "standalone";
+      theme_color = "#080808";
+      background_color = "#080808";
+      icons = [
+        {
+          src = "/web-app-manifest-192x192.png";
+          sizes = "192x192";
+          type = "image/png";
+          purpose = "any maskable";
+        }
+        {
+          src = "/web-app-manifest-512x512.png";
+          sizes = "512x512";
+          type = "image/png";
+          purpose = "any maskable";
+        }
+      ];
+    }
+  );
+
+  # TODO: Drop opencode override when updated in nixpkgs
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/509
+  # labels: host:nea
   opencode =
     let
-      base = pkgs.opencode.overrideAttrs (_: {
+      base = pkgs.opencode.overrideAttrs (old: {
         version = "1.18.21";
+        # Reconnect SSE event stream after Android screen-lock freeze leaves
+        # the fetch hanging on a half-open socket, and resync stale session
+        # views on resume.
+        patches = [ ./opencode-sse-freeze-resume.patch ];
+        postPatch = (old.postPatch or "") + ''
+          cp ${pwaManifest} packages/app/public/site.webmanifest
+        '';
         src = pkgs.fetchFromGitHub {
           owner = "anomalyco";
           repo = "opencode";
@@ -29,17 +64,9 @@ let
     });
 in
 {
-  age.secrets.opencode = {
-    file = "${secretsPath}/opencode.age";
-    mode = "640";
-    owner = "nginx";
-    group = "nginx";
-  };
-
   services.nginx = {
     upstreams.opencode.servers."127.0.0.1:4096" = { };
     virtualHosts."opencode.filo.uk" = {
-      basicAuthFile = config.age.secrets.opencode.path;
       forceSSL = true;
       useACMEHost = "filo.uk";
 

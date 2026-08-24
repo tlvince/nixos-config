@@ -1,0 +1,79 @@
+diff --git a/packages/app/src/context/server-sdk.tsx b/packages/app/src/context/server-sdk.tsx
+index 7dd2a6e..e94b714 100644
+--- a/packages/app/src/context/server-sdk.tsx
++++ b/packages/app/src/context/server-sdk.tsx
+@@ -256,6 +256,7 @@ function createServerSdkContextBase(server: ServerConnection.Any, scope: ServerS
+   let run: Promise<void> | undefined
+   let started = false
+   let generation = 0
++  let lastEventAt = 0
+ 
+   const start = () => {
+     if (started) return run
+@@ -279,6 +280,7 @@ function createServerSdkContextBase(server: ServerConnection.Any, scope: ServerS
+               : eventApi.event.subscribe({ signal: attempt.signal })
+           let yielded = Date.now()
+           for await (const event of events) {
++            lastEventAt = Date.now()
+             streamErrorLogged = false
+             const legacy = "payload" in event
+             if (legacy && event.payload.type === "sync") continue
+@@ -325,6 +327,19 @@ function createServerSdkContextBase(server: ServerConnection.Any, scope: ServerS
+   onMount(() => {
+     makeEventListener(window, "pagehide", stop)
+     makeEventListener(window, "pageshow", (event) => resumeStreamAfterPageShow(event, start))
++    const revive = () => {
++      if (document.visibilityState !== "visible") return
++      if (!started) {
++        void start()
++        return
++      }
++      if (Date.now() - lastEventAt < 20_000) return
++      stop()
++      void start()
++      window.dispatchEvent(new CustomEvent("opencode:sdk-resurrected"))
++    }
++    makeEventListener(document, "visibilitychange", revive)
++    makeEventListener(document, "resume", revive)
+   })
+ 
+   onCleanup(() => {
+diff --git a/packages/app/src/pages/session/timeline/model.ts b/packages/app/src/pages/session/timeline/model.ts
+index 33eb300..bca212f 100644
+--- a/packages/app/src/pages/session/timeline/model.ts
++++ b/packages/app/src/pages/session/timeline/model.ts
+@@ -39,6 +39,22 @@ export function createTimelineModel(input: {
+       return sync().session.sync(id)
+     },
+   )
++  const resyncOnVisible = () => {
++    if (document.visibilityState !== "visible") return
++    const id = input.sessionID()
++    if (!id) return
++    if (!untrack(() => serverSync().session.fresh(id, sessionFreshness))) {
++      void untrack(() => sync().session.sync(id, { force: true }))
++    }
++  }
++  for (const signal of ["visibilitychange", "pageshow", "focus", "online", "opencode:sdk-resurrected"]) {
++    window.addEventListener(signal, resyncOnVisible)
++  }
++  onCleanup(() => {
++    for (const signal of ["visibilitychange", "pageshow", "focus", "online", "opencode:sdk-resurrected"]) {
++      window.removeEventListener(signal, resyncOnVisible)
++    }
++  })
+   const messages = createMemo(() => {
+     const id = input.sessionID()
+     return id ? (sync().data.message[id] ?? []) : []
+diff --git a/packages/opencode/src/server/shared/ui.ts b/packages/opencode/src/server/shared/ui.ts
+index d3f2c45..43190aa 100644
+--- a/packages/opencode/src/server/shared/ui.ts
++++ b/packages/opencode/src/server/shared/ui.ts
+@@ -57,6 +57,7 @@ function embeddedUIResponse(file: string, body: Uint8Array) {
+   const headers = new Headers({ "content-type": mime })
+   if (mime.startsWith("text/html")) {
+     headers.set("content-security-policy", cspForHtml(new TextDecoder().decode(body)))
++    headers.set("cache-control", "no-cache")
+   }
+   return HttpServerResponse.raw(body, { headers })
+ }
