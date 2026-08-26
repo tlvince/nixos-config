@@ -34,6 +34,7 @@ let
   );
 
   # TODO: Drop opencode SSE reconnect patch
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/510
   # Reconnect SSE event stream after Android screen-lock freeze leaves
   # the fetch hanging on a half-open socket, and resync stale session
   # views on resume.
