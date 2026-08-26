@@ -33,35 +33,15 @@ let
     }
   );
 
-  # TODO: Drop opencode override when updated in nixpkgs
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/509
-  # labels: host:nea
-  opencode =
-    let
-      base = pkgs.opencode.overrideAttrs (old: {
-        version = "1.18.21";
-        # Reconnect SSE event stream after Android screen-lock freeze leaves
-        # the fetch hanging on a half-open socket, and resync stale session
-        # views on resume.
-        patches = [ ./opencode-sse-freeze-resume.patch ];
-        postPatch = (old.postPatch or "") + ''
-          cp ${pwaManifest} packages/app/public/site.webmanifest
-        '';
-        src = pkgs.fetchFromGitHub {
-          owner = "anomalyco";
-          repo = "opencode";
-          tag = "v1.18.21";
-          hash = "sha256-WKG/lts+wzDjYJ5pOZ0X4Kb0rJ1TzYQzQgjyQBY+bxs=";
-        };
-      });
-    in
-    base.overrideAttrs (old: {
-      passthru = old.passthru // {
-        node_modules = old.passthru.node_modules.overrideAttrs (_: {
-          outputHash = "sha256-WqEZQCVl4oQFVbrhlWVaBW+JiSqjSK+LILPkDV9Avds=";
-        });
-      };
-    });
+  opencode = pkgs.opencode.overrideAttrs (old: {
+    # Reconnect SSE event stream after Android screen-lock freeze leaves
+    # the fetch hanging on a half-open socket, and resync stale session
+    # views on resume.
+    patches = [ ./opencode-sse-freeze-resume.patch ];
+    postPatch = (old.postPatch or "") + ''
+      cp ${pwaManifest} packages/app/public/site.webmanifest
+    '';
+  });
 in
 {
   services.nginx = {
