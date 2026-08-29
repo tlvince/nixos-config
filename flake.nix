@@ -19,6 +19,10 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
+    # TODO: Drop dsh pin when PR is merged upstream
+    # See: https://github.com/NixOS/nixpkgs/pull/554081
+    # labels: host:nea
+    nixpkgs-dsh.url = "github:Dietr1ch/nixpkgs/e33d86db2c8acafda91cb825576dd90db166ec7d";
     # TODO: Drop fastflowlm pin when PR is merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/468
     # See: https://github.com/NixOS/nixpkgs/pull/513841
@@ -45,6 +49,7 @@
       llm-agents,
       lanzaboote,
       nixpkgs,
+      nixpkgs-dsh,
       nixpkgs-flm,
       nvf,
       secrets,
@@ -61,6 +66,10 @@
       };
       pkgsFlm = import nixpkgs-flm {
         inherit system;
+        config.allowUnfree = true;
+      };
+      pkgsDsh = import nixpkgs-dsh {
+        system = "aarch64-linux";
         config.allowUnfree = true;
       };
     in
@@ -147,7 +156,7 @@
         };
         nea = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit keys;
+            inherit keys pkgsDsh;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };

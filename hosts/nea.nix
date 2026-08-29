@@ -20,6 +20,7 @@
     ../modules/acme.nix
     ../modules/caltrack.nix
     ../modules/cpuload.nix
+    ../modules/deepseek-harness.nix
     ../modules/host-common-nixos.nix
     ../modules/host-common.nix
     ../modules/nginx.nix
@@ -124,6 +125,7 @@
 
       host-record = [
         "caltrack.filo.uk,10.12.3.1"
+        "dsh.filo.uk,10.12.3.1"
         "opencode.filo.uk,10.12.3.1"
       ];
     };
