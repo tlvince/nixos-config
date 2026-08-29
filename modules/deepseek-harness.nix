@@ -4,24 +4,19 @@
   ...
 }:
 let
+  # TODO: Drop dsh overrides when upstream widens platforms
   # The PR restricts deepseek-harness to x86_64-linux, but nea is
   # aarch64-linux. The PR author built on aarch64-linux, just didn't verify.
   # The pnpmDeps hash also differs on aarch64 due to optional native deps.
-  # TODO: Drop overrides when upstream widens platforms
   # Issue URL: https://github.com/tlvince/nixos-config/issues/513
   # See: https://github.com/NixOS/nixpkgs/pull/554081
+  # labels: module:dsh
   dsh = pkgsDsh.deepseek-harness.overrideAttrs (old: {
-    # Allow Settings (privileged methods) via trustedHosts when behind
-    # nginx on wireguard. Upstream pins them to loopback only (see
-    # packages/client/connection/src/index.ts: PRIVILEGED_METHODS). Also
-    # treat dsh.filo.uk as loopback on the client so the Settings mirror
-    # uses 'host' persistence instead of 'memory' (see
-    # packages/client/ui-settings/src/client/index.ts: connection.isLoopback).
+    # Treat dsh.filo.uk as loopback so nginx-proxied requests pass the
+    # DNS-rebinding fence and the Settings mirror uses 'host' persistence
+    # instead of 'memory' (see packages/client/connection/src/loopback-hostname.ts
+    # and packages/client/ui-settings/src/client/index.ts: connection.isLoopback).
     postPatch = (old.postPatch or "") + ''
-      substituteInPlace packages/client/connection/src/index.ts \
-        --replace-fail 'isTrustedApiRequest(request, [])' 'isTrustedApiRequest(request, trustedHosts)'
-      substituteInPlace packages/client/connection/src/rpc-host.ts \
-        --replace-fail 'isTrustedApiRequest(request, [])' 'isTrustedApiRequest(request, this.trustedHosts)'
       substituteInPlace packages/client/connection/src/loopback-hostname.ts \
         --replace-fail "if (hostname === 'localhost' || hostname === '[::1]') return true" "if (hostname === 'localhost' || hostname === '[::1]' || hostname === 'dsh.filo.uk') return true"
     '';
