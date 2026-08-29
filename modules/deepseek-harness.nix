@@ -8,6 +8,7 @@ let
   # aarch64-linux. The PR author built on aarch64-linux, just didn't verify.
   # The pnpmDeps hash also differs on aarch64 due to optional native deps.
   # TODO: Drop overrides when upstream widens platforms
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/513
   # See: https://github.com/NixOS/nixpkgs/pull/554081
   dsh = pkgsDsh.deepseek-harness.overrideAttrs (old: {
     # Allow Settings (privileged methods) via trustedHosts when behind

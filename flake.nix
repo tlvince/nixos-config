@@ -20,6 +20,7 @@
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
     # TODO: Drop dsh pin when PR is merged upstream
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/512
     # See: https://github.com/NixOS/nixpkgs/pull/554081
     # labels: host:nea
     nixpkgs-dsh.url = "github:Dietr1ch/nixpkgs/e33d86db2c8acafda91cb825576dd90db166ec7d";
