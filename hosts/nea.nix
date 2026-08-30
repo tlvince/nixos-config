@@ -3,6 +3,7 @@
   modulesPath,
   pkgs,
   keys,
+  secrets,
   secretsPath,
   ...
 }:
@@ -107,7 +108,34 @@
       ];
       logRefusedConnections = false;
     };
+    nameservers = [
+      "2a07:a8c0::#${secrets.nextdns.nea}.dns.nextdns.io"
+      "2a07:a8c1::#${secrets.nextdns.nea}.dns.nextdns.io"
+      "45.90.28.0#${secrets.nextdns.nea}.dns.nextdns.io"
+      "45.90.30.0#${secrets.nextdns.nea}.dns.nextdns.io"
+    ];
     useDHCP = false;
+    wireguard.interfaces.wg0 = {
+      ips = [
+        "10.12.3.1/32"
+      ];
+      listenPort = 51820;
+      privateKeyFile = config.age.secrets."wireguard-nea".path;
+      peers = [
+        {
+          name = "mobile";
+          publicKey = "5PKxnLmOs2ZHDWAsULapVF5tYNCWemOcVSt1+irocDo=";
+          allowedIPs = [ "10.12.3.2/32" ];
+          presharedKeyFile = config.age.secrets."wireguard-nea-mobile-psk".path;
+        }
+        {
+          name = "framework";
+          publicKey = "oQfdwYibhttuZ3KfLAmVPGQtZNiEHr/PufF4OLp3SA4=";
+          allowedIPs = [ "10.12.3.3/32" ];
+          presharedKeyFile = config.age.secrets."wireguard-nea-framework-psk".path;
+        }
+      ];
+    };
   };
 
   services.dnsmasq = {
@@ -129,28 +157,6 @@
         "opencode.filo.uk,10.12.3.1"
       ];
     };
-  };
-
-  networking.wireguard.interfaces.wg0 = {
-    ips = [
-      "10.12.3.1/32"
-    ];
-    listenPort = 51820;
-    privateKeyFile = config.age.secrets."wireguard-nea".path;
-    peers = [
-      {
-        name = "mobile";
-        publicKey = "5PKxnLmOs2ZHDWAsULapVF5tYNCWemOcVSt1+irocDo=";
-        allowedIPs = [ "10.12.3.2/32" ];
-        presharedKeyFile = config.age.secrets."wireguard-nea-mobile-psk".path;
-      }
-      {
-        name = "framework";
-        publicKey = "oQfdwYibhttuZ3KfLAmVPGQtZNiEHr/PufF4OLp3SA4=";
-        allowedIPs = [ "10.12.3.3/32" ];
-        presharedKeyFile = config.age.secrets."wireguard-nea-framework-psk".path;
-      }
-    ];
   };
 
   nixpkgs.hostPlatform = "aarch64-linux";
@@ -195,6 +201,10 @@
       PasswordAuthentication = false;
       PermitRootLogin = "no";
     };
+  };
+  services.resolved = {
+    enable = true;
+    settings.Resolve.DNSOverTLS = "true";
   };
   system.stateVersion = "25.05";
   system.tools = {
