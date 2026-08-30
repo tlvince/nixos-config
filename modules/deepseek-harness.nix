@@ -62,6 +62,7 @@ in
       fd
       gitMinimal
       ripgrep
+      xdg-utils
     ];
     serviceConfig = {
       User = "tlv";
