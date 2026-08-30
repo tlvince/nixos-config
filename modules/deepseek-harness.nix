@@ -59,10 +59,7 @@ in
     path = with pkgs; [
       bash
       coreutils
-      fd
       gitMinimal
-      ripgrep
-      xdg-utils
     ];
     serviceConfig = {
       User = "tlv";
