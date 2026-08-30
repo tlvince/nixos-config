@@ -57,6 +57,8 @@ in
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     path = with pkgs; [
+      bash
+      coreutils
       fd
       gitMinimal
       ripgrep
