@@ -1,0 +1,93 @@
+diff --git a/packages/client/ui-conversation/src/client/apply.ts b/packages/client/ui-conversation/src/client/apply.ts
+index 7920104..9dfd222 100644
+--- a/packages/client/ui-conversation/src/client/apply.ts
++++ b/packages/client/ui-conversation/src/client/apply.ts
+@@ -1,5 +1,6 @@
+ /** Registers the conversation components, shared store, and service callbacks. */
+ import type { Context } from '@deepseek-ai/cordis'
++import type { ConnectionHandle } from '@deepseek-ai/dsh-client-connection/client'
+ import { resolveSlotLabel, type BoundActions } from '@deepseek-ai/dsh-client-ui-slots'
+ import {
+   resolveWorkspacePath, type ISessions, type SessionId,
+@@ -399,7 +400,15 @@ export function apply(ctx: Context): void {
+         fileMentions: owner => ctx.get('chatFileMentions')?.forClosing(owner),
+         openFile: (path) => {
+           const cwd = sessions.list.getSnapshot().byId[sessionId]?.cwd
+-          return workspaces.openPath(resolveWorkspacePath(cwd, path))
++          const abs = resolveWorkspacePath(cwd, path)
++          const connection = ctx.get('connection') as ConnectionHandle
++          const canOpenNative = connection.isLoopback
++            && connection.hostDescription.getSnapshot()?.canOpenPath === true
++          if (canOpenNative) return workspaces.openPath(abs)
++          // Headless or remote web: open the path in the browser over the
++          // file route instead of a native desktop opener.
++          window.open(`${window.location.origin}/api/file?path=${encodeURIComponent(abs)}&view=1`, '_blank', 'noopener,noreferrer')
++          return Promise.resolve()
+         },
+         loadOlder: () => { void scoped.loadOlder() },
+         loadImage: attachment => conversation.resolveImage(sessionId, attachment),
+diff --git a/packages/client/ui-settings-general/src/client/settings-document-store.ts b/packages/client/ui-settings-general/src/client/settings-document-store.ts
+index c6e2109..5b09756 100644
+--- a/packages/client/ui-settings-general/src/client/settings-document-store.ts
++++ b/packages/client/ui-settings-general/src/client/settings-document-store.ts
+@@ -65,6 +65,12 @@ export class SettingsDocumentStore {
+     try {
+       const response = await this.api.settings.openDocument({})
+       if (!response.result.ok) throw new Error(response.result.error.message)
++      const docPath = response.result.value.path
++      if (docPath !== undefined) {
++        // Headless host: no native text editor; open the document in the
++        // browser over the file route instead.
++        window.open(`${window.location.origin}/api/file?path=${encodeURIComponent(docPath)}&view=1`, '_blank', 'noopener,noreferrer')
++      }
+     } catch (error) {
+       this.store.update((state) => { state.error = messageOf(error) })
+     } finally {
+diff --git a/packages/host/apiproxy/src/api/settings.schema.ts b/packages/host/apiproxy/src/api/settings.schema.ts
+index 19fa2c0..5717f0a 100644
+--- a/packages/host/apiproxy/src/api/settings.schema.ts
++++ b/packages/host/apiproxy/src/api/settings.schema.ts
+@@ -42,6 +42,7 @@ export const settingsOpenDocumentRequestSchema = z.object({}) satisfies z.ZodTyp
+ /** settings.openDocument response value. */
+ export const settingsOpenDocumentValueSchema = z.object({
+   opened: z.literal(true),
++  path: z.string().optional(),
+ }) satisfies z.ZodType<Wire<ResponseValue<'settings.openDocument'>>>
+ 
+ /** settings.update request payload. */
+diff --git a/packages/host/apiproxy/src/api/settings.ts b/packages/host/apiproxy/src/api/settings.ts
+index 5bbc6d5..eacef6c 100644
+--- a/packages/host/apiproxy/src/api/settings.ts
++++ b/packages/host/apiproxy/src/api/settings.ts
+@@ -69,10 +69,13 @@ export interface SettingsApi {
+    * hand it to the platform text-document opener. macOS forces a text editor;
+    * Linux and Windows use the desktop file association. The request carries
+    * no path, so the browser cannot choose an arbitrary Host filesystem target.
++   * On a host with no desktop (headless Linux) the document is not opened
++   * natively; the response instead carries its resolved path so the client
++   * can open it in the browser over the file route.
+    */
+   openDocument(
+     request: RpcRequest<{}>, signal: AbortSignal,
+-  ): Promise<RpcResponse<{ opened: true }>>
++  ): Promise<RpcResponse<{ opened: true; path?: string }>>
+ 
+   /**
+    * Merge a patch into one namespace's user layer (validate → persist →
+
+diff --git a/packages/host/apiproxy/src/api-proxy.ts b/packages/host/apiproxy/src/api-proxy.ts
+index ba354e1..4b2d5ac 100644
+--- a/packages/host/apiproxy/src/api-proxy.ts
++++ b/packages/host/apiproxy/src/api-proxy.ts
+@@ -3209,7 +3209,10 @@ export function createApiProxy(ctx: Context, defaults: ApiProxyDefaults): ApiPro
+             details: {},
+           })
+         }
+-        return openTextFile(request, path, signal)
++        if (canOpenPaths()) return openTextFile(request, path, signal)
++        // Headless host: no desktop to hand the document to; return the path
++        // so the client can open it over the file route instead.
++        return ok(request, { opened: true as const, path })
+       },
+       update: request => settingsWrite(request, request.payload.ns, 'update', request.payload.patch, request.payload.expectedRevision),
+       replace: request => settingsWrite(request, request.payload.ns, 'replace', request.payload.section, request.payload.expectedRevision),

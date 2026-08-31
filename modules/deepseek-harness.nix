@@ -19,6 +19,8 @@ let
     postPatch = (old.postPatch or "") + ''
       substituteInPlace packages/client/connection/src/loopback-hostname.ts \
         --replace-fail "if (hostname === 'localhost' || hostname === '[::1]') return true" "if (hostname === 'localhost' || hostname === '[::1]' || hostname === 'dsh.filo.uk') return true"
+      patch -p1 < ${../patches/deepseek-harness/dsh-browser-open.patch}
+      patch -p1 < ${../patches/deepseek-harness/dsh-bash-retry.patch}
     '';
     pnpmDeps = old.pnpmDeps.overrideAttrs (_: {
       outputHash = "sha256-+PsdK9u3ZKv4XtSc8tBKKP48J/95/CGTMIUf8Q8dbok=";
@@ -32,6 +34,12 @@ let
   });
 in
 {
+  # Offline highlight.js assets for browser-open plugin
+  environment.etc."dsh-browser-open/hljs.min.js".source =
+    ../patches/deepseek-harness/dsh-browser-open.hljs.min.js;
+  environment.etc."dsh-browser-open/hljs.min.css".source =
+    ../patches/deepseek-harness/dsh-browser-open.hljs.min.css;
+
   services.nginx = {
     upstreams.dsh.servers."127.0.0.1:3080" = { };
 

@@ -1,0 +1,540 @@
+diff --git a/packages/core/session/src/repair.ts b/packages/core/session/src/repair.ts
+--- a/packages/core/session/src/repair.ts	1970-01-01 01:00:01.000000000 +0100
++++ b/packages/core/session/src/repair.ts	2026-08-31 15:48:30.032046302 +0100
+@@ -15,6 +15,23 @@
+ /** Recovery code for a recorded tool call whose completed outcome was not durably recorded. */
+ export const TOOL_OUTCOME_UNKNOWN = 'TOOL_OUTCOME_UNKNOWN'
+ 
++/** Recovery code for a recorded bash tool call that the harness will retry automatically. */
++export const TOOL_RETRY_PENDING = 'TOOL_RETRY_PENDING'
++
++/**
++ * Tool names whose interrupted calls are safe to re-run automatically: each
++ * invocation is a fresh subprocess with no durable harness state, so a crash
++ * between recording and result leaves nothing to duplicate.
++ */
++const AUTO_RETRY_TOOLS = new Set<string>(['bash'])
++
++/**
++ * Model-visible prefix of the repair marker emitted for an interrupted
++ * auto-retryable call. The resumed agent loop matches this prefix to find
++ * calls it should re-dispatch; the replacement result drops the marker text.
++ */
++export const AUTO_RETRY_MARKER = 'The tool call was interrupted after it was recorded; the Harness will retry it automatically.'
++
+ /**
+  * Return deterministic synthetic events that close an open tail turn. Unmatched
+  * calls receive error results first, followed by an open `step/end` and an
+@@ -29,7 +46,7 @@
+   let openStep: number | null = null
+   // Reset at each turn boundary so earlier calls cannot leak into tail repair.
+   // Assistant blocks register calls; later `tool/call` events add their seqs to `sourceEventSeqs`.
+-  const pendingCalls = new Map<CallId, { step: number; callSeq?: number }>()
++  const pendingCalls = new Map<CallId, { step: number; callSeq?: number; name?: string }>()
+   for (const event of events) {
+     switch (event.type) {
+       case 'turn/start':
+@@ -53,15 +70,17 @@
+         // The assistant message carries the tool-call blocks; each is pending
+         // until a tool/result event with the same callId is logged.
+         for (const block of event.data.message.content) {
+-          if (block.type === 'tool-call') pendingCalls.set(block.id, { step: event.data.step })
++          if (block.type === 'tool-call') pendingCalls.set(block.id, { step: event.data.step, name: block.name })
+         }
+         break
+       case 'tool/call':
+-        // Cite the `tool/call` seq from the synthetic result.
++        // Cite the `tool/call` seq from the synthetic result, and capture the
++        // authoritative tool name (the assistant block already set it).
+         {
+           const entry = pendingCalls.get(event.data.callId)
+           if (entry) {
+             entry.callSeq = event.seq
++            entry.name = event.data.name
+           }
+         }
+         break
+@@ -88,8 +107,9 @@
+ 
+   // Close calls before their step: providers reject dangling assistant calls,
+   // and Map insertion order preserves their transcript order.
+-  for (const [callId, { step, callSeq }] of pendingCalls) {
++  for (const [callId, { step, callSeq, name }] of pendingCalls) {
+     const started = callSeq !== undefined
++    const autoRetry = started && name !== undefined && AUTO_RETRY_TOOLS.has(name)
+     const message: ToolResultMessage = freezeMessage({
+       id: MessageId(`interrupted-tool-result-${callId}-${seq}`),
+       role: 'user',
+@@ -97,27 +117,29 @@
+       content: [{
+         type: 'tool-result',
+         toolCallId: callId,
+-        isError: true,
++        isError: autoRetry ? false : true,
+         content: [{
+           type: 'text',
+-          text: started
+-            ? 'The tool call was interrupted after it was recorded, but no result was durably recorded. Its outcome is unknown. Decide whether to retry from the tool semantics: retry only if the operation is read-only or idempotent; if it may have side effects, first verify external state or ask the user. Do not retry blindly.'
+-            : 'The tool call was interrupted before the Harness recorded it as started. Retry it if it is still needed.',
++          text: autoRetry
++            ? AUTO_RETRY_MARKER
++            : started
++              ? 'The tool call was interrupted after it was recorded, but no result was durably recorded. Its outcome is unknown. Decide whether to retry from the tool semantics: retry only if the operation is read-only or idempotent; if it may have side effects, first verify external state or ask the user. Do not retry blindly.'
++              : 'The tool call was interrupted before the Harness recorded it as started. Retry it if it is still needed.',
+         }],
+       }],
+     })
++    const data: SessionEvent<'tool/result'>['data'] = {
++      turn: openTurn,
++      step,
++      message,
++      ...!started ? { error: { name: 'ToolNotStartedError', code: TOOL_NOT_STARTED } } : {},
++      ...started && !autoRetry ? { error: { name: 'ToolOutcomeUnknownError', code: TOOL_OUTCOME_UNKNOWN } } : {},
++    }
+     closers.push({
+       type: 'tool/result',
+       seq: seq++,
+       time,
+-      data: {
+-        turn: openTurn,
+-        step,
+-        message,
+-        error: started
+-          ? { name: 'ToolOutcomeUnknownError', code: TOOL_OUTCOME_UNKNOWN }
+-          : { name: 'ToolNotStartedError', code: TOOL_NOT_STARTED },
+-      },
++      data,
+       surfaceOp: 'append',
+       ...started ? { sourceEventSeqs: [callSeq] } : {},
+     })
+
+diff --git a/packages/core/session/src/index.ts b/packages/core/session/src/index.ts
+--- a/packages/core/session/src/index.ts	1970-01-01 01:00:01.000000000 +0100
++++ b/packages/core/session/src/index.ts	2026-08-31 15:44:30.562010838 +0100
+@@ -26,7 +26,7 @@
+ export type { AssistantMessage, ToolResultMessage, UserMessage } from '@deepseek-ai/dsh-llm'
+ export { isJsonValue, snapshotJsonValue } from './json.ts'
+ export type { JsonValue } from './json.ts'
+-export { interruptedTurnClosers, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from './repair.ts'
++export { interruptedTurnClosers, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN, TOOL_RETRY_PENDING, AUTO_RETRY_MARKER } from './repair.ts'
+ export { decodeStorageRecord, packChunkRuns } from './chunk-rows.ts'
+ export type { ChunkRow, StorageRecord } from './chunk-rows.ts'
+ export type { SessionSurface, SurfaceFoldReplacement, SurfaceFoldResult } from './surface.ts'
+
+diff --git a/packages/core/agent-loop/src/agent.ts b/packages/core/agent-loop/src/agent.ts
+--- a/packages/core/agent-loop/src/agent.ts	1970-01-01 01:00:01.000000000 +0100
++++ b/packages/core/agent-loop/src/agent.ts	2026-08-31 15:44:05.649799666 +0100
+@@ -33,6 +33,7 @@
+ import type { PromptAssembly } from '@deepseek-ai/dsh-system-prompt'
+ import type { Context } from '@deepseek-ai/cordis'
+ import { RuntimeContextProjection } from './runtime-context.ts'
++import { autoRetryInterruptedCalls } from './auto-retry.ts'
+ import { executeToolCalls } from './tool-calls.ts'
+ 
+ type Phase =
+@@ -336,6 +337,11 @@
+     signal.throwIfAborted()
+     const system = renderPrompt(assembly)
+ 
++    // Surface-replace any crash-repair markers for interrupted auto-retryable
++    // tool calls (bash) before the model sees the resumed transcript.
++    await autoRetryInterruptedCalls(this.loopCtx, this, this.session, signal)
++    signal.throwIfAborted()
++
+     while (true) {
+       const { request, preparedCall } = await this.buildRequest(
+         turn, step, assembly.tools, system, this.session.deriveMessages(), signal,
+
+diff --git a/packages/core/session/tests/repair.spec.ts b/packages/core/session/tests/repair.spec.ts
+--- a/packages/core/session/tests/repair.spec.ts	1970-01-01 01:00:01.000000000 +0100
++++ b/packages/core/session/tests/repair.spec.ts	2026-08-31 16:08:46.410566724 +0100
+@@ -1,6 +1,6 @@
+ import { describe, expect, it } from 'vitest'
+ import { CallId , createMessage, createToolResultMessage } from '@deepseek-ai/dsh-llm'
+-import { interruptedTurnClosers, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from '../src/index.ts'
++import { AUTO_RETRY_MARKER, interruptedTurnClosers, TOOL_NOT_STARTED, TOOL_OUTCOME_UNKNOWN } from '../src/index.ts'
+ import type { SessionEvent, SurfaceEvent } from '../src/index.ts'
+ 
+ /**
+@@ -235,7 +235,7 @@
+         message: createMessage({
+           role: 'assistant',
+           content: [
+-            { type: 'tool-call', id: CallId('call-1'), name: 'bash', arguments: '{}' },
++            { type: 'tool-call', id: CallId('call-1'), name: 'write', arguments: '{}' },
+           ],
+           source: {
+             kind: 'model',
+@@ -243,7 +243,7 @@
+           },
+         }),
+       } },
+-      { type: 'tool/call', seq: 3, time: 3, data: { turn: 1, step: 1, callId: CallId('call-1'), name: 'bash', arguments: '{}' } },
++      { type: 'tool/call', seq: 3, time: 3, data: { turn: 1, step: 1, callId: CallId('call-1'), name: 'write', arguments: '{}' } },
+     ]
+     const closers = interruptedTurnClosers(events)
+     expect(closers.map(e => e.type)).toEqual(['tool/result', 'step/end', 'turn/end'])
+@@ -260,6 +260,39 @@
+     expect(result.data.message.content[0].content[0].text).toContain('first verify external state or ask the user')
+   })
+ 
++  it('emits an auto-retry marker for a recorded auto-retryable call (bash) instead of an unknown-outcome error', () => {
++    const events: SessionEvent[] = [
++      userTurnStart(1, 0),
++      { type: 'step/start', seq: 1, time: 1, data: { turn: 1, step: 1 } },
++      { type: 'assistant/message', seq: 2, time: 2, data: {
++        turn: 1, step: 1,
++        message: createMessage({
++          role: 'assistant',
++          content: [
++            { type: 'tool-call', id: CallId('call-bash'), name: 'bash', arguments: '{"command":"true"}' },
++          ],
++          source: {
++            kind: 'model',
++            ...{ provider: 'mock', model: 'mock' },
++          },
++        }),
++      } },
++      { type: 'tool/call', seq: 3, time: 3, data: { turn: 1, step: 1, callId: CallId('call-bash'), name: 'bash', arguments: '{"command":"true"}' } },
++    ]
++    const closers = interruptedTurnClosers(events)
++    expect(closers.map(e => e.type)).toEqual(['tool/result', 'step/end', 'turn/end'])
++    const result = closers[0]!
++    expect((result as SurfaceEvent).surfaceOp).toBe('append')
++    expect((result as SurfaceEvent).sourceEventSeqs).toEqual([3])
++    expect(result.type === 'tool/result' && result.data.message.content[0].isError).toBe(false)
++    // No error field for auto-retryable calls (the result is a success-shaped marker)
++    expect(result.type === 'tool/result' && result.data.error).toBeUndefined()
++    if (result.type !== 'tool/result' || result.data.message.content[0].content[0]?.type !== 'text') {
++      throw new Error('expected a text tool result')
++    }
++    expect(result.data.message.content[0].content[0].text).toBe(AUTO_RETRY_MARKER)
++  })
++
+   it('handles tool/call without a matching assistant/message entry gracefully', () => {
+     // A raw tool/call with no assistant-registered pending call has nothing to
+     // answer; repair still closes the step and turn without synthesizing a result.
+
+diff --git a/packages/core/agent-loop/src/auto-retry.ts b/packages/core/agent-loop/src/auto-retry.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/core/agent-loop/src/auto-retry.ts
++++ /home/tlv/dev/dsh/packages/core/agent-loop/src/auto-retry.ts	2026-08-31 16:15:27.214097291 +0100
+@@ -0,0 +1,136 @@
++/**
++ * Automatic retry of interrupted auto-retryable tool calls (bash) after a
++ * crash-recovery repair. Each bash invocation is a fresh subprocess, so a
++ * repair marker left by `interruptedTurnClosers` can be re-dispatched safely:
++ * the resumed loop re-runs the exact recorded command and surface-replaces the
++ * marker with the real result before the model ever sees it.
++ *
++ * The replacement obeys the session's tool-result rewrite rule: it preserves
++ * every field of the marker event except the text content, so the model-visible
++ * surface shows a completed call instead of an ambiguous interruption error.
++ * @module dsh-agent-loop/auto-retry
++ */
++
++import type { Context } from '@deepseek-ai/cordis'
++import type { Agent } from '@deepseek-ai/dsh-agent'
++import type { Session, SessionEvent } from '@deepseek-ai/dsh-session'
++import { AUTO_RETRY_MARKER } from '@deepseek-ai/dsh-session'
++import { freezeMessage, type ToolResultMessage } from '@deepseek-ai/dsh-llm'
++
++/** One repair marker found in the current surface, with its original call. */
++interface RetryMarker {
++  /** Seq of the marker `tool/result` event to surface-replace. */
++  resultSeq: number
++  /** Call id recorded on the interrupted call and reused for the re-dispatch. */
++  callId: string
++  /** Original `tool/call` event carrying the exact recorded command. */
++  call: SessionEvent<'tool/call'>
++}
++
++/**
++ * Scan the current surface for repair markers left for auto-retryable calls.
++ * A marker is a success-shaped `tool/result` whose text starts with the fixed
++ * auto-retry prefix; the original command comes from the cited `tool/call`.
++ *
++ * @param session - resumed session whose surface is being prepared for a model request.
++ * @returns matched markers in surface order.
++ */
++function findRetryMarkers(session: Session): RetryMarker[] {
++  const markers: RetryMarker[] = []
++  for (const seq of [...session.surface.nodes]) {
++    const event = session.events[seq]
++    if (event?.type !== 'tool/result') continue
++    const first = event.data.message.content[0]
++    if (first?.type !== 'tool-result' || first.isError !== false) continue
++    const text = first.content[0]
++    if (text?.type !== 'text' || !text.text.startsWith(AUTO_RETRY_MARKER)) continue
++    const callSeq = event.sourceEventSeqs?.[0]
++    const call = callSeq === undefined ? undefined : session.events[callSeq]
++    if (call?.type !== 'tool/call') continue
++    markers.push({ resultSeq: seq, callId: event.data.message.source.callId, call })
++  }
++  return markers
++}
++
++/** Surface-replace one marker with the real result, preserving every other field. */
++function replaceMarker(
++  session: Session,
++  marker: RetryMarker,
++  text: string,
++): void {
++  const event = session.events[marker.resultSeq]
++  if (event?.type !== 'tool/result') return
++  const result = event.data.message.content[0]
++  if (result?.type !== 'tool-result') return
++  const message: ToolResultMessage = freezeMessage({
++    ...event.data.message,
++    content: [{
++      ...result,
++      content: [{ type: 'text', text }],
++    }] as [typeof result],
++  })
++  session.append('tool/result', {
++    ...event.data,
++    message,
++  }, {
++    surfaceOp: { op: 'replace', start: marker.resultSeq, end: marker.resultSeq },
++    sourceEventSeqs: [marker.resultSeq],
++  })
++}
++
++/**
++ * Re-dispatch every auto-retryable interrupted call found in the resumed
++ * surface, replacing its repair marker with the re-run result. Failures are
++ * surfaced as text inside the replacement so the model still sees the outcome;
++ * a missing tool or a session that rejects the rewrite leaves the marker so the
++ * interruption stays visible. Runs only while a model request is being prepared,
++ * so a marker is retried at most once per session.
++ *
++ * @param ctx - loop context exposing the tool registry and session store.
++ * @param agent - the loop agent on whose behalf the call is re-dispatched.
++ * @param session - resumed session being prepared.
++ * @param signal - caller cancellation for the re-dispatch.
++ */
++export async function autoRetryInterruptedCalls(
++  ctx: Context,
++  agent: Agent,
++  session: Session,
++  signal: AbortSignal,
++): Promise<void> {
++  for (const marker of findRetryMarkers(session)) {
++    signal.throwIfAborted()
++    const exec = {
++      callId: marker.call.data.callId,
++      name: marker.call.data.name,
++      arguments: parseRecordedArguments(marker.call.data.arguments),
++      agent,
++      signal,
++    }
++    let text: string
++    try {
++      const result = await ctx.tools.execute(exec)
++      text = flattenResultText(result.content)
++    } catch (error: unknown) {
++      text = `Automatic retry of the interrupted tool call failed: ${String(error)}`
++    }
++    replaceMarker(session, marker, text)
++  }
++}
++
++/** Parse the recorded JSON argument string, preserving invalid JSON as text. */
++function parseRecordedArguments(raw: string): unknown {
++  try {
++    return raw ? JSON.parse(raw) : {}
++  } catch {
++    return raw
++  }
++}
++
++/** Join a tool result's text blocks into one model-visible string. */
++function flattenResultText(content: readonly { type: string; text?: string }[]): string {
++  const parts: string[] = []
++  for (const block of content) {
++    if (block.type === 'text' && block.text !== undefined) parts.push(block.text)
++  }
++  return parts.length > 0 ? parts.join('\n') : '(no output)'
++}
+
+diff --git a/packages/core/agent-loop/tests/auto-retry.spec.ts b/packages/core/agent-loop/tests/auto-retry.spec.ts
+new file mode 100644
+--- /dev/null
++++ b/packages/core/agent-loop/tests/auto-retry.spec.ts
++++ /home/tlv/dev/dsh/packages/core/agent-loop/tests/auto-retry.spec.ts	2026-08-31 17:49:36.426516812 +0100
+@@ -0,0 +1,174 @@
++import { describe, expect, it } from 'vitest'
++import { Context } from '@deepseek-ai/cordis'
++import LlmRuntime, { CallId, createMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
++import SessionStore, { SessionId } from '@deepseek-ai/dsh-session'
++import type { SessionEvent } from '@deepseek-ai/dsh-session'
++import { AUTO_RETRY_MARKER } from '@deepseek-ai/dsh-session'
++import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
++import ToolRuntime, { defineContentToolFixture } from '@deepseek-ai/dsh-tools'
++import { autoRetryInterruptedCalls } from '../src/auto-retry.ts'
++
++/**
++ * Unit coverage for resumed-session auto-retry of interrupted bash calls. The
++ * fixture seeds a session with the exact closer shape `interruptedTurnClosers`
++ * emits for a recorded auto-retryable call, then drives `autoRetryInterruptedCalls`
++ * and asserts the repair marker is surface-replaced by the re-run result.
++ */
++
++async function markerSession(): Promise<{
++  ctx: Context
++  session: ReturnType<SessionStore['prepare']>
++  unregister: () => void
++}> {
++  const ctx = new Context()
++  await ctx.plugin(LlmRuntime)
++  await ctx.plugin(SessionStore)
++  await ctx.plugin(SystemPrompt)
++  await ctx.plugin(ToolRuntime)
++  const unregister = ctx.tools.register(defineContentToolFixture({
++    name: 'bash',
++    description: 'mock bash for auto-retry tests',
++    parameters: { command: { type: 'string' } },
++    async execute(args: { command: string }) {
++      return [{ type: 'text', text: `ran: ${args.command}` }]
++    },
++  }))
++
++  const seed: SessionEvent[] = [
++    { type: 'turn/start', seq: 0, time: 1, data: { turn: 1 } },
++    { type: 'step/start', seq: 1, time: 2, data: { turn: 1, step: 1 } },
++    {
++      type: 'assistant/message', seq: 2, time: 3, data: {
++        turn: 1, step: 1,
++        message: createMessage({
++          role: 'assistant',
++          content: [
++            { type: 'tool-call', id: CallId('call-1'), name: 'bash', arguments: '{"command":"sleep 1"}' },
++          ],
++          source: { kind: 'model', provider: 'mock', model: 'mock' },
++        }),
++      },
++      surfaceOp: 'append',
++    },
++    { type: 'tool/call', seq: 3, time: 4, data: { turn: 1, step: 1, callId: CallId('call-1'), name: 'bash', arguments: '{"command":"sleep 1"}' } },
++    {
++      type: 'tool/result', seq: 4, time: 5, data: {
++        turn: 1, step: 1,
++        message: {
++          id: 'interrupted-tool-result-call-1-5' as never,
++          role: 'user',
++          source: { kind: 'tool', callId: CallId('call-1') },
++          content: [{
++            type: 'tool-result',
++            toolCallId: CallId('call-1'),
++            isError: false,
++            content: [{ type: 'text', text: AUTO_RETRY_MARKER }],
++          }],
++        },
++      },
++      surfaceOp: 'append',
++      sourceEventSeqs: [3],
++    },
++    { type: 'step/end', seq: 5, time: 6, data: { turn: 1, step: 1 } },
++    { type: 'turn/end', seq: 6, time: 7, data: { turn: 1, reason: { kind: 'interrupted' } } },
++  ]
++
++  const session = ctx.sessions.prepare(SessionId('auto-retry-fixture'), { seed, meta: { cwd: '/tmp' } })
++  return { ctx, session, unregister }
++}
++
++/** First text block of the current surface tool/result, if any. */
++function currentResultText(session: ReturnType<SessionStore['prepare']>): string | undefined {
++  const resultEvent = session.surface.nodes.find(seq => {
++    const e = session.events[seq]
++    return e?.type === 'tool/result'
++  })
++  if (resultEvent === undefined) return undefined
++  const event = session.events[resultEvent]
++  if (event?.type !== 'tool/result') return undefined
++  const first = event.data.message.content[0]
++  if (first?.type !== 'tool-result') return undefined
++  const text = first.content[0]
++  return text?.type === 'text' ? text.text : undefined
++}
++
++describe('autoRetryInterruptedCalls', () => {
++  it('replaces a repair marker with the re-run result before the model sees it', async () => {
++    const { ctx, session, unregister } = await markerSession()
++    // The marker is on the model-visible surface before the retry.
++    const markerSeq = session.surface.nodes.find(seq => session.events[seq]?.type === 'tool/result')
++    expect(markerSeq).toBe(4)
++
++    await autoRetryInterruptedCalls(
++      ctx,
++      { id: session.id } as never,
++      session,
++      new AbortController().signal,
++    )
++    unregister()
++
++    expect(currentResultText(session)).toBe('ran: sleep 1')
++    // The replacement shadowed the marker node: it is no longer on the surface.
++    expect(session.surface.nodes).not.toContain(4)
++  })
++
++  it('leaves the surface unchanged when no marker is present', async () => {
++    const { ctx, session, unregister } = await markerSession()
++    // Drain the marker by replacing it once, then a second pass must be a no-op.
++    await autoRetryInterruptedCalls(
++      ctx,
++      { id: session.id } as never,
++      session,
++      new AbortController().signal,
++    )
++    const nodesAfter = [...session.surface.nodes]
++    await autoRetryInterruptedCalls(
++      ctx,
++      { id: session.id } as never,
++      session,
++      new AbortController().signal,
++    )
++    unregister()
++    expect([...session.surface.nodes]).toEqual(nodesAfter)
++  })
++
++  it('surfaces the re-dispatch failure text when the tool is no longer registered', async () => {
++    const { ctx, session, unregister } = await markerSession()
++    // Unregister the fixture so the re-dispatch yields an unknown-tool result.
++    unregister()
++    await autoRetryInterruptedCalls(
++      ctx,
++      { id: session.id } as never,
++      session,
++      new AbortController().signal,
++    )
++    expect(currentResultText(session)).toContain('unknown tool "bash"')
++  })
++})
++
++describe('session integration', () => {
++  it('keeps a live user message alongside the retried marker without invalidating the surface', async () => {
++    const { ctx, session, unregister } = await markerSession()
++    // Simulate the resumed turn appending a prompt after the repair closers.
++    session.append('user/message', createUserMessage({
++      content: [{ type: 'text', text: 'continue' }],
++      source: { kind: 'user' },
++    }), { surfaceOp: 'append' })
++    await autoRetryInterruptedCalls(
++      ctx,
++      { id: session.id } as never,
++      session,
++      new AbortController().signal,
++    )
++    unregister()
++    // The surface still holds the appended prompt and the replacement result.
++    const messages = session.deriveMessages()
++    const promptTexts = messages.flatMap(m => m.content.flatMap(b => b.type === 'text' ? [b.text] : []))
++    const resultTexts = messages.flatMap(m =>
++      m.content.flatMap(b => b.type === 'tool-result'
++        ? b.content.flatMap(c => c.type === 'text' ? [c.text] : [])
++        : []))
++    expect(promptTexts).toContain('continue')
++    expect(resultTexts).toContain('ran: sleep 1')
++  })
++})
