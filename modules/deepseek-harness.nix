@@ -76,7 +76,7 @@ in
       Environment = [
         "DSH_TELEMETRY_DISABLED=true"
       ];
-      Restart = "on-failure";
+      Restart = "always";
       RestartSec = 5;
     };
   };

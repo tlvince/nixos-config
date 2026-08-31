@@ -79,7 +79,7 @@ in
     serviceConfig = {
       User = "tlv";
       ExecStart = "${opencode}/bin/opencode web --hostname 127.0.0.1 --port 4096";
-      Restart = "on-failure";
+      Restart = "always";
       RestartSec = 5;
       Environment = [
         "OPENCODE_DISABLE_AUTOUPDATE=true"
