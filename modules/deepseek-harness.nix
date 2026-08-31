@@ -64,6 +64,9 @@ in
     serviceConfig = {
       User = "tlv";
       ExecStart = "${dsh}/bin/dsh web --host 127.0.0.1 --port 3080 --no-open --trusted-host dsh.filo.uk";
+      Environment = [
+        "DSH_TELEMETRY_DISABLED=true"
+      ];
       Restart = "on-failure";
       RestartSec = 5;
     };
