@@ -68,6 +68,7 @@ in
       bash
       coreutils
       gitMinimal
+      nix
     ];
     serviceConfig = {
       User = "tlv";
