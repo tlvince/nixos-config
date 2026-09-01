@@ -92,6 +92,7 @@
   nixpkgs = {
     hostPlatform = "aarch64-linux";
     # TODO: Remove rdma-core dependency
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/514
     # libpcap defaults withRdma to true when rdma-core is available, pulling
     # rdma-core -> perl into the closure. Nothing on this host uses RDMA.
     # labels: host:kunkun, host:nea
