@@ -10,9 +10,7 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
-    # TODO: restore perlless profile
-    # labels: host:kunkun
-    #(modulesPath + "/profiles/perlless.nix")
+    (modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
     ../modules/host-common.nix
