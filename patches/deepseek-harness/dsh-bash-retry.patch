@@ -1,6 +1,6 @@
 diff --git a/packages/core/session/src/repair.ts b/packages/core/session/src/repair.ts
---- a/packages/core/session/src/repair.ts	1970-01-01 01:00:01.000000000 +0100
-+++ b/packages/core/session/src/repair.ts	2026-08-31 15:48:30.032046302 +0100
+--- a/packages/core/session/src/repair.ts	2026-09-01 12:24:41.750128072 +0100
++++ b/packages/core/session/src/repair.ts	1970-01-01 01:00:01.000000000 +0100
 @@ -15,6 +15,23 @@
  /** Recovery code for a recorded tool call whose completed outcome was not durably recorded. */
  export const TOOL_OUTCOME_UNKNOWN = 'TOOL_OUTCOME_UNKNOWN'
@@ -109,8 +109,8 @@ diff --git a/packages/core/session/src/repair.ts b/packages/core/session/src/rep
      })
 
 diff --git a/packages/core/session/src/index.ts b/packages/core/session/src/index.ts
---- a/packages/core/session/src/index.ts	1970-01-01 01:00:01.000000000 +0100
-+++ b/packages/core/session/src/index.ts	2026-08-31 15:44:30.562010838 +0100
+--- a/packages/core/session/src/index.ts	2026-09-01 12:24:41.752296451 +0100
++++ b/packages/core/session/src/index.ts	1970-01-01 01:00:01.000000000 +0100
 @@ -26,7 +26,7 @@
  export type { AssistantMessage, ToolResultMessage, UserMessage } from '@deepseek-ai/dsh-llm'
  export { isJsonValue, snapshotJsonValue } from './json.ts'
@@ -122,8 +122,8 @@ diff --git a/packages/core/session/src/index.ts b/packages/core/session/src/inde
  export type { SessionSurface, SurfaceFoldReplacement, SurfaceFoldResult } from './surface.ts'
 
 diff --git a/packages/core/agent-loop/src/agent.ts b/packages/core/agent-loop/src/agent.ts
---- a/packages/core/agent-loop/src/agent.ts	1970-01-01 01:00:01.000000000 +0100
-+++ b/packages/core/agent-loop/src/agent.ts	2026-08-31 15:44:05.649799666 +0100
+--- a/packages/core/agent-loop/src/agent.ts	2026-09-01 12:24:41.753126618 +0100
++++ b/packages/core/agent-loop/src/agent.ts	1970-01-01 01:00:01.000000000 +0100
 @@ -33,6 +33,7 @@
  import type { PromptAssembly } from '@deepseek-ai/dsh-system-prompt'
  import type { Context } from '@deepseek-ai/cordis'
@@ -145,9 +145,48 @@ diff --git a/packages/core/agent-loop/src/agent.ts b/packages/core/agent-loop/sr
        const { request, preparedCall } = await this.buildRequest(
          turn, step, assembly.tools, system, this.session.deriveMessages(), signal,
 
+diff --git a/packages/core/agent-loop/src/index.ts b/packages/core/agent-loop/src/index.ts
+--- a/packages/core/agent-loop/src/index.ts	2026-09-01 12:24:12.637878526 +0100
++++ b/packages/core/agent-loop/src/index.ts	2026-09-01 12:28:26.052050678 +0100
+@@ -19,7 +19,7 @@
+   ResumeAgentOptions,
+   SessionStartSource,
+ } from '@deepseek-ai/dsh-agent'
+-import { errorChain } from '@deepseek-ai/dsh-llm'
++import { createUserMessage, errorChain } from '@deepseek-ai/dsh-llm'
+ import { installSettingsSection, settingsNamespace } from '@deepseek-ai/dsh-settings'
+ import { SessionId, SessionPreparation } from '@deepseek-ai/dsh-session'
+ import type { Session, SessionHeader } from '@deepseek-ai/dsh-session'
+@@ -27,6 +27,7 @@
+ import type {} from '@deepseek-ai/dsh-tools'
+ import type { SessionPersistence } from '@deepseek-ai/dsh-session-persistence'
+ import { ReactLoopAgent } from './agent.ts'
++import { hasPendingAutoRetry } from './auto-retry.ts'
+ import { DEFAULT_MAX_PARALLEL_TOOL_CALLS } from './constants.ts'
+ 
+ /** Fiber states that cannot own or serve a new lifecycle. */
+@@ -566,6 +567,17 @@
+           // session-start extension point), so only the liveness recheck is owed.
+           emitAgentEvent(loopCtx, agent, 'agent/session-start', { source })
+           assertLive()
++          // Fulfil the auto-retry marker's promise: a cold-resumed session
++          // whose repair left a pending auto-retry marker must continue on its
++          // own, not wait for the human to type "continue". Wake the driver
++          // with a harness-sourced continuation so the retry runs before the
++          // model's next request is built.
++          if (source === 'resume' && hasPendingAutoRetry(session)) {
++            agent.followup(createUserMessage({
++              content: [{ type: 'text', text: 'The harness resumed this session and retried an interrupted tool call automatically; continue the current work.' }],
++              source: { kind: 'retry' },
++            }))
++          }
+           return { agent, dispose }
+         },
+         dispose,
+
 diff --git a/packages/core/session/tests/repair.spec.ts b/packages/core/session/tests/repair.spec.ts
---- a/packages/core/session/tests/repair.spec.ts	1970-01-01 01:00:01.000000000 +0100
-+++ b/packages/core/session/tests/repair.spec.ts	2026-08-31 16:08:46.410566724 +0100
+--- a/packages/core/session/tests/repair.spec.ts	2026-09-01 12:24:41.753784824 +0100
++++ b/packages/core/session/tests/repair.spec.ts	1970-01-01 01:00:01.000000000 +0100
 @@ -1,6 +1,6 @@
  import { describe, expect, it } from 'vitest'
  import { CallId , createMessage, createToolResultMessage } from '@deepseek-ai/dsh-llm'
@@ -219,8 +258,8 @@ diff --git a/packages/core/agent-loop/src/auto-retry.ts b/packages/core/agent-lo
 new file mode 100644
 --- /dev/null
 +++ b/packages/core/agent-loop/src/auto-retry.ts
-+++ /home/tlv/dev/dsh/packages/core/agent-loop/src/auto-retry.ts	2026-08-31 16:15:27.214097291 +0100
-@@ -0,0 +1,136 @@
++++ /tmp/dsh-full/packages/core/agent-loop/src/auto-retry.ts	2026-09-01 12:27:45.112173930 +0100
+@@ -0,0 +1,182 @@
 +/**
 + * Automatic retry of interrupted auto-retryable tool calls (bash) after a
 + * crash-recovery repair. Each bash invocation is a fresh subprocess, so a
@@ -231,6 +270,14 @@ new file mode 100644
 + * The replacement obeys the session's tool-result rewrite rule: it preserves
 + * every field of the marker event except the text content, so the model-visible
 + * surface shows a completed call instead of an ambiguous interruption error.
++ *
++ * LOOP BREAKER: the marker is rewritten to a non-matchable "attempted" state
++ * BEFORE the command is re-dispatched. If the re-run itself is interrupted
++ * (e.g. the recorded command restarts the harness that is executing it), the
++ * durable log keeps the attempted text rather than a fresh auto-retry marker,
++ * so a later resume never retries the same call a second time. This makes the
++ * auto-retry effectively one-shot per interrupted call, preventing a retry
++ * loop for self-restarting commands such as `systemctl restart dsh-web`.
 + * @module dsh-agent-loop/auto-retry
 + */
 +
@@ -239,6 +286,17 @@ new file mode 100644
 +import type { Session, SessionEvent } from '@deepseek-ai/dsh-session'
 +import { AUTO_RETRY_MARKER } from '@deepseek-ai/dsh-session'
 +import { freezeMessage, type ToolResultMessage } from '@deepseek-ai/dsh-llm'
++
++/**
++ * Merge-extensible message source for a harness-initiated continuation after
++ * an automatic retry. The goal round driver adds its own `goal` kind through
++ * the same mechanism.
++ */
++declare module '@deepseek-ai/dsh-llm' {
++  interface MessageSourceMap {
++    retry: { kind: 'retry' }
++  }
++}
 +
 +/** One repair marker found in the current surface, with its original call. */
 +interface RetryMarker {
@@ -249,6 +307,14 @@ new file mode 100644
 +  /** Original `tool/call` event carrying the exact recorded command. */
 +  call: SessionEvent<'tool/call'>
 +}
++
++/**
++ * Text written over the repair marker just before re-dispatch. It deliberately
++ * does NOT start with {@link AUTO_RETRY_MARKER}, so a resume that finds it
++ * (because the re-run itself was interrupted) treats the call as already
++ * attempted and never retries it again.
++ */
++const AUTO_RETRY_ATTEMPTED = 'The harness attempted to retry this interrupted tool call, but the retry was itself interrupted.'
 +
 +/**
 + * Scan the current surface for repair markers left for auto-retryable calls.
@@ -275,16 +341,28 @@ new file mode 100644
 +  return markers
 +}
 +
-+/** Surface-replace one marker with the real result, preserving every other field. */
++/**
++ * Whether the session surface contains a pending auto-retry marker that the
++ * resumed loop should claim. Called from the agent factory's publish step to
++ * decide whether to auto-wake the driver after a cold resume.
++ */
++export function hasPendingAutoRetry(session: Session): boolean {
++  return findRetryMarkers(session).length > 0
++}
++
++/**
++ * Surface-replace one marker with new text, preserving every other field.
++ * Returns the new event seq so a caller can chain a second rewrite.
++ */
 +function replaceMarker(
 +  session: Session,
 +  marker: RetryMarker,
 +  text: string,
-+): void {
++): number {
 +  const event = session.events[marker.resultSeq]
-+  if (event?.type !== 'tool/result') return
++  if (event?.type !== 'tool/result') return marker.resultSeq
 +  const result = event.data.message.content[0]
-+  if (result?.type !== 'tool-result') return
++  if (result?.type !== 'tool-result') return marker.resultSeq
 +  const message: ToolResultMessage = freezeMessage({
 +    ...event.data.message,
 +    content: [{
@@ -292,22 +370,26 @@ new file mode 100644
 +      content: [{ type: 'text', text }],
 +    }] as [typeof result],
 +  })
-+  session.append('tool/result', {
++  const replacement = session.append('tool/result', {
 +    ...event.data,
 +    message,
 +  }, {
 +    surfaceOp: { op: 'replace', start: marker.resultSeq, end: marker.resultSeq },
 +    sourceEventSeqs: [marker.resultSeq],
 +  })
++  return replacement.seq
 +}
 +
 +/**
 + * Re-dispatch every auto-retryable interrupted call found in the resumed
-+ * surface, replacing its repair marker with the re-run result. Failures are
-+ * surfaced as text inside the replacement so the model still sees the outcome;
-+ * a missing tool or a session that rejects the rewrite leaves the marker so the
-+ * interruption stays visible. Runs only while a model request is being prepared,
-+ * so a marker is retried at most once per session.
++ * surface, replacing its repair marker with the re-run result. Each call is
++ * attempted at most once: the marker is rewritten to an un-matchable attempted
++ * state before dispatch, so an interruption during the re-run cannot leave a
++ * retryable marker behind (this is what prevents a retry loop when the
++ * recorded command itself restarts the harness). Failures are surfaced as text
++ * inside the replacement so the model still sees the outcome; a missing tool
++ * or a session that rejects the rewrite leaves the marker so the interruption
++ * stays visible.
 + *
 + * @param ctx - loop context exposing the tool registry and session store.
 + * @param agent - the loop agent on whose behalf the call is re-dispatched.
@@ -321,6 +403,9 @@ new file mode 100644
 +  signal: AbortSignal,
 +): Promise<void> {
 +  for (const marker of findRetryMarkers(session)) {
++    // Claim the marker before dispatch: rewrite it to the attempted state so
++    // an interruption during the re-run cannot leave a retryable marker.
++    marker.resultSeq = replaceMarker(session, marker, AUTO_RETRY_ATTEMPTED)
 +    signal.throwIfAborted()
 +    const exec = {
 +      callId: marker.call.data.callId,
@@ -336,7 +421,7 @@ new file mode 100644
 +    } catch (error: unknown) {
 +      text = `Automatic retry of the interrupted tool call failed: ${String(error)}`
 +    }
-+    replaceMarker(session, marker, text)
++    marker.resultSeq = replaceMarker(session, marker, text)
 +  }
 +}
 +
@@ -362,8 +447,8 @@ diff --git a/packages/core/agent-loop/tests/auto-retry.spec.ts b/packages/core/a
 new file mode 100644
 --- /dev/null
 +++ b/packages/core/agent-loop/tests/auto-retry.spec.ts
-+++ /home/tlv/dev/dsh/packages/core/agent-loop/tests/auto-retry.spec.ts	2026-08-31 17:49:36.426516812 +0100
-@@ -0,0 +1,174 @@
++++ /tmp/dsh-full/packages/core/agent-loop/tests/auto-retry.spec.ts	2026-09-01 12:31:20.621546924 +0100
+@@ -0,0 +1,228 @@
 +import { describe, expect, it } from 'vitest'
 +import { Context } from '@deepseek-ai/cordis'
 +import LlmRuntime, { CallId, createMessage, createUserMessage } from '@deepseek-ai/dsh-llm'
@@ -372,7 +457,7 @@ new file mode 100644
 +import { AUTO_RETRY_MARKER } from '@deepseek-ai/dsh-session'
 +import SystemPrompt from '@deepseek-ai/dsh-system-prompt'
 +import ToolRuntime, { defineContentToolFixture } from '@deepseek-ai/dsh-tools'
-+import { autoRetryInterruptedCalls } from '../src/auto-retry.ts'
++import { autoRetryInterruptedCalls, hasPendingAutoRetry } from '../src/auto-retry.ts'
 +
 +/**
 + * Unit coverage for resumed-session auto-retry of interrupted bash calls. The
@@ -509,6 +594,60 @@ new file mode 100644
 +      new AbortController().signal,
 +    )
 +    expect(currentResultText(session)).toContain('unknown tool "bash"')
++  })
++
++  it('does not re-dispatch a marker already rewritten to the attempted state (loop breaker)', async () => {
++    const { ctx, session, unregister } = await markerSession()
++    // Simulate a re-dispatch whose command killed the harness before its result
++    // landed: the durable marker was already rewritten to a non-matchable text
++    // (the auto-retry claims the marker BEFORE dispatching). A resumed session
++    // must therefore find nothing to retry — otherwise `systemctl restart
++    // dsh-web`-style commands would loop forever.
++    const markerSeq = 4
++    const marker = session.events[markerSeq]
++    expect(marker?.type === 'tool/result').toBe(true)
++    if (marker?.type !== 'tool/result') throw new Error('missing marker fixture')
++    const result = marker.data.message.content[0]
++    if (result?.type !== 'tool-result') throw new Error('missing tool-result block')
++    session.append('tool/result', {
++      ...marker.data,
++      message: {
++        ...marker.data.message,
++        content: [{
++          ...result,
++          content: [{ type: 'text', text: 'The harness attempted to retry this interrupted tool call, but the retry was itself interrupted.' }],
++        }] as [typeof result],
++      },
++    }, {
++      surfaceOp: { op: 'replace', start: markerSeq, end: markerSeq },
++      sourceEventSeqs: [markerSeq],
++    })
++    unregister() // any re-dispatch would now fail loudly
++    await autoRetryInterruptedCalls(
++      ctx,
++      { id: session.id } as never,
++      session,
++      new AbortController().signal,
++    )
++    // The attempted-state text remains exactly as written — no re-dispatch, no
++    // further replacement, and the tool registry was never consulted again.
++    expect(currentResultText(session)).toBe(
++      'The harness attempted to retry this interrupted tool call, but the retry was itself interrupted.',
++    )
++  })
++
++  it('detects pending auto-retry markers via hasPendingAutoRetry', async () => {
++    const { ctx, session, unregister } = await markerSession()
++    expect(hasPendingAutoRetry(session)).toBe(true)
++    // After running the retry, the marker is gone — no more pending retries.
++    await autoRetryInterruptedCalls(
++      ctx,
++      { id: session.id } as never,
++      session,
++      new AbortController().signal,
++    )
++    unregister()
++    expect(hasPendingAutoRetry(session)).toBe(false)
 +  })
 +})
 +
