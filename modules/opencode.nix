@@ -40,7 +40,7 @@ let
   # views on resume.
   # labels: host:nea, module: opencode
   opencode = pkgs.opencode.overrideAttrs (old: {
-    patches = [ ./opencode-sse-freeze-resume.patch ];
+    patches = [ ../patches/opencode/opencode-sse-freeze-resume.patch ];
     postPatch = (old.postPatch or "") + ''
       cp ${pwaManifest} packages/app/public/site.webmanifest
     '';
