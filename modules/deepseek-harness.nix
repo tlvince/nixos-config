@@ -34,12 +34,6 @@ let
   });
 in
 {
-  # Offline highlight.js assets for browser-open plugin
-  environment.etc."dsh-browser-open/hljs.min.js".source =
-    ../patches/deepseek-harness/dsh-browser-open.hljs.min.js;
-  environment.etc."dsh-browser-open/hljs.min.css".source =
-    ../patches/deepseek-harness/dsh-browser-open.hljs.min.css;
-
   services.nginx = {
     upstreams.dsh.servers."127.0.0.1:3080" = { };
 
