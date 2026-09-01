@@ -1,0 +1,96 @@
+diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+index abd700a10..e6694de19 100644
+--- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
++++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
+@@ -20,10 +20,14 @@
+  */
+ 
+ #include <linux/acpi.h>
++#include <linux/cpumask.h>
+ #include <linux/device.h>
+ #include <linux/i2c.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
++#include <linux/platform_device.h>
+ #include <linux/pm.h>
+ #include <linux/uuid.h>
+ 
+@@ -90,6 +94,60 @@ static void i2c_hid_acpi_shutdown_tail(struct i2chid_ops *ops)
+ 	acpi_device_set_power(ihid_acpi->adev, ACPI_STATE_D3_COLD);
+ }
+ 
++/*
++ * Align the IRQ affinity of the touchpad GPIO IRQ and the I2C controller
++ * IRQ so that both are serviced on the same CPU. When they land on
++ * different cores, each touchpad event wakes two separate power domains,
++ * increasing power consumption by ~2W on Framework Laptops.
++ *
++ * The touchpad's GPIO IRQ (client->irq) is used as the reference; the I2C
++ * controller's IRQ is pinned to the same single CPU so that both wakeups
++ * hit the same core.
++ */
++static void i2c_hid_acpi_align_irq_affinity(struct i2c_client *client)
++{
++	struct device *parent = client->adapter->dev.parent;
++	struct irq_data *data;
++	const struct cpumask *eff;
++	unsigned int cpu;
++	int i2c_irq;
++
++	if (!parent || !dev_is_platform(parent))
++		return;
++
++	i2c_irq = platform_get_irq_optional(to_platform_device(parent), 0);
++	if (i2c_irq < 0)
++		return;
++
++	/*
++	 * Walk the irq_data hierarchy of the touchpad GPIO IRQ to find
++	 * the effective CPU where it is actually serviced.  The leaf
++	 * irq_data (pinctrl / GPIO chip) may not have its effective
++	 * affinity set; the parent (x86 vector domain) does.
++	 */
++	data = irq_get_irq_data(client->irq);
++	if (!data)
++		return;
++
++	do {
++		eff = irq_data_get_effective_affinity_mask(data);
++		if (eff)
++			cpu = cpumask_first(eff);
++		else
++			cpu = nr_cpu_ids;
++		if (cpu < nr_cpu_ids)
++			break;
++		data = data->parent_data;
++	} while (data);
++
++	if (cpu >= nr_cpu_ids)
++		return;
++
++	/* irq_set_affinity() returns -EINVAL if the chip does not support
++	 * affinity; just best-effort here. */
++	irq_set_affinity(i2c_irq, cpumask_of(cpu));
++}
++
+ static int i2c_hid_acpi_probe(struct i2c_client *client)
+ {
+ 	struct device *dev = &client->dev;
+@@ -112,8 +170,14 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
+ 
+ 	acpi_device_fix_up_power(ihid_acpi->adev);
+ 
+-	return i2c_hid_core_probe(client, &ihid_acpi->ops,
++	ret = i2c_hid_core_probe(client, &ihid_acpi->ops,
+ 				  hid_descriptor_address, 0);
++	if (ret)
++		return ret;
++
++	i2c_hid_acpi_align_irq_affinity(client);
++
++	return 0;
+ }
+ 
+ static const struct acpi_device_id i2c_hid_acpi_match[] = {

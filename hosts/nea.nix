@@ -17,7 +17,6 @@
     # labels: host:nea
     #(modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-
     ../modules/acme.nix
     ../modules/caltrack.nix
     ../modules/cpuload.nix
@@ -37,7 +36,6 @@
   age.secrets."wireguard-nea-framework-psk" = {
     file = "${secretsPath}/wireguard-nea-framework-psk.age";
   };
-
   boot = {
     initrd.availableKernelModules = [
       "xhci_pci"
@@ -79,7 +77,6 @@
     zsh-z
     zstd
   ];
-
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "btrfs";
@@ -92,7 +89,6 @@
     device = "/dev/disk/by-partlabel/disk-main-boot";
     fsType = "vfat";
   };
-
   networking = {
     enableIPv6 = false;
     hostName = "nea";
@@ -137,7 +133,6 @@
       ];
     };
   };
-
   services.dnsmasq = {
     enable = true;
     resolveLocalQueries = false;
@@ -145,12 +140,10 @@
       bind-interfaces = true;
       interface = "wg0";
       listen-address = [ "10.12.3.1" ];
-
       domain-needed = true;
       local = "/filo.uk/";
       no-hosts = true;
       no-resolv = true;
-
       host-record = [
         "caltrack.filo.uk,10.12.3.1"
         "dsh.filo.uk,10.12.3.1"
@@ -158,7 +151,6 @@
       ];
     };
   };
-
   nixpkgs = {
     hostPlatform = "aarch64-linux";
     # TODO: Remove rdma-core dependency
@@ -177,7 +169,6 @@
     enable = true;
     defaultEditor = true;
   };
-
   security.sudo.extraRules = [
     {
       users = [ "tlv" ];
@@ -196,7 +187,6 @@
       "/"
     ];
   };
-
   services.openssh = {
     enable = true;
     hostKeys = [

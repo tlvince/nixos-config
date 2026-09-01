@@ -43,6 +43,21 @@
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
     kernelPackages = pkgs.linuxPackages_latest;
+
+    # TODO: drop Framework touchpad interrupt amplification fixes
+    # https://community.frame.work/t/tracking-touchpad-interrupts-battery-usage-issues-idma64-2/13630
+    # labels: host:framework
+    kernelPatches = [
+      {
+        name = "i2c-designware-batch-rx-fifo-reads";
+        patch = ../patches/i2c-designware/0001-i2c-designware-Reduce-RX-interrupt-rate-by-batching-FIFO-reads.patch;
+      }
+      {
+        name = "i2c-hid-acpi-pin-irq-affinity";
+        patch = ../patches/i2c-designware/0002-HID-i2c-hid-acpi-Pin-touchpad-IRQs-to-the-same-CPU.patch;
+      }
+    ];
+
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;

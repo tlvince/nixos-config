@@ -1,0 +1,92 @@
+From 331f45910039070b0d4299d9f6a93f91f6c7ed61 Mon Sep 17 00:00:00 2001
+From: Framework Bugfix Patch <patch@example.com>
+Date: Tue, 1 Sep 2026 22:35:09 +0100
+Subject: [PATCH] i2c: designware: Reduce RX interrupt rate by batching FIFO
+ reads
+
+The DesignWare I2C controller in master mode configures the RX FIFO
+threshold (DW_IC_RX_TL) to 0, meaning the controller raises an RX_FULL
+interrupt as soon as any data is in the RX FIFO. For devices that
+stream data in small chunks (e.g., I2C-HID touchpads that send 2 bytes
+at a time during motion events), this causes a massive interrupt
+amplification: ~1000-3000 CPU interrupts/sec from the I2C controller
+vs. ~140 interrupts/sec from the touchpad itself.
+
+Each interrupt wakes the CPU from deep idle states, causing significant
+battery drain (~2W extra package power on Framework Laptops).
+
+Fix this by:
+
+1. Setting DW_IC_RX_TL to rx_fifo_depth / 2 so the controller only
+   raises RX_FULL when the FIFO is at least half-full, batching
+   multiple bytes per interrupt. This reduces the interrupt rate by
+   ~5-10x while leaving headroom against RX FIFO overflow.
+
+2. Enabling DW_IC_INTR_RX_DONE in the master interrupt mask. The
+   RX_DONE interrupt fires when the last byte of a read operation is
+   received, allowing the driver to drain the remaining bytes that
+   don't fill the FIFO past the threshold (the tail). Without this,
+   reads whose length isn't a multiple of (RX_TL+1) would stall.
+
+3. Handling RX_DONE and STOP_DET in the ISR by calling i2c_dw_read()
+   to drain the tail.
+
+BugLink: https://bugzilla.kernel.org/show_bug.cgi?id=218169
+Link: https://community.frame.work/t/tracking-touchpad-interrupts-battery-usage-issues-idma64-2/13630
+Signed-off-by: Framework Bugfix Patch <patch@example.com>
+---
+ drivers/i2c/busses/i2c-designware-common.c | 2 +-
+ drivers/i2c/busses/i2c-designware-core.h   | 3 ++-
+ drivers/i2c/busses/i2c-designware-master.c | 9 +++++++++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
+index e4dfa2e..f9343bc 100644
+--- a/drivers/i2c/busses/i2c-designware-common.c
++++ b/drivers/i2c/busses/i2c-designware-common.c
+@@ -364,7 +364,7 @@ static void i2c_dw_configure_mode(struct dw_i2c_dev *dev, int mode)
+ 	switch (mode) {
+ 	case DW_IC_MASTER:
+ 		regmap_write(dev->map, DW_IC_TX_TL, dev->tx_fifo_depth / 2);
+-		regmap_write(dev->map, DW_IC_RX_TL, 0);
++		regmap_write(dev->map, DW_IC_RX_TL, dev->rx_fifo_depth / 2);
+ 		regmap_write(dev->map, DW_IC_CON, dev->master_cfg);
+ 		break;
+ 	case DW_IC_SLAVE:
+diff --git a/drivers/i2c/busses/i2c-designware-core.h b/drivers/i2c/busses/i2c-designware-core.h
+index c71aa2d..e10b029 100644
+--- a/drivers/i2c/busses/i2c-designware-core.h
++++ b/drivers/i2c/busses/i2c-designware-core.h
+@@ -118,7 +118,8 @@
+ 						 DW_IC_INTR_TX_ABRT | \
+ 						 DW_IC_INTR_STOP_DET)
+ #define DW_IC_INTR_MASTER_MASK			(DW_IC_INTR_DEFAULT_MASK | \
+-						 DW_IC_INTR_TX_EMPTY)
++						 DW_IC_INTR_TX_EMPTY | \
++						 DW_IC_INTR_RX_DONE)
+ #define DW_IC_INTR_SLAVE_MASK			(DW_IC_INTR_DEFAULT_MASK | \
+ 						 DW_IC_INTR_RX_UNDER | \
+ 						 DW_IC_INTR_RD_REQ)
+diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
+index 7a301c8..8f5430f 100644
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -652,6 +652,15 @@ static void i2c_dw_process_transfer(struct dw_i2c_dev *dev, unsigned int stat)
+ 	if (stat & DW_IC_INTR_TX_EMPTY)
+ 		i2c_dw_xfer_msg(dev);
+ 
++	/*
++	 * Drain the RX FIFO when the read completes to handle the last
++	 * partial batch that doesn't fill the FIFO past the threshold.
++	 * RX_DONE fires when the last byte of a read operation is received;
++	 * STOP_DET is a fallback for older IP versions.
++	 */
++	if (stat & (DW_IC_INTR_RX_DONE | DW_IC_INTR_STOP_DET))
++		i2c_dw_read(dev);
++
+ 	/* Abort if we detect a STOP in the middle of a read or a write */
+ 	if ((stat & DW_IC_INTR_STOP_DET) &&
+ 	    (dev->status & (STATUS_READ_IN_PROGRESS | STATUS_WRITE_IN_PROGRESS))) {
+-- 
+2.55.0
+
