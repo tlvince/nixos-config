@@ -45,6 +45,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
 
     # TODO: drop Framework touchpad interrupt amplification fixes
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/518
     # https://community.frame.work/t/tracking-touchpad-interrupts-battery-usage-issues-idma64-2/13630
     # labels: host:framework
     kernelPatches = [
