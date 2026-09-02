@@ -1,8 +1,8 @@
 diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-index abd700a10..e6694de19 100644
+index abd700a10..5ca298396 100644
 --- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
 +++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-@@ -20,10 +20,14 @@
+@@ -20,10 +20,15 @@
   */
  
  #include <linux/acpi.h>
@@ -11,13 +11,14 @@ index abd700a10..e6694de19 100644
  #include <linux/i2c.h>
 +#include <linux/interrupt.h>
 +#include <linux/irq.h>
++#include <linux/irqdesc.h>
  #include <linux/kernel.h>
  #include <linux/module.h>
 +#include <linux/platform_device.h>
  #include <linux/pm.h>
  #include <linux/uuid.h>
  
-@@ -90,6 +94,60 @@ static void i2c_hid_acpi_shutdown_tail(struct i2chid_ops *ops)
+@@ -90,6 +95,59 @@ static void i2c_hid_acpi_shutdown_tail(struct i2chid_ops *ops)
  	acpi_device_set_power(ihid_acpi->adev, ACPI_STATE_D3_COLD);
  }
  
@@ -34,8 +35,8 @@ index abd700a10..e6694de19 100644
 +static void i2c_hid_acpi_align_irq_affinity(struct i2c_client *client)
 +{
 +	struct device *parent = client->adapter->dev.parent;
-+	struct irq_data *data;
-+	const struct cpumask *eff;
++	struct irq_desc *desc;
++	unsigned int best_cpu = nr_cpu_ids, best_cnt = 0;
 +	unsigned int cpu;
 +	int i2c_irq;
 +
@@ -47,32 +48,31 @@ index abd700a10..e6694de19 100644
 +		return;
 +
 +	/*
-+	 * Walk the irq_data hierarchy of the touchpad GPIO IRQ to find
-+	 * the effective CPU where it is actually serviced.  The leaf
-+	 * irq_data (pinctrl / GPIO chip) may not have its effective
-+	 * affinity set; the parent (x86 vector domain) does.
++	 * The touchpad GPIO IRQ (pinctrl-amd) does not implement
++	 * irq_set_affinity and its effective_affinity mask is empty,
++	 * so we cannot read or set its affinity directly.  Instead,
++	 * find the CPU where it is actually being delivered by reading
++	 * the per-CPU interrupt counts accumulated during probe (the
++	 * reset-completion IRQ has already fired by the time
++	 * i2c_hid_core_probe() returns), then pin the I2C controller
++	 * IRQ to that same CPU so both wakeups hit a single core.
 +	 */
-+	data = irq_get_irq_data(client->irq);
-+	if (!data)
++	desc = irq_data_to_desc(irq_get_irq_data(client->irq));
++	if (!desc || !desc->kstat_irqs)
 +		return;
 +
-+	do {
-+		eff = irq_data_get_effective_affinity_mask(data);
-+		if (eff)
-+			cpu = cpumask_first(eff);
-+		else
-+			cpu = nr_cpu_ids;
-+		if (cpu < nr_cpu_ids)
-+			break;
-+		data = data->parent_data;
-+	} while (data);
++	for_each_online_cpu(cpu) {
++		unsigned int cnt = irq_desc_kstat_cpu(desc, cpu);
++		if (cnt > best_cnt) {
++			best_cnt = cnt;
++			best_cpu = cpu;
++		}
++	}
 +
-+	if (cpu >= nr_cpu_ids)
++	if (best_cpu >= nr_cpu_ids || best_cnt == 0)
 +		return;
 +
-+	/* irq_set_affinity() returns -EINVAL if the chip does not support
-+	 * affinity; just best-effort here. */
-+	irq_set_affinity(i2c_irq, cpumask_of(cpu));
++	irq_set_affinity(i2c_irq, cpumask_of(best_cpu));
 +}
 +
  static int i2c_hid_acpi_probe(struct i2c_client *client)
