@@ -19,6 +19,7 @@
     ../modules/cpuload.nix
     ../modules/cycled.nix
     ../modules/nginx.nix
+    ../modules/redditd.nix
   ];
   boot = {
     initrd.availableKernelModules = [

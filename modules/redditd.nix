@@ -4,31 +4,34 @@
   secretsPath,
   ...
 }:
+let
+  scripts = import ../scripts.nix {
+    inherit config pkgs;
+  };
+
+  pythonEnv = pkgs.python3.withPackages (ps: [
+    ps.curl-cffi
+  ]);
+in
 {
   age.secrets.notify.file = "${secretsPath}/notify.age";
 
   systemd.services.redditd = {
     wantedBy = [ "multi-user.target" ];
-    after = [ "systemd-journald.socket" ];
+    after = [ "network-online.target" ];
+    wants = [ "network-online.target" ];
     serviceConfig = {
-      BindPaths = [ "/home/tlv/dev/redditd/state.json:/run/redditd/state.json" ];
       BindReadOnlyPaths = [ "/home/tlv/dev/redditd:/run/redditd" ];
-      ExecStart = "${pkgs.nodejs}/bin/node --no-warnings=ExperimentalWarning /run/redditd/index.js";
+      ExecStart =
+        "${pythonEnv}/bin/python /run/redditd/redditd.py"
+        + " --notify-cmd ${scripts.notify}/bin/notify"
+        + " --state %S/redditd/state.json";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
       RestartSec = 10;
+      StateDirectory = "redditd";
       SyslogIdentifier = "redditd";
       WorkingDirectory = "/run/redditd";
-      RuntimeDirectory = "redditd";
-      RuntimeDirectoryMode = "0755";
-      RuntimeMaxSec = 60;
-
-      # Reduce journal noise
-      IOAccounting = false;
-      IPAccounting = false;
-      LogLevelMax = "warning";
-      MemoryAccounting = false;
-      TasksAccounting = false;
 
       # Hardening
       CapabilityBoundingSet = [ "" ];
@@ -51,17 +54,7 @@
       ];
       RestrictNamespaces = true;
       RestrictRealtime = true;
-      UMask = 077;
-    };
-  };
-
-  systemd.timers.redditd = {
-    wantedBy = [ "timers.target" ];
-    timerConfig = {
-      AccuracySec = 5;
-      OnBootSec = "1min";
-      OnCalendar = "00..01,06..23:*:00/30";
-      RandomizedDelaySec = 10;
+      UMask = "0077";
     };
   };
 }
