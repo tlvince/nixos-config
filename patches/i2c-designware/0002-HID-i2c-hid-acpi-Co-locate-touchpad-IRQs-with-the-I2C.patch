@@ -1,5 +1,30 @@
+From 79b536d78e032376abe5352e24e616dfa306af3e Mon Sep 17 00:00:00 2001
+From: Your Name <your.email@example.com>
+Date: Thu, 3 Sep 2026 12:11:33 +0100
+Subject: [PATCH 2/2] HID: i2c-hid: acpi: Co-locate touchpad IRQs with the I2C
+ controller IRQ
+
+On DesignWare I2C controllers the touchpad GPIO IRQ and the I2C
+controller IRQ are frequently serviced by different CPUs, causing
+two separate power domains to wake on every touchpad event.
+
+Determine the CPU servicing the touchpad GPIO IRQ by reading the
+per-CPU interrupt counts for that IRQ (the reset-completion IRQ
+will have fired by the time the probe returns), then set the
+I2C controller IRQ affinity to that same CPU.
+
+This is best-effort: on platforms where the GPIO IRQ has not yet
+been delivered, or where the I2C controller IRQ does not support
+affinity changes, the function silently returns.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218169
+Signed-off-by: Your Name <your.email@example.com>
+---
+ drivers/hid/i2c-hid/i2c-hid-acpi.c | 66 +++++++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+), 1 deletion(-)
+
 diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-index abd700a10..5ca298396 100644
+index abd700a10..c663b7e2b 100644
 --- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
 +++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
 @@ -20,10 +20,15 @@
@@ -26,7 +51,7 @@ index abd700a10..5ca298396 100644
 + * Align the IRQ affinity of the touchpad GPIO IRQ and the I2C controller
 + * IRQ so that both are serviced on the same CPU. When they land on
 + * different cores, each touchpad event wakes two separate power domains,
-+ * increasing power consumption by ~2W on Framework Laptops.
++ * increasing power consumption by ~2W.
 + *
 + * The touchpad's GPIO IRQ (client->irq) is used as the reference; the I2C
 + * controller's IRQ is pinned to the same single CPU so that both wakeups
@@ -94,3 +119,6 @@ index abd700a10..5ca298396 100644
  }
  
  static const struct acpi_device_id i2c_hid_acpi_match[] = {
+-- 
+2.55.0
+

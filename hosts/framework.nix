@@ -54,8 +54,8 @@
         patch = ../patches/i2c-designware/0001-i2c-designware-Reduce-RX-interrupt-rate-by-batching-FIFO-reads.patch;
       }
       {
-        name = "i2c-hid-acpi-pin-irq-affinity";
-        patch = ../patches/i2c-designware/0002-HID-i2c-hid-acpi-Pin-touchpad-IRQs-to-the-same-CPU.patch;
+        name = "i2c-hid-acpi-co-locate-touchpad-irqs";
+        patch = ../patches/i2c-designware/0002-HID-i2c-hid-acpi-Co-locate-touchpad-IRQs-with-the-I2C.patch;
       }
     ];
 
