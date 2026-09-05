@@ -1,30 +1,49 @@
-From 79b536d78e032376abe5352e24e616dfa306af3e Mon Sep 17 00:00:00 2001
-From: Your Name <your.email@example.com>
-Date: Thu, 3 Sep 2026 12:11:33 +0100
+From 28080e3510e19b6f8acc375bbb85b63276d5310b Mon Sep 17 00:00:00 2001
+From: Framework Bugfix Patch <patch@example.com>
+Date: Fri, 4 Sep 2026 18:41:17 +0100
 Subject: [PATCH 2/2] HID: i2c-hid: acpi: Co-locate touchpad IRQs with the I2C
  controller IRQ
 
-On DesignWare I2C controllers the touchpad GPIO IRQ and the I2C
-controller IRQ are frequently serviced by different CPUs, causing
-two separate power domains to wake on every touchpad event.
+The touchpad GPIO IRQ and the DesignWare I2C controller IRQ are
+frequently serviced by different CPUs, so a single touchpad event
+wakes two CPUs from idle: once for the GPIO IRQ signalling that the
+device has data, and once for the I2C controller IRQ delivering the
+bytes.  On Intel hybrid systems pinning the GPIO IRQ with existing
+tooling removed most of that cost (Bugzilla 218169).  On AMD systems
+that is not possible: the pinctrl-amd GPIO controller does not
+implement irq_set_affinity, and its effective affinity mask is empty,
+so the delivery CPU of the touchpad GPIO IRQ can neither be read from
+nor pinned through the usual APIs.
 
-Determine the CPU servicing the touchpad GPIO IRQ by reading the
-per-CPU interrupt counts for that IRQ (the reset-completion IRQ
-will have fired by the time the probe returns), then set the
-I2C controller IRQ affinity to that same CPU.
+Use the per-CPU interrupt counts instead: the touchpad's
+reset-completion interrupt has been delivered by the time
+i2c_hid_core_probe() returns, so the CPU with the highest count for
+client->irq is the CPU the GPIO IRQ is being routed to.  Pin the I2C
+controller IRQ to that same CPU so both wakeups hit one core.
 
-This is best-effort: on platforms where the GPIO IRQ has not yet
-been delivered, or where the I2C controller IRQ does not support
-affinity changes, the function silently returns.
+This is best-effort by design: if the adapter parent is not a
+platform device, the I2C controller IRQ is unavailable, no interrupt
+has been counted yet, or the platform cannot change the controller
+IRQ's affinity (e.g. !SMP builds, where irq_set_affinity() is a
+static inline returning -EINVAL), the function silently does nothing.
+The affinity change applies to the whole I2C controller, so any other
+device on the same bus is co-located as well; that is the intended
+effect, and userspace (irqbalance) may still rebalance it later.
+CPU hotplug migrates the pinned IRQ automatically.
+
+Measured on an AMD Ryzen AI 5 340 (Krackan Point) together with the
+RX batching change: both IRQs are serviced on the same CPU, idle
+power is unchanged, and the additional power draw while using the
+touchpad drops by ~0.36 W.
 
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=218169
-Signed-off-by: Your Name <your.email@example.com>
+Assisted-by: GLM:glm-5.3-flash
 ---
- drivers/hid/i2c-hid/i2c-hid-acpi.c | 66 +++++++++++++++++++++++++++++-
- 1 file changed, 65 insertions(+), 1 deletion(-)
+ drivers/hid/i2c-hid/i2c-hid-acpi.c | 74 +++++++++++++++++++++++++++++-
+ 1 file changed, 72 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/hid/i2c-hid/i2c-hid-acpi.c b/drivers/hid/i2c-hid/i2c-hid-acpi.c
-index abd700a10..c663b7e2b 100644
+index abd700a10..d0b4f44e2 100644
 --- a/drivers/hid/i2c-hid/i2c-hid-acpi.c
 +++ b/drivers/hid/i2c-hid/i2c-hid-acpi.c
 @@ -20,10 +20,15 @@
@@ -43,7 +62,7 @@ index abd700a10..c663b7e2b 100644
  #include <linux/pm.h>
  #include <linux/uuid.h>
  
-@@ -90,6 +95,59 @@ static void i2c_hid_acpi_shutdown_tail(struct i2chid_ops *ops)
+@@ -90,6 +95,65 @@ static void i2c_hid_acpi_shutdown_tail(struct i2chid_ops *ops)
  	acpi_device_set_power(ihid_acpi->adev, ACPI_STATE_D3_COLD);
  }
  
@@ -51,7 +70,7 @@ index abd700a10..c663b7e2b 100644
 + * Align the IRQ affinity of the touchpad GPIO IRQ and the I2C controller
 + * IRQ so that both are serviced on the same CPU. When they land on
 + * different cores, each touchpad event wakes two separate power domains,
-+ * increasing power consumption by ~2W.
++ * increasing power consumption by ~2 W.
 + *
 + * The touchpad's GPIO IRQ (client->irq) is used as the reference; the I2C
 + * controller's IRQ is pinned to the same single CPU so that both wakeups
@@ -61,6 +80,7 @@ index abd700a10..c663b7e2b 100644
 +{
 +	struct device *parent = client->adapter->dev.parent;
 +	struct irq_desc *desc;
++	struct irq_data *irq_data;
 +	unsigned int best_cpu = nr_cpu_ids, best_cnt = 0;
 +	unsigned int cpu;
 +	int i2c_irq;
@@ -82,12 +102,17 @@ index abd700a10..c663b7e2b 100644
 +	 * i2c_hid_core_probe() returns), then pin the I2C controller
 +	 * IRQ to that same CPU so both wakeups hit a single core.
 +	 */
-+	desc = irq_data_to_desc(irq_get_irq_data(client->irq));
-+	if (!desc || !desc->kstat_irqs)
++	irq_data = irq_get_irq_data(client->irq);
++	if (!irq_data)
++		return;
++
++	desc = irq_data_to_desc(irq_data);
++	if (!desc->kstat_irqs)
 +		return;
 +
 +	for_each_online_cpu(cpu) {
 +		unsigned int cnt = irq_desc_kstat_cpu(desc, cpu);
++
 +		if (cnt > best_cnt) {
 +			best_cnt = cnt;
 +			best_cpu = cpu;
@@ -103,13 +128,14 @@ index abd700a10..c663b7e2b 100644
  static int i2c_hid_acpi_probe(struct i2c_client *client)
  {
  	struct device *dev = &client->dev;
-@@ -112,8 +170,14 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
+@@ -112,8 +176,14 @@ static int i2c_hid_acpi_probe(struct i2c_client *client)
  
  	acpi_device_fix_up_power(ihid_acpi->adev);
  
 -	return i2c_hid_core_probe(client, &ihid_acpi->ops,
+-				  hid_descriptor_address, 0);
 +	ret = i2c_hid_core_probe(client, &ihid_acpi->ops,
- 				  hid_descriptor_address, 0);
++				 hid_descriptor_address, 0);
 +	if (ret)
 +		return ret;
 +

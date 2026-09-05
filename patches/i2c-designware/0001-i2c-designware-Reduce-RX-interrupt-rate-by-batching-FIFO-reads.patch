@@ -1,42 +1,64 @@
-From ad9d08a72850eb662ae4f7a85b5060ca397f8c75 Mon Sep 17 00:00:00 2001
-From: Your Name <your.email@example.com>
-Date: Thu, 3 Sep 2026 12:11:33 +0100
+From fa2a1c0f1164f7f23ffc660e290159d441a10770 Mon Sep 17 00:00:00 2001
+From: Framework Bugfix Patch <patch@example.com>
+Date: Fri, 4 Sep 2026 18:41:17 +0100
 Subject: [PATCH 1/2] i2c: designware: Reduce RX interrupt rate by batching
  FIFO reads
 
 The DesignWare I2C controller in master mode configures the RX FIFO
 threshold (IC_RX_TL) to 0, so the controller raises an RX_FULL
-interrupt as soon as any data is in the RX FIFO.  For I2C devices
-that stream data in small chunks, such as I2C-HID touchpads, this
-causes a large interrupt amplification: the I2C controller can
-generate 1000-3000 interrupts per second while the peripheral
-itself only signals ~140 events per second.
+interrupt as soon as any data is in the RX FIFO.  I2C devices that
+stream data in small chunks, such as I2C-HID touchpads, therefore
+amplify their event rate into an interrupt storm: on an AMD Ryzen
+AI 5 340 (Krackan Point) the PIXA3854:00 touchpad signals ~140 events per
+second while the I2C controller (AMDI0010) generates ~5080
+interrupts per second during touchpad movement, and each interrupt
+wakes the CPU from a deep idle state.
 
 Fix this by:
 
-1.  Setting IC_RX_TL to rx_fifo_depth / 2 so the controller only
-    raises RX_FULL when the FIFO is at least half full, batching
-    multiple bytes per interrupt.
+  1. Setting IC_RX_TL to rx_fifo_depth / 2 in master mode so the
+     controller raises RX_FULL only when the FIFO reaches half
+     depth, batching multiple bytes per interrupt.
 
-2.  Enabling the RX_DONE interrupt in the master mask so that the
-    last partial batch of a read (bytes that do not fill the FIFO
-    past the threshold) can be drained.
+  2. Enabling the RX_DONE interrupt in the master mask so the last
+     partial batch of a read (bytes that do not reach the
+     threshold) can be drained on the tested IP.  On IP versions
+     where RX_DONE does not fire for master reads, the tail is
+     still drained on STOP_DET, which is asserted once the STOP
+     attached to the last queued command completes the transfer.
 
-3.  Draining the RX FIFO in the ISR on RX_DONE and STOP_DET, and
-    explicitly clearing a latched STOP_DET after the drain.
+  3. Draining the RX FIFO in the ISR on RX_DONE and STOP_DET.  With
+     a deferred STOP_DET clear, a tail that never reaches the
+     threshold would otherwise never be drained, so explicitly
+     clear a latched STOP_DET once rx_outstanding reaches zero to
+     avoid a spurious re-interrupt.
 
-Measured on an AMD Ryzen AI 5 340 (Krackan Point) with an ELAN
-I2C-HID touchpad connected via AMDI0010: the I2C controller IRQ
-rate dropped from ~4890 to ~266 interrupts per second during
-touchpad movement.
+Draining before the spurious-STOP check is deliberate: i2c_dw_read()
+updates dev->status as it consumes each message, so a legitimate
+final STOP is no longer misreported as spurious, while a genuinely
+spurious STOP mid-transfer is still detected.
+
+SMBus block transfers (I2C_M_RECV_LEN) need explicit care: the
+length byte is a single byte in the RX FIFO that cannot reach the
+batched threshold, and with IC_EMPTYFIFO_HOLD_MASTER_EN set the
+controller holds the bus instead of emitting a STOP, so neither
+RX_FULL nor STOP_DET would fire while TX_EMPTY is masked.  Drop the
+RX threshold to zero for the duration of the length-byte wait so
+RX_FULL fires for it as before, and restore the batched threshold
+in i2c_dw_xfer_init() at the start of every transfer.
+
+Measured on the hardware above: the I2C controller IRQ rate during
+touchpad movement dropped from ~5080 to ~280 interrupts per second
+at an unchanged touchpad event rate of ~140 events per second, and
+whole-system power while moving the pointer dropped by ~0.2-0.3 W.
 
 Link: https://bugzilla.kernel.org/show_bug.cgi?id=218169
-Signed-off-by: Your Name <your.email@example.com>
+Assisted-by: GLM:glm-5.3-flash
 ---
  drivers/i2c/busses/i2c-designware-common.c |  2 +-
- drivers/i2c/busses/i2c-designware-core.h   |  3 ++-
- drivers/i2c/busses/i2c-designware-master.c | 21 +++++++++++++++++++++
- 3 files changed, 24 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-designware-core.h   |  3 +-
+ drivers/i2c/busses/i2c-designware-master.c | 46 ++++++++++++++++++++++
+ 3 files changed, 49 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/i2c/busses/i2c-designware-common.c b/drivers/i2c/busses/i2c-designware-common.c
 index e4dfa2ec5..f9343bc7e 100644
@@ -66,10 +88,56 @@ index c71aa2dd3..e10b029fb 100644
  						 DW_IC_INTR_RX_UNDER | \
  						 DW_IC_INTR_RD_REQ)
 diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-index 7a301c8b6..87453ff7b 100644
+index 7a301c8b6..7b9cb6345 100644
 --- a/drivers/i2c/busses/i2c-designware-master.c
 +++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -633,6 +633,8 @@ static u32 i2c_dw_read_clear_intrbits(struct dw_i2c_dev *dev)
+@@ -196,6 +196,13 @@ static void i2c_dw_xfer_init(struct dw_i2c_dev *dev)
+ 
+ 	i2c_dw_set_mode(dev, DW_IC_MASTER);
+ 
++	/*
++	 * Ensure the batched RX threshold from i2c_dw_configure_mode()
++	 * is in effect for this transfer; it is dropped to zero while
++	 * waiting for an SMBus block length byte (i2c_dw_xfer_msg()).
++	 */
++	regmap_write(dev->map, DW_IC_RX_TL, dev->rx_fifo_depth / 2);
++
+ 	/* If the slave address is ten bit address, enable 10BITADDR */
+ 	if (msgs[dev->msg_write_idx].flags & I2C_M_TEN) {
+ 		ic_con = DW_IC_CON_10BITADDR_MASTER;
+@@ -463,6 +470,21 @@ i2c_dw_xfer_msg(struct dw_i2c_dev *dev)
+ 		if (flags & I2C_M_RECV_LEN) {
+ 			dev->status |= STATUS_WRITE_IN_PROGRESS;
+ 			intr_mask &= ~DW_IC_INTR_TX_EMPTY;
++			/*
++			 * The block length byte sits alone in the RX
++			 * FIFO and will never reach the RX_FULL
++			 * threshold, and with IC_EMPTYFIFO_HOLD_MASTER_EN
++			 * the controller holds the bus instead of
++			 * emitting a STOP, so no STOP_DET will fire
++			 * either.  Drop the threshold to zero for the
++			 * duration of the wait so RX_FULL fires as soon
++			 * as the length byte is received.
++			 * i2c_dw_recv_len() restores the batched
++			 * threshold for the bulk phase; if the transfer
++			 * goes wrong before that, i2c_dw_xfer_init()
++			 * re-asserts it before the next one.
++			 */
++			regmap_write(dev->map, DW_IC_RX_TL, 0);
+ 			break;
+ 		} else if (buf_len > 0) {
+ 			/* more bytes to be written */
+@@ -509,6 +531,9 @@ i2c_dw_recv_len(struct dw_i2c_dev *dev, u8 len)
+ 	intr_mask |= DW_IC_INTR_TX_EMPTY;
+ 	__i2c_dw_write_intr_mask(dev, intr_mask);
+ 
++	/* Restore the batched RX threshold dropped for the length byte. */
++	regmap_write(dev->map, DW_IC_RX_TL, dev->rx_fifo_depth / 2);
++
+ 	return len;
+ }
+ 
+@@ -633,6 +658,8 @@ static u32 i2c_dw_read_clear_intrbits(struct dw_i2c_dev *dev)
  
  static void i2c_dw_process_transfer(struct dw_i2c_dev *dev, unsigned int stat)
  {
@@ -78,7 +146,7 @@ index 7a301c8b6..87453ff7b 100644
  	if (stat & DW_IC_INTR_TX_ABRT) {
  		dev->cmd_err |= DW_IC_ERR_TX_ABRT;
  		dev->status &= ~STATUS_MASK;
-@@ -652,6 +654,25 @@ static void i2c_dw_process_transfer(struct dw_i2c_dev *dev, unsigned int stat)
+@@ -652,6 +679,25 @@ static void i2c_dw_process_transfer(struct dw_i2c_dev *dev, unsigned int stat)
  	if (stat & DW_IC_INTR_TX_EMPTY)
  		i2c_dw_xfer_msg(dev);
  
