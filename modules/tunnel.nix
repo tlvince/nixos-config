@@ -24,6 +24,9 @@ in
       LoadCredential = [ "ssh_host_key:/etc/ssh/ssh_host_ed25519_key" ];
       ExecStart = "${pkgs.openssh}/bin/ssh -F ${sshConfig} -i %d/ssh_host_key %i";
       Restart = "on-failure";
+      RestartSec = 10;
+      RestartSteps = 4;
+      RestartMaxDelaySec = 160;
       SyslogIdentifier = "tunnel";
       User = "tunnel";
       Group = "tunnel";
@@ -33,6 +36,9 @@ in
       IPAccounting = false;
       MemoryAccounting = false;
       TasksAccounting = false;
+    };
+    unitConfig = {
+      StartLimitIntervalSec = 0; # retry forever
     };
   };
   systemd.tmpfiles.rules = [
