@@ -5,10 +5,6 @@
   ...
 }:
 let
-  scripts = import ../scripts.nix {
-    inherit config pkgs;
-  };
-
   pythonEnv = pkgs.python3.withPackages (ps: [
     ps.curl-cffi
   ]);
@@ -22,10 +18,7 @@ in
     wants = [ "network-online.target" ];
     serviceConfig = {
       BindReadOnlyPaths = [ "/home/tlv/dev/redditd:/run/redditd" ];
-      ExecStart =
-        "${pythonEnv}/bin/python /run/redditd/redditd.py"
-        + " --notify-cmd ${scripts.notify}/bin/notify"
-        + " --state %S/redditd/state.json";
+      ExecStart = "${pythonEnv}/bin/python /run/redditd/redditd.py --state %S/redditd/state.json";
       LoadCredential = "notify:${config.age.secrets.notify.path}";
       Restart = "on-failure";
       RestartSec = 10;
