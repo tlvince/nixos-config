@@ -1,10 +1,9 @@
-{
-  ...
-}:
+{ ... }:
 {
   imports = [
-    ../modules/host-common.nix
     ../modules/brave.nix
+    ../modules/host-common-darwin.nix
+    ../modules/host-common.nix
     ../modules/neovim.nix
   ];
 

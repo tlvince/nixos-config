@@ -275,13 +275,6 @@
     ];
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-    randomizedDelaySec = "1 hour";
-  };
-
   nixpkgs.hostPlatform = "x86_64-linux";
 
   programs.localsend = {

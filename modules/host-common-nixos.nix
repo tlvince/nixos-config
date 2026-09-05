@@ -11,6 +11,13 @@
 
   i18n.defaultLocale = "en_GB.UTF-8";
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+    randomizedDelaySec = "1 hour";
+  };
+
   programs.nano.enable = false;
   programs.zsh.enable = true;
 
