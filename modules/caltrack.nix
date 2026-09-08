@@ -6,6 +6,8 @@
 }:
 {
   age.secrets.caltrack.file = "${secretsPath}/caltrack.age";
+  age.secrets.rclone-caltrack.file = "${secretsPath}/rclone-caltrack.age";
+  age.secrets.restic-caltrack.file = "${secretsPath}/restic-caltrack.age";
 
   systemd.services.caltrack = {
     description = "caltrack photo calorie tracker";
@@ -54,6 +56,24 @@
       RestrictRealtime = true;
       UMask = 077;
     };
+  };
+
+  services.restic.backups.caltrack = {
+    initialize = true;
+    passwordFile = config.age.secrets.restic-caltrack.path;
+    paths = [ "/var/lib/private/caltrack" ];
+    rcloneConfigFile = config.age.secrets.rclone-caltrack.path;
+    repository = "rclone:drive:caltrack";
+    timerConfig = {
+      OnCalendar = "04:30";
+      RandomizedDelaySec = "10m";
+      Persistent = true;
+    };
+    pruneOpts = [
+      "--keep-daily 7"
+      "--keep-weekly 5"
+      "--keep-monthly 12"
+    ];
   };
 
   services.nginx = {
