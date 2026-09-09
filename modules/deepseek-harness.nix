@@ -3,6 +3,21 @@
   pkgsDsh,
   ...
 }:
+let
+  # TODO: Drop dsh overrides
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/513
+  # labels: module:dsh
+  dsh = pkgsDsh.deepseek-harness.overrideAttrs (old: {
+    # Treat dsh.filo.uk as loopback so nginx-proxied requests pass the
+    # DNS-rebinding fence and the Settings mirror uses 'host' persistence
+    # instead of 'memory' (see packages/client/connection/src/loopback-hostname.ts
+    # and packages/client/ui-settings/src/client/index.ts: connection.isLoopback).
+    postPatch = (old.postPatch or "") + ''
+      substituteInPlace packages/client/connection/src/loopback-hostname.ts \
+        --replace-fail "if (hostname === 'localhost' || hostname === '[::1]') return true" "if (hostname === 'localhost' || hostname === '[::1]' || hostname === 'dsh.filo.uk') return true"
+    '';
+  });
+in
 {
   services.nginx = {
     upstreams.dsh.servers."127.0.0.1:3080" = { };
@@ -36,7 +51,7 @@
     ];
     serviceConfig = {
       User = "tlv";
-      ExecStart = "${pkgsDsh.deepseek-harness}/bin/dsh web --host 127.0.0.1 --port 3080 --no-open --trusted-host dsh.filo.uk";
+      ExecStart = "${dsh}/bin/dsh web --host 127.0.0.1 --port 3080 --no-open --trusted-host dsh.filo.uk";
       Environment = [
         "DSH_TELEMETRY_DISABLED=true"
       ];
