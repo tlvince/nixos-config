@@ -4,12 +4,8 @@
   ...
 }:
 let
-  # TODO: Drop dsh overrides when upstream widens platforms
-  # The PR restricts deepseek-harness to x86_64-linux, but nea is
-  # aarch64-linux. The PR author built on aarch64-linux, just didn't verify.
-  # The pnpmDeps hash also differs on aarch64 due to optional native deps.
+  # TODO: Drop dsh overrides
   # Issue URL: https://github.com/tlvince/nixos-config/issues/513
-  # See: https://github.com/NixOS/nixpkgs/pull/554081
   # labels: module:dsh
   dsh = pkgsDsh.deepseek-harness.overrideAttrs (old: {
     # Treat dsh.filo.uk as loopback so nginx-proxied requests pass the
@@ -19,18 +15,7 @@ let
     postPatch = (old.postPatch or "") + ''
       substituteInPlace packages/client/connection/src/loopback-hostname.ts \
         --replace-fail "if (hostname === 'localhost' || hostname === '[::1]') return true" "if (hostname === 'localhost' || hostname === '[::1]' || hostname === 'dsh.filo.uk') return true"
-      patch -p1 < ${../patches/deepseek-harness/dsh-browser-open.patch}
-      patch -p1 < ${../patches/deepseek-harness/dsh-bash-retry.patch}
     '';
-    pnpmDeps = old.pnpmDeps.overrideAttrs (_: {
-      outputHash = "sha256-+PsdK9u3ZKv4XtSc8tBKKP48J/95/CGTMIUf8Q8dbok=";
-    });
-    meta = old.meta // {
-      platforms = [
-        "aarch64-linux"
-        "x86_64-linux"
-      ];
-    };
   });
 in
 {

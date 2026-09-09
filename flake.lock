@@ -362,17 +362,17 @@
     },
     "nixpkgs-dsh": {
       "locked": {
-        "lastModified": 1787676064,
-        "narHash": "sha256-SBHyfPbiJ+pOrzo6hUoPWjO113+GPZiM/DfA7BwafZo=",
-        "owner": "Dietr1ch",
+        "lastModified": 1788972973,
+        "narHash": "sha256-HH41P9StrrdqIyz1qp7sAjfJgdlL+WEroI6WImEzcpo=",
+        "owner": "tlvince",
         "repo": "nixpkgs",
-        "rev": "e33d86db2c8acafda91cb825576dd90db166ec7d",
+        "rev": "91882acf19d6167bb7c0c06b5227ade3f9c30779",
         "type": "github"
       },
       "original": {
-        "owner": "Dietr1ch",
+        "owner": "tlvince",
         "repo": "nixpkgs",
-        "rev": "e33d86db2c8acafda91cb825576dd90db166ec7d",
+        "rev": "91882acf19d6167bb7c0c06b5227ade3f9c30779",
         "type": "github"
       }
     },
