@@ -23,7 +23,7 @@
     # Issue URL: https://github.com/tlvince/nixos-config/issues/512
     # See: https://github.com/NixOS/nixpkgs/pull/554081
     # labels: host:nea, module:dsh
-    nixpkgs-dsh.url = "github:tlvince/nixpkgs/4a129ad08bc49c5d0a39ed61bd8f2d092d9d1785";
+    nixpkgs-dsh.url = "github:tlvince/nixpkgs/8755f83ee3cda0218c9ad8f64bef5aa85a721c4e";
     # TODO: Drop fastflowlm pin when PR is merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/468
     # See: https://github.com/NixOS/nixpkgs/pull/513841
