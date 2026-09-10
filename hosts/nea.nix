@@ -19,6 +19,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ../modules/acme.nix
     ../modules/caltrack.nix
+    ../modules/code-server.nix
     ../modules/cpuload.nix
     ../modules/deepseek-harness.nix
     ../modules/host-common-nixos.nix
@@ -145,6 +146,7 @@
       no-resolv = true;
       host-record = [
         "caltrack.filo.uk,10.12.3.1"
+        "code.filo.uk,10.12.3.1"
         "dsh.filo.uk,10.12.3.1"
       ];
     };
