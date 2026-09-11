@@ -36,6 +36,15 @@ in
         proxyWebsockets = true;
         recommendedProxySettings = true;
       };
+
+      locations."/plugins/events" = {
+        extraConfig = ''
+          proxy_read_timeout 1d;
+          proxy_buffering off;
+        '';
+        proxyPass = "http://dsh";
+        recommendedProxySettings = true;
+      };
     };
   };
 
