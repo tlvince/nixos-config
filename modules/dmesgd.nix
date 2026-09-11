@@ -11,7 +11,7 @@ let
 
   dmesgd = pkgs.writeShellScriptBin "dmesgd" ''
     ${pkgs.systemd}/bin/journalctl --dmesg --follow --lines=0 --output=cat --priority=warning | \
-    while read MESSAGE; do
+    while IFS= read -r MESSAGE; do
       TITLE="${config.networking.hostName} kernel alert" MESSAGE="$MESSAGE" "${scripts.notify}/bin/notify"
     done
   '';

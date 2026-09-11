@@ -1,8 +1,11 @@
 { pkgs, ... }:
 {
   notify = pkgs.writeScriptBin "notify" ''
-    ${pkgs.curl}/bin/curl -H "Authorization: Bearer $(<"$CREDENTIALS_DIRECTORY/notify")" --silent --output /dev/null \
-      --json '{"title": "'"$TITLE"'", "message": "'"$MESSAGE"'"}' \
-      "https://home-assistant.filo.uk/api/services/notify/mobile_app_pixel"
+    ${pkgs.jq}/bin/jq -nc --arg title "$TITLE" --arg message "$MESSAGE" \
+      '{title: $title, message: $message}' |
+      ${pkgs.curl}/bin/curl -H "Authorization: Bearer $(<"$CREDENTIALS_DIRECTORY/notify")" \
+        --silent --show-error --output /dev/null \
+        --json @- \
+        "https://home-assistant.filo.uk/api/services/notify/mobile_app_pixel"
   '';
 }
