@@ -70,7 +70,7 @@
         config.allowUnfree = true;
       };
       pkgsDsh = import nixpkgs-dsh {
-        system = "aarch64-linux";
+        system = "x86_64-linux";
         config.allowUnfree = true;
       };
     in
@@ -125,7 +125,7 @@
         };
         framework = nixpkgs.lib.nixosSystem {
           specialArgs = inputs // {
-            inherit pkgsFlm;
+            inherit pkgsFlm pkgsDsh;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
@@ -157,7 +157,7 @@
         };
         nea = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit keys pkgsDsh;
+            inherit keys;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };

@@ -17,6 +17,7 @@
     ../modules/llm-agents.nix
     ../modules/neovim.nix
     ../modules/smartd.nix
+    ../modules/deepseek-harness.nix
   ];
 
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
