@@ -1,11 +1,5 @@
 { pkgs, ... }:
 {
-  boot.kernelParams = [
-    # Disable UAS for WD Elements and Seagate One Touch to prevent controller
-    # resets
-    "usb-storage.quirks=1058:2621:u,0bc2:ab64:u"
-  ];
-
   hardware.enableRedistributableFirmware = true;
 
   i18n.defaultLocale = "en_GB.UTF-8";
