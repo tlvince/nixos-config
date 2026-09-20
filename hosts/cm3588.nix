@@ -26,6 +26,7 @@
     ../modules/radicale.nix
     ../modules/samba.nix
     ../modules/shairport-sync.nix
+    ../modules/soloist.nix
     ../modules/smartd.nix
     ../modules/tunnel.nix
     ../modules/webdav.nix
@@ -171,7 +172,6 @@
     ];
   };
 
-  hardware.alsa.enable = true;
   networking = {
     domain = "filo.uk";
     enableIPv6 = false;
@@ -190,12 +190,13 @@
     };
     firewall = {
       allowedTCPPorts = [
-        53
-        443
+        53 # DNS
+        443 # HTTPS
       ];
       allowedUDPPorts = [
-        53
-        67
+        53 # DNS
+        67 # DHCP
+        5353 # mDNS
       ];
       logRefusedConnections = false;
     };
@@ -291,6 +292,13 @@
       PermitRootLogin = "no";
     };
   };
+
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    pulse.enable = true;
+  };
+
   system.stateVersion = "25.05";
   system.tools = {
     nixos-build-vms.enable = false;
