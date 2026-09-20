@@ -70,8 +70,8 @@
         "org/gnome/desktop/background" = {
           color-shading-type = "solid";
           picture-options = "zoom";
-          picture-uri = "file://${config.xdg.dataHome}/backgrounds/Solitude-1.png";
-          picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/Solitude-2.png";
+          picture-uri = "file://${config.xdg.dataHome}/backgrounds/01-cherry-blossom-bokeh.webp";
+          picture-uri-dark = "file://${config.xdg.dataHome}/backgrounds/4-new-horizons.jpg";
           primary-color = "#3465a4";
           secondary-color = "#000000";
         };
@@ -143,13 +143,13 @@
       };
 
       home.file = {
-        "${config.xdg.dataHome}/backgrounds/Solitude-1.png".source = pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/Solitude/Solitude-1.png";
-          hash = "sha256-iFKSl8cx8ZqDpcQI/VwWzDq0W8HSwLj4GJlXUKLzETM=";
+        "${config.xdg.dataHome}/backgrounds/01-cherry-blossom-bokeh.webp".source = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/omacom/omarchy/refs/heads/quattro/themes/lupine/backgrounds/01-cherry-blossom-bokeh.webp";
+          hash = "sha256-ma1KvyaF+rWqsx686gmYjKH2icgLHi8cUPbj1ufJKWo=";
         };
-        "${config.xdg.dataHome}/backgrounds/Solitude-2.png".source = pkgs.fetchurl {
-          url = "https://raw.githubusercontent.com/saint-13/Linux_Dynamic_Wallpapers/refs/heads/main/Dynamic_Wallpapers/Solitude/Solitude-2.png";
-          hash = "sha256-zbMEMQEOpuHBumL7eoiFXrYZ+WRIL89I3D1r8zDN1t4=";
+        "${config.xdg.dataHome}/backgrounds/4-new-horizons.jpg".source = pkgs.fetchurl {
+          url = "https://raw.githubusercontent.com/omacom/omarchy/refs/heads/quattro/themes/last-horizon/backgrounds/4-new-horizons.jpg";
+          hash = "sha256-axPshC42F9fJwRNhJmT1a4/+xft20GE7schJFPEv618=";
         };
       };
 
