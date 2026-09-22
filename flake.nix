@@ -31,7 +31,7 @@
     nixpkgs-flm.url = "github:JohnMolotov/nixpkgs/db67e0576aa590228a55deacae8abdb9254f4580";
     # TODO: Drop soloist pin when PR merged upstream
     # labels: host:cm3588
-    nixpkgs-soloist.url = "github:tlvince/nixpkgs/721aadb4dc5a83f0c05168d29858d5049c0bf69e";
+    nixpkgs-soloist.url = "github:tlvince/nixpkgs/140266eab833573d702f891d887b255401ba3708";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:notashelf/nvf";

@@ -297,7 +297,20 @@
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
+    systemWide = true;
   };
+
+  services.pipewire.wireplumber.configPackages = [
+    (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-disable-unused.conf" ''
+      wireplumber.profiles = {
+        main = {
+          hardware.bluetooth = disabled
+          monitor.libcamera = disabled
+          monitor.v4l2 = disabled
+        }
+      }
+    '')
+  ];
 
   system.stateVersion = "25.05";
   system.tools = {
