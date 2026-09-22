@@ -393,6 +393,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-soloist": {
+      "locked": {
+        "lastModified": 1790084241,
+        "narHash": "sha256-MVmtFokipOOWaiNMxPyUjTg23YSrX9B9G9zYamr0eqk=",
+        "owner": "tlvince",
+        "repo": "nixpkgs",
+        "rev": "140266eab833573d702f891d887b255401ba3708",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "repo": "nixpkgs",
+        "rev": "140266eab833573d702f891d887b255401ba3708",
+        "type": "github"
+      }
+    },
     "nvf": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -451,6 +467,7 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-dsh": "nixpkgs-dsh",
         "nixpkgs-flm": "nixpkgs-flm",
+        "nixpkgs-soloist": "nixpkgs-soloist",
         "nvf": "nvf",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
@@ -480,11 +497,11 @@
     "secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1788884472,
-        "narHash": "sha256-Y4giJnxw6HTcqV/Evw/rU57jXBXILDLZHE0eX6gP/Ds=",
+        "lastModified": 1789924377,
+        "narHash": "sha256-85OKXi0LXW0BviAiwrE6Vjwg/XHNv9rz/Oej/3MUNlE=",
         "owner": "tlvince",
         "repo": "nixos-config-secrets",
-        "rev": "413eb0e6e5e97930a4b8b034664e05e03d558bd1",
+        "rev": "9e1130aa97b0677e13f076044c92369af4ea37bc",
         "type": "github"
       },
       "original": {

@@ -1,15 +1,18 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   services.shairport-sync = {
     enable = true;
     openFirewall = true;
     package = pkgs.shairport-sync.override {
       # Audio output
-      enableAlsa = true;
+      enableAlsa = false;
       enableAo = false;
       enableJack = false;
       enablePipe = false;
-      enablePipewire = false;
+      enablePipewire = true;
       enablePulse = false;
       enableSndio = false;
       enableSoundio = false;
@@ -25,12 +28,10 @@
       enableMqttClient = false;
     };
     settings = {
-      diagnostics = {
-        log_verbosity = 0;
-      };
-      general = {
-        output_backend = "alsa";
-      };
+      diagnostics.log_verbosity = 0;
+      general.output_backend = "pipewire";
     };
   };
+
+  users.users.shairport.extraGroups = [ "pipewire" ];
 }

@@ -29,6 +29,9 @@
     # See: https://github.com/NixOS/nixpkgs/pull/513841
     # labels: host:framework
     nixpkgs-flm.url = "github:JohnMolotov/nixpkgs/db67e0576aa590228a55deacae8abdb9254f4580";
+    # TODO: Drop soloist pin when PR merged upstream
+    # labels: host:cm3588
+    nixpkgs-soloist.url = "github:tlvince/nixpkgs/140266eab833573d702f891d887b255401ba3708";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:notashelf/nvf";
@@ -52,6 +55,7 @@
       nixpkgs,
       nixpkgs-dsh,
       nixpkgs-flm,
+      nixpkgs-soloist,
       nvf,
       secrets,
       self,
@@ -70,6 +74,10 @@
         config.allowUnfree = true;
       };
       pkgsDsh = import nixpkgs-dsh {
+        system = "aarch64-linux";
+        config.allowUnfree = true;
+      };
+      pkgsSoloist = import nixpkgs-soloist {
         system = "aarch64-linux";
         config.allowUnfree = true;
       };
@@ -112,7 +120,7 @@
       nixosConfigurations = {
         cm3588 = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit keys;
+            inherit keys pkgsSoloist;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
@@ -121,6 +129,7 @@
             ./hosts/cm3588.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
+            "${nixpkgs-soloist}/nixos/modules/services/audio/soloist.nix"
           ];
         };
         framework = nixpkgs.lib.nixosSystem {
