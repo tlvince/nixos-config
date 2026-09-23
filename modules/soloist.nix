@@ -39,6 +39,14 @@ in
     package = pkgsSoloist.soloist;
   };
 
-  systemd.user.services.soloist.environment.LD_PRELOAD = "${soloistReuseportPin}/lib/reuseportpin.so";
-  systemd.user.services.soloist.environment.SOLOIST_CONNECT_PORT = "32768";
+  systemd.services.soloist = {
+    environment = {
+      LD_PRELOAD = "${soloistReuseportPin}/lib/reuseportpin.so";
+      SOLOIST_CONNECT_PORT = "32768";
+    };
+    serviceConfig = {
+      LimitCORE = 0;
+      LogFilterPatterns = [ "~spotify:track:" ];
+    };
+  };
 }

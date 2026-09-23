@@ -31,6 +31,7 @@
     nixpkgs-flm.url = "github:JohnMolotov/nixpkgs/db67e0576aa590228a55deacae8abdb9254f4580";
     # TODO: Drop soloist pin when PR merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/533
+    # See: https://github.com/NixOS/nixpkgs/pull/565860
     # labels: host:cm3588
     nixpkgs-soloist.url = "github:tlvince/nixpkgs/140266eab833573d702f891d887b255401ba3708";
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
