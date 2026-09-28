@@ -17,7 +17,6 @@
       enableSndio = false;
       enableSoundio = false;
       # Audio options
-      enableAlac = true;
       enableConvolution = false;
       enableSoxr = true;
       # Metadata
