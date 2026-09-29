@@ -30,6 +30,7 @@
     # labels: host:framework
     nixpkgs-flm.url = "github:JohnMolotov/nixpkgs/db67e0576aa590228a55deacae8abdb9254f4580";
     # TODO: Drop minuspod pin when PR is merged upstream
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/535
     # labels: host:nea, module:minuspod
     nixpkgs-minuspod.url = "github:tlvince/nixpkgs/6136322dbad4c761427c391ad6d4974c5b335fd6";
     # TODO: Drop soloist pin when PR merged upstream
@@ -88,6 +89,7 @@
         config.allowUnfree = true;
         overlays = [
           # TODO: Drop when nixpkgs-minuspod's nodejs_26 has a binary cache hit on aarch64-linux
+          # Issue URL: https://github.com/tlvince/nixos-config/issues/534
           # nodejs-slim-26.10.0 in this pin fails to build from source on
           # aarch64-linux (V8 memcopy.h CHAR_BIT error, builder exit 2), which
           # breaks minuspod-frontend. Use nodejs_26 from main nixpkgs instead,
