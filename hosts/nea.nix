@@ -24,6 +24,7 @@
     ../modules/host-common-nixos.nix
     ../modules/host-common.nix
     ../modules/nginx.nix
+    ../modules/podcastd.nix
   ];
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets."wireguard-nea" = {
@@ -146,6 +147,7 @@
       host-record = [
         "caltrack.filo.uk,10.12.3.1"
         "dsh.filo.uk,10.12.3.1"
+        "podcasts.filo.uk,10.12.3.1"
       ];
     };
   };
