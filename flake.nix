@@ -32,7 +32,7 @@
     # TODO: Drop minuspod pin when PR is merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/535
     # labels: host:nea, module:minuspod
-    nixpkgs-minuspod.url = "github:tlvince/nixpkgs/6136322dbad4c761427c391ad6d4974c5b335fd6";
+    nixpkgs-minuspod.url = "github:tlvince/nixpkgs/a49410f451ab2703de3a607d4a5e2526cc645e12";
     # TODO: Drop soloist pin when PR merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/533
     # See: https://github.com/NixOS/nixpkgs/pull/565860
