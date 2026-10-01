@@ -284,8 +284,9 @@
 
   services.btrfs.autoScrub = {
     enable = true;
-    interval = "monthly";
     fileSystems = [ "/" ];
+    interval = "monthly";
+    limit = "300M";
   };
 
   services.btrbk.instances = {

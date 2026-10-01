@@ -211,11 +211,12 @@
 
   services.btrfs.autoScrub = {
     enable = true;
-    interval = "*-*-01 06:00"; # 0600 monthly
     fileSystems = [
       "/"
       "/mnt/ichbiah/home"
     ];
+    interval = "*-*-01 06:00"; # 0600 monthly
+    limit = "200M";
   };
   systemd.timers."btrfs-scrub@mnt-ichbiah-home" = {
     overrideStrategy = "asDropin";
