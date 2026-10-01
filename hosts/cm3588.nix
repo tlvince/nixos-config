@@ -217,8 +217,12 @@
       "/mnt/ichbiah/home"
     ];
   };
-  systemd.timers.btrfs-scrub-mnt-ichbiah-home.timerConfig = {
-    OnCalendar = lib.mkForce "*-*-01 06:30"; # 0630 monthly
+  systemd.timers."btrfs-scrub@mnt-ichbiah-home" = {
+    overrideStrategy = "asDropin";
+    timerConfig.OnCalendar = [
+      ""
+      "*-*-01 06:30" # 0630 monthly
+    ];
   };
 
   services.btrbk = {
