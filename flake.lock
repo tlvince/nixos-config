@@ -349,17 +349,17 @@
     },
     "nixpkgs-minuspod": {
       "locked": {
-        "lastModified": 1790752178,
-        "narHash": "sha256-MlAfzQx+KwkARqFKs1pHaSWk8+MCzH7+7z2DVHOSkm8=",
+        "lastModified": 1790935930,
+        "narHash": "sha256-wBzz/gTGrJpmwzLA1bCouNwYcAoVkCq9Qiclwzp+wx4=",
         "owner": "tlvince",
         "repo": "nixpkgs",
-        "rev": "a49410f451ab2703de3a607d4a5e2526cc645e12",
+        "rev": "3227c6df5d7a9c021779ca6e2aa82f1f6e402258",
         "type": "github"
       },
       "original": {
         "owner": "tlvince",
         "repo": "nixpkgs",
-        "rev": "a49410f451ab2703de3a607d4a5e2526cc645e12",
+        "rev": "3227c6df5d7a9c021779ca6e2aa82f1f6e402258",
         "type": "github"
       }
     },

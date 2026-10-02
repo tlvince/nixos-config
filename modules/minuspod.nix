@@ -14,6 +14,7 @@
     port = 53918;
     baseUrl = "https://minuspod.filo.uk";
     environment = {
+      GUNICORN_ACCESS_LOG = "";
       GUNICORN_LOG_LEVEL = "WARNING";
       LOG_LEVEL = "WARNING";
       MINUSPOD_TRUSTED_PROXY_COUNT = "1";
