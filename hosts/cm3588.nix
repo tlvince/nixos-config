@@ -173,6 +173,8 @@
     ];
   };
 
+  hardware.alsa.enablePersistence = true;
+
   networking = {
     domain = "filo.uk";
     enableIPv6 = false;
