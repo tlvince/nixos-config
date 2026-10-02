@@ -115,6 +115,7 @@
     eich UUID=112bdd0b-de41-4622-a659-694b9f61032a /mnt/ichbiah/home/cryptsetup-keys.d/eich.key noauto
     godel UUID=fda93065-2a13-4e26-a2b6-91df80d0ced0 /root/cryptsetup-keys.d/godel.key
     huffman UUID=e017c3f2-fa81-43e6-af9a-33f99abbc647 /root/cryptsetup-keys.d/huffman.key
+    joy UUID=eb3670de-bb9d-4dac-b7d0-dc188814a3d2 /root/cryptsetup-keys.d/joy.key noauto
   '';
 
   environment.systemPackages = with pkgs; [
