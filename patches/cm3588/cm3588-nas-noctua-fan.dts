@@ -13,6 +13,8 @@
  * Black   GND   ----------  pin 6
  * Green   RPM   ----------  pin 7   GPIO3_B2
  * Blue    PWM   ----------  pin 11  PWM14_M0 / GPIO3_C2
+ *
+ * This is a separate pwm-fan device from the board's original &fan.
  */
 
 / {
@@ -21,12 +23,68 @@
 		     "rockchip,rk3588";
 };
 
+/*
+ * Add a second fan device at the DT root.
+ */
+&{/} {
+  nvme_fan: nvme-fan {
+		compatible = "pwm-fan";
+
+		#cooling-cells = <2>;
+
+		/*
+		 * PWM14_M0 / GPIO3_C2 / physical pin 11
+		 * 40,000 ns = 25 kHz
+		 */
+		pwms = <&pwm14 0 40000 0>;
+
+		/*
+		 * Measured cooling states:
+		 *
+		 * State 0: PWM  30,  11.8% duty, ~234 RPM
+		 * State 1: PWM  50,  19.6% duty, ~448 RPM
+		 * State 2: PWM  75,  29.4% duty, ~715 RPM
+		 * State 3: PWM 100,  39.2% duty, ~1023 RPM
+		 * State 4: PWM 150,  58.8% duty, ~1412 RPM
+		 * State 5: PWM 255, 100.0% duty, ~2321 RPM
+		 *
+		 * Cold-start testing:
+		 * PWM 20-22: 0/5 starts
+		 * PWM 23+:   5/5 starts
+		 *
+		 * PWM 30 leaves startup margin.
+		 */
+		cooling-levels = <30 50 75 100 150 255>;
+
+		fan-supply = <&vcc_5v0_sys>;
+
+		/*
+		 * Tach:
+		 * GPIO3_B2 / physical pin 7
+		 */
+		pinctrl-names = "default";
+		pinctrl-0 = <&fan_tach_pin>;
+
+		interrupt-parent = <&gpio3>;
+		interrupts = <RK_PB2 IRQ_TYPE_EDGE_FALLING>;
+
+		pulses-per-revolution = <2>;
+	};
+};
+
+/*
+ * PWM14_M0 / GPIO3_C2 / physical pin 11.
+ */
 &pwm14 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pwm14m0_pins>;
 	status = "okay";
 };
 
+/*
+ * GPIO3_B2 / physical pin 7.
+ * Use the SoC internal pull-up for the open-collector tach output.
+ */
 &pinctrl {
 	fan-tach {
 		fan_tach_pin: fan-tach-pin {
@@ -34,37 +92,4 @@
 				<3 RK_PB2 RK_FUNC_GPIO &pcfg_pull_up>;
 		};
 	};
-};
-
-&fan {
-	/*
-	 * PWM14_M0 / physical pin 11
-	 * 40,000 ns = 25 kHz
-	 */
-	pwms = <&pwm14 0 40000 0>;
-
-  /*
-   * Cooling states:
-   *
-   * State 0: PWM  30,  11.8% duty, ~234 RPM
-   * State 1: PWM  50,  19.6% duty, ~448 RPM
-   * State 2: PWM  75,  29.4% duty, ~715 RPM
-   * State 3: PWM 100,  39.2% duty, ~1023 RPM
-   * State 4: PWM 150,  58.8% duty, ~1412 RPM
-   * State 5: PWM 255, 100.0% duty, ~2321 RPM
-   */
-  cooling-levels = <30 50 75 100 150 255>;
-
-	/*
-	 * Tach input:
-	 * GPIO3_B2 / physical pin 7
-	 */
-	pinctrl-names = "default";
-	pinctrl-0 = <&fan_tach_pin>;
-
-	interrupt-parent = <&gpio3>;
-	interrupts = <RK_PB2 IRQ_TYPE_EDGE_FALLING>;
-
-	/* NF-A8 generates two tach pulses per revolution. */
-	pulses-per-revolution = <2>;
 };
