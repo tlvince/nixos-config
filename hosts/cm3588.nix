@@ -173,7 +173,19 @@
     ];
   };
 
-  hardware.alsa.enablePersistence = true;
+  hardware = {
+    alsa.enablePersistence = true;
+    deviceTree = {
+      enable = true;
+      filter = "*rk3588-friendlyelec-cm3588-nas.dtb";
+      overlays = [
+        {
+          name = "cm3588-nas-noctua-fan";
+          dtsFile = ../patches/cm3588/cm3588-nas-noctua-fan.dts;
+        }
+      ];
+    };
+  };
 
   networking = {
     domain = "filo.uk";

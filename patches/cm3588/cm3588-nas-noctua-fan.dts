@@ -1,0 +1,70 @@
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/interrupt-controller/irq.h>
+#include <dt-bindings/pinctrl/rockchip.h>
+
+/*
+ * NF-A8 5V PWM wiring to CM3588 NAS
+ *
+ * NF-A8 5V PWM              CM3588 NAS
+ *
+ * Yellow  +5V   ----------  pin 2
+ * Black   GND   ----------  pin 6
+ * Green   RPM   ----------  pin 7   GPIO3_B2
+ * Blue    PWM   ----------  pin 11  PWM14_M0 / GPIO3_C2
+ */
+
+/ {
+	compatible = "friendlyarm,cm3588-nas",
+		     "friendlyarm,cm3588",
+		     "rockchip,rk3588";
+};
+
+&pwm14 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm14m0_pins>;
+	status = "okay";
+};
+
+&pinctrl {
+	fan-tach {
+		fan_tach_pin: fan-tach-pin {
+			rockchip,pins =
+				<3 RK_PB2 RK_FUNC_GPIO &pcfg_pull_up>;
+		};
+	};
+};
+
+&fan {
+	/*
+	 * PWM14_M0 / physical pin 11
+	 * 40,000 ns = 25 kHz
+	 */
+	pwms = <&pwm14 0 40000 0>;
+
+	/*
+	 * PWM duty values:
+	 *
+	 *  51 = 20%
+	 *  80 = 31%
+	 * 120 = 47%
+	 * 160 = 63%
+	 * 220 = 86%
+	 * 255 = 100%
+	 */
+	cooling-levels = <51 80 120 160 220 255>;
+
+	/*
+	 * Tach input:
+	 * GPIO3_B2 / physical pin 7
+	 */
+	pinctrl-names = "default";
+	pinctrl-0 = <&fan_tach_pin>;
+
+	interrupt-parent = <&gpio3>;
+	interrupts = <RK_PB2 IRQ_TYPE_EDGE_FALLING>;
+
+	/* NF-A8 generates two tach pulses per revolution. */
+	pulses-per-revolution = <2>;
+};
