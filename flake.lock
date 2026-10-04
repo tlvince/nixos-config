@@ -74,6 +74,22 @@
         "type": "github"
       }
     },
+    "cm3588-pwm-fan": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791124954,
+        "narHash": "sha256-tHqfzORA5ULYbY9S9eHTyrRuWrni0aUrjp+MSmWOYkE=",
+        "owner": "tlvince",
+        "repo": "cm3588-pwm-fan",
+        "rev": "fb2e697fac5c41c8d042246ccf1625ba11d5a720",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tlvince",
+        "repo": "cm3588-pwm-fan",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1789760033,
@@ -427,6 +443,7 @@
       "inputs": {
         "agenix": "agenix",
         "agent-sandbox": "agent-sandbox",
+        "cm3588-pwm-fan": "cm3588-pwm-fan",
         "darwin": "darwin",
         "disko": "disko",
         "ghostwriter": "ghostwriter",

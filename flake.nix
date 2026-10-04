@@ -6,6 +6,8 @@
     agent-sandbox.inputs.nixpkgs.follows = "nixpkgs";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
     agenix.url = "github:ryantm/agenix";
+    cm3588-pwm-fan.flake = false;
+    cm3588-pwm-fan.url = "github:tlvince/cm3588-pwm-fan";
     darwin.url = "github:nix-darwin/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -51,6 +53,7 @@
     {
       agent-sandbox,
       agenix,
+      cm3588-pwm-fan,
       disko,
       darwin,
       ghostwriter,
@@ -145,7 +148,7 @@
       nixosConfigurations = {
         cm3588 = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit keys pkgsSoloist;
+            inherit cm3588-pwm-fan keys pkgsSoloist;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };

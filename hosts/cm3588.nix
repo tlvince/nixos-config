@@ -1,6 +1,6 @@
 {
+  cm3588-pwm-fan,
   config,
-  lib,
   modulesPath,
   pkgs,
   keys,
@@ -11,6 +11,9 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
+
+    # https://github.com/tlvince/cm3588-pwm-fan
+    "${cm3588-pwm-fan}/module.nix"
 
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
@@ -223,6 +226,8 @@
     enable = true;
     defaultEditor = true;
   };
+
+  services.cm3588-nvme-fan.enable = true;
 
   services.btrfs.autoScrub = {
     enable = true;
