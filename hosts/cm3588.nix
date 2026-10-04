@@ -183,6 +183,14 @@
           name = "cm3588-nas-noctua-fan";
           dtsFile = ../patches/cm3588/cm3588-nas-noctua-fan.dts;
         }
+        # TODO: Remove CM3588 thermal policy overlay
+        # Backport of https://github.com/torvalds/linux/commit/3bbe67c4de2aa8b0c042f92ad8c7462e8699cc37
+        # Remove in >=7.3
+        # labels: host:cm3588
+        {
+          name = "cm3588-nas-fan-thermal-policy";
+          dtsFile = ../patches/cm3588/cm3588-nas-fan-thermal-policy.dts;
+        }
       ];
     };
   };
