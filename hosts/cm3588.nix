@@ -184,7 +184,7 @@
       overlays = [
         {
           name = "cm3588-nas-noctua-fan";
-          dtsFile = ../patches/cm3588/cm3588-nas-noctua-fan.dts;
+          dtsFile = "${cm3588-pwm-fan}/src/cm3588-nas-noctua-fan.dts";
         }
       ];
     };
