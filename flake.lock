@@ -77,11 +77,11 @@
     "cm3588-pwm-fan": {
       "flake": false,
       "locked": {
-        "lastModified": 1791192621,
-        "narHash": "sha256-4p430SHuUO7R8WhQ58Ev91uRGCEbGdpe7lcZ01dcJPc=",
+        "lastModified": 1791206902,
+        "narHash": "sha256-rBa44eUR6N7aS/XDMGeYUKqalt0/ITvVG+mqcYqpc6o=",
         "owner": "tlvince",
         "repo": "cm3588-pwm-fan",
-        "rev": "1c4b75115c97eb01d40c13355b068893db7aed67",
+        "rev": "773a7d70a116e17bf15aeda4186bf34886399d8c",
         "type": "github"
       },
       "original": {
