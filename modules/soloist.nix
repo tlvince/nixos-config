@@ -1,7 +1,6 @@
 {
   config,
   pkgs,
-  pkgsSoloist,
   secretsPath,
   ...
 }:
@@ -36,7 +35,7 @@ in
     enable = true;
     apiKeyFile = config.age.secrets.soloist.path;
     initialVolume = 100;
-    package = pkgsSoloist.soloist;
+    package = pkgs.soloist;
   };
 
   systemd.services.soloist = {

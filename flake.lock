@@ -331,68 +331,64 @@
         "type": "github"
       }
     },
-    "nixpkgs-dsh": {
+    "nixpkgs-patch-dsh": {
+      "flake": false,
       "locked": {
-        "lastModified": 1789726261,
-        "narHash": "sha256-F6R5g/ZRqhsFVI8AKHqeN/aLLKX+xf1132b7CJIKulk=",
-        "owner": "tlvince",
-        "repo": "nixpkgs",
-        "rev": "bb92a908f642b89de7f190aa0183a15510331aac",
-        "type": "github"
+        "narHash": "sha256-9VD2EnKDtg91PUaRFapyXhXXJEiV4Xnc9BSW2+bGhH4=",
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/554081.diff?full_index=1"
       },
       "original": {
-        "owner": "tlvince",
-        "repo": "nixpkgs",
-        "rev": "bb92a908f642b89de7f190aa0183a15510331aac",
-        "type": "github"
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/554081.diff?full_index=1"
       }
     },
-    "nixpkgs-flm": {
+    "nixpkgs-patch-flm": {
+      "flake": false,
       "locked": {
-        "lastModified": 1785629081,
-        "narHash": "sha256-S6lPmoRQ2UjC3JsFDtGp5Xi7dpKRFVEI77YpPhmek0U=",
-        "owner": "JohnMolotov",
-        "repo": "nixpkgs",
-        "rev": "db67e0576aa590228a55deacae8abdb9254f4580",
-        "type": "github"
+        "narHash": "sha256-l/3CSiH0OYoERVEtZ0U95FFMjjNLXNbMy3JpXKzTEhw=",
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/513841.diff?full_index=1"
       },
       "original": {
-        "owner": "JohnMolotov",
-        "repo": "nixpkgs",
-        "rev": "db67e0576aa590228a55deacae8abdb9254f4580",
-        "type": "github"
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/513841.diff?full_index=1"
       }
     },
-    "nixpkgs-minuspod": {
+    "nixpkgs-patch-minuspod": {
+      "flake": false,
       "locked": {
-        "lastModified": 1790935930,
-        "narHash": "sha256-wBzz/gTGrJpmwzLA1bCouNwYcAoVkCq9Qiclwzp+wx4=",
-        "owner": "tlvince",
-        "repo": "nixpkgs",
-        "rev": "3227c6df5d7a9c021779ca6e2aa82f1f6e402258",
-        "type": "github"
+        "narHash": "sha256-U/HM5K51Cl8y4MNAR3LzS2ymxzggPYBvbnqnfDkev+w=",
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/568344.diff?full_index=1"
       },
       "original": {
-        "owner": "tlvince",
-        "repo": "nixpkgs",
-        "rev": "3227c6df5d7a9c021779ca6e2aa82f1f6e402258",
-        "type": "github"
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/568344.diff?full_index=1"
       }
     },
-    "nixpkgs-soloist": {
+    "nixpkgs-patch-nodejs": {
+      "flake": false,
       "locked": {
-        "lastModified": 1790084241,
-        "narHash": "sha256-MVmtFokipOOWaiNMxPyUjTg23YSrX9B9G9zYamr0eqk=",
-        "owner": "tlvince",
-        "repo": "nixpkgs",
-        "rev": "140266eab833573d702f891d887b255401ba3708",
-        "type": "github"
+        "narHash": "sha256-PaNt9lPnYLGrxR36hhmNROoSQIOKyIUCu8B345+4yO8=",
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/570428.diff?full_index=1"
       },
       "original": {
-        "owner": "tlvince",
-        "repo": "nixpkgs",
-        "rev": "140266eab833573d702f891d887b255401ba3708",
-        "type": "github"
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/570428.diff?full_index=1"
+      }
+    },
+    "nixpkgs-patch-soloist": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-Ui6vgCEm5z2j1mChDd95fsbfdSAmJAlw9uDBiFJ2CAY=",
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/565860.diff?full_index=1"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://github.com/NixOS/nixpkgs/pull/565860.diff?full_index=1"
       }
     },
     "nvf": {
@@ -452,10 +448,11 @@
         "lanzaboote": "lanzaboote",
         "llm-agents": "llm-agents",
         "nixpkgs": "nixpkgs",
-        "nixpkgs-dsh": "nixpkgs-dsh",
-        "nixpkgs-flm": "nixpkgs-flm",
-        "nixpkgs-minuspod": "nixpkgs-minuspod",
-        "nixpkgs-soloist": "nixpkgs-soloist",
+        "nixpkgs-patch-dsh": "nixpkgs-patch-dsh",
+        "nixpkgs-patch-flm": "nixpkgs-patch-flm",
+        "nixpkgs-patch-minuspod": "nixpkgs-patch-minuspod",
+        "nixpkgs-patch-nodejs": "nixpkgs-patch-nodejs",
+        "nixpkgs-patch-soloist": "nixpkgs-patch-soloist",
         "nvf": "nvf",
         "secrets": "secrets",
         "tmux-colours-onedark": "tmux-colours-onedark"
