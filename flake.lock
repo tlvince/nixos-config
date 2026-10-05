@@ -334,25 +334,25 @@
     "nixpkgs-patch-dsh": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-9VD2EnKDtg91PUaRFapyXhXXJEiV4Xnc9BSW2+bGhH4=",
+        "narHash": "sha256-iuCzwbhFUbPtjkUNbdizFKeNMuO+dF1phREfhBD6ntk=",
         "type": "file",
-        "url": "https://github.com/NixOS/nixpkgs/pull/554081.diff?full_index=1"
+        "url": "https://github.com/tlvince/nixpkgs/commit/bb92a908f642b89de7f190aa0183a15510331aac.diff?full_index=1"
       },
       "original": {
         "type": "file",
-        "url": "https://github.com/NixOS/nixpkgs/pull/554081.diff?full_index=1"
+        "url": "https://github.com/tlvince/nixpkgs/commit/bb92a908f642b89de7f190aa0183a15510331aac.diff?full_index=1"
       }
     },
     "nixpkgs-patch-flm": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-l/3CSiH0OYoERVEtZ0U95FFMjjNLXNbMy3JpXKzTEhw=",
+        "narHash": "sha256-uJkK6GDhX3ekPCdNZcqnW2mUDB5NF5q7vLE3zv6BoO0=",
         "type": "file",
-        "url": "https://github.com/NixOS/nixpkgs/pull/513841.diff?full_index=1"
+        "url": "https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580.diff?full_index=1"
       },
       "original": {
         "type": "file",
-        "url": "https://github.com/NixOS/nixpkgs/pull/513841.diff?full_index=1"
+        "url": "https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580.diff?full_index=1"
       }
     },
     "nixpkgs-patch-minuspod": {

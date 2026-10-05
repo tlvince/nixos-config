@@ -25,14 +25,18 @@
     # Issue URL: https://github.com/tlvince/nixos-config/issues/512
     # See: https://github.com/NixOS/nixpkgs/pull/554081
     # labels: host:nea, module:dsh
+    # Pinned to tlvince fork commit: PR head is behind.
     nixpkgs-patch-dsh.flake = false;
-    nixpkgs-patch-dsh.url = "https://github.com/NixOS/nixpkgs/pull/554081.diff?full_index=1";
+    nixpkgs-patch-dsh.url = "https://github.com/tlvince/nixpkgs/commit/bb92a908f642b89de7f190aa0183a15510331aac.diff?full_index=1";
     # TODO: Drop fastflowlm patch when PR is merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/468
     # See: https://github.com/NixOS/nixpkgs/pull/513841
     # labels: host:framework
+    # Pinned to last-known-good commit: PR head currently bundles an xrt
+    # that fails against unstable's CMake (xclbinutil/CMakeLists.txt:38).
+    # Re-float to the PR diff once upstream fixes it.
     nixpkgs-patch-flm.flake = false;
-    nixpkgs-patch-flm.url = "https://github.com/NixOS/nixpkgs/pull/513841.diff?full_index=1";
+    nixpkgs-patch-flm.url = "https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580.diff?full_index=1";
     # TODO: Drop minuspod patch when PR is merged upstream
     # Issue URL: https://github.com/tlvince/nixos-config/issues/535
     # See: https://github.com/NixOS/nixpkgs/pull/568344
