@@ -93,6 +93,7 @@
         overlays = [
           # TODO: Drop when nixpkgs-minuspod's nodejs_26 has a binary cache hit on aarch64-linux
           # Issue URL: https://github.com/tlvince/nixos-config/issues/534
+          # https://github.com/NixOS/nixpkgs/pull/570428
           # nodejs-slim-26.10.0 in this pin fails to build from source on
           # aarch64-linux (V8 memcopy.h CHAR_BIT error, builder exit 2), which
           # breaks minuspod-frontend. Use nodejs_26 from main nixpkgs instead,

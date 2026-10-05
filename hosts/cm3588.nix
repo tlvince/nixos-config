@@ -17,7 +17,9 @@
 
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
+
     ../modules/acme.nix
+    ../modules/archive.nix
     ../modules/dmesgd.nix
     ../modules/dnsmasq.nix
     ../modules/famlyd.nix
