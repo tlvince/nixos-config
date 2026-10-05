@@ -89,7 +89,7 @@
     let
       system = "x86_64-linux";
       keys = import ./keys.nix;
-      pkgsForPatching = import nixpkgs { system = "x86_64-linux"; };
+      pkgsForPatching = import nixpkgs { system = builtins.currentSystem; };
       patchedSrc = pkgsForPatching.applyPatches {
         name = "nixpkgs-patched";
         src = nixpkgs;
