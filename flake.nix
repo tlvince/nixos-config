@@ -91,18 +91,20 @@
         system = "aarch64-linux";
         config.allowUnfree = true;
         overlays = [
-          # TODO: Drop when nixpkgs-minuspod's nodejs_26 has a binary cache hit on aarch64-linux
+          # TODO: Drop when nixpkgs-minuspod pin includes upstream fix
           # Issue URL: https://github.com/tlvince/nixos-config/issues/534
-          # https://github.com/NixOS/nixpkgs/pull/570428
-          # nodejs-slim-26.10.0 in this pin fails to build from source on
-          # aarch64-linux (V8 memcopy.h CHAR_BIT error, builder exit 2), which
-          # breaks minuspod-frontend. Use nodejs_26 from main nixpkgs instead,
-          # cached on Hydra (e.g. build 346769064 of
-          # nixos:unstable:nixpkgs.nodejs_26.aarch64-linux). Scoped to
-          # minuspod only via pkgsMinuspod.
+          # Backports https://github.com/NixOS/nixpkgs/pull/570428
+          # (nodejs-slim-26.10.0 fails to build from source on aarch64-linux
+          # with V8 memcopy.h CHAR_BIT error, builder exit 2, which breaks
+          # minuspod-frontend). nodejs_26 is a symlinkJoin wrapper around
+          # nodejs-slim_26, so patch the slim derivation.
           # labels: host:nea, module:minuspod
           (final: prev: {
-            nodejs_26 = nixpkgs.legacyPackages.aarch64-linux.nodejs_26;
+            "nodejs-slim_26" = prev."nodejs-slim_26".overrideAttrs (old: {
+              patches = (old.patches or [ ]) ++ [
+                ./patches/nodejs/memcpy-climits.patch
+              ];
+            });
           })
         ];
       };
