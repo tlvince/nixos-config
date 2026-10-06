@@ -1,13 +1,12 @@
 {
   pkgs,
-  pkgsDsh,
   ...
 }:
 let
   # TODO: Drop dsh overrides
   # Issue URL: https://github.com/tlvince/nixos-config/issues/513
   # labels: module:dsh
-  dsh = pkgsDsh.deepseek-harness.overrideAttrs (old: {
+  dsh = pkgs.deepseek-harness.overrideAttrs (old: {
     # Treat dsh.filo.uk as loopback so nginx-proxied requests pass the
     # DNS-rebinding fence and the Settings mirror uses 'host' persistence
     # instead of 'memory' (see packages/client/connection/src/loopback-hostname.ts

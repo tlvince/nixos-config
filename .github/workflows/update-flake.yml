@@ -24,6 +24,10 @@ jobs:
         uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31
         with:
           github_access_token: ${{ steps.generate-github-token.outputs.token }}
+      - name: Patch nixpkgs fork
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_PATCH_NIXPKGS }}
+        run: ./.github/scripts/patch-nixpkgs.sh
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@834c491b2ece4de0bbd00d85214bb5e83b4da5c6 # v28
         id: update-flake-lock

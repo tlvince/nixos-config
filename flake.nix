@@ -21,26 +21,8 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    # TODO: Drop dsh pin when PR is merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/512
-    # See: https://github.com/NixOS/nixpkgs/pull/554081
-    # labels: host:nea, module:dsh
-    nixpkgs-dsh.url = "github:tlvince/nixpkgs/bb92a908f642b89de7f190aa0183a15510331aac";
-    # TODO: Drop fastflowlm pin when PR is merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/468
-    # See: https://github.com/NixOS/nixpkgs/pull/513841
-    # labels: host:framework
-    nixpkgs-flm.url = "github:JohnMolotov/nixpkgs/db67e0576aa590228a55deacae8abdb9254f4580";
-    # TODO: Drop minuspod pin when PR is merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/535
-    # labels: host:nea, module:minuspod
-    nixpkgs-minuspod.url = "github:tlvince/nixpkgs/3227c6df5d7a9c021779ca6e2aa82f1f6e402258";
-    # TODO: Drop soloist pin when PR merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/533
-    # See: https://github.com/NixOS/nixpkgs/pull/565860
-    # labels: host:cm3588
-    nixpkgs-soloist.url = "github:tlvince/nixpkgs/140266eab833573d702f891d887b255401ba3708";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-upstream.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:tlvince/nixpkgs/nixos-config";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:notashelf/nvf";
     secrets.flake = false;
@@ -62,10 +44,6 @@
       llm-agents,
       lanzaboote,
       nixpkgs,
-      nixpkgs-dsh,
-      nixpkgs-flm,
-      nixpkgs-minuspod,
-      nixpkgs-soloist,
       nvf,
       secrets,
       self,
@@ -77,39 +55,6 @@
       keys = import ./keys.nix;
       pkgs = import nixpkgs {
         inherit system;
-        config.allowUnfree = true;
-      };
-      pkgsFlm = import nixpkgs-flm {
-        inherit system;
-        config.allowUnfree = true;
-      };
-      pkgsDsh = import nixpkgs-dsh {
-        system = "aarch64-linux";
-        config.allowUnfree = true;
-      };
-      pkgsMinuspod = import nixpkgs-minuspod {
-        system = "aarch64-linux";
-        config.allowUnfree = true;
-        overlays = [
-          # TODO: Drop when nixpkgs-minuspod pin includes upstream fix
-          # Issue URL: https://github.com/tlvince/nixos-config/issues/534
-          # Backports https://github.com/NixOS/nixpkgs/pull/570428
-          # (nodejs-slim-26.10.0 fails to build from source on aarch64-linux
-          # with V8 memcopy.h CHAR_BIT error, builder exit 2, which breaks
-          # minuspod-frontend). nodejs_26 is a symlinkJoin wrapper around
-          # nodejs-slim_26, so patch the slim derivation.
-          # labels: host:nea, module:minuspod
-          (final: prev: {
-            "nodejs-slim_26" = prev."nodejs-slim_26".overrideAttrs (old: {
-              patches = (old.patches or [ ]) ++ [
-                ./patches/nodejs/memcpy-climits.patch
-              ];
-            });
-          })
-        ];
-      };
-      pkgsSoloist = import nixpkgs-soloist {
-        system = "aarch64-linux";
         config.allowUnfree = true;
       };
     in
@@ -151,7 +96,7 @@
       nixosConfigurations = {
         cm3588 = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit cm3588-pwm-fan keys pkgsSoloist;
+            inherit cm3588-pwm-fan keys;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
@@ -160,12 +105,10 @@
             ./hosts/cm3588.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
-            "${nixpkgs-soloist}/nixos/modules/services/audio/soloist.nix"
           ];
         };
         framework = nixpkgs.lib.nixosSystem {
           specialArgs = inputs // {
-            inherit pkgsFlm;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
@@ -197,14 +140,13 @@
         };
         nea = nixpkgs.lib.nixosSystem {
           specialArgs = {
-            inherit keys pkgsDsh pkgsMinuspod;
+            inherit keys;
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
           };
           modules = [
             ./hosts/nea.nix
             agenix.nixosModules.default
-            "${nixpkgs-minuspod}/nixos/modules/services/misc/minuspod.nix"
           ];
         };
       };

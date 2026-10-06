@@ -1,6 +1,6 @@
 {
   config,
-  pkgsMinuspod,
+  pkgs,
   secretsPath,
   ...
 }:
@@ -9,7 +9,7 @@
 
   services.minuspod = {
     enable = true;
-    package = pkgsMinuspod.minuspod;
+    package = pkgs.minuspod;
     host = "127.0.0.1";
     port = 53918;
     baseUrl = "https://minuspod.filo.uk";

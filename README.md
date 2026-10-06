@@ -3,6 +3,7 @@
 NixOS configuration for my machines featuring:
 
 - Daily [flake updates](https://github.com/tlvince/nixos-config/blob/b1b37216961830494906c5f41b86c0f4e285a095/.github/workflows/update-flake.yml) with [change reports](https://github.com/tlvince/nixos-config/blob/b1b37216961830494906c5f41b86c0f4e285a095/.github/workflows/build.yml) ([example run](https://github.com/tlvince/nixos-config/pull/287))
+- Single patched nixpkgs instance with [ghcherry](https://github.com/PerchunPak/ghcherry) ([background PR](https://github.com/tlvince/nixos-config/pull/537))
 - Secrets management with [agenix](https://github.com/ryantm/agenix) and [systemd credentials](https://systemd.io/CREDENTIALS/)
 - Stripped-back GNOME in Wayland-only mode
 - CLI-focused developer environments and [Foot](https://codeberg.org/dnkl/foot/) terminal

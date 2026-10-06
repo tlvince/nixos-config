@@ -5,5 +5,18 @@
     ":rebaseStalePrs",
     ":semanticCommits",
     "helpers:pinGitHubActionDigests"
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "\\.github/scripts/patch-nixpkgs\\.sh$"
+      ],
+      "matchStrings": [
+        "ghcherry==(?<currentValue>[\\d.]+)"
+      ],
+      "depNameTemplate": "ghcherry",
+      "datasourceTemplate": "pypi"
+    }
   ]
 }
