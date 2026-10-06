@@ -21,44 +21,8 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    # TODO: Drop dsh patch when PR is merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/512
-    # See: https://github.com/NixOS/nixpkgs/pull/554081
-    # labels: host:nea, module:dsh
-    # Pinned to tlvince fork commit: PR head is behind.
-    nixpkgs-patch-dsh.flake = false;
-    nixpkgs-patch-dsh.url = "https://github.com/tlvince/nixpkgs/commit/bb92a908f642b89de7f190aa0183a15510331aac.diff?full_index=1";
-    # TODO: Drop fastflowlm patch when PR is merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/468
-    # See: https://github.com/NixOS/nixpkgs/pull/513841
-    # labels: host:framework
-    # Pinned to last-known-good commit: PR head currently bundles an xrt
-    # that fails against unstable's CMake (xclbinutil/CMakeLists.txt:38).
-    # Re-float to the PR diff once upstream fixes it.
-    nixpkgs-patch-flm.flake = false;
-    nixpkgs-patch-flm.url = "https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580.diff?full_index=1";
-    # TODO: Drop minuspod patch when PR is merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/535
-    # See: https://github.com/NixOS/nixpkgs/pull/568344
-    # labels: host:nea, module:minuspod
-    nixpkgs-patch-minuspod.flake = false;
-    nixpkgs-patch-minuspod.url = "https://github.com/NixOS/nixpkgs/pull/568344.diff?full_index=1";
-    # TODO: Drop soloist patch when PR merged upstream
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/533
-    # See: https://github.com/NixOS/nixpkgs/pull/565860
-    # labels: host:cm3588
-    nixpkgs-patch-soloist.flake = false;
-    nixpkgs-patch-soloist.url = "https://github.com/NixOS/nixpkgs/pull/565860.diff?full_index=1";
-    # TODO: Drop nodejs patch when PR is merged upstream
-    # (nodejs-slim-26.10.0 fails to build from source on aarch64-linux
-    # with V8 memcopy.h CHAR_BIT error, builder exit 2, which breaks
-    # minuspod-frontend)
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/534
-    # See: https://github.com/NixOS/nixpkgs/pull/570428
-    # labels: host:nea, module:minuspod
-    nixpkgs-patch-nodejs.flake = false;
-    nixpkgs-patch-nodejs.url = "https://github.com/NixOS/nixpkgs/pull/570428.diff?full_index=1";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-upstream.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:tlvince/nixpkgs/nixos-config";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:notashelf/nvf";
     secrets.flake = false;
@@ -89,25 +53,7 @@
     let
       system = "x86_64-linux";
       keys = import ./keys.nix;
-      pkgsForPatching = import nixpkgs { system = builtins.currentSystem; };
-      patchedSrc = pkgsForPatching.applyPatches {
-        name = "nixpkgs-patched";
-        src = nixpkgs;
-        patches = [
-          inputs.nixpkgs-patch-dsh
-          inputs.nixpkgs-patch-flm
-          inputs.nixpkgs-patch-minuspod
-          inputs.nixpkgs-patch-nodejs
-          inputs.nixpkgs-patch-soloist
-        ];
-      };
-      # Re-import the patched flake to get its lib
-      patchedPkgs = (import "${patchedSrc}/flake.nix").outputs {
-        self = {
-          outPath = patchedSrc;
-        };
-      };
-      pkgs = import patchedSrc {
+      pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
@@ -146,9 +92,9 @@
         ];
       };
       formatter.${system} = pkgs.nixfmt-tree;
-      formatter.aarch64-darwin = patchedPkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
       nixosConfigurations = {
-        cm3588 = patchedPkgs.lib.nixosSystem {
+        cm3588 = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit cm3588-pwm-fan keys;
             secrets = import inputs.secrets;
@@ -161,7 +107,7 @@
             disko.nixosModules.disko
           ];
         };
-        framework = patchedPkgs.lib.nixosSystem {
+        framework = nixpkgs.lib.nixosSystem {
           specialArgs = inputs // {
             secrets = import inputs.secrets;
             secretsPath = inputs.secrets.outPath;
@@ -181,7 +127,7 @@
             nvf.nixosModules.default
           ];
         };
-        kunkun = patchedPkgs.lib.nixosSystem {
+        kunkun = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit keys;
             secrets = import inputs.secrets;
@@ -192,7 +138,7 @@
             agenix.nixosModules.default
           ];
         };
-        nea = patchedPkgs.lib.nixosSystem {
+        nea = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit keys;
             secrets = import inputs.secrets;
