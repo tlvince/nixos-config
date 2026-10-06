@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-# 1. Update the upstream base only; the lock action updates everything else.
 nix flake update nixpkgs-upstream
 nixpkgs_rev="$(jq -er '.nodes."nixpkgs-upstream".locked.rev' flake.lock)"
 
@@ -15,7 +14,7 @@ picks=(
   # Issue URL: https://github.com/tlvince/nixos-config/issues/468
   # See: https://github.com/NixOS/nixpkgs/pull/513841
   # labels: host:framework
-  https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580
+  #https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580
   # TODO: Drop dsh pick when PR is merged upstream
   # Issue URL: https://github.com/tlvince/nixos-config/issues/512
   # See: https://github.com/NixOS/nixpkgs/pull/554081

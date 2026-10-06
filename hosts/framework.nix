@@ -8,7 +8,7 @@
   imports = [
     ../modules/asr.nix
     ../modules/famly-fetch.nix
-    ../modules/fastflowlm.nix
+    #../modules/fastflowlm.nix
     ../modules/firefox.nix
     ../modules/g-proxy.nix
     ../modules/gnome.nix
