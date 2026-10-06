@@ -8,6 +8,10 @@
   imports = [
     ../modules/asr.nix
     ../modules/famly-fetch.nix
+    # TODO: Restore fastflowlm module
+    # PR is stale and fails to build against nixos-unstable
+    # https://github.com/NixOS/nixpkgs/pull/513841
+    # labels: host:framework, module:fastflowlm
     #../modules/fastflowlm.nix
     ../modules/firefox.nix
     ../modules/g-proxy.nix

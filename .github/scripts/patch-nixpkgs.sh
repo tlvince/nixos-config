@@ -13,7 +13,7 @@ picks=(
   # TODO: Drop fastflowlm pick when PR is merged upstream
   # Issue URL: https://github.com/tlvince/nixos-config/issues/468
   # See: https://github.com/NixOS/nixpkgs/pull/513841
-  # labels: host:framework
+  # labels: host:framework, module:fastflowlm
   #https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580
   # TODO: Drop dsh pick when PR is merged upstream
   # Issue URL: https://github.com/tlvince/nixos-config/issues/512
