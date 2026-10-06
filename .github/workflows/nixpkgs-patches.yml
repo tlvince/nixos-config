@@ -1,0 +1,19 @@
+name: Nixpkgs patches
+on:
+  workflow_dispatch:
+  schedule:
+    # After update-flake
+    - cron: "15 9 * * *"
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  landed:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Check landed nixpkgs patches
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./.github/scripts/check-landed.sh

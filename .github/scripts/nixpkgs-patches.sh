@@ -1,0 +1,27 @@
+patches=(
+  # TODO: Drop nodejs pick when PR is merged upstream
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/534
+  # See: https://github.com/NixOS/nixpkgs/pull/570428
+  # labels: host:nea, module:minuspod
+  https://github.com/NixOS/nixpkgs/commit/9907adc0d10cd2636b9dbe9e96bea31689764469
+  # TODO: Drop fastflowlm pick when PR is merged upstream
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/468
+  # See: https://github.com/NixOS/nixpkgs/pull/513841
+  # labels: host:framework, module:fastflowlm
+  #https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580
+  # TODO: Drop dsh pick when PR is merged upstream
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/512
+  # See: https://github.com/NixOS/nixpkgs/pull/554081
+  # labels: host:nea, module:dsh
+  https://github.com/tlvince/nixpkgs/commit/bb92a908f642b89de7f190aa0183a15510331aac
+  # TODO: Drop minuspod pick when PR is merged upstream
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/535
+  # See: https://github.com/NixOS/nixpkgs/pull/568344
+  # labels: host:nea, module:minuspod
+  https://github.com/NixOS/nixpkgs/pull/568344
+  # TODO: Drop soloist pick when PR is merged upstream
+  # Issue URL: https://github.com/tlvince/nixos-config/issues/533
+  # See: https://github.com/NixOS/nixpkgs/pull/565860
+  # labels: host:cm3588
+  https://github.com/NixOS/nixpkgs/pull/565860
+)
