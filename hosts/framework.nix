@@ -9,6 +9,7 @@
     ../modules/asr.nix
     ../modules/famly-fetch.nix
     # TODO: Restore fastflowlm module
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/538
     # PR is stale and fails to build against nixos-unstable
     # https://github.com/NixOS/nixpkgs/pull/513841
     # labels: host:framework, module:fastflowlm
