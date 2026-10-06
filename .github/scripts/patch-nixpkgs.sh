@@ -32,18 +32,9 @@ picks=(
   https://github.com/NixOS/nixpkgs/pull/565860
 )
 
-if ((${#picks[@]})); then
-  pipx run --spec ghcherry==1.6.0 ghcherry -- \
-    --target tlvince/nixpkgs@nixos-config \
-    --first-hard-reset-to "NixOS/nixpkgs/${nixpkgs_rev}" \
-    "${picks[@]}"
-else
-  gh api \
-    --method PATCH \
-    repos/tlvince/nixpkgs/git/refs/heads/nixos-config \
-    -f sha="$nixpkgs_rev" \
-    -F force=true \
-    >/dev/null
-fi
+pipx run --spec ghcherry==1.6.0 ghcherry -- \
+  --target tlvince/nixpkgs@nixos-config \
+  --first-hard-reset-to "NixOS/nixpkgs/${nixpkgs_rev}" \
+  "${picks[@]}"
 
 nix flake update nixpkgs
