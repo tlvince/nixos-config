@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -euxo pipefail
 
 # 1. Update the upstream base only; the lock action updates everything else.
 nix flake update nixpkgs-upstream
