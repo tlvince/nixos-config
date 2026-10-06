@@ -33,7 +33,7 @@ picks=(
 )
 
 if ((${#picks[@]})); then
-  nix run "github:NixOS/nixpkgs/${nixpkgs_rev}#ghcherry" -- \
+  pipx run --spec ghcherry==1.6.0 ghcherry -- \
     --target tlvince/nixpkgs@nixos-config \
     --first-hard-reset-to "NixOS/nixpkgs/${nixpkgs_rev}" \
     "${picks[@]}"
