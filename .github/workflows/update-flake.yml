@@ -26,7 +26,7 @@ jobs:
           github_access_token: ${{ steps.generate-github-token.outputs.token }}
       - name: Patch nixpkgs fork
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_PATCH_NIXPKGS }}
         run: ./.github/scripts/patch-nixpkgs.sh
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@834c491b2ece4de0bbd00d85214bb5e83b4da5c6 # v28
