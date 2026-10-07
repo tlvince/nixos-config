@@ -13,8 +13,9 @@ picks=(
   # TODO: Drop dsh pick when PR is merged upstream
   # Issue URL: https://github.com/tlvince/nixos-config/issues/512
   # See: https://github.com/NixOS/nixpkgs/pull/554081
+  # See: https://github.com/NixOS/nixpkgs/pull/571214
   # labels: host:nea, module:dsh
-  https://github.com/tlvince/nixpkgs/commit/bb92a908f642b89de7f190aa0183a15510331aac
+  https://github.com/NixOS/nixpkgs/pull/571214
   # TODO: Drop minuspod pick when PR is merged upstream
   # Issue URL: https://github.com/tlvince/nixos-config/issues/535
   # See: https://github.com/NixOS/nixpkgs/pull/568344
