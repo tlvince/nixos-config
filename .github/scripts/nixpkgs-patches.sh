@@ -1,9 +1,4 @@
 patches=(
-  # TODO: Drop nodejs pick when PR is merged upstream
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/534
-  # See: https://github.com/NixOS/nixpkgs/pull/570428
-  # labels: host:nea, module:minuspod
-  https://github.com/NixOS/nixpkgs/commit/9907adc0d10cd2636b9dbe9e96bea31689764469
   # TODO: Drop fastflowlm pick when PR is merged upstream
   # Issue URL: https://github.com/tlvince/nixos-config/issues/468
   # See: https://github.com/NixOS/nixpkgs/pull/513841
