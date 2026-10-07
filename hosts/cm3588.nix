@@ -27,6 +27,9 @@
     ../modules/immich.nix
     ../modules/mosquitto.nix
     ../modules/nginx.nix
+    # TODO: remove this import (and the enable below) once the rknpu
+    # deploy is validated on the board.
+    ../modules/rknpu-rollback-guard.nix
     ../modules/postgres.nix
     ../modules/radicale.nix
     ../modules/samba.nix
@@ -50,6 +53,13 @@
       };
     };
   };
+
+  # Rockchip NPU: out-of-tree vendor driver + DT overlay (flake input)
+  hardware.rknpu = {
+    enable = true;
+    autoload = false;
+  };
+  rknpuDeploy.guard.enable = true;
   disko.devices = {
     disk = {
       main = {

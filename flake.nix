@@ -21,6 +21,8 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
+    linux-rknpu-rk3588.inputs.nixpkgs.follows = "nixpkgs";
+    linux-rknpu-rk3588.url = "github:heliosrun/linux-rknpu-rk3588";
     nixpkgs-upstream.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:tlvince/nixpkgs/nixos-config";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
@@ -43,6 +45,7 @@
       jail-nix,
       llm-agents,
       lanzaboote,
+      linux-rknpu-rk3588,
       nixpkgs,
       nvf,
       secrets,
@@ -105,6 +108,7 @@
             ./hosts/cm3588.nix
             agenix.nixosModules.default
             disko.nixosModules.disko
+            linux-rknpu-rk3588.nixosModules.rknpu
           ];
         };
         framework = nixpkgs.lib.nixosSystem {

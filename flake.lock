@@ -276,6 +276,26 @@
         "type": "github"
       }
     },
+    "linux-rknpu-rk3588": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791537006,
+        "narHash": "sha256-Q+nwOzoGkr4tLbrZxKRtFY9/S3+wCZJ/3uYhehrnfEA=",
+        "owner": "heliosrun",
+        "repo": "linux-rknpu-rk3588",
+        "rev": "0c8a30be6a740f58c88ceae3d9da0c221d84e938",
+        "type": "github"
+      },
+      "original": {
+        "owner": "heliosrun",
+        "repo": "linux-rknpu-rk3588",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -402,6 +422,7 @@
         "home-manager": "home-manager",
         "jail-nix": "jail-nix",
         "lanzaboote": "lanzaboote",
+        "linux-rknpu-rk3588": "linux-rknpu-rk3588",
         "llm-agents": "llm-agents",
         "nixpkgs": "nixpkgs",
         "nixpkgs-upstream": "nixpkgs-upstream",
