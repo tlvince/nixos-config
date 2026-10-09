@@ -9,7 +9,6 @@
 {
   imports = [
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
-    (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
 
     # https://github.com/tlvince/cm3588-pwm-fan
@@ -45,6 +44,7 @@
       "gpio_ir_recv" # Unused and throwing kernel traces as of 6.18.6
     ];
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [ "console=tty0" ];
     loader = {
       grub.enable = false;
       generic-extlinux-compatible = {
@@ -56,10 +56,10 @@
 
   # Rockchip NPU: out-of-tree vendor driver + DT overlay (flake input)
   hardware.rknpu = {
-    enable = true;
+    enable = false;
     autoload = false;
   };
-  rknpuDeploy.guard.enable = true;
+  rknpuDeploy.guard.enable = false;
   disko.devices = {
     disk = {
       main = {
