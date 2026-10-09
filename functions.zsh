@@ -60,6 +60,6 @@ tdl() {
   tmux rename-window "${PWD:t}"
   tmux split-window -vd -p 15 -c "$PWD"
   local ai_pane=$(tmux split-window -hdP -p 30 -c "$PWD" -F '#{pane_id}')
-  tmux send-keys -t "$ai_pane" "${1:-opencode}" C-m
+  tmux send-keys -t "$ai_pane" "${1:-pi}" C-m
   tmux send-keys "${EDITOR:-nvim} ." C-m
 }
