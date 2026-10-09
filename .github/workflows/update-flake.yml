@@ -42,25 +42,21 @@ jobs:
             automated
             dependencies
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
-      - name: Create compare URLs
+      - name: Update PR body with compare URLs
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         if: steps.update-flake-lock.outputs.pull-request-operation == 'created' || steps.update-flake-lock.outputs.pull-request-operation == 'updated'
         with:
           script: |
-            const comment = require('.github/scripts/comment')
             const compare = require('.github/scripts/compare')
 
-            const urls = await compare({ github, context, core })
-            if (!urls?.length) {
+            const body = await compare({ github, context, core })
+            if (!body) {
               return
             }
 
-            const header = "# Compare URLs"
-            const body = urls.map((url) => `- ${url}`).join("\n")
-
-            const issueNumber = parseInt(process.env.PULL_REQUEST_NUMBER, 10)
-            if (Number.isNaN(issueNumber)) {
-              return
-            }
-
-            await comment({ github, context, header, body, issueNumber })
+            await github.rest.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ steps.update-flake-lock.outputs.pull-request-number }},
+              body,
+            })
