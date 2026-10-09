@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-nix flake update nixpkgs-upstream
-nixpkgs_rev="$(jq -er '.nodes."nixpkgs-upstream".locked.rev' flake.lock)"
+nixpkgs_rev="$(git ls-remote https://github.com/NixOS/nixpkgs refs/heads/nixos-unstable | cut -f1)"
+[[ "$nixpkgs_rev" ]] || { echo "failed to resolve nixos-unstable rev" && exit 1; }
 
 picks=(
   # TODO: Drop fastflowlm pick when PR is merged upstream
@@ -32,5 +32,3 @@ pipx run --spec ghcherry==1.6.0 ghcherry -- \
   --target tlvince/nixpkgs@nixos-config \
   --first-hard-reset-to "NixOS/nixpkgs/${nixpkgs_rev}" \
   "${picks[@]}"
-
-nix flake update nixpkgs
