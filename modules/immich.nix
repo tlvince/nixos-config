@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   secrets,
   secretsPath,
   ...
@@ -9,6 +10,21 @@
 
   services.immich = {
     enable = true;
+    # TODO: Remove immich-machine-learning OpenVINO patch
+    # OpenVINO CPU (enabled by https://github.com/immich-app/immich/pull/22948)
+    # SIGILLs on RK3588 (libopenvino_arm_cpu_plugin.so illegal instruction,
+    # worker dies, server logs UND_ERR_SOCKET other side closed for
+    # ViT-B-32__openai). Drop the provider so ORT falls back to
+    # CPUExecutionProvider.
+    # labels: host:cm3588, module:immich
+    package = pkgs.immich.override {
+      "immich-machine-learning" = pkgs.immich-machine-learning.overrideAttrs (oldAttrs: {
+        postPatch = (oldAttrs.postPatch or "") + ''
+          substituteInPlace immich_ml/models/constants.py \
+            --replace-fail '"OpenVINOExecutionProvider",' ""
+        '';
+      });
+    };
     database = {
       enable = false;
     };
