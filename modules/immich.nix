@@ -11,6 +11,7 @@
   services.immich = {
     enable = true;
     # TODO: Remove immich-machine-learning OpenVINO patch
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/546
     # OpenVINO CPU (enabled by https://github.com/immich-app/immich/pull/22948)
     # SIGILLs on RK3588 (libopenvino_arm_cpu_plugin.so illegal instruction,
     # worker dies, server logs UND_ERR_SOCKET other side closed for
