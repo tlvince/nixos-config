@@ -26,6 +26,10 @@ picks=(
   # See: https://github.com/NixOS/nixpkgs/pull/565860
   # labels: host:cm3588
   https://github.com/NixOS/nixpkgs/pull/565860
+  # TODO: Drop OpenVINO SVE patch
+  # See: https://github.com/NixOS/nixpkgs/pull/572779
+  # labels: host:cm3588, module:immich
+  https://github.com/NixOS/nixpkgs/pull/572779
 )
 
 pipx run --spec ghcherry==1.6.0 ghcherry -- \
