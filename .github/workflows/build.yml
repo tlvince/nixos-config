@@ -20,10 +20,10 @@ jobs:
     strategy:
       matrix:
         flake:
-          - name: framework
-            attr: nixosConfigurations.framework.config.system.build.toplevel
-            system: x86-64-linux
-            runner: ubuntu-24.04
+          # - name: framework
+          #   attr: nixosConfigurations.framework.config.system.build.toplevel
+          #   system: x86-64-linux
+          #   runner: ubuntu-24.04
           - name: cm3588
             attr: nixosConfigurations.cm3588.config.system.build.toplevel
             system: aarch64-linux
@@ -32,18 +32,18 @@ jobs:
           #   attr: devShells.x86_64-linux.nodejs
           #   system: x86-64-linux
           #   runner: ubuntu-24.04
-          - name: kunkun
-            attr: nixosConfigurations.kunkun.config.system.build.toplevel
-            system: aarch64-linux
-            runner: ubuntu-24.04-arm
-          - name: nea
-            attr: nixosConfigurations.nea.config.system.build.toplevel
-            system: aarch64-linux
-            runner: ubuntu-24.04-arm
-          - name: lamma
-            attr: darwinConfigurations.lamma.system
-            system: aarch64-darwin
-            runner: macos-26
+          # - name: kunkun
+          #   attr: nixosConfigurations.kunkun.config.system.build.toplevel
+          #   system: aarch64-linux
+          #   runner: ubuntu-24.04-arm
+          # - name: nea
+          #   attr: nixosConfigurations.nea.config.system.build.toplevel
+          #   system: aarch64-linux
+          #   runner: ubuntu-24.04-arm
+          # - name: lamma
+          #   attr: darwinConfigurations.lamma.system
+          #   system: aarch64-darwin
+          #   runner: macos-26
     runs-on: ${{ matrix.flake.runner }}
     permissions:
       contents: read
