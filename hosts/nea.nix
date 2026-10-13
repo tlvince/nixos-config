@@ -12,7 +12,10 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
-    (modulesPath + "/profiles/perlless.nix")
+    # TODO: Restore perlless profile
+    # remounting /etc currently broken
+    # labels: host:nea
+    #(modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ../modules/acme.nix
     ../modules/caltrack.nix
