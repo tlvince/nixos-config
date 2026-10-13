@@ -10,7 +10,10 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
-    (modulesPath + "/profiles/perlless.nix")
+    # TODO: Restore perlless profile
+    # remounting /etc currently broken
+    # labels: host:kunkun
+    #(modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
     ../modules/host-common.nix
@@ -92,16 +95,6 @@
   };
   nixpkgs = {
     hostPlatform = "aarch64-linux";
-    # TODO: Remove rdma-core dependency
-    # Issue URL: https://github.com/tlvince/nixos-config/issues/514
-    # libpcap defaults withRdma to true when rdma-core is available, pulling
-    # rdma-core -> perl into the closure. Nothing on this host uses RDMA.
-    # labels: host:kunkun, host:nea
-    overlays = [
-      (final: prev: {
-        libpcap = prev.libpcap.override { withRdma = false; };
-      })
-    ];
   };
 
   programs.vim = {
