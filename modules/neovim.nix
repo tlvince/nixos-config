@@ -326,7 +326,7 @@
             signatureHelp = "<C-s>";
           };
           presets.tailwindcss-language-server.enable = true;
-          servers.nil.settings.nil.nix.flake.autoArchive = false;
+          servers.nil.settings.nil.nix.flake.autoArchive = lib.mkForce false;
         };
         luaConfigRC = {
           # Open a file (relative to the current file)
