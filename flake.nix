@@ -75,7 +75,10 @@
       };
       devShells.${system}.nodejs = pkgs.mkShellNoCC {
         packages = with pkgs; [
-          azure-cli
+          # TODO: Restore azure-cli
+          # See: https://github.com/NixOS/nixpkgs/issues/575989
+          # labels: host:framework
+          #azure-cli
           eslint_d
           astro-language-server
           bash-language-server
