@@ -19,8 +19,7 @@
     jail-nix.url = "sourcehut:~alexdavid/jail.nix";
     lanzaboote.inputs.nixpkgs.follows = "nixpkgs";
     lanzaboote.url = "github:nix-community/lanzaboote";
-    nixpkgs-upstream.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:tlvince/nixpkgs/nixos-config";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nvf.inputs.nixpkgs.follows = "nixpkgs";
     nvf.url = "github:notashelf/nvf";
     secrets.flake = false;

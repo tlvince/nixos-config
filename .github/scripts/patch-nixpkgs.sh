@@ -10,11 +10,6 @@ picks=(
   # See: https://github.com/NixOS/nixpkgs/pull/513841
   # labels: host:framework, module:fastflowlm
   #https://github.com/JohnMolotov/nixpkgs/commit/db67e0576aa590228a55deacae8abdb9254f4580
-  # TODO: Drop soloist pick when PR is merged upstream
-  # Issue URL: https://github.com/tlvince/nixos-config/issues/533
-  # See: https://github.com/NixOS/nixpkgs/pull/565860
-  # labels: host:cm3588
-  https://github.com/NixOS/nixpkgs/pull/565860
 )
 
 pipx run --spec ghcherry==1.6.0 ghcherry -- \
