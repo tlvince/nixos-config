@@ -1,5 +1,7 @@
 {
+  config,
   pkgs,
+  secretsPath,
   ...
 }:
 let
@@ -18,6 +20,27 @@ let
   });
 in
 {
+  age.secrets.rclone-dsh.file = "${secretsPath}/rclone-dsh.age";
+  age.secrets.restic-dsh.file = "${secretsPath}/restic-dsh.age";
+
+  services.restic.backups.dsh = {
+    initialize = true;
+    passwordFile = config.age.secrets.restic-dsh.path;
+    paths = [ "/home/tlv/.dsh/sessions" ];
+    rcloneConfigFile = config.age.secrets.rclone-dsh.path;
+    repository = "rclone:drive:dsh";
+    timerConfig = {
+      OnCalendar = "05:00";
+      RandomizedDelaySec = "10m";
+      Persistent = true;
+    };
+    pruneOpts = [
+      "--keep-daily 7"
+      "--keep-weekly 5"
+      "--keep-monthly 12"
+    ];
+  };
+
   services.nginx = {
     upstreams.dsh.servers."127.0.0.1:3080" = { };
 
