@@ -28,16 +28,13 @@
 
   boot = {
     blacklistedKernelModules = [ "hid_sensor_hub" ];
-    initrd = {
-      availableKernelModules = [
-        "nvme"
-        "sd_mod"
-        "thunderbolt"
-        "usb_storage"
-        "xhci_pci"
-      ];
-      systemd.enable = true;
-    };
+    initrd.availableKernelModules = [
+      "nvme"
+      "sd_mod"
+      "thunderbolt"
+      "usb_storage"
+      "xhci_pci"
+    ];
     kernelModules = [
       "kvm-amd"
     ];

@@ -43,7 +43,6 @@
       "virtio_scsi"
       "usbhid"
     ];
-    initrd.systemd.enable = true;
     kernelPackages = pkgs.linuxPackages_latest;
     loader = {
       systemd-boot = {
