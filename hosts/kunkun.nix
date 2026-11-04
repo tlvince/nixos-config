@@ -184,7 +184,7 @@
       group = config.users.groups.cm3588.name;
       isSystemUser = true;
       openssh.authorizedKeys.keys = [
-        ''command="/bin/false",restrict,port-forwarding ${keys.cm3588}''
+        ''command="/bin/false",restrict,port-forwarding,permitlisten="localhost:8080",permitopen="localhost:1" ${keys.tunnel}''
       ];
     };
   };
