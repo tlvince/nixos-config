@@ -27,15 +27,9 @@
     ../modules/nginx.nix
   ];
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-  age.secrets."wireguard-nea" = {
-    file = "${secretsPath}/wireguard-nea.age";
-  };
-  age.secrets."wireguard-nea-mobile-psk" = {
-    file = "${secretsPath}/wireguard-nea-mobile-psk.age";
-  };
-  age.secrets."wireguard-nea-framework-psk" = {
-    file = "${secretsPath}/wireguard-nea-framework-psk.age";
-  };
+  age.secrets."wireguard-nea".file = "${secretsPath}/wireguard-nea.age";
+  age.secrets."wireguard-nea-mobile-psk".file = "${secretsPath}/wireguard-nea-mobile-psk.age";
+  age.secrets."wireguard-nea-framework-psk".file = "${secretsPath}/wireguard-nea-framework-psk.age";
   boot = {
     initrd.availableKernelModules = [
       "xhci_pci"
@@ -110,26 +104,25 @@
       "45.90.30.0#${secrets.nextdns.nea}.dns.nextdns.io"
     ];
     useDHCP = false;
-    wireguard.interfaces.wg0 = {
-      ips = [
-        "10.12.3.1/32"
-      ];
-      listenPort = 51820;
-      privateKeyFile = config.age.secrets."wireguard-nea".path;
-      peers = [
-        {
-          name = "mobile";
-          publicKey = "5PKxnLmOs2ZHDWAsULapVF5tYNCWemOcVSt1+irocDo=";
-          allowedIPs = [ "10.12.3.2/32" ];
-          presharedKeyFile = config.age.secrets."wireguard-nea-mobile-psk".path;
-        }
-        {
-          name = "framework";
-          publicKey = "oQfdwYibhttuZ3KfLAmVPGQtZNiEHr/PufF4OLp3SA4=";
-          allowedIPs = [ "10.12.3.3/32" ];
-          presharedKeyFile = config.age.secrets."wireguard-nea-framework-psk".path;
-        }
-      ];
+    wireguard = {
+      useNetworkd = true;
+      interfaces.wg0 = {
+        ips = [ "10.12.3.1/32" ];
+        listenPort = 51820;
+        privateKeyFile = config.age.secrets."wireguard-nea".path;
+        peers = [
+          {
+            allowedIPs = [ "10.12.3.2/32" ];
+            presharedKeyFile = config.age.secrets."wireguard-nea-mobile-psk".path;
+            publicKey = "5PKxnLmOs2ZHDWAsULapVF5tYNCWemOcVSt1+irocDo=";
+          }
+          {
+            allowedIPs = [ "10.12.3.3/32" ];
+            presharedKeyFile = config.age.secrets."wireguard-nea-framework-psk".path;
+            publicKey = "oQfdwYibhttuZ3KfLAmVPGQtZNiEHr/PufF4OLp3SA4=";
+          }
+        ];
+      };
     };
   };
   services.dnsmasq = {
@@ -207,6 +200,7 @@
   };
   systemd.network = {
     enable = true;
+    networks."40-wg0".linkConfig.RequiredForOnline = false;
     networks.wired = {
       name = "en*";
       DHCP = "yes";

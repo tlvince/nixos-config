@@ -24,18 +24,8 @@
     ../modules/nginx.nix
     ../modules/redditd.nix
   ];
-  age.secrets."wireguard-kunkun" = {
-    file = "${secretsPath}/wireguard-kunkun.age";
-    group = "systemd-network";
-    mode = "0400";
-    owner = "systemd-network";
-  };
-  age.secrets."wireguard-kunkun-cm3588-psk" = {
-    file = "${secretsPath}/wireguard-kunkun-cm3588-psk.age";
-    group = "systemd-network";
-    mode = "0400";
-    owner = "systemd-network";
-  };
+  age.secrets."wireguard-kunkun".file = "${secretsPath}/wireguard-kunkun.age";
+  age.secrets."wireguard-kunkun-cm3588-psk".file = "${secretsPath}/wireguard-kunkun-cm3588-psk.age";
   boot = {
     initrd.availableKernelModules = [
       "xhci_pci"
@@ -71,7 +61,6 @@
     rsync
     tree
     tmux
-    wireguard-tools
     xz
     zsh
     zsh-z
@@ -106,6 +95,21 @@
       logRefusedConnections = false;
     };
     useDHCP = false;
+    wireguard = {
+      useNetworkd = true;
+      interfaces.wg0 = {
+        ips = [ "10.12.4.1/32" ];
+        listenPort = 51820;
+        privateKeyFile = config.age.secrets."wireguard-kunkun".path;
+        peers = [
+          {
+            allowedIPs = [ "10.12.4.2/32" ];
+            presharedKeyFile = config.age.secrets."wireguard-kunkun-cm3588-psk".path;
+            publicKey = "8CHC810mutffX4b3bAAltRa14r+m7cnDPAZ3Xf8bvXQ=";
+          }
+        ];
+      };
+    };
   };
   nixpkgs = {
     hostPlatform = "aarch64-linux";
@@ -181,29 +185,7 @@
   };
   systemd.network = {
     enable = true;
-    netdevs."30-wg0" = {
-      netdevConfig = {
-        Kind = "wireguard";
-        Name = "wg0";
-      };
-      wireguardConfig = {
-        ListenPort = 51820;
-        PrivateKeyFile = config.age.secrets."wireguard-kunkun".path;
-        RouteTable = "main";
-      };
-      wireguardPeers = [
-        {
-          AllowedIPs = [ "10.12.4.2/32" ];
-          PresharedKeyFile = config.age.secrets."wireguard-kunkun-cm3588-psk".path;
-          PublicKey = "8CHC810mutffX4b3bAAltRa14r+m7cnDPAZ3Xf8bvXQ=";
-        }
-      ];
-    };
-    networks."30-wg0" = {
-      matchConfig.Name = "wg0";
-      address = [ "10.12.4.1/32" ];
-      linkConfig.RequiredForOnline = false;
-    };
+    networks."40-wg0".linkConfig.RequiredForOnline = false;
     networks.wired = {
       name = "en*";
       DHCP = "yes";

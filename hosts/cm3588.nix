@@ -38,18 +38,8 @@
     ../modules/webdav.nix
     ../modules/zigbee2mqtt.nix
   ];
-  age.secrets."wireguard-cm3588" = {
-    file = "${secretsPath}/wireguard-cm3588.age";
-    group = "systemd-network";
-    mode = "0400";
-    owner = "systemd-network";
-  };
-  age.secrets."wireguard-kunkun-cm3588-psk" = {
-    file = "${secretsPath}/wireguard-kunkun-cm3588-psk.age";
-    group = "systemd-network";
-    mode = "0400";
-    owner = "systemd-network";
-  };
+  age.secrets."wireguard-cm3588".file = "${secretsPath}/wireguard-cm3588.age";
+  age.secrets."wireguard-kunkun-cm3588-psk".file = "${secretsPath}/wireguard-kunkun-cm3588-psk.age";
   boot = {
     blacklistedKernelModules = [
       "gpio_ir_recv" # Unused and throwing kernel traces as of 6.18.6
@@ -154,7 +144,6 @@
     smartmontools
     tree
     tmux
-    wireguard-tools
     xz
     zsh
     zsh-z
@@ -235,6 +224,22 @@
       logRefusedConnections = false;
     };
     useDHCP = false;
+    wireguard = {
+      useNetworkd = true;
+      interfaces.wg0 = {
+        ips = [ "10.12.4.2/32" ];
+        privateKeyFile = config.age.secrets."wireguard-cm3588".path;
+        peers = [
+          {
+            allowedIPs = [ "10.12.4.1/32" ];
+            endpoint = "${secrets.kunkun}:51820";
+            persistentKeepalive = 25;
+            presharedKeyFile = config.age.secrets."wireguard-kunkun-cm3588-psk".path;
+            publicKey = "ftv07bTD+03Fpg/eLxhMmWFU1Vk1pHtkPGbxNOnEIkA=";
+          }
+        ];
+      };
+    };
   };
   nixpkgs.hostPlatform = "aarch64-linux";
 
@@ -375,30 +380,7 @@
   };
   systemd.network = {
     enable = true;
-    netdevs."30-wg0" = {
-      netdevConfig = {
-        Kind = "wireguard";
-        Name = "wg0";
-      };
-      wireguardConfig = {
-        PrivateKeyFile = config.age.secrets."wireguard-cm3588".path;
-        RouteTable = "main";
-      };
-      wireguardPeers = [
-        {
-          AllowedIPs = [ "10.12.4.1/32" ];
-          Endpoint = "${secrets.kunkun}:51820";
-          PersistentKeepalive = 25;
-          PresharedKeyFile = config.age.secrets."wireguard-kunkun-cm3588-psk".path;
-          PublicKey = "ftv07bTD+03Fpg/eLxhMmWFU1Vk1pHtkPGbxNOnEIkA=";
-        }
-      ];
-    };
-    networks."30-wg0" = {
-      matchConfig.Name = "wg0";
-      address = [ "10.12.4.2/32" ];
-      linkConfig.RequiredForOnline = false;
-    };
+    networks."40-wg0".linkConfig.RequiredForOnline = false;
     networks.wired = {
       name = "en*";
       address = [ "192.168.0.2/24" ];
