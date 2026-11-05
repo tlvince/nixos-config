@@ -4,6 +4,8 @@
   modulesPath,
   pkgs,
   keys,
+  secrets,
+  secretsPath,
   ...
 }:
 {
@@ -33,10 +35,21 @@
     ../modules/shairport-sync.nix
     ../modules/soloist.nix
     ../modules/smartd.nix
-    ../modules/tunnel.nix
     ../modules/webdav.nix
     ../modules/zigbee2mqtt.nix
   ];
+  age.secrets."wireguard-cm3588" = {
+    file = "${secretsPath}/wireguard-cm3588.age";
+    group = "systemd-network";
+    mode = "0400";
+    owner = "systemd-network";
+  };
+  age.secrets."wireguard-kunkun-cm3588-psk" = {
+    file = "${secretsPath}/wireguard-kunkun-cm3588-psk.age";
+    group = "systemd-network";
+    mode = "0400";
+    owner = "systemd-network";
+  };
   boot = {
     blacklistedKernelModules = [
       "gpio_ir_recv" # Unused and throwing kernel traces as of 6.18.6
@@ -141,6 +154,7 @@
     smartmontools
     tree
     tmux
+    wireguard-tools
     xz
     zsh
     zsh-z
@@ -361,6 +375,30 @@
   };
   systemd.network = {
     enable = true;
+    netdevs."30-wg0" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = "wg0";
+      };
+      wireguardConfig = {
+        PrivateKeyFile = config.age.secrets."wireguard-cm3588".path;
+        RouteTable = "main";
+      };
+      wireguardPeers = [
+        {
+          AllowedIPs = [ "10.12.4.1/32" ];
+          Endpoint = "${secrets.kunkun}:51820";
+          PersistentKeepalive = 25;
+          PresharedKeyFile = config.age.secrets."wireguard-kunkun-cm3588-psk".path;
+          PublicKey = "ftv07bTD+03Fpg/eLxhMmWFU1Vk1pHtkPGbxNOnEIkA=";
+        }
+      ];
+    };
+    networks."30-wg0" = {
+      matchConfig.Name = "wg0";
+      address = [ "10.12.4.2/32" ];
+      linkConfig.RequiredForOnline = false;
+    };
     networks.wired = {
       name = "en*";
       address = [ "192.168.0.2/24" ];

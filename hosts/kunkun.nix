@@ -3,6 +3,7 @@
   modulesPath,
   pkgs,
   keys,
+  secretsPath,
   ...
 }:
 {
@@ -23,6 +24,18 @@
     ../modules/nginx.nix
     ../modules/redditd.nix
   ];
+  age.secrets."wireguard-kunkun" = {
+    file = "${secretsPath}/wireguard-kunkun.age";
+    group = "systemd-network";
+    mode = "0400";
+    owner = "systemd-network";
+  };
+  age.secrets."wireguard-kunkun-cm3588-psk" = {
+    file = "${secretsPath}/wireguard-kunkun-cm3588-psk.age";
+    group = "systemd-network";
+    mode = "0400";
+    owner = "systemd-network";
+  };
   boot = {
     initrd.availableKernelModules = [
       "xhci_pci"
@@ -58,6 +71,7 @@
     rsync
     tree
     tmux
+    wireguard-tools
     xz
     zsh
     zsh-z
@@ -86,6 +100,9 @@
     enableIPv6 = false;
     hostName = "kunkun";
     firewall = {
+      allowedUDPPorts = [
+        51820 # WireGuard
+      ];
       logRefusedConnections = false;
     };
     useDHCP = false;
@@ -129,7 +146,6 @@
     openFirewall = true;
     settings = {
       AllowUsers = [
-        "cm3588"
         "tlv"
       ];
       PasswordAuthentication = false;
@@ -139,7 +155,7 @@
   services.nginx = {
     streamConfig = ''
       map $ssl_preread_server_name $sni_backend {
-        home-assistant.filo.uk 127.0.0.1:8080;
+        home-assistant.filo.uk 10.12.4.2:443;
         default 127.0.0.1:1;
       }
 
@@ -165,26 +181,41 @@
   };
   systemd.network = {
     enable = true;
+    netdevs."30-wg0" = {
+      netdevConfig = {
+        Kind = "wireguard";
+        Name = "wg0";
+      };
+      wireguardConfig = {
+        ListenPort = 51820;
+        PrivateKeyFile = config.age.secrets."wireguard-kunkun".path;
+        RouteTable = "main";
+      };
+      wireguardPeers = [
+        {
+          AllowedIPs = [ "10.12.4.2/32" ];
+          PresharedKeyFile = config.age.secrets."wireguard-kunkun-cm3588-psk".path;
+          PublicKey = "8CHC810mutffX4b3bAAltRa14r+m7cnDPAZ3Xf8bvXQ=";
+        }
+      ];
+    };
+    networks."30-wg0" = {
+      matchConfig.Name = "wg0";
+      address = [ "10.12.4.1/32" ];
+      linkConfig.RequiredForOnline = false;
+    };
     networks.wired = {
       name = "en*";
       DHCP = "yes";
     };
   };
   users = {
-    groups.cm3588 = { };
     users.tlv = {
       extraGroups = [
         "wheel"
       ];
       isNormalUser = true;
       openssh.authorizedKeys.keys = [ keys.tlv ];
-    };
-    users.cm3588 = {
-      group = config.users.groups.cm3588.name;
-      isSystemUser = true;
-      openssh.authorizedKeys.keys = [
-        ''command="/bin/false",restrict,port-forwarding,permitlisten="localhost:8080",permitopen="localhost:1" ${keys.tunnel}''
-      ];
     };
   };
 }
