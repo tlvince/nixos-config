@@ -18,7 +18,6 @@
 
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
-    ../modules/acme.nix
     ../modules/cpuload.nix
     ../modules/cycled.nix
     ../modules/nginx.nix
@@ -82,7 +81,6 @@
     hosts = {
       "127.0.0.1" = [
         "home-assistant.filo.uk"
-        "test.filo.uk"
       ];
     };
     enableIPv6 = false;
@@ -139,21 +137,22 @@
     };
   };
   services.nginx = {
-    upstreams.home-assistant.servers."127.0.0.1:8080" = { };
+    streamConfig = ''
+      map $ssl_preread_server_name $sni_backend {
+        home-assistant.filo.uk 127.0.0.1:8080;
+        default 127.0.0.1:1;
+      }
 
-    virtualHosts."home-assistant.filo.uk" = {
-      forceSSL = true;
-      useACMEHost = "filo.uk";
+      server {
+        listen 0.0.0.0:443;
+        ssl_preread on;
 
-      locations."/" = {
-        proxyPass = "https://home-assistant";
-        recommendedProxySettings = true;
-        extraConfig = ''
-          proxy_ssl_name home-assistant.filo.uk;
-          proxy_ssl_server_name on;
-        '';
-      };
-    };
+        proxy_pass $sni_backend;
+      }
+    '';
+    defaultListenAddresses = [ "127.0.0.1" ];
+    defaultHTTPListenPort = 9;
+    defaultSSLListenPort = 9442;
   };
 
   system.stateVersion = "25.05";

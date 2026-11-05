@@ -300,6 +300,18 @@
     ];
   };
 
+  services.nginx.virtualHosts."test.filo.uk" = {
+    forceSSL = true;
+    useACMEHost = "filo.uk";
+
+    locations."/" = {
+      return = "200 '<html><body>It works</body></html>'";
+      extraConfig = ''
+        default_type text/html;
+      '';
+    };
+  };
+
   services.openssh = {
     enable = true;
     hostKeys = [
