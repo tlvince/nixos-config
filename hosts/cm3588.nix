@@ -319,15 +319,18 @@
     ];
   };
 
-  services.nginx.virtualHosts."test.filo.uk" = {
-    forceSSL = true;
-    useACMEHost = "filo.uk";
+  services.nginx = {
+    defaultListenAddresses = [ "192.168.0.2" ];
+    virtualHosts."test.filo.uk" = {
+      forceSSL = true;
+      useACMEHost = "filo.uk";
 
-    locations."/" = {
-      return = "200 '<html><body>It works</body></html>'";
-      extraConfig = ''
-        default_type text/html;
-      '';
+      locations."/" = {
+        return = "200 '<html><body>It works</body></html>'";
+        extraConfig = ''
+          default_type text/html;
+        '';
+      };
     };
   };
 
@@ -386,6 +389,10 @@
       address = [ "192.168.0.2/24" ];
       gateway = [ "192.168.0.1" ];
     };
+  };
+  systemd.services.nginx = {
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
   };
   tlvince.smartd.devices = [
     "/dev/nvme0"
