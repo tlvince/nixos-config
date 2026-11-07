@@ -28,8 +28,12 @@ in
     manpages.enable = false;
   };
   programs = {
+    # TODO: Restore Brave
+    # Was dropped from nixpkgs
+    # See https://github.com/NixOS/nixpkgs/pull/582838
+    # labels: host:lamma
     chromium = {
-      enable = true;
+      enable = false;
       package = pkgs.brave;
     };
     ghostty = {
