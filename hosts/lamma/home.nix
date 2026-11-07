@@ -29,6 +29,7 @@ in
   };
   programs = {
     # TODO: Restore Brave
+    # Issue URL: https://github.com/tlvince/nixos-config/issues/558
     # Was dropped from nixpkgs
     # See https://github.com/NixOS/nixpkgs/pull/582838
     # labels: host:lamma
