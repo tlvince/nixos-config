@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   secrets,
   secretsPath,
   ...
@@ -108,7 +107,9 @@ in
   };
 
   systemd.services.postgresql-setup = {
-    serviceConfig.ExecStartPost = "${lib.getExe' cfg.database.package "psql"} -p ${toString cfg.database.port} -d ${cfg.database.name} -f ${cfg.database.setupSQL}";
+    serviceConfig.ExecStartPost = [
+      "${lib.getExe' cfg.database.package "psql"} -p ${toString cfg.database.port} -d ${cfg.database.name} -f ${cfg.database.setupSQL}"
+    ];
   };
 
   services.redis.servers.immich = {
