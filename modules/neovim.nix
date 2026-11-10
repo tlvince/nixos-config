@@ -77,6 +77,16 @@
             '';
             desc = "Automated bullet lists (bullets.vim)";
           }
+          {
+            event = [ "FileType" "BufWinEnter" ];
+            callback = lib.generators.mkLuaInline ''
+              function(args)
+                local fdl = ({ nix = 2 })[vim.bo[args.buf].filetype]
+                if fdl then vim.wo.foldlevel = fdl end
+              end
+            '';
+            desc = "Per-filetype initial foldlevel";
+          }
         ];
         clipboard = {
           enable = true;
