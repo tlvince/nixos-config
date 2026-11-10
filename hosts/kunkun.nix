@@ -9,12 +9,7 @@
 {
   imports = [
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
-    (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
-    # TODO: Restore perlless profile
-    # remounting /etc currently broken
-    # labels: host:kunkun
-    #(modulesPath + "/profiles/perlless.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
 
     ../modules/host-common.nix
@@ -34,6 +29,10 @@
       "usbhid"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
+    kernelParams = [
+      "boot.panic_on_fail"
+      "panic=1"
+    ];
     loader = {
       systemd-boot = {
         configurationLimit = 5;
