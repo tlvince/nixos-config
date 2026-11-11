@@ -67,6 +67,7 @@
     };
     lanzaboote = {
       enable = true;
+      bootCounting.initialTries = 3;
       configurationLimit = 2;
       pkiBundle = "/var/lib/sbctl";
     };

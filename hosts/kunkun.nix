@@ -35,6 +35,7 @@
     ];
     loader = {
       systemd-boot = {
+        bootCounting.enable = true;
         configurationLimit = 5;
         enable = true;
       };
