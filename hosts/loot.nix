@@ -21,12 +21,6 @@
   age.secrets."wireguard-loot-framework-psk".file = "${secretsPath}/wireguard-loot-framework-psk.age";
   age.secrets."wireguard-loot-mobile-psk".file = "${secretsPath}/wireguard-loot-mobile-psk.age";
   boot = {
-    initrd.availableKernelModules = [
-      "ata_piix"
-      "uhci_hcd"
-      "xen_blkfront"
-      "vmw_pvscsi"
-    ];
     kernelPackages = pkgs.linuxPackages_latest;
     kernelParams = [
       "boot.panic_on_fail"
@@ -43,9 +37,6 @@
     };
     tmp.cleanOnBoot = true;
   };
-  environment.etc."tmux.conf".text = ''
-    set-option -g status-style fg="#282c34",bg="#61afef"
-  '';
   environment.systemPackages = with pkgs; [
     coreutils
     curl
@@ -61,7 +52,6 @@
     less
     rsync
     tree
-    tmux
     xz
     zsh
     zstd
@@ -74,14 +64,20 @@
   fileSystems."/boot/efi" = {
     device = "/dev/disk/by-uuid/7DEE-CB18";
     fsType = "vfat";
+    options = [
+      "fmask=0077"
+      "dmask=0077"
+    ];
   };
   networking = {
     enableIPv6 = false;
     hostName = "loot";
+    nftables.enable = true;
     firewall = {
       allowedUDPPorts = [
         51820 # WireGuard
       ];
+      filterForward = true;
       logRefusedConnections = false;
     };
     nameservers = [
@@ -90,7 +86,7 @@
     ];
     nat = {
       enable = true;
-      externalInterface = "ens3";
+      externalInterface = "en*";
       internalInterfaces = [ "wg0" ];
     };
     useDHCP = false;
@@ -117,6 +113,12 @@
   };
   nixpkgs = {
     hostPlatform = "x86_64-linux";
+  };
+  programs.tmux = {
+    enable = true;
+    extraConfig = ''
+      set-option -g status-style fg="#282c34",bg="#61afef"
+    '';
   };
   programs.vim = {
     enable = true;
@@ -150,6 +152,7 @@
       AllowUsers = [
         "tlv"
       ];
+      KbdInteractiveAuthentication = false;
       PasswordAuthentication = false;
       PermitRootLogin = "no";
     };
@@ -158,7 +161,7 @@
     enable = true;
     settings.Resolve.DNSOverTLS = "true";
   };
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.11";
   system.tools = {
     nixos-build-vms.enable = false;
     nixos-enter.enable = false;
@@ -174,6 +177,7 @@
       dhcpV4Config.UseDNS = false;
     };
     networks."40-wg0" = {
+      linkConfig.RequiredForOnline = false;
       networkConfig = {
         IPv4Forwarding = true;
       };
