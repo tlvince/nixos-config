@@ -137,6 +137,17 @@
             agenix.nixosModules.default
           ];
         };
+        loot = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit keys;
+            secrets = import inputs.secrets;
+            secretsPath = inputs.secrets.outPath;
+          };
+          modules = [
+            ./hosts/loot.nix
+            agenix.nixosModules.default
+          ];
+        };
         nea = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit keys;
