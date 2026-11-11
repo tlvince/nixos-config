@@ -146,7 +146,6 @@
     tmux
     xz
     zsh
-    zsh-z
     zstd
   ];
 
@@ -247,6 +246,10 @@
     enable = true;
     defaultEditor = true;
   };
+  programs.zsh.interactiveShellInit = ''
+    export ZSHZ_CMD=j
+    source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
+  '';
 
   services.cm3588-nvme-fan.enable = true;
 

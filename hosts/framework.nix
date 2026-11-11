@@ -202,7 +202,6 @@
     yt-dlp
     zip
     zsh
-    zsh-z
     (chromium.override {
       commandLineArgs = [
         # TODO: Remove Chromium Vulkan flags when upstreamed

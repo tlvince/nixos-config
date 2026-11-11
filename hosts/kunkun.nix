@@ -63,7 +63,6 @@
     tmux
     xz
     zsh
-    zsh-z
     zstd
   ];
 
@@ -119,7 +118,10 @@
     enable = true;
     defaultEditor = true;
   };
-
+  programs.zsh.interactiveShellInit = ''
+    export ZSHZ_CMD=j
+    source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
+  '';
   security.sudo.extraRules = [
     {
       users = [ "tlv" ];
