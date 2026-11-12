@@ -12,8 +12,8 @@
   "customManagers": [
     {
       "customType": "regex",
-      "fileMatch": [
-        "\\.github/scripts/patch-nixpkgs\\.sh$"
+      "managerFilePatterns": [
+        "/\\.github/scripts/patch-nixpkgs\\.sh$/"
       ],
       "matchStrings": [
         "ghcherry==(?<currentValue>[\\d.]+)"
