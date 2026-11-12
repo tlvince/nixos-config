@@ -15,6 +15,7 @@
 
     ../modules/host-common-nixos.nix
     ../modules/host-common.nix
+    ../modules/tmux.nix
   ];
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets."wireguard-loot".file = "${secretsPath}/wireguard-loot.age";
@@ -115,8 +116,8 @@
     hostPlatform = "x86_64-linux";
   };
   programs.tmux = {
-    enable = true;
     extraConfig = ''
+      set-option -g pane-active-border-style fg="#61afef"
       set-option -g status-style fg="#282c34",bg="#61afef"
     '';
   };

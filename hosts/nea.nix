@@ -19,6 +19,7 @@
     ../modules/deepseek-harness.nix
     ../modules/host-common-nixos.nix
     ../modules/host-common.nix
+    ../modules/tmux.nix
     ../modules/minuspod.nix
     ../modules/nginx.nix
   ];
@@ -65,7 +66,6 @@
     less
     rsync
     tree
-    tmux
     xz
     zsh
     zstd
@@ -145,6 +145,12 @@
   };
   nixpkgs = {
     hostPlatform = "aarch64-linux";
+  };
+  programs.tmux = {
+    extraConfig = ''
+      set-option -g pane-active-border-style fg="#c678dd"
+      set-option -g status-style fg="#282c34",bg="#c678dd"
+    '';
   };
   programs.vim = {
     enable = true;

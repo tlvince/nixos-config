@@ -195,7 +195,6 @@
     ripgrep
     sbctl
     signal-desktop
-    tmux
     tree
     wl-clipboard
     yq-go

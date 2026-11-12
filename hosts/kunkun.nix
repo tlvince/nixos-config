@@ -14,6 +14,7 @@
 
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
+    ../modules/tmux.nix
     ../modules/cpuload.nix
     ../modules/cycled.nix
     ../modules/nginx.nix
@@ -60,7 +61,6 @@
     less
     rsync
     tree
-    tmux
     xz
     zsh
     zstd
@@ -114,6 +114,12 @@
     hostPlatform = "aarch64-linux";
   };
 
+  programs.tmux = {
+    extraConfig = ''
+      set-option -g pane-active-border-style fg="#e5c07b"
+      set-option -g status-style fg="#282c34",bg="#e5c07b"
+    '';
+  };
   programs.vim = {
     enable = true;
     defaultEditor = true;

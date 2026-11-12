@@ -19,6 +19,7 @@
 
     ../modules/host-common.nix
     ../modules/host-common-nixos.nix
+    ../modules/tmux.nix
 
     ../modules/acme.nix
     ../modules/archive.nix
@@ -143,7 +144,6 @@
     rsync
     smartmontools
     tree
-    tmux
     xz
     zsh
     zstd
@@ -242,6 +242,12 @@
   };
   nixpkgs.hostPlatform = "aarch64-linux";
 
+  programs.tmux = {
+    extraConfig = ''
+      set-option -g pane-active-border-style fg="#98c379"
+      set-option -g status-style fg="#282c34",bg="#98c379"
+    '';
+  };
   programs.vim = {
     enable = true;
     defaultEditor = true;
