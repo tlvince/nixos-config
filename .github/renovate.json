@@ -3,9 +3,12 @@
   "extends": [
     "config:recommended",
     ":rebaseStalePrs",
-    ":semanticCommits",
-    "helpers:pinGitHubActionDigests"
+    ":semanticCommits"
   ],
+  "minimumReleaseAge": "3 days",
+  "constraints": {
+    "ghActionsLock": "v0.4.1"
+  },
   "customManagers": [
     {
       "customType": "regex",
