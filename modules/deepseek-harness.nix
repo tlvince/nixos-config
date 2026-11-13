@@ -22,7 +22,6 @@ in
 {
   age.secrets.rclone-dsh.file = "${secretsPath}/rclone-dsh.age";
   age.secrets.restic-dsh.file = "${secretsPath}/restic-dsh.age";
-
   services.restic.backups.dsh = {
     initialize = true;
     passwordFile = config.age.secrets.restic-dsh.path;
@@ -40,14 +39,11 @@ in
       "--keep-monthly 12"
     ];
   };
-
   services.nginx = {
     upstreams.dsh.servers."127.0.0.1:3080" = { };
-
     virtualHosts."dsh.filo.uk" = {
       forceSSL = true;
       useACMEHost = "filo.uk";
-
       locations."/" = {
         extraConfig = ''
           client_max_body_size 0;
@@ -58,7 +54,6 @@ in
         proxyWebsockets = true;
         recommendedProxySettings = true;
       };
-
       locations."/plugins/events" = {
         extraConfig = ''
           proxy_read_timeout 1d;
@@ -69,7 +64,6 @@ in
       };
     };
   };
-
   systemd.services.dsh-web = {
     description = "DeepSeek Harness web server";
     wantedBy = [ "multi-user.target" ];

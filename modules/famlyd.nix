@@ -14,7 +14,6 @@ let
     RuntimeDirectoryMode = "0755";
     SyslogIdentifier = name;
     WorkingDirectory = "%t/${name}";
-
     # Hardening
     CapabilityBoundingSet = [ "" ];
     DynamicUser = true;
@@ -44,7 +43,6 @@ in
     famlyd.file = "${secretsPath}/famlyd.age";
     famlyd-etl.file = "${secretsPath}/famlyd-etl.age";
   };
-
   systemd.services.famlyd = {
     wantedBy = [ "multi-user.target" ];
     unitConfig = {
@@ -60,7 +58,6 @@ in
       Type = "oneshot";
     };
   };
-
   systemd.services.famlyd-etl = {
     unitConfig = {
       StartLimitBurst = 4;
@@ -77,7 +74,6 @@ in
       StateDirectory = "famlyd-etl";
     };
   };
-
   systemd.services.famlyd-backup = {
     unitConfig = {
       StartLimitBurst = 4;
@@ -93,7 +89,6 @@ in
       StandardError = "journal";
     };
   };
-
   systemd.timers.famlyd = {
     wantedBy = [ "timers.target" ];
     timerConfig = {
@@ -101,7 +96,6 @@ in
       RandomizedDelaySec = "5s";
     };
   };
-
   systemd.timers.famlyd-backup = {
     wantedBy = [ "timers.target" ];
     timerConfig = {

@@ -13,20 +13,16 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/headless.nix")
     (modulesPath + "/profiles/minimal.nix")
-
     # https://github.com/tlvince/cm3588-pwm-fan
     "${cm3588-pwm-fan}/module.nix"
-
-    ../modules/host-common.nix
-    ../modules/host-common-nixos.nix
-    ../modules/tmux.nix
-
     ../modules/acme.nix
     ../modules/archive.nix
     ../modules/dmesgd.nix
     ../modules/dnsmasq.nix
     ../modules/famlyd.nix
     ../modules/home-assistant.nix
+    ../modules/host-common-nixos.nix
+    ../modules/host-common.nix
     ../modules/immich.nix
     ../modules/mosquitto.nix
     ../modules/nginx.nix
@@ -34,8 +30,9 @@
     ../modules/radicale.nix
     ../modules/samba.nix
     ../modules/shairport-sync.nix
-    ../modules/soloist.nix
     ../modules/smartd.nix
+    ../modules/soloist.nix
+    ../modules/tmux.nix
     ../modules/webdav.nix
     ../modules/zigbee2mqtt.nix
   ];
@@ -118,7 +115,6 @@
       };
     };
   };
-
   environment.etc.crypttab.text = ''
     dijkstra UUID=e14d08e4-7123-4d86-bae0-b3de6f00454f /mnt/ichbiah/home/cryptsetup-keys.d/dijkstra.key noauto
     eich UUID=112bdd0b-de41-4622-a659-694b9f61032a /mnt/ichbiah/home/cryptsetup-keys.d/eich.key noauto
@@ -126,7 +122,6 @@
     huffman UUID=e017c3f2-fa81-43e6-af9a-33f99abbc647 /root/cryptsetup-keys.d/huffman.key
     joy UUID=eb3670de-bb9d-4dac-b7d0-dc188814a3d2 /mnt/ichbiah/home/cryptsetup-keys.d/joy.key noauto
   '';
-
   environment.systemPackages = with pkgs; [
     coreutils
     cryptsetup
@@ -148,7 +143,6 @@
     zsh
     zstd
   ];
-
   fileSystems."/mnt/ichbiah/home" = {
     device = "/dev/mapper/godel";
     fsType = "btrfs";
@@ -179,7 +173,6 @@
       "noexec"
     ];
   };
-
   hardware = {
     alsa.enablePersistence = true;
     deviceTree = {
@@ -193,7 +186,6 @@
       ];
     };
   };
-
   networking = {
     domain = "filo.uk";
     enableIPv6 = false;
@@ -241,7 +233,6 @@
     };
   };
   nixpkgs.hostPlatform = "aarch64-linux";
-
   programs.tmux = {
     extraConfig = ''
       set-option -g pane-active-border-style fg="#98c379"
@@ -256,9 +247,7 @@
     export ZSHZ_CMD=j
     source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
   '';
-
   services.cm3588-nvme-fan.enable = true;
-
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [
@@ -275,7 +264,6 @@
       "*-*-01 06:30" # 0630 monthly
     ];
   };
-
   services.btrbk = {
     instances = {
       btrbk = {
@@ -284,12 +272,10 @@
           lockfile = "/var/lib/btrbk/btrbk.lock";
           snapshot_create = "onchange";
           snapshot_dir = "snapshots";
-
           snapshot_preserve = "24h 7d 0w 0m 0y";
           snapshot_preserve_min = "latest";
           target_preserve = "0h 14d 6w 4m 1y";
           target_preserve_min = "latest";
-
           volume = {
             "/mnt/fowler" = {
               target = "/mnt/ichbiah/snapshots/fowler";
@@ -303,7 +289,6 @@
                 };
               };
             };
-
             "/mnt/ichbiah" = {
               subvolume = "home";
               snapshot_dir = "snapshots/ichbiah";
@@ -327,13 +312,11 @@
       }
     ];
   };
-
   services.nginx = {
     defaultListenAddresses = [ "192.168.0.2" ];
     virtualHosts."test.filo.uk" = {
       forceSSL = true;
       useACMEHost = "filo.uk";
-
       locations."/" = {
         return = "200 '<html><body>It works</body></html>'";
         extraConfig = ''
@@ -342,7 +325,6 @@
       };
     };
   };
-
   services.openssh = {
     enable = true;
     hostKeys = [
@@ -362,14 +344,12 @@
       PermitRootLogin = "no";
     };
   };
-
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
     systemWide = true;
   };
-
   services.pipewire.wireplumber.configPackages = [
     (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-disable-unused.conf" ''
       wireplumber.profiles = {
@@ -381,7 +361,6 @@
       }
     '')
   ];
-
   system.stateVersion = "25.05";
   system.tools = {
     nixos-build-vms.enable = false;
@@ -411,7 +390,6 @@
   users = {
     groups.nas = { };
     groups.git = { };
-
     users.tlv = {
       extraGroups = [
         config.users.groups.git.name
@@ -421,14 +399,12 @@
       isNormalUser = true;
       openssh.authorizedKeys.keys = [ keys.tlv ];
     };
-
     users.zan = {
       extraGroups = [
         config.users.groups.nas.name
       ];
       isNormalUser = true;
     };
-
     users.git = {
       createHome = true;
       group = config.users.groups.git.name;

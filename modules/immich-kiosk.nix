@@ -10,9 +10,7 @@
     owner = "nginx";
     group = "nginx";
   };
-
   age.secrets.immich-kiosk-api-key.file = "${secretsPath}/immich-kiosk-api-key.age";
-
   services.immich-kiosk = {
     enable = true;
     settings = {
@@ -37,14 +35,12 @@
       transition = "cross-fade";
     };
   };
-
   services.nginx = {
     upstreams.immich-kiosk.servers."127.0.0.1:5291" = { };
     virtualHosts."immich-kiosk.filo.uk" = {
       basicAuthFile = config.age.secrets.immich-kiosk.path;
       useACMEHost = "filo.uk";
       forceSSL = true;
-
       locations."/" = {
         proxyPass = "http://immich-kiosk";
         recommendedProxySettings = true;

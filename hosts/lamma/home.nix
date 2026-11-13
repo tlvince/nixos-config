@@ -56,6 +56,5 @@ in
         source ${pkgs.zsh-z}/share/zsh-z/zsh-z.plugin.zsh
       '';
     };
-
   };
 }

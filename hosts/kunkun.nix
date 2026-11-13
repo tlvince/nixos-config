@@ -11,14 +11,13 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/minimal.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-
-    ../modules/host-common.nix
-    ../modules/host-common-nixos.nix
-    ../modules/tmux.nix
     ../modules/cpuload.nix
     ../modules/cycled.nix
+    ../modules/host-common-nixos.nix
+    ../modules/host-common.nix
     ../modules/nginx.nix
     ../modules/redditd.nix
+    ../modules/tmux.nix
   ];
   age.secrets."wireguard-kunkun".file = "${secretsPath}/wireguard-kunkun.age";
   age.secrets."wireguard-kunkun-cm3588-psk".file = "${secretsPath}/wireguard-kunkun-cm3588-psk.age";
@@ -65,7 +64,6 @@
     zsh
     zstd
   ];
-
   fileSystems."/" = {
     device = "/dev/disk/by-partlabel/disk-main-root";
     fsType = "btrfs";
@@ -78,7 +76,6 @@
     device = "/dev/disk/by-partlabel/disk-main-boot";
     fsType = "vfat";
   };
-
   networking = {
     hosts = {
       "127.0.0.1" = [
@@ -113,7 +110,6 @@
   nixpkgs = {
     hostPlatform = "aarch64-linux";
   };
-
   programs.tmux = {
     extraConfig = ''
       set-option -g pane-active-border-style fg="#e5c07b"
@@ -146,7 +142,6 @@
       "/"
     ];
   };
-
   services.openssh = {
     enable = true;
     hostKeys = [
@@ -170,11 +165,9 @@
         home-assistant.filo.uk 10.12.4.2:443;
         default 127.0.0.1:1;
       }
-
       server {
         listen 0.0.0.0:443;
         ssl_preread on;
-
         proxy_pass $sni_backend;
       }
     '';
@@ -182,7 +175,6 @@
     defaultHTTPListenPort = 9;
     defaultSSLListenPort = 9442;
   };
-
   system.stateVersion = "25.05";
   system.tools = {
     nixos-build-vms.enable = false;

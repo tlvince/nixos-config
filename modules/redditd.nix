@@ -11,7 +11,6 @@ let
 in
 {
   age.secrets.notify.file = "${secretsPath}/notify.age";
-
   systemd.services.redditd = {
     wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
@@ -25,7 +24,6 @@ in
       StateDirectory = "redditd";
       SyslogIdentifier = "redditd";
       WorkingDirectory = "/run/redditd";
-
       # Hardening
       CapabilityBoundingSet = [ "" ];
       DynamicUser = true;

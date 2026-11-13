@@ -30,12 +30,10 @@
     openFirewall = true;
     nmbd.enable = false;
     winbindd.enable = false;
-
     settings = {
       global = {
         "workgroup" = "FILO";
         "server string" = config.networking.hostName;
-
         "access based share enum" = "yes";
         "disable netbios" = "yes";
         "ea support" = "yes";
@@ -47,18 +45,15 @@
         "security" = "user";
         "server role" = "standalone";
         "server smb encrypt" = "required";
-
         # Disable file logging, log only important auth failures
         "log file" = "/dev/null";
         "log level" = "0 auth:2 passdb:2";
         "logging" = "systemd";
         "max log size" = "0";
-
         # Never map anything to the excutable bit
         "map archive" = "no";
         "map system" = "no";
         "map hidden" = "no";
-
         # Disable printing
         "disable spoolss" = "yes";
         "load printers" = "no";
@@ -66,7 +61,6 @@
         "show add printer wizard" = "no";
         "printable" = "no";
         "printing" = "bsd";
-
         # TimeMachine
         # https://wiki.samba.org/index.php/Configure_Samba_to_Work_Better_with_Mac_OS_X
         "vfs objects" = "catia fruit streams_xattr";
@@ -79,7 +73,6 @@
         "fruit:veto_appledouble" = "no";
         "fruit:wipe_intentionally_left_blank_rfork" = "yes";
       };
-
       photos = {
         "browseable" = "yes";
         "comment" = "Photos";
@@ -87,7 +80,6 @@
         "valid users" = "zan tlv";
         "writeable" = "yes";
       };
-
       shared = {
         "browseable" = "yes";
         "comment" = "Shared";
@@ -98,7 +90,6 @@
         "valid users" = "zan tlv";
         "writeable" = "yes";
       };
-
       tdrive = {
         "browseable" = "yes";
         "comment" = "TDrive";
@@ -106,7 +97,6 @@
         "valid users" = "tlv";
         "writeable" = "yes";
       };
-
       timemachine = {
         "browseable" = "yes";
         "comment" = "Time Machine";
@@ -115,7 +105,6 @@
         "valid users" = "zan";
         "writeable" = "yes";
       };
-
       zdrive = {
         "browseable" = "yes";
         "comment" = "ZDrive";

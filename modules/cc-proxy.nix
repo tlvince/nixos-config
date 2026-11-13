@@ -12,7 +12,6 @@
       BindPaths = [ "%E/codex-claude-proxy" ];
       BindReadOnlyPaths = [ "%h/dev/cc-proxy" ];
       TemporaryFileSystem = [ "%h:ro" ];
-
       CapabilityBoundingSet = [ "" ];
       KeyringMode = "private";
       LockPersonality = true;

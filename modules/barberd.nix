@@ -6,7 +6,6 @@
 }:
 {
   age.secrets.notify.file = "${secretsPath}/notify.age";
-
   systemd.services.barberd = {
     wantedBy = [ "multi-user.target" ];
     after = [ "systemd-journald.socket" ];
@@ -21,14 +20,12 @@
       RuntimeDirectory = "barberd";
       RuntimeDirectoryMode = "0755";
       RuntimeMaxSec = 60;
-
       # Reduce journal noise
       IOAccounting = false;
       IPAccounting = false;
       LogLevelMax = "warning";
       MemoryAccounting = false;
       TasksAccounting = false;
-
       # Hardening
       CapabilityBoundingSet = [ "" ];
       DynamicUser = true;
@@ -53,7 +50,6 @@
       UMask = 077;
     };
   };
-
   systemd.timers.barberd = {
     wantedBy = [ "timers.target" ];
     timerConfig = {

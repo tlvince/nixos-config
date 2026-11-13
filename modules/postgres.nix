@@ -6,7 +6,6 @@
 {
   age.secrets.rclone-postgresql.file = "${secretsPath}/rclone-postgresql.age";
   age.secrets.restic-postgresql.file = "${secretsPath}/restic-postgresql.age";
-
   services.postgresql = {
     enable = true;
     dataDir = "/mnt/ichbiah/home/postgresql/${config.services.postgresql.package.psqlSchema}";
@@ -14,14 +13,12 @@
       log_checkpoints = false;
     };
   };
-
   services.postgresqlBackup = {
     enable = true;
     compression = "none";
     location = "/mnt/ichbiah/home/postgresql-backup";
     startAt = "*-*-* 04:00:00";
   };
-
   services.restic.backups.postgresql = {
     initialize = true;
     passwordFile = config.age.secrets.restic-postgresql.path;

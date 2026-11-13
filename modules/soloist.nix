@@ -28,16 +28,13 @@ in
     owner = "soloist";
     group = "soloist";
   };
-
   networking.firewall.interfaces.enP4p65s0.allowedTCPPorts = [ 32768 ];
-
   services.soloist = {
     enable = true;
     apiKeyFile = config.age.secrets.soloist.path;
     initialVolume = 100;
     package = pkgs.soloist;
   };
-
   systemd.services.soloist = {
     environment = {
       LD_PRELOAD = "${soloistReuseportPin}/lib/reuseportpin.so";

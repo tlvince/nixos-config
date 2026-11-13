@@ -31,6 +31,5 @@
       general.output_backend = "pipewire";
     };
   };
-
   users.users.shairport.extraGroups = [ "pipewire" ];
 }

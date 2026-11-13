@@ -2,7 +2,6 @@
 # https://github.com/prettymuchbryce/dotfiles/blob/54d70d7372523b74cafaf88bce5c7e31adcc37d0/modules/system/brave.md
 let
   plist = pkgs.formats.plist { };
-
   bravePolicy = {
     BlockThirdPartyCookies = true;
     BraveAIChatEnabled = false;
@@ -37,7 +36,6 @@ let
     UserFeedbackAllowed = false;
     WebRtcIPHandlingPolicy = "disable_non_proxied_udp";
   };
-
   bravePolicyProfile = plist.generate "brave.mobileconfig" {
     PayloadContent = [
       {

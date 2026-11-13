@@ -8,7 +8,6 @@
   age.secrets.caltrack.file = "${secretsPath}/caltrack.age";
   age.secrets.rclone-caltrack.file = "${secretsPath}/rclone-caltrack.age";
   age.secrets.restic-caltrack.file = "${secretsPath}/restic-caltrack.age";
-
   systemd.services.caltrack = {
     description = "caltrack photo calorie tracker";
     wantedBy = [ "multi-user.target" ];
@@ -32,7 +31,6 @@
       SyslogIdentifier = "caltrack";
       TimeoutStopSec = 10;
       WorkingDirectory = "/run/caltrack";
-
       # Hardening
       CapabilityBoundingSet = [ "" ];
       DynamicUser = true;
@@ -57,7 +55,6 @@
       UMask = 077;
     };
   };
-
   services.restic.backups.caltrack = {
     initialize = true;
     passwordFile = config.age.secrets.restic-caltrack.path;
@@ -75,10 +72,8 @@
       "--keep-monthly 12"
     ];
   };
-
   services.nginx = {
     upstreams.caltrack.servers."127.0.0.1:6739" = { };
-
     virtualHosts."caltrack.filo.uk" = {
       forceSSL = true;
       useACMEHost = "filo.uk";

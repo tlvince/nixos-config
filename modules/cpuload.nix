@@ -9,7 +9,6 @@
       RestartSec = 10;
       SuccessExitStatus = 124;
       SyslogIdentifier = "cpuload";
-
       # Hardening
       CapabilityBoundingSet = [ "" ];
       DynamicUser = true;
@@ -34,7 +33,6 @@
       UMask = 077;
     };
   };
-
   systemd.timers.cpuload = {
     wantedBy = [ "timers.target" ];
     timerConfig = {

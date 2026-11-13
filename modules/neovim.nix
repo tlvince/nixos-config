@@ -42,7 +42,6 @@
             callback = lib.generators.mkLuaInline ''
               function()
                   vim.opt_local.formatoptions:append("rn")
-
                   -- Unordered lists
                   vim.opt_local.comments = {
                     "b:- [ ]",
@@ -51,12 +50,9 @@
                     "b:-",
                     "b:+",
                   }
-
                   local opts = { buffer = true, expr = true, silent = true, noremap = true }
-
                   vim.keymap.set("i", "<CR>", function()
                     local line = vim.api.nvim_get_current_line()
-
                     -- Empty list item
                     local indent = line:match("^(%s*)[-*+]%s*$")
                                 or line:match("^(%s*)- %[ x%]%s*$")
@@ -64,13 +60,11 @@
                     if indent then
                       return "<C-U>" .. indent .. "<CR>"
                     end
-
                     -- Ordered lists
                     local i, num = line:match("^(%s*)(%d+)%.%s+%S")
                     if num then
                       return "<CR>" .. i .. (tonumber(num) + 1) .. ". "
                     end
-
                     return "<CR>"
                   end, opts)
                 end

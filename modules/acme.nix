@@ -5,7 +5,6 @@
 }:
 {
   age.secrets.dns.file = "${secretsPath}/dns.age";
-
   security.acme = {
     acceptTerms = true;
     defaults.email = "admin@filo.uk";
@@ -19,6 +18,5 @@
       };
     };
   };
-
   users.users.nginx.extraGroups = [ "acme" ];
 }

@@ -6,9 +6,7 @@
     ../modules/host-common.nix
     ../modules/neovim.nix
   ];
-
   documentation.enable = false;
-
   networking = {
     applicationFirewall = {
       allowSigned = true;
@@ -18,14 +16,10 @@
     };
     hostName = "lamma";
   };
-
   nixpkgs.hostPlatform = "aarch64-darwin";
-
   security.pam.services.sudo_local.touchIdAuth = true;
-
   system = {
     defaults = {
-
       CustomUserPreferences = {
         "com.apple.AdLib" = {
           allowApplePersonalizedAdvertising = false;
@@ -40,19 +34,15 @@
           "Siri Data Sharing Opt-In Status" = 2;
         };
       };
-
       NSGlobalDomain = {
         AppleInterfaceStyleSwitchesAutomatically = true;
         "com.apple.swipescrolldirection" = true;
       };
-
       WindowManager = {
         StandardHideDesktopIcons = true;
         StandardHideWidgets = true;
       };
-
       controlcenter.BatteryShowPercentage = true;
-
       dock = {
         autohide = true;
         static-only = true;
@@ -62,7 +52,6 @@
         wvous-tl-corner = 1;
         wvous-tr-corner = 1;
       };
-
       finder = {
         AppleShowAllExtensions = true;
         FXPreferredViewStyle = "clmv";
@@ -70,7 +59,6 @@
         NewWindowTarget = "Home";
         QuitMenuItem = true;
       };
-
       screencapture.location = "~/Pictures/screenshots";
       trackpad.Clicking = true;
     };
@@ -81,6 +69,5 @@
     primaryUser = "tlv";
     stateVersion = 6;
   };
-
   users.users.tlv.home = "/Users/tlv";
 }

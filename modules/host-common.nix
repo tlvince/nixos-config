@@ -17,8 +17,6 @@
       "tlv"
     ];
   };
-
   nixpkgs.config.allowUnfree = true;
-
   time.timeZone = "Europe/London";
 }

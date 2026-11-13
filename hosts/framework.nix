@@ -23,9 +23,7 @@
     ../modules/neovim.nix
     ../modules/smartd.nix
   ];
-
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-
   boot = {
     blacklistedKernelModules = [ "hid_sensor_hub" ];
     initrd.availableKernelModules = [
@@ -45,7 +43,6 @@
     # See https://github.com/FrameworkComputer/SoftwareFirmwareIssueTracker/issues/70
     # labels: host:framework, unreleased
     kernelPackages = pkgs.linuxPackages_latest;
-
     # TODO: drop Framework touchpad interrupt amplification fixes
     # Issue URL: https://github.com/tlvince/nixos-config/issues/518
     # https://community.frame.work/t/tracking-touchpad-interrupts-battery-usage-issues-idma64-2/13630
@@ -60,7 +57,6 @@
         patch = ../patches/i2c-designware/0002-HID-i2c-hid-acpi-Co-locate-touchpad-IRQs-with-the-I2C.patch;
       }
     ];
-
     kernel.sysctl = {
       # enable REISUB: https://www.kernel.org/doc/html/latest/admin-guide/sysrq.html
       "kernel.sysrq" = 1 + 16 + 32 + 64 + 128;
@@ -76,7 +72,6 @@
       systemd-boot.enable = lib.mkForce false;
     };
   };
-
   disko.devices = {
     disk = {
       vdb = {
@@ -150,7 +145,6 @@
       };
     };
   };
-
   environment.pathsToLink = [
     "/share/zsh"
   ];
@@ -210,11 +204,9 @@
       ];
     })
   ];
-
   environment.variables = {
     QT_QPA_PLATFORM = "wayland";
   };
-
   fonts = {
     enableDefaultPackages = false;
     packages = with pkgs; [
@@ -222,21 +214,17 @@
       noto-fonts-cjk-sans
       noto-fonts-color-emoji
     ];
-
     fontconfig = {
       antialias = true;
-
       hinting = {
         enable = false;
         autohint = false;
         style = "none";
       };
-
       subpixel = {
         lcdfilter = "none";
         rgba = "none";
       };
-
       defaultFonts = {
         serif = [ "DejaVu Serif" ];
         sansSerif = [ "Adwaita Sans" ];
@@ -245,10 +233,8 @@
       };
     };
   };
-
   hardware.cpu.amd.updateMicrocode = true;
   hardware.sensor.iio.enable = false;
-
   networking = {
     firewall = {
       enable = true;
@@ -274,21 +260,17 @@
       "45.90.30.0#${secrets.nextdns.framework}.dns.nextdns.io"
     ];
   };
-
   nixpkgs.hostPlatform = "x86_64-linux";
-
   programs.localsend = {
     enable = true;
     openFirewall = true;
   };
-
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [ "/" ];
     interval = "monthly";
     limit = "300M";
   };
-
   services.btrbk.instances = {
     btrbk = {
       onCalendar = "hourly";
@@ -297,10 +279,8 @@
         lockfile = "/var/lib/btrbk/btrbk.lock";
         snapshot_create = "onchange";
         snapshot_dir = "snapshots";
-
         snapshot_preserve = "24h 7d 0w 0m 0y";
         snapshot_preserve_min = "latest";
-
         volume = {
           "/mnt/btrfs-root" = {
             subvolume = {
@@ -313,7 +293,6 @@
         };
       };
     };
-
     remote = {
       onCalendar = "12:00";
       settings = {
@@ -322,12 +301,10 @@
         snapshot_dir = "snapshots";
         ssh_identity = "/var/lib/btrbk/.ssh/id_ed25519";
         ssh_user = "btrbk";
-
         snapshot_preserve = "24h 7d 0w 0m 0y";
         snapshot_preserve_min = "latest";
         target_preserve = "0h 14d 6w 4m 1y";
         target_preserve_min = "latest";
-
         volume = {
           "/mnt/btrfs-root" = {
             target = {
@@ -344,38 +321,31 @@
       };
     };
   };
-
   systemd.services."btrbk-remote" = {
     after = [ "NetworkManager-wait-online.service" ];
     requires = [ "NetworkManager-wait-online.service" ];
   };
-
   services.fprintd.enable = true;
   services.fwupd.enable = true;
   services.hardware.bolt.enable = true;
   services.power-profiles-daemon.enable = true;
   services.printing.enable = false;
-
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     pulse.enable = true;
   };
-
   services.resolved = {
     enable = true;
     settings.Resolve.DNSOverTLS = "true";
   };
-
   services.udev.extraRules = ''
     # Power switching, power saver handled by GNOME/UPower when low capacity (20%)
     # https://github.com/NixOS/nixpkgs/blob/2e1715cf7cf3c1e79436d566962aeedaffbfb49d/nixos/modules/services/hardware/upower.nix#L88
     ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.mutter}/bin/gdctl set --layout-mode logical --logical-monitor --primary --scale 2 --monitor eDP-1 --mode '2880x1920@60.001+vrr'", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
     ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.mutter}/bin/gdctl set --layout-mode logical --logical-monitor --primary --scale 2 --monitor eDP-1 --mode '2880x1920@120.000+vrr'", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
   '';
-
   system.stateVersion = "23.05";
-
   users = {
     users.tlv = {
       isNormalUser = true;

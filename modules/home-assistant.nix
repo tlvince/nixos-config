@@ -34,7 +34,6 @@
             "updater"
             "weblink"
           ];
-
           entities = [
             "sensor.date"
             "sensor.last_boot"
@@ -56,10 +55,8 @@
       "tplink"
     ];
   };
-
   services.nginx = {
     upstreams.home-assistant.servers."127.0.0.1:8123" = { };
-
     virtualHosts."wg0-default" = {
       default = true;
       rejectSSL = true;
@@ -72,11 +69,9 @@
       ];
       locations."/".return = 444;
     };
-
     virtualHosts."home-assistant.filo.uk" = {
       forceSSL = true;
       useACMEHost = "filo.uk";
-
       listen = [
         {
           addr = "192.168.0.2";
@@ -89,7 +84,6 @@
           ssl = true;
         }
       ];
-
       locations."/" = {
         proxyPass = "http://home-assistant";
         proxyWebsockets = true;

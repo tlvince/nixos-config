@@ -11,14 +11,12 @@
     owner = "nginx";
     group = "nginx";
   };
-
   services.nginx = {
     additionalModules = [ pkgs.nginxModules.dav ];
     virtualHosts."webdav.filo.uk" = {
       basicAuthFile = config.age.secrets.webdav.path;
       forceSSL = true;
       useACMEHost = "filo.uk";
-
       locations."/" = {
         root = "/mnt/ichbiah/home/webdav";
         extraConfig = ''
@@ -30,11 +28,9 @@
       };
     };
   };
-
   systemd.services.nginx.serviceConfig = {
     ReadWritePaths = [ "/mnt/ichbiah/home/webdav" ];
   };
-
   systemd.tmpfiles.rules = [
     "d /mnt/ichbiah/home/webdav 0755 nginx nginx -"
   ];

@@ -6,7 +6,6 @@
 }:
 {
   age.secrets.minuspod.file = "${secretsPath}/minuspod.age";
-
   services.minuspod = {
     enable = true;
     package = pkgs.minuspod;
@@ -23,10 +22,8 @@
     };
     environmentFile = config.age.secrets.minuspod.path;
   };
-
   services.nginx = {
     upstreams.minuspod.servers."127.0.0.1:53918" = { };
-
     virtualHosts."minuspod.filo.uk" = {
       forceSSL = true;
       useACMEHost = "filo.uk";

@@ -12,16 +12,15 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/minimal.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-
     ../modules/acme.nix
     ../modules/caltrack.nix
     ../modules/cpuload.nix
     ../modules/deepseek-harness.nix
     ../modules/host-common-nixos.nix
     ../modules/host-common.nix
-    ../modules/tmux.nix
     ../modules/minuspod.nix
     ../modules/nginx.nix
+    ../modules/tmux.nix
   ];
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets."wireguard-nea".file = "${secretsPath}/wireguard-nea.age";

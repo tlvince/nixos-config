@@ -6,7 +6,6 @@
 }:
 {
   age.secrets.notify.file = "${secretsPath}/notify.age";
-
   systemd.services.cycled = {
     wantedBy = [ "multi-user.target" ];
     after = [ "systemd-journald.socket" ];
@@ -22,14 +21,12 @@
       RuntimeDirectoryMode = "0755";
       RuntimeMaxSec = 60;
       StateDirectory = "cycled";
-
       # Reduce journal noise
       IOAccounting = false;
       IPAccounting = false;
       LogLevelMax = "warning";
       MemoryAccounting = false;
       TasksAccounting = false;
-
       # Hardening
       CapabilityBoundingSet = [ "" ];
       DynamicUser = true;
@@ -54,7 +51,6 @@
       UMask = 077;
     };
   };
-
   systemd.timers.cycled = {
     wantedBy = [ "timers.target" ];
     timerConfig = {

@@ -8,7 +8,6 @@ let
   scripts = import ../scripts.nix {
     inherit config pkgs;
   };
-
   dmesgd = pkgs.writeShellScriptBin "dmesgd" ''
     ${pkgs.systemd}/bin/journalctl --dmesg --follow --lines=0 --output=cat --priority=warning | \
     while IFS= read -r MESSAGE; do
@@ -18,7 +17,6 @@ let
 in
 {
   age.secrets.notify.file = "${secretsPath}/notify.age";
-
   systemd.services.dmesgd = {
     description = "Monitor kernel diagnostic messages";
     wantedBy = [ "multi-user.target" ];
@@ -29,7 +27,6 @@ in
       Restart = "on-failure";
       RestartSec = 10;
       SupplementaryGroups = [ "systemd-journal" ];
-
       # TODO: Use NixOS hardened systemd helper
       # Issue URL: https://github.com/tlvince/nixos-config/issues/311
       # labels: systemd

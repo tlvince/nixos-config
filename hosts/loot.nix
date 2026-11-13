@@ -12,7 +12,6 @@
     # https://github.com/NixOS/nixpkgs/tree/master/nixos/modules/profiles
     (modulesPath + "/profiles/minimal.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-
     ../modules/host-common-nixos.nix
     ../modules/host-common.nix
     ../modules/tmux.nix

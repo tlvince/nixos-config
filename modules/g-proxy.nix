@@ -8,7 +8,6 @@
       RestartSec = 10;
       BindPaths = [ "%h/dev/g-proxy" ];
       TemporaryFileSystem = [ "%h:ro" ];
-
       CapabilityBoundingSet = [ "" ];
       KeyringMode = "private";
       LockPersonality = true;

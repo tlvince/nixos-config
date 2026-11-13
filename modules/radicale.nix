@@ -11,7 +11,6 @@
     owner = "nginx";
     group = "nginx";
   };
-
   services.radicale = {
     enable = true;
     rights = {
@@ -52,15 +51,12 @@
       };
     };
   };
-
   services.nginx = {
     upstreams.radicale.servers."127.0.0.1:5232" = { };
-
     virtualHosts."radicale.filo.uk" = {
       basicAuthFile = config.age.secrets.radicale.path;
       forceSSL = true;
       useACMEHost = "filo.uk";
-
       locations."/" = {
         extraConfig = ''
           proxy_set_header X-Remote-User $remote_user;
