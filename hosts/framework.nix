@@ -321,9 +321,22 @@
       };
     };
   };
-  systemd.services."btrbk-remote" = {
-    after = [ "NetworkManager-wait-online.service" ];
-    requires = [ "NetworkManager-wait-online.service" ];
+  systemd.services = {
+    "btrfs-scrub@" = {
+      unitConfig.ConditionACPower = true;
+    };
+    "btrbk-remote" = {
+      after = [ "NetworkManager-wait-online.service" ];
+      requires = [ "NetworkManager-wait-online.service" ];
+      unitConfig.ConditionACPower = true;
+    };
+    nix-gc = {
+      unitConfig.ConditionACPower = true;
+    };
+    fstrim = {
+      overrideStrategy = "asDropin";
+      unitConfig.ConditionACPower = true;
+    };
   };
   services.fprintd.enable = true;
   services.fwupd.enable = true;
