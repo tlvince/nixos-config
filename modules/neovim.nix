@@ -72,7 +72,10 @@
             desc = "Automated bullet lists (bullets.vim)";
           }
           {
-            event = [ "FileType" "BufWinEnter" ];
+            event = [
+              "FileType"
+              "BufWinEnter"
+            ];
             callback = lib.generators.mkLuaInline ''
               function(args)
                 local fdl = ({ nix = 2 })[vim.bo[args.buf].filetype]

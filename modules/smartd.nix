@@ -14,11 +14,11 @@ let
   '';
   smartdConf =
     let
-      opts = ''-a -n standby,q -s S/../../7/05 -m <nomailer> -M exec ${smartdNotify}/bin/smartd-notify'';
+      opts = "-a -n standby,q -s S/../../7/05 -m <nomailer> -M exec ${smartdNotify}/bin/smartd-notify";
     in
     pkgs.writeText "smartd.conf" (
       if config.tlvince.smartd.devices == [ ] then
-        ''DEVICESCAN ${opts}''
+        "DEVICESCAN ${opts}"
       else
         lib.concatMapStringsSep "\n" (device: "${device} ${opts}") config.tlvince.smartd.devices
     );

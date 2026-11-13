@@ -9,6 +9,9 @@ workflows:
         - 'actions/github-script@v9.0.0'
         - 'cachix/cachix-action@v17'
         - 'cachix/install-nix-action@v31.11.5'
+    '.github/workflows/format.yml':
+        - 'actions/checkout@v7.0.1'
+        - 'cachix/install-nix-action@v31.11.5'
     '.github/workflows/todos.yml':
         - 'actions/checkout@v7.0.1'
         - 'alstr/todo-to-issue-action@v5.1.15'
