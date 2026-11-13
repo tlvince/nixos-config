@@ -172,7 +172,6 @@
     gcc
     gh
     git
-    gnome-monitor-config
     gnumake
     gnupg
     htop
@@ -369,14 +368,10 @@
   };
 
   services.udev.extraRules = ''
-    # PCI auto suspend
-    SUBSYSTEM=="pci", ATTR{power/control}="auto"
-    # USB auto suspend
-    ACTION=="add", SUBSYSTEM=="usb", TEST=="power/control", ATTR{power/control}="auto"
     # Power switching, power saver handled by GNOME/UPower when low capacity (20%)
     # https://github.com/NixOS/nixpkgs/blob/2e1715cf7cf3c1e79436d566962aeedaffbfb49d/nixos/modules/services/hardware/upower.nix#L88
-    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.gnome-monitor-config}/bin/gnome-monitor-config set --logical-monitor --monitor eDP-1 --primary --mode '2880x1920@60.001+vrr' --scale 2", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
-    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.gnome-monitor-config}/bin/gnome-monitor-config set --logical-monitor --monitor eDP-1 --primary --mode '2880x1920@120.000+vrr' --scale 2", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
+    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="0", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.mutter}/bin/gdctl set --layout-mode logical --logical-monitor --primary --scale 2 --monitor eDP-1 --mode '2880x1920@60.001+vrr'", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
+    ACTION=="change", SUBSYSTEM=="power_supply", ATTR{type}=="Mains", ATTR{online}=="1", RUN+="${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced", RUN+="${pkgs.systemd}/bin/systemd-run --user --machine tlv@ ${pkgs.mutter}/bin/gdctl set --layout-mode logical --logical-monitor --primary --scale 2 --monitor eDP-1 --mode '2880x1920@120.000+vrr'", RUN+="${pkgs.runtimeShell} -c '${pkgs.coreutils}/bin/echo 0 > /sys/class/leds/chromeos:white:power/brightness'"
   '';
 
   system.stateVersion = "23.05";
