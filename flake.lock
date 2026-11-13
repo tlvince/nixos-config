@@ -150,11 +150,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1777313591,
-        "narHash": "sha256-2sOhUm2EUZnyJqFp3UV1VmF4XjTfbhLm9KytHvChPrU=",
+        "lastModified": 1794612890,
+        "narHash": "sha256-fnQ/ko1bn5R4cRu7wLjYy9bary7KqZ9QoJbaaZq7LaE=",
         "owner": "tlvince",
         "repo": "ghostwriter",
-        "rev": "9d977524f2aa9abd509a20a6e5a8e197a464786e",
+        "rev": "b620c08eaaa69357630548ef2165f3fc5084a203",
         "type": "github"
       },
       "original": {
@@ -238,16 +238,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1794192123,
-        "narHash": "sha256-SvB8u5qaJAOwZZyZciqTVOg/rBoUs2w0sFTU6ED51AQ=",
-        "owner": "NixOS",
+        "lastModified": 1794610991,
+        "narHash": "sha256-JYXR2EaZy5rXsZ9wzy2RjlCa8l+RHDJu1wMnxe6NxjU=",
+        "owner": "tlvince",
         "repo": "nixpkgs",
-        "rev": "177d0540942fb205af6993b1d5fa0b57799e09f8",
+        "rev": "5434c877e7fba8aa27f4e9e23d54ee7f0bc94e3b",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "owner": "tlvince",
+        "ref": "nixos-config",
         "repo": "nixpkgs",
         "type": "github"
       }

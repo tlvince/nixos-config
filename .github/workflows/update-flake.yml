@@ -28,7 +28,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_FOR_PATCH_NIXPKGS }}
         run: ./.github/scripts/patch-nixpkgs.sh
-        if: false
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@v29
         id: update-flake-lock
