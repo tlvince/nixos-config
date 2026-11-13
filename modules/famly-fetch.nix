@@ -11,7 +11,7 @@
       set -a
       source <(${pkgs.age}/bin/age -i $HOME/.ssh/config.d/tlvince/agenix -d ${secretsPath}/famly-fetch.age)
       set +a
-      exec ${pkgs.famly-fetch}/bin/famly-fetch --filename-pattern '%Y%m%d_%H%M%S_%ID' --journey --messages --notes --no-text-comments --pictures-folder $HOME/pictures/famly-fetch --state-file $XDG_STATE_HOME/famly-fetch.json --stop-on-existing
+      exec ${pkgs.famly-fetch}/bin/famly-fetch --filename-pattern '%Y%m%d_%H%M%S_%ID' --liked --journey --messages --notes --no-text-comments --pictures-folder $HOME/pictures/famly-fetch --state-file $XDG_STATE_HOME/famly-fetch.json --stop-on-existing
     '';
     serviceConfig = {
       Type = "oneshot";
