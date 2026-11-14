@@ -150,11 +150,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794612890,
-        "narHash": "sha256-fnQ/ko1bn5R4cRu7wLjYy9bary7KqZ9QoJbaaZq7LaE=",
+        "lastModified": 1794671227,
+        "narHash": "sha256-l5UANCI9KMlzgyWOIr5JcERkknD/Q4I4cSy8/zrO1hQ=",
         "owner": "tlvince",
         "repo": "ghostwriter",
-        "rev": "b620c08eaaa69357630548ef2165f3fc5084a203",
+        "rev": "3a3c0aef48f55f1c3684138826c3848c1b7eb331",
         "type": "github"
       },
       "original": {
