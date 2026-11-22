@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7.0.1
       - name: Generate GitHub token
-        uses: actions/create-github-app-token@v3.3.0
+        uses: actions/create-github-app-token@v3.4.0
         id: generate-github-token
         with:
           client-id: ${{ vars.GH_APP_CLIENT_ID }}

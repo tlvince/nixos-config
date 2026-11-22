@@ -64,7 +64,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Generate GitHub token
-        uses: actions/create-github-app-token@v3.3.0
+        uses: actions/create-github-app-token@v3.4.0
         id: generate-github-token
         with:
           client-id: ${{ vars.GH_APP_CLIENT_ID }}
