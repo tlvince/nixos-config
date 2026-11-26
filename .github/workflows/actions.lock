@@ -8,10 +8,10 @@ workflows:
         - 'actions/create-github-app-token@v3.4.0'
         - 'actions/github-script@v9.0.0'
         - 'cachix/cachix-action@v17'
-        - 'cachix/install-nix-action@v31.11.5'
+        - 'cachix/install-nix-action@v32.1.0'
     '.github/workflows/format.yml':
         - 'actions/checkout@v7.0.1'
-        - 'cachix/install-nix-action@v31.11.5'
+        - 'cachix/install-nix-action@v32.1.0'
     '.github/workflows/todos.yml':
         - 'actions/checkout@v7.0.1'
         - 'alstr/todo-to-issue-action@v5.1.15'
@@ -19,7 +19,7 @@ workflows:
         - 'actions/checkout@v7.0.1'
         - 'actions/create-github-app-token@v3.4.0'
         - 'actions/github-script@v9.0.0'
-        - 'cachix/install-nix-action@v31.11.5'
+        - 'cachix/install-nix-action@v32.1.0'
         - 'determinatesystems/update-flake-lock@v29'
     '.github/workflows/verify-lockfile.yml':
         - 'actions/checkout@v7.0.1'
@@ -49,9 +49,9 @@ dependencies:
         commit: 'sha1-38b082610b782e7e93e209c35fd730d399dee866'
         owner_id: 36824654
         repo_id: 211717886
-    'cachix/install-nix-action@v31.11.5':
-        ref: 'v31.11.5'
-        commit: 'sha1-3dc140bfc76c49fbd4dd958429132e3746bcb086'
+    'cachix/install-nix-action@v32.1.0':
+        ref: 'v32.1.0'
+        commit: 'sha1-382a9ed9481c7c1f94f68b72ef105b3417c73877'
         owner_id: 36824654
         repo_id: 212301524
     'crazy-max/ghaction-import-gpg@2dc316deee8e90f13e1a351ab510b4d5bc0c82cd':
